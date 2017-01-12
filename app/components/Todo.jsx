@@ -6,11 +6,11 @@ class Todo extends React.Component {
     }
 
     render() {
-        var {text}=this.props;
+        var {id, text}=this.props;
 
         return (
             <div>
-                {text}
+                {id}. {text}
             </div>
         );
     }
