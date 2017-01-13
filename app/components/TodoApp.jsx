@@ -1,5 +1,6 @@
 var React = require('react');
 var TodoList = require('TodoList');
+var AddTodo = require('AddTodo');
 
 class TodoApp extends React.Component {
     constructor(props) {
@@ -16,15 +17,19 @@ class TodoApp extends React.Component {
                     text: 'Fix 401K'
                 },
                 {
-                    id:3,
-                    text:'Update tests'
+                    id: 3,
+                    text: 'Update tests'
                 },
                 {
-                    id:4,
-                    text:'play video'
+                    id: 4,
+                    text: 'play video'
                 }
             ]
         }
+    }
+
+    handleAddTodo = (text) => {
+        alert('new todo item : '+ text);
     }
 
     render() {
@@ -33,6 +38,7 @@ class TodoApp extends React.Component {
             <div>
                 <h1 className="text-center page-title">Todo App</h1>
                 <TodoList todos={todos}/>
+                <AddTodo onAddTodo={this.handleAddTodo}/>
             </div>
         );
     }
