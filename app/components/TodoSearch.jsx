@@ -5,11 +5,11 @@ class TodoSearch extends React.Component {
         super(props);
     }
 
-    handleSearch = () => {
+    handleSearchItem = () => {
         var showCompleted = this.refs.showCompleted.checked;
-        var searchText = this.refs.searchText.value;
+        var searchText = this.refs.searchItemText.value;
 
-        this.props.onSearch(showCompleted, searchText);
+        this.props.onSearchItem(showCompleted, searchText);
     }
 
     render() {
@@ -17,12 +17,12 @@ class TodoSearch extends React.Component {
         return (
             <div>
                 <div>
-                    <input type="text" ref="searchText" placeholder="Enter text to search?"
-                           onChange={this.handleSearch}/>
+                    <input type="text" ref="searchItemText" placeholder="Enter text to search?"
+                           onChange={this.handleSearchItem}/>
                 </div>
                 <div>
                     <label>
-                        <input type="checkbox" ref="showCompleted" onChange={this.handleSearch}/>
+                        <input type="checkbox" ref="showCompleted" onChange={this.handleSearchItem}/>
                         Show Completed tasks
                     </label>
                 </div>

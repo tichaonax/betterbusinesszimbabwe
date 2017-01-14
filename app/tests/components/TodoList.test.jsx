@@ -13,7 +13,7 @@ describe('TodoList', () => {
     });
 
     it('should render one Todo component for each todo item', () => {
-        var todos = [
+        var todoItems = [
             {
                 id: 1,
                 text: 'Do something'
@@ -22,11 +22,11 @@ describe('TodoList', () => {
                 text: 'Water the plants'
             }];
 
-        var todoList = TestUtils.renderIntoDocument(<TodoList todos={todos}/>);
+        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}/>);
 
         var todoComponent = TestUtils.scryRenderedComponentsWithType(todoList, TodoItem);
 
-        expect(todoComponent.length).toBe(todos.length);
+        expect(todoComponent.length).toBe(todoItems.length);
 
 
 

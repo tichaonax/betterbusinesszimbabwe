@@ -1,7 +1,7 @@
 var React = require('react');
 var uuid = require('node-uuid');
 var TodoList = require('TodoList');
-var AddTodo = require('AddTodo');
+var AddTodoItem = require('AddTodoItem');
 var TodoSearch = require('TodoSearch');
 
 class TodoApp extends React.Component {
@@ -12,7 +12,7 @@ class TodoApp extends React.Component {
             showCompleted: false,
             searchText: '',
 
-            todos: [
+            todoItems: [
                 {
                     id: uuid(),
                     text: 'Clean the garage'
@@ -33,10 +33,10 @@ class TodoApp extends React.Component {
         }
     }
 
-    handleAddTodo = (text) => {
+    handleAddTodoItem = (text) => {
         this.setState({
-            todos: [
-                ...this.state.todos, {
+            todoItems: [
+                ...this.state.todoItems, {
                     id: uuid(),
                     text: text
                 }
@@ -45,7 +45,7 @@ class TodoApp extends React.Component {
     }
 
 
-    handleSearch = (showCompleted, searchText) => {
+    handleSearchItem = (showCompleted, searchText) => {
         this.setState({
             showCompleted: showCompleted,
             searchText: searchText.toLowerCase()
@@ -53,13 +53,13 @@ class TodoApp extends React.Component {
     }
 
     render() {
-        var {todos}= this.state;
+        var {todoItems}= this.state;
         return (
             <div>
                 <h1 className="text-center page-title">Todo App</h1>
-                <TodoSearch onSearch={this.handleSearch}/>
-                <TodoList todos={todos}/>
-                <AddTodo onAddTodo={this.handleAddTodo}/>
+                <TodoSearch onSearch={this.handleSearchItem}/>
+                <TodoList todoItems={todoItems}/>
+                <AddTodoItem onAddTodoItem={this.handleAddTodoItem}/>
             </div>
         );
     }

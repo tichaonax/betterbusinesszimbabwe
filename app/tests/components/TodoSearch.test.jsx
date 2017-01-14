@@ -15,10 +15,10 @@ describe('TodoSearch', () => {
         var searchText = 'Cut';
 
         var spy = expect.createSpy();
-        var todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearch={spy}/>);
+        var todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearchItem={spy}/>);
 
-        todoSearch.refs.searchText.value = searchText;
-        TestUtils.Simulate.change(todoSearch.refs.searchText);
+        todoSearch.refs.searchItemText.value = searchText;
+        TestUtils.Simulate.change(todoSearch.refs.searchItemText);
 
         expect(spy).toHaveBeenCalledWith(false, searchText);
 
@@ -27,7 +27,7 @@ describe('TodoSearch', () => {
 
     it('should call onSearch with proper checked value', () => {
         var spy = expect.createSpy();
-        var todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearch={spy}/>);
+        var todoSearch = TestUtils.renderIntoDocument(<TodoSearch onSearchItem={spy}/>);
 
 
         todoSearch.refs.showCompleted.checked = true;
