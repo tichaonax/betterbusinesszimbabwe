@@ -6,22 +6,21 @@ class TodoList extends React.Component {
         super(props);
     }
 
-    renderTodoItems = (todoItems) => {
-
+    renderTodoItems = (todoItems, onToggleItem) => {
         return todoItems.map((todoItem) => {
             return (
-                <TodoItem key={todoItem.id} {...todoItem}/>
+                <TodoItem key={todoItem.id} {...todoItem} onToggleItem={onToggleItem}/>
             )
         });
     }
 
     render() {
 
-        var {todoItems} = this.props;
+        var {todoItems, onToggleItem} = this.props;
 
         return (
             <div>
-                {this.renderTodoItems(todoItems)}
+                {this.renderTodoItems(todoItems, onToggleItem)}
             </div>
         );
     }

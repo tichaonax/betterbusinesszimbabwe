@@ -12,7 +12,7 @@ describe('TodoList', () => {
         expect(TodoList).toExist();
     });
 
-    it('should render one Todo component for each todo item', () => {
+    it('should render one TodoItem component for each todo item', () => {
         var todoItems = [
             {
                 id: 1,
@@ -22,12 +22,16 @@ describe('TodoList', () => {
                 text: 'Water the plants'
             }];
 
-        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}/>);
+        function handleToggleItem (id){
+        }
 
-        var todoComponent = TestUtils.scryRenderedComponentsWithType(todoList, TodoItem);
+        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}
+                                                              onToggleItem={handleToggleItem}/>);
 
-        expect(todoComponent.length).toBe(todoItems.length);
 
+        var todoListComponent = TestUtils.scryRenderedComponentsWithType(todoList, TodoItem);
+
+        expect(todoListComponent.length).toBe(todoItems.length);
 
 
     });
