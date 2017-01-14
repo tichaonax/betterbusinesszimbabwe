@@ -1,8 +1,10 @@
 var React = require('react');
 var uuid = require('node-uuid');
+
 var TodoList = require('TodoList');
 var AddTodoItem = require('AddTodoItem');
 var TodoSearch = require('TodoSearch');
+var TodoAPI = require('../api/TodoAPI');
 
 class TodoApp extends React.Component {
     constructor(props) {
@@ -12,7 +14,8 @@ class TodoApp extends React.Component {
             showCompleted: false,
             searchText: '',
 
-            todoItems: [
+            todoItems : TodoAPI.getTodoItems()
+            /*todoItems: [
                 {
                     id: uuid(),
                     text: 'Clean the garage',
@@ -33,8 +36,12 @@ class TodoApp extends React.Component {
                     text: 'play video',
                     completed: true
                 }
-            ]
+            ]*/
         }
+    }
+
+    componentDidUpdate(){
+        TodoAPI.setTodoItems(this.state.todoItems);
     }
 
     handleToggleItem = (id) => {
