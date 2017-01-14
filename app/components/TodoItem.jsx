@@ -1,6 +1,6 @@
 var React = require('react');
 
-class Todo extends React.Component {
+class TodoItem extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -16,4 +16,4 @@ class Todo extends React.Component {
     }
 }
 
-module.exports = Todo;
+module.exports = TodoItem;

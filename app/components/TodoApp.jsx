@@ -1,4 +1,5 @@
 var React = require('react');
+var uuid = require('node-uuid');
 var TodoList = require('TodoList');
 var AddTodo = require('AddTodo');
 var TodoSearch = require('TodoSearch');
@@ -8,24 +9,24 @@ class TodoApp extends React.Component {
         super(props);
 
         this.state = {
-            showCompleted : false,
+            showCompleted: false,
             searchText: '',
 
             todos: [
                 {
-                    id: 1,
+                    id: uuid(),
                     text: 'Clean the garage'
                 },
                 {
-                    id: 2,
+                    id: uuid(),
                     text: 'Fix 401K'
                 },
                 {
-                    id: 3,
+                    id: uuid(),
                     text: 'Update tests'
                 },
                 {
-                    id: 4,
+                    id: uuid(),
                     text: 'play video'
                 }
             ]
@@ -33,13 +34,20 @@ class TodoApp extends React.Component {
     }
 
     handleAddTodo = (text) => {
-        alert('new todo item : '+ text);
+        this.setState({
+            todos: [
+                ...this.state.todos, {
+                    id: uuid(),
+                    text: text
+                }
+            ]
+        })
     }
 
 
     handleSearch = (showCompleted, searchText) => {
         this.setState({
-            showCompleted : showCompleted,
+            showCompleted: showCompleted,
             searchText: searchText.toLowerCase()
         });
     }

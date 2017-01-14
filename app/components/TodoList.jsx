@@ -1,5 +1,5 @@
 var React = require('react');
-var Todo = require('Todo');
+var TodoItem = require('TodoItem');
 
 class TodoList extends React.Component {
     constructor(props) {
@@ -11,7 +11,7 @@ renderTodos =(todos)=>{
         return todos.map((todo) => {
 
             return (
-                <Todo key={todo.id} {...todo}/>
+                <TodoItem key={todo.id} {...todo}/>
             )
         });
 }
