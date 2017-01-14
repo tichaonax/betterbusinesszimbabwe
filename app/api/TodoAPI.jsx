@@ -21,6 +21,43 @@ module.exports = {
         }
 
         return $.isArray(todoItems) ? todoItems : [];
+    },
 
+    getFilteredTodoItems: function (todoItems, showCompleted, searchText) {
+
+        var filteredTodoItems = todoItems;
+
+        //filter by showCompleted
+
+        filteredTodoItems = filteredTodoItems.filter((todoItem) => {
+            return !todoItem.completed || showCompleted;
+        })
+
+        //filter by searchText
+        if(searchText.length>0) {
+            filteredTodoItems = filteredTodoItems.filter((todoItem) => {
+                var text = todoItem.text.toLowerCase();
+                if(text.indexOf(searchText.toLowerCase()) > -1){
+                    return todoItem.text;
+                }
+            });
+        }
+
+        //sort todoItems with non-completed first
+
+        filteredTodoItems.sort((a, b) => {
+            if (!a.completed && b.completed) {
+                //take a first
+                return -1
+            } else if (a.completed && !b.completed) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+        return filteredTodoItems;
     }
 };

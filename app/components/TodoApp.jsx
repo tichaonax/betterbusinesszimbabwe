@@ -14,33 +14,33 @@ class TodoApp extends React.Component {
             showCompleted: false,
             searchText: '',
 
-            todoItems : TodoAPI.getTodoItems()
+            todoItems: TodoAPI.getTodoItems()
             /*todoItems: [
-                {
-                    id: uuid(),
-                    text: 'Clean the garage',
-                    completed: false
-                },
-                {
-                    id: uuid(),
-                    text: 'Fix 401K',
-                    completed: true
-                },
-                {
-                    id: uuid(),
-                    text: 'Update tests',
-                    completed: false
-                },
-                {
-                    id: uuid(),
-                    text: 'play video',
-                    completed: true
-                }
-            ]*/
+             {
+             id: uuid(),
+             text: 'Clean the garage',
+             completed: false
+             },
+             {
+             id: uuid(),
+             text: 'Fix 401K',
+             completed: true
+             },
+             {
+             id: uuid(),
+             text: 'Update tests',
+             completed: false
+             },
+             {
+             id: uuid(),
+             text: 'play video',
+             completed: true
+             }
+             ]*/
         }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
         TodoAPI.setTodoItems(this.state.todoItems);
     }
 
@@ -84,12 +84,13 @@ class TodoApp extends React.Component {
     }
 
     render() {
-        var {todoItems}= this.state;
+        var {todoItems, showCompleted, searchText}= this.state;
+        var filteredTodoItems = TodoAPI.getFilteredTodoItems(todoItems, showCompleted, searchText);
         return (
             <div>
                 <h1 className="text-center page-title">Todo App</h1>
                 <TodoSearch onSearchItem={this.handleSearchItem}/>
-                <TodoList todoItems={todoItems} onToggleItem={this.handleToggleItem}/>
+                <TodoList todoItems={filteredTodoItems} onToggleItem={this.handleToggleItem}/>
                 <AddTodoItem onAddTodoItem={this.handleAddTodoItem}/>
             </div>
         );
