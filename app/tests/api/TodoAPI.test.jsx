@@ -51,7 +51,7 @@ describe('TodoAPI', () => {
     });
 
     describe('getTodoItems', () => {
-        it('should getTodoItems', () => {
+        it('should getTodoItems for valid array data', () => {
             var todoItems = [
                 {
                     id: 276,
@@ -60,6 +60,7 @@ describe('TodoAPI', () => {
                 }
             ];
 
+            //call localstorage directly we are not testing TodoAPI.setTodoItems
             localStorage.setItem('todoItems', JSON.stringify(todoItems));
 
             var actualTodoItems = TodoAPI.getTodoItems('todoItems');
