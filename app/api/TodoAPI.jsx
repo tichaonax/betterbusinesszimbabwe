@@ -5,13 +5,13 @@ module.exports = {
 
     setTodoItems: function (todoItems) {
         if ($.isArray(todoItems)) {
-            localStorage.setItem('toodoItems', JSON.stringify(todoItems));
+            localStorage.setItem('todoItems', JSON.stringify(todoItems));
             return (todoItems);
         }
     },
 
     getTodoItems: function () {
-        var strTodoItems = localStorage.getItem('toodoItems');
+        var strTodoItems = localStorage.getItem('todoItems');
         var todoItems = [];
 
         try {
