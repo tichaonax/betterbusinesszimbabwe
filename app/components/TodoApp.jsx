@@ -14,30 +14,7 @@ class TodoApp extends React.Component {
         this.state = {
             showCompleted: false,
             searchText: '',
-
             todoItems: TodoAPI.getTodoItems()
-            /*todoItems: [
-             {
-             id: uuid(),
-             text: 'Clean the garage',
-             completed: false
-             },
-             {
-             id: uuid(),
-             text: 'Fix 401K',
-             completed: true
-             },
-             {
-             id: uuid(),
-             text: 'Update tests',
-             completed: false
-             },
-             {
-             id: uuid(),
-             text: 'play video',
-             completed: true
-             }
-             ]*/
         }
     }
 
