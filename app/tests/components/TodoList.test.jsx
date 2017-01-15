@@ -22,11 +22,7 @@ describe('TodoList', () => {
                 text: 'Water the plants'
             }];
 
-        function handleToggleItem (id){
-        }
-
-        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}
-                                                              onToggleItem={handleToggleItem}/>);
+        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}/>);
 
 
         var todoListComponent = TestUtils.scryRenderedComponentsWithType(todoList, TodoItem);
@@ -36,5 +32,16 @@ describe('TodoList', () => {
 
     });
 
+
+    it('should render message if there are todo items', () => {
+        var todoItems = [];
+
+        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}/>);
+
+        var $el = $(ReactDOM.findDOMNode(todoList));
+
+        expect($el.find('.container__message').length).toBe(1);
+
+    });
 
 });

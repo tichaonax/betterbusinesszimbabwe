@@ -7,6 +7,12 @@ class TodoList extends React.Component {
     }
 
     renderTodoItems = (todoItems, onToggleItem) => {
+        if (todoItems.length === 0) {
+            return (
+                <p className="container__message">No Tasks To Do</p>
+            )
+        }
+
         return todoItems.map((todoItem) => {
             return (
                 <TodoItem key={todoItem.id} {...todoItem} onToggleItem={onToggleItem}/>

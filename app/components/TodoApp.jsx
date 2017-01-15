@@ -93,9 +93,15 @@ class TodoApp extends React.Component {
         return (
             <div>
                 <h1 className="text-center page-title">Todo App</h1>
-                <TodoSearch onSearchItem={this.handleSearchItem}/>
-                <TodoList todoItems={filteredTodoItems} onToggleItem={this.handleToggleItem}/>
-                <AddTodoItem onAddTodoItem={this.handleAddTodoItem}/>
+                <div className="row">
+                    <div className="column small-centered small-11 medium-6 large-6">
+                        <div className="container ">
+                            <TodoSearch onSearchItem={this.handleSearchItem}/>
+                            <TodoList todoItems={filteredTodoItems} onToggleItem={this.handleToggleItem}/>
+                            <AddTodoItem onAddTodoItem={this.handleAddTodoItem}/>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
