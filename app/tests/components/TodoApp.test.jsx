@@ -24,6 +24,10 @@ describe('TodoApp', () => {
 
         expect(todoApp.state.todoItems[0].text).toBe(todoText);
 
+        expect(todoApp.state.todoItems[0].createDate).toBeA('number');
+
+        expect(todoApp.state.todoItems[0].completeDate).toBe(undefined);
+
     });
 
 
@@ -31,7 +35,9 @@ describe('TodoApp', () => {
         var todoItem = {
             id: 23,
             text: 'Toggle test feature',
-            completed: false
+            completed: false,
+            createDate: 0,
+            completeDate: undefined
         };
 
         var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
@@ -51,10 +57,34 @@ describe('TodoApp', () => {
         //validate that the completed status changed
         expect(todoApp.state.todoItems[0].completed).toBe(true);
 
-
-
+        expect(todoApp.state.todoItems[0].completeDate).toBeA('number');
 
     });
 
+    it('should clear completeDate value when handleToggleItem is called for completedt task', () => {
+        var todoItem = {
+            id: 3,
+            text: 'Clear completed date',
+            completed: true,
+            createDate: 0,
+            completeDate: 0
+        };
+
+        var todoApp = TestUtils.renderIntoDocument(<TodoApp/>);
+
+        // set initial only array item
+        todoApp.setState({
+            todoItems: [todoItem]
+        });
+
+        //call handleToggleItem with id 3 to toggle completed status
+        todoApp.handleToggleItem(3);
+
+        //validate that the completed status changed
+        expect(todoApp.state.todoItems[0].completed).toBe(false);
+
+        expect(todoApp.state.todoItems[0].completeDate).toBe(undefined);
+
+    });
 
 });

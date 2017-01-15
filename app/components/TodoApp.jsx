@@ -1,5 +1,6 @@
 var React = require('react');
 var uuid = require('node-uuid');
+var moment = require('moment');
 
 var TodoList = require('TodoList');
 var AddTodoItem = require('AddTodoItem');
@@ -50,6 +51,7 @@ class TodoApp extends React.Component {
             //toggle the completed status of the matching id
             if (todoItem.id === id) {
                 todoItem.completed = !todoItem.completed;
+                todoItem.completeDate = todoItem.completed ? moment().unix() : undefined;
             }
             return todoItem;
         });
@@ -69,7 +71,9 @@ class TodoApp extends React.Component {
                 ...this.state.todoItems, {
                     id: uuid(),
                     text: text,
-                    completed: false
+                    completed: false,
+                    createDate: moment().unix(),
+                    completeDate: undefined
                 }
             ]
         })
