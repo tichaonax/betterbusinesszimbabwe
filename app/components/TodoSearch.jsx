@@ -1,28 +1,30 @@
 var React = require('react');
+var $ = require('jquery');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
-class TodoSearch extends React.Component {
+export class TodoSearch extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    handleSearchItem = () => {
-        var showCompleted = this.refs.showCompleted.checked;
-        var searchText = this.refs.searchItemText.value;
-
-        this.props.onSearchItem(showCompleted, searchText);
-    }
-
     render() {
+        var {showCompleted, searchText, dispatch} = this.props;
 
         return (
             <div className="container__header">
                 <div>
-                    <input type="text" ref="searchItemText" placeholder="Enter text to search?"
-                           onChange={this.handleSearchItem}/>
+                    <input id="searchItemText" type="text"  value={searchText} placeholder="Enter text to search?"
+                           onChange={() => {
+                               var searchText = $('#searchItemText').val();
+                               dispatch(actions.setSearchText(searchText));
+                           }}/>
                 </div>
                 <div>
                     <label>
-                        <input type="checkbox" ref="showCompleted" onChange={this.handleSearchItem}/>
+                        <input type="checkbox" ref="showCompleted" checked={showCompleted} onChange={() => {
+                            dispatch(actions.togggleShowCompletedItem());
+                        }}/>
                         Show Completed tasks
                     </label>
                 </div>
@@ -31,4 +33,11 @@ class TodoSearch extends React.Component {
     }
 }
 
-module.exports = TodoSearch;
+export default connect(
+    (state) => {
+        return {
+            showCompleted: state.showCompleted,
+            searchText: state.searchText
+        }
+    }
+)(TodoSearch);
