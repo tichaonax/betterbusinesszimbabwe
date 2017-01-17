@@ -15,7 +15,7 @@ describe('Actions', () => {
     });
 
 
-    it('should generate add todoItem action', () => {
+    it('should generate addTodoItem action', () => {
         var action = {
             type: 'ADD_TODO_ITEM',
             text: 'Feed the children'
@@ -25,6 +25,31 @@ describe('Actions', () => {
         expect(response).toEqual(action);
     });
 
+
+    it('should generate addTodoItems action', () => {
+        var todoItems = [
+            {
+                id: 1,
+                text: 'Do something',
+                completed: false,
+                completeDate: undefined,
+                createDate: 5000
+            }, {
+                id: 2,
+                text: 'Water the plants',
+                completed: false,
+                completeDate: undefined,
+                createDate: 6000
+            }];
+
+        var action = {
+            type: 'ADD_TODO_ITEMS',
+            todoItems: todoItems
+        };
+
+        var response = actions.addTodoItems(todoItems);
+        expect(response).toEqual(action);
+    });
 
     it('should generate toggle show completed action', () => {
         var action = {

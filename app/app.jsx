@@ -4,7 +4,7 @@ var {Provider} = require('react-redux');
 var {Route, Router, IndexRoute, hashHistory} = require('react-router');
 
 var TodoApp = require('TodoApp');
-
+var TodoAPI = require('TodoAPI');
 
 
 var actions = require('actions');
@@ -12,13 +12,17 @@ var store = require('configureStore').configure();
 
 //subscribe to changes
 var unsubscribe = store.subscribe(()=>{
-    console.log ('New state', store.getState());
-})
+    var state = store.getState();
+
+    console.log ('New state', state);
+
+    TodoAPI.setTodoItems(state.todoItems);
+
+});
 
 
-store.dispatch(actions.addTodoItem("Take day off"));
-store.dispatch(actions.setSearchText("off"));
-store.dispatch(actions.togggleShowCompletedItem());
+var initialTodoItems = TodoAPI.getTodoItems();
+store.dispatch(actions.addTodoItems(initialTodoItems));
 
 // Load foundation
 $(document).foundation();

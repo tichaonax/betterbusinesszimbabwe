@@ -82,5 +82,37 @@ describe('Reducers', () => {
 
         });
 
+        it('should add existing todoItems', () => {
+
+            var todoItems = [
+                {
+                    id: 1,
+                    text: 'Do something',
+                    completed: false,
+                    completeDate: undefined,
+                    createDate: 5000
+                }, {
+                    id: 2,
+                    text: 'Water the plants',
+                    completed: false,
+                    completeDate: undefined,
+                    createDate: 6000
+                }];
+
+
+            var action = {
+                type: 'ADD_TODO_ITEMS',
+                todoItems: todoItems
+            };
+
+            var response = reducers.todoItemsReducer(df([]), df(action));
+            console.log(response);
+
+            expect(response.length).toEqual(2);
+
+            expect(response[0].id).toEqual(todoItems[0].id);
+            expect(response[1].createDate).toEqual(todoItems[1].createDate);
+        });
+
     });
 });

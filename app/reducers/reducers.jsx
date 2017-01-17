@@ -41,6 +41,13 @@ export var todoItemsReducer = (state = [], action) => {
                 }
             });
 
+        case 'ADD_TODO_ITEMS':
+            return [
+                //preserve original todoItems then add a new ones passed in
+                ...state,
+                ...action.todoItems
+            ];
+
         default:
             return state;
     }

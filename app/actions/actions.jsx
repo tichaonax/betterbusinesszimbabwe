@@ -12,6 +12,13 @@ export var addTodoItem = (text) => {
     };
 };
 
+export var addTodoItems = (todoItems) => {
+    return {
+        type: 'ADD_TODO_ITEMS',
+        todoItems
+    };
+};
+
 export var togggleShowCompletedItem = () => {
     return {
         type: 'TOGGLE_SHOW_COMPLETED'
@@ -24,6 +31,8 @@ export var toggleTodoItem = (id) => {
         id
     };
 };
+
+
 
 
 
