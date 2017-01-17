@@ -1,16 +1,20 @@
 var React = require('react');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
-class AddTodoItem extends React.Component {
+//export so that when testing we do use the connect version that needs the store
+export class AddTodoItem extends React.Component {
     constructor(props) {
         super(props);
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
+        var {dispatch} = this.props;
         var todoText = this.refs.todoItemText.value;
         if (todoText.length > 0) {
             this.refs.todoItemText.value = '';
-            this.props.onAddTodoItem(todoText);
+            dispatch(actions.addTodoItem(todoText));
         } else {
             this.refs.todoItemText.focus();
         }
@@ -29,4 +33,5 @@ class AddTodoItem extends React.Component {
     }
 }
 
-module.exports = AddTodoItem;
+//AddTodoItem does not need properties off of the state we do not pass the state
+export default connect()(AddTodoItem);

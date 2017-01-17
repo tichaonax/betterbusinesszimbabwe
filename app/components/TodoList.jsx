@@ -1,12 +1,13 @@
 var React = require('react');
-var TodoItem = require('TodoItem');
+var {connect} = require('react-redux');
+import TodoItem from 'TodoItem';
 
-class TodoList extends React.Component {
+export class TodoList extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    renderTodoItems = (todoItems, onToggleItem) => {
+    renderTodoItems = (todoItems) => {
         if (todoItems.length === 0) {
             return (
                 <p className="container__message">No Tasks To Do</p>
@@ -15,21 +16,25 @@ class TodoList extends React.Component {
 
         return todoItems.map((todoItem) => {
             return (
-                <TodoItem key={todoItem.id} {...todoItem} onToggleItem={onToggleItem}/>
+                <TodoItem key={todoItem.id} {...todoItem} />
             )
         });
     }
 
     render() {
-
-        var {todoItems, onToggleItem} = this.props;
-
+        var {todoItems} = this.props;
         return (
             <div>
-                {this.renderTodoItems(todoItems, onToggleItem)}
+                {this.renderTodoItems(todoItems)}
             </div>
         );
     }
 }
 
-module.exports = TodoList;
+export default connect(
+    (state) => {
+        return {
+            todoItems: state.todoItems
+        }
+    }
+)(TodoList);

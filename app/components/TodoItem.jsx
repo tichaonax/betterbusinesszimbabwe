@@ -1,20 +1,16 @@
 var React = require('react');
 var moment = require('moment');
+var {connect} = require('react-redux');
+var actions = require('actions');
 
-class TodoItem extends React.Component {
+export class TodoItem extends React.Component {
     constructor(props) {
         super(props);
     }
 
     render() {
-        var {id, text, completed, onToggleItem, createDate, completeDate}=this.props;
+        var {id, text, completed, createDate, completeDate, dispatch} = this.props;
         var todoClassName = completed ? 'todo-item todo-item-completed' : 'todo-item';
-
-
-        //onToggleItem is passed down function to be called on the onClick event of the div
-        //this occurs when user clicks on either text ot check box
-
-        //Note that there is no onChange event on the checkbox beacuse the state is handled by the parent TodoApp
 
         var renderDate = () => {
             var message = 'Created ';
@@ -29,7 +25,7 @@ class TodoItem extends React.Component {
         }
         return (
             <div className={todoClassName} onClick={() => {
-                onToggleItem(id);
+                dispatch(actions.toggleTodoItem(id));
             }}>
                 <div>
                     <input type="checkbox" checked={completed}/>
@@ -42,5 +38,6 @@ class TodoItem extends React.Component {
         );
     }
 }
+;
 
-module.exports = TodoItem;
+export default  connect()(TodoItem);

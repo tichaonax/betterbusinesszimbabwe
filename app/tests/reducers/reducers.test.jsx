@@ -39,7 +39,7 @@ describe('Reducers', () => {
                 text: 'Feed the baby'
             };
 
-            var response = reducers.todoItemReducer(df([]), df(action));
+            var response = reducers.todoItemsReducer(df([]), df(action));
             console.log(response);
 
             expect(response.length).toEqual(1);
@@ -70,7 +70,7 @@ describe('Reducers', () => {
                 id: '84a6f82e-8420-4c9a-a6b0-51a68992c455'
             };
 
-            var response = reducers.todoItemReducer(df(todoItems), df(action));
+            var response = reducers.todoItemsReducer(df(todoItems), df(action));
             console.log(response);
 
             expect(response.length).toEqual(1);
@@ -83,6 +83,4 @@ describe('Reducers', () => {
         });
 
     });
-
-
 });

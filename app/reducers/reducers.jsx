@@ -11,7 +11,7 @@ export var searchTextReducer = (state = '', action) => {
     ;
 };
 
-export var todoItemReducer = (state = [], action) => {
+export var todoItemsReducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD_TODO_ITEM':
             return [
@@ -35,6 +35,9 @@ export var todoItemReducer = (state = [], action) => {
                         completed: nextCompleted,
                         completeDate: nextCompleted ? moment().unix() : undefined
                     }
+                } else {
+                    //no match return unmodified
+                    return todoItem;
                 }
             });
 
