@@ -30,5 +30,59 @@ describe('Reducers', () => {
 
         });
 
+
     });
+    describe('todoItemReducer', () => {
+        it('should add a new  todoItem', () => {
+            var action = {
+                type: 'ADD_TODO_ITEM',
+                text: 'Feed the baby'
+            };
+
+            var response = reducers.todoItemReducer(df([]), df(action));
+            console.log(response);
+
+            expect(response.length).toEqual(1);
+
+            expect(response[0].id).toBeA('string');
+            expect(response[0].text).toEqual(action.text);
+            expect(response[0].createDate).toBeA('number');
+            expect(response[0].completed).toBe(false);
+            expect(response[0].completeDate).toBe(undefined);
+
+        });
+
+
+        it('should toggle todoItem', () => {
+
+            var todoItems = [
+                {
+                    id: '84a6f82e-8420-4c9a-a6b0-51a68992c455',
+                    text: 'Feed the baby',
+                    completed: false,
+                    createDate: 1484658469,
+                    completeDate: undefined
+                }
+            ];
+
+            var action = {
+                type: 'TOGGLE_TODO_ITEM',
+                id: '84a6f82e-8420-4c9a-a6b0-51a68992c455'
+            };
+
+            var response = reducers.todoItemReducer(df(todoItems), df(action));
+            console.log(response);
+
+            expect(response.length).toEqual(1);
+            expect(response[0].id).toEqual(action.id);
+            expect(response[0].text).toEqual(todoItems[0].text);
+            expect(response[0].createDate).toEqual(todoItems[0].createDate);
+            expect(response[0].completed).toBe(true);
+            expect(response[0].completeDate).toBeA('number');
+
+        });
+
+    });
+
+
 });

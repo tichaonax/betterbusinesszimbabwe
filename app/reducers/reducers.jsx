@@ -1,3 +1,6 @@
+var uuid = require('node-uuid');
+var moment = require('moment');
+
 export var searchTextReducer = (state = '', action) => {
     switch (action.type) {
         case 'SET_SEARCH_TEXT':
@@ -8,8 +11,6 @@ export var searchTextReducer = (state = '', action) => {
     ;
 };
 
-/*
-var nextTodoItemId = 1;
 export var todoItemReducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD_TODO_ITEM':
@@ -17,22 +18,31 @@ export var todoItemReducer = (state = [], action) => {
                 //preserve original todoItems then add a new one
                 ...state,
                 {
-                    id: nextTodoItemId++,
-                    completed: action.todoItem.completed,
-                    text: action.todoItem.text,
-                    createDate: action.todoItem.text
+                    id: uuid(),
+                    text: action.text,
+                    completed: false,
+                    createDate: moment().unix(),
+                    completeDate: undefined
                 }
             ];
-        case 'REMOVE_TODO_ITEM':
-            return state.filter((todoItem) => {
-                return todoItem.id !== action.id
+        case 'TOGGLE_TODO_ITEM':
+            return state.map((todoItem) => {
+                //toggle the completed status of the matching id
+                if (todoItem.id === action.id) {
+                    var nextCompleted = !todoItem.completed;
+                    return {
+                        ...todoItem,
+                        completed: nextCompleted,
+                        completeDate: nextCompleted ? moment().unix() : undefined
+                    }
+                }
             });
 
         default:
             return state;
     }
     ;
-};*/
+};
 
 
 export var showCompletedReducer = (state = false, action) => {
@@ -41,5 +51,6 @@ export var showCompletedReducer = (state = false, action) => {
             return !state;
         default:
             return state;
-    };
+    }
+    ;
 };
