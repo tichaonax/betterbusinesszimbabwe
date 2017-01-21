@@ -43,6 +43,28 @@ export var addTodoItems = (todoItems) => {
     };
 };
 
+export var startTodoAddItems = () => {
+    //debugger;
+    return (dispatch, getState) => {
+        var todoItemRef = firebaseRef.child("todoItems");
+
+        return todoItemRef.once('value').then((snapshot) => {
+            var todoItems = snapshot.val() || {}; //return available data or empty object
+            console.log("todoItems", todoItems);
+            var parsedTodoItems = [];
+
+            Object.keys(todoItems).forEach((todoItemId) => {
+                parsedTodoItems.push({
+                    id: todoItemId,
+                    ...todoItems[todoItemId]
+                });
+            });
+            console.log(parsedTodoItems);
+            dispatch(addTodoItems(parsedTodoItems));
+        });
+    };
+};
+
 export var togggleShowCompletedItem = () => {
     return {
         type: 'TOGGLE_SHOW_COMPLETED'
@@ -63,13 +85,13 @@ export var startToggleTodoItem = (id, completed) => {
         //var todoItemRef = firebaseRef.child('todoItems/' + id); //ES5 syntax
         var todoItemRef = firebaseRef.child(`todoItems/${id}`); //ES6 syntaxt
 
-        var updates ={
+        var updates = {
             completed,
-            completeDate: completed ? moment().unix(): null
+            completeDate: completed ? moment().unix() : null
         };
 
-        return todoItemRef.update(updates).then(()=>{  //return needed to chain our tests
-            dispatch(updateTodoItem(id,updates));
+        return todoItemRef.update(updates).then(() => {  //return needed to chain our tests
+            dispatch(updateTodoItem(id, updates));
         });
 
 

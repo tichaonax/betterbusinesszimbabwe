@@ -11,18 +11,21 @@ var actions = require('actions');
 var store = require('configureStore').configure();
 
 //subscribe to changes
-var unsubscribe = store.subscribe(()=>{
-    var state = store.getState();
+// var unsubscribe = store.subscribe(()=>{
+//     var state = store.getState();
+//
+//     console.log ('New state', state);
+//
+//     TodoAPI.setTodoItems(state.todoItems);
+//
+// });
 
-    console.log ('New state', state);
-
-    TodoAPI.setTodoItems(state.todoItems);
-
-});
 
 
-var initialTodoItems = TodoAPI.getTodoItems();
-store.dispatch(actions.addTodoItems(initialTodoItems));
+// var initialTodoItems = TodoAPI.getTodoItems();
+// store.dispatch(actions.addTodoItems(initialTodoItems));
+
+store.dispatch(actions.startTodoAddItems());
 
 // Load foundation
 $(document).foundation();
