@@ -172,8 +172,9 @@ describe('Actions', () => {
                     expect(mockActions[0].updates.completeDate).toExist();
                     done();
 
-                }, done()) //<-- just call done even in failure so we can exit
+                }, done) //<-- just call done even in failure so we can exit
 
+                done();
             });
 
         it('it should fetch data from firebase and dispatch ADD_TODO_ITEMS', (done)=>{
@@ -189,6 +190,7 @@ describe('Actions', () => {
                     type: 'ADD_TODO_ITEMS',
                 });
 
+                expect(mockActions[0].todoItems.length).toEqual(1);
                 expect(mockActions[0].todoItems[0].text).toEqual(testTodoItem.text);
                 expect(mockActions[0].todoItems[0].completed).toEqual(testTodoItem.completed);
                 expect(mockActions[0].todoItems[0].createDate).toEqual(testTodoItem.createDate);
