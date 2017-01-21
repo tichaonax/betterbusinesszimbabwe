@@ -44,13 +44,12 @@ export var addTodoItems = (todoItems) => {
 };
 
 export var startTodoAddItems = () => {
-    //debugger;
     return (dispatch, getState) => {
         var todoItemRef = firebaseRef.child("todoItems");
 
         return todoItemRef.once('value').then((snapshot) => {
             var todoItems = snapshot.val() || {}; //return available data or empty object
-            console.log("todoItems", todoItems);
+
             var parsedTodoItems = [];
 
             Object.keys(todoItems).forEach((todoItemId) => {
@@ -59,7 +58,7 @@ export var startTodoAddItems = () => {
                     ...todoItems[todoItemId]
                 });
             });
-            console.log(parsedTodoItems);
+
             dispatch(addTodoItems(parsedTodoItems));
         });
     };
