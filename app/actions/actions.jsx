@@ -49,14 +49,31 @@ export var togggleShowCompletedItem = () => {
     };
 };
 
-export var toggleTodoItem = (id) => {
+export var updateTodoItem = (id, updates) => {
     return {
-        type: 'TOGGLE_TODO_ITEM',
-        id
+        type: 'UPDATE_TODO_ITEM',
+        id,
+        updates
     };
 };
 
 
+export var startToggleTodoItem = (id, completed) => {
+    return (dispatch, getState) => {
+        //var todoItemRef = firebaseRef.child('todoItems/' + id); //ES5 syntax
+        var todoItemRef = firebaseRef.child(`todoItems/${id}`); //ES6 syntaxt
 
+        var updates ={
+            completed,
+            completeDate: completed ? moment().unix(): null
+        };
+
+        return todoItemRef.update(updates).then(()=>{  //return needed to chain our tests
+            dispatch(updateTodoItem(id,updates));
+        });
+
+
+    };
+};
 
 

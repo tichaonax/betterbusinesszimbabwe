@@ -1,3 +1,4 @@
+/*
 import firebase from 'firebase';
 
 // Initialize Firebase
@@ -72,4 +73,4 @@ todoItemsRef.push({
     completed: false,
     createDate: 1484491906,
     text: "Wrap up study"
-});
+});*/

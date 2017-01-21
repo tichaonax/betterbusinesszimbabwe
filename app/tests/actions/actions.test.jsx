@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
 var expect = require('expect');
 
+import firebase, {firebaseRef} from 'app/firebase';
 var actions = require('actions');
 
 var createMockStore = configureMockStore([thunk]);
@@ -35,22 +35,44 @@ describe('Actions', () => {
         expect(response).toEqual(action);
     });
 
-    it('should create a todoItem and dispatch ADD_TODO_ITEM', (done) => {
+    describe('creating a test todoItem in firebase', () => {
 
-        const store = createMockStore({});
-        const todoItemText = 'My todoItem text';
+        var testTodoItemRef;
+        var testTodoItemId;
 
-        store.dispatch(actions.startAddTodoItems(todoItemText)).then(() => {
-            const actions = store.getActions();
-            console.log(actions);
-            expect(actions[0]).toInclude({
-                type: 'ADD_TODO_ITEM'
-            });
-            expect(actions[0].todoItem).toInclude({
-                text: todoItemText
-            });
-            done(); //test is done--- increase timeout in karma configuration file if needed
-        }).catch(done)
+        //nest the beforeEach and afterEach so it affects only this test
+        beforeEach((done) => {
+            //use this to setup test data on firebase
+            //move to the next test only after successfully adding data
+            done();
+        });
+
+        afterEach((done) => {
+            //use this delete the test data from fire base
+            console.log(testTodoItemId);
+            testTodoItemRef = firebaseRef.child('todoItems/' + testTodoItemId);
+            testTodoItemRef.remove().then(() => done());
+        });
+        it('should create a todoItem and dispatch ADD_TODO_ITEM', (done) => {
+
+            const store = createMockStore({});
+            const todoItemText = 'My todoItem text';
+
+            store.dispatch(actions.startAddTodoItems(todoItemText)).then(() => {
+                const actions = store.getActions();
+                //prepare to clean up the added todoItem
+                testTodoItemId = actions[0].todoItem.id;
+                expect(actions[0]).toInclude({
+                    type: 'ADD_TODO_ITEM'
+                });
+                expect(actions[0].todoItem).toInclude({
+                    text: todoItemText
+                });
+                console.log();
+                done(); //test is done--- increase timeout in karma configuration file if needed
+            }).catch(done)
+        });
+
     });
 
 
@@ -89,15 +111,67 @@ describe('Actions', () => {
     });
 
 
-    it('should generate toggle todoItem action', () => {
+    it('should generate update todoItem action', () => {
+        var updates = {
+            completed: false,
+        }
         var action = {
-            type: 'TOGGLE_TODO_ITEM',
-            id: 4
+            type: 'UPDATE_TODO_ITEM',
+            id: 4,
+            updates
+
         };
 
-        var response = actions.toggleTodoItem(4);
+        var response = actions.updateTodoItem(action.id, updates);
         expect(response).toEqual(action);
     });
 
+
+    describe('Tests with firebase database todoItems', () => {
+        //this test requres that the data exists on the firebase database
+
+        var testTodoItemRef;
+        var testTodoItem = {
+            text: 'Stuff to do at home',
+            completed: false,
+            createDate: 8683
+        };
+
+        beforeEach((done) => {
+            //use this to setup test data on firebase
+            testTodoItemRef = firebaseRef.child('todoItems').push();
+            testTodoItemRef.set(testTodoItem).then(() => done());
+            //move to the next test only after successfully adding data
+        });
+
+        afterEach((done) => {
+            //use this delete the test data from fire base
+            testTodoItemRef.remove().then(() => done());
+        });
+
+        if ('toggle to toItem and dispatch UPDATE_TODO_ITEM', (done) => {
+                const store = createMockStore({});
+                const action = actions.startToggleTodoItem(testTodoItemRef.key, testTodoItem.completed);
+
+                store.dispatch(action).then(() => {
+                    const mockActions = store.getActions();
+
+                    expect(mockActions[0]).toInclude({
+                        type: 'UPDATE_TODO_ITEM',
+                        id: testTodoItemRef.id
+                    });
+
+                    expect(mockActions[0].updates).toInclude({
+                        completed: true
+                    });
+
+                    expect(mockActions[0].updates.completeDate).toExist();
+                    done();
+
+                }, done()) //<-- just call done even in failure so we can exit
+
+            });
+
+    });
 
 });

@@ -4,8 +4,8 @@ var expect = require('expect');
 var $ = require('jquery');
 var TestUtils = require('react-addons-test-utils');
 
-var {AddTodoItem} = require('AddTodoItem');
 import * as actions from 'actions';
+var {AddTodoItem} = require('AddTodoItem');
 
 describe('AddTodoItem',()=>{
     it('should exist', ()=>{

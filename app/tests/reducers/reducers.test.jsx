@@ -45,7 +45,6 @@ describe('Reducers', () => {
             };
 
             var response = reducers.todoItemsReducer(df([]), df(action));
-            console.log(response);
 
             expect(response.length).toEqual(1);
 
@@ -58,7 +57,7 @@ describe('Reducers', () => {
 
             var todoItems = [
                 {
-                    id: '84a6f82e-8420-4c9a-a6b0-51a68992c455',
+                    id: '2345',
                     text: 'Feed the baby',
                     completed: false,
                     createDate: 1484658469,
@@ -66,20 +65,27 @@ describe('Reducers', () => {
                 }
             ];
 
+            var updates ={
+                completed:true,
+                completeDate:1484658800
+            }
+
             var action = {
-                type: 'TOGGLE_TODO_ITEM',
-                id: '84a6f82e-8420-4c9a-a6b0-51a68992c455'
+                type: 'UPDATE_TODO_ITEM',
+                id: todoItems[0].id,
+                updates
             };
 
             var response = reducers.todoItemsReducer(df(todoItems), df(action));
-            console.log(response);
-
+            //console.log(response);
             expect(response.length).toEqual(1);
-            expect(response[0].id).toEqual(action.id);
+            expect(response[0].completeDate).toBeA('number');
+            expect(response[0].completeDate).toEqual(updates.completeDate);
+            expect(response[0].completed).toEqual(updates.completed);
+
+            //test for not loosing original values
             expect(response[0].text).toEqual(todoItems[0].text);
             expect(response[0].createDate).toEqual(todoItems[0].createDate);
-            expect(response[0].completed).toBe(true);
-            expect(response[0].completeDate).toBeA('number');
 
         });
 
@@ -107,7 +113,6 @@ describe('Reducers', () => {
             };
 
             var response = reducers.todoItemsReducer(df([]), df(action));
-            console.log(response);
 
             expect(response.length).toEqual(2);
 
