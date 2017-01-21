@@ -1,6 +1,11 @@
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
+
 var expect = require('expect');
 
 var actions = require('actions');
+
+var createMockStore = configureMockStore([thunk]);
 
 describe('Actions', () => {
 
@@ -18,11 +23,34 @@ describe('Actions', () => {
     it('should generate addTodoItem action', () => {
         var action = {
             type: 'ADD_TODO_ITEM',
-            text: 'Feed the children'
+            todoItem: {
+                id: '45567ffa23',
+                text: 'Feed the dod=g',
+                createDate: 1484658469,
+                completed: false
+            }
         };
 
-        var response = actions.addTodoItem(action.text);
+        var response = actions.addTodoItem(action.todoItem);
         expect(response).toEqual(action);
+    });
+
+    it('should create a todoItem and dispatch ADD_TODO_ITEM', (done) => {
+
+        const store = createMockStore({});
+        const todoItemText = 'My todoItem text';
+
+        store.dispatch(actions.startAddTodoItems(todoItemText)).then(() => {
+            const actions = store.getActions();
+            console.log(actions);
+            expect(actions[0]).toInclude({
+                type: 'ADD_TODO_ITEM'
+            });
+            expect(actions[0].todoItem).toInclude({
+                text: todoItemText
+            });
+            done(); //test is done--- increase timeout in karma configuration file if needed
+        }).catch(done)
     });
 
 

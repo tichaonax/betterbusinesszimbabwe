@@ -36,7 +36,12 @@ describe('Reducers', () => {
         it('should add a new  todoItem', () => {
             var action = {
                 type: 'ADD_TODO_ITEM',
-                text: 'Feed the baby'
+                todoItem: {
+                    id: '4556723',
+                    text: 'Feed the baby',
+                    createDate: 1484658469,
+                    completed: false
+                }
             };
 
             var response = reducers.todoItemsReducer(df([]), df(action));
@@ -44,11 +49,7 @@ describe('Reducers', () => {
 
             expect(response.length).toEqual(1);
 
-            expect(response[0].id).toBeA('string');
-            expect(response[0].text).toEqual(action.text);
-            expect(response[0].createDate).toBeA('number');
-            expect(response[0].completed).toBe(false);
-            expect(response[0].completeDate).toBe(undefined);
+            expect(response[0]).toEqual(action.todoItem);
 
         });
 

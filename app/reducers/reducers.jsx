@@ -17,13 +17,7 @@ export var todoItemsReducer = (state = [], action) => {
             return [
                 //preserve original todoItems then add a new one
                 ...state,
-                {
-                    id: uuid(),
-                    text: action.text,
-                    completed: false,
-                    createDate: moment().unix(),
-                    completeDate: undefined
-                }
+               action.todoItem
             ];
         case 'TOGGLE_TODO_ITEM':
             return state.map((todoItem) => {

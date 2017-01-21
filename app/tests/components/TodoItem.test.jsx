@@ -23,6 +23,7 @@ describe('TodoItem', () => {
 
         var $el = $(ReactDOM.findDOMNode(todoItemComponent));
 
+        console.log($el[0]);
         //the div is the first component
         TestUtils.Simulate.click($el[0]);
 

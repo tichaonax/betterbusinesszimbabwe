@@ -11,6 +11,7 @@ module.exports = {
     },
 
     getTodoItems: function () {
+        //debugger;
         var strTodoItems = localStorage.getItem('todoItems');
         var todoItems = [];
 

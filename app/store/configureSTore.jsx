@@ -1,6 +1,6 @@
-var redux = require('redux');
-var thunk = require('redux-thunk').default;
-var {todoItemsReducer, searchTextReducer, showCompletedReducer} = require('reducers');
+import * as redux from 'redux';
+import thunk from 'redux-thunk';
+import {todoItemsReducer, searchTextReducer, showCompletedReducer} from 'reducers';
 
 export var configure = (initialState ={}) => {
     var reducer = redux.combineReducers({
