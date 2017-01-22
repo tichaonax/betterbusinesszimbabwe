@@ -3,14 +3,20 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {Route, Router, IndexRoute, hashHistory} from 'react-router';
 
-import TodoLogin from 'TodoLogin';
-import TodoApp from 'TodoApp';
-
-
 var actions = require('actions');
 var store = require('configureStore').configure();
+import TodoLogin from 'TodoLogin';
+import TodoApp from 'TodoApp';
+import firebase from 'app/firebase/'
 
-store.dispatch(actions.startTodoAddItems());
+firebase.auth().onAuthStateChanged()
+store.dispatch(actions.startTodoAddItems((user) => {
+    if (user) {
+        hashHistory.push('/todoitems');
+    } else {
+        hashHistory.push('/');
+    }
+}));
 
 // Load foundation
 $(document).foundation();
