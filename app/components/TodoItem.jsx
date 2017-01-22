@@ -1,7 +1,7 @@
-var React = require('react');
-var moment = require('moment');
-var {connect} = require('react-redux');
-var actions = require('actions');
+import React from 'react';
+import moment from 'moment';
+import * as Redux from 'react-redux';
+import * as actions from 'actions';
 
 export class TodoItem extends React.Component {
     constructor(props) {
@@ -38,4 +38,4 @@ export class TodoItem extends React.Component {
 }
 ;
 
-export default  connect()(TodoItem);
+export default  Redux.connect()(TodoItem);

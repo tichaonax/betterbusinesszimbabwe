@@ -1,5 +1,5 @@
-var React = require('react');
-var {connect} = require('react-redux');
+import React from 'react';
+import * as Redux from 'react-redux';
 import TodoItem from 'TodoItem';
 var TodoAPI = require('TodoAPI');
 
@@ -35,7 +35,7 @@ export class TodoList extends React.Component {
     }
 }
 
-export default connect(
+export default Redux.connect(
     (state) => {
         return {
             todoItems: state.todoItems,
