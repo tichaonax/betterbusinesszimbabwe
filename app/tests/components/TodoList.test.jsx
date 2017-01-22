@@ -50,10 +50,10 @@ describe('TodoList', () => {
     });
 
 
-    it('should render message if there are todo items', () => {
+    it('should render message if there are no todo items', () => {
         var todoItems = [];
 
-        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems}/>);
+        var todoList = TestUtils.renderIntoDocument(<TodoList todoItems={todoItems} showCompleted={false} searchText=''/>);
 
         var $el = $(ReactDOM.findDOMNode(todoList));
 

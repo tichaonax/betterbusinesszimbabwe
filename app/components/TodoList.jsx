@@ -10,13 +10,15 @@ export class TodoList extends React.Component {
 
     renderTodoItems = () => {
         var {todoItems, showCompleted, searchText} = this.props;
-        if (todoItems.length === 0) {
+        var filteredTodoItems = TodoAPI.getFilteredTodoItems(todoItems, showCompleted, searchText);
+
+        if (filteredTodoItems.length === 0) {
             return (
                 <p className="container__message">No Tasks To Do</p>
             )
         }
 
-        return TodoAPI.getFilteredTodoItems(todoItems, showCompleted, searchText).map((todoItem) => {
+        return filteredTodoItems.map((todoItem) => {
             return (
                 <TodoItem key={todoItem.id} {...todoItem} />
             )
