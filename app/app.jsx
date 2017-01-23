@@ -24,12 +24,26 @@ $(document).foundation();
 // App css
 require('style!css!sass!applicationStyles')
 
+var requireLogin = (nextState, replace, next) => {
+    if (!firebase.auth().currentUser) {
+        replace('/');
+    }
+    next();
+};
+
+var redirectIfLoggedIn = (nextState, replace, next) => {
+    if (firebase.auth().currentUser) {
+        replace('/todoitems');
+    }
+    next();
+};
+
 ReactDOM.render(
     <Provider store={store}>
         <Router history={hashHistory}>
             <Route path="/">
-                <Route path="todoitems" component={TodoApp}/>
-                <IndexRoute component={TodoLogin}/>
+                <Route path="todoitems" component={TodoApp} onEnter{requireLogin()}/>
+                <IndexRoute component={TodoLogin} onEnter{redirectIfLoggedIn()}/>
             </Route>
         </Router>
 
