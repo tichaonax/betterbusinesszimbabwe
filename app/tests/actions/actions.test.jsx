@@ -209,16 +209,16 @@ describe('Actions', () => {
 
         it('should generate a login action', () => {
 
-            var auth = {
+            const auth = {
                 uid: 'KYZCgUasdqGdfdf9KZaM797iYUnIA2',
                 displayName: "Tichaona Hwandaza"
             };
-            var action = {
+            const action = {
                 type: 'TODO_LOGIN',
                 auth: auth
             };
 
-            var response = actions.todoLogin(auth);
+            const response = actions.todoLogin(auth);
             expect(response).toEqual(action);
         });
 
@@ -228,7 +228,7 @@ describe('Actions', () => {
                 type: 'TODO_LOGOUT',
             };
 
-            var response = actions.todoLogout();
+            const response = actions.todoLogout();
             expect(response).toEqual(action);
         });
 

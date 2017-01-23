@@ -136,13 +136,14 @@ describe('Reducers', () => {
 
             const action = {
                 type: 'TODO_LOGIN',
-                uid: uid
+                auth: auth
             };
 
-            const response = reducers.firebaseAuthReducer(df(auth), df(action));
-            //console.log(JSON.stringify(response));
-            expect(response.uid).toEqual(action.uid);
-            expect(response.displayName).toEqual(auth.displayName);
+            const response = reducers.firebaseAuthReducer(undefined, df(action));
+            console.log(JSON.stringify(response));
+            expect(response.auth).toExist();
+            expect(response.auth.uid).toEqual(uid);
+            expect(response.auth.displayName).toEqual(displayName);
 
         });
 
@@ -152,7 +153,7 @@ describe('Reducers', () => {
                 type: 'TODO_LOGOUT',
             };
 
-            const response = reducers.firebaseAuthReducer(df(auth), df(action));
+            const response = reducers.firebaseAuthReducer(undefined, df(action));
 
             expect(response).toEqual(auth);
 

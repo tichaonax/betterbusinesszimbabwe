@@ -8,7 +8,7 @@ export var todoLogin = (auth) => {
     };
 };
 
-export var todoLogout = (uid) => {
+export var todoLogout = () => {
     return {
         type: 'TODO_LOGOUT'
     };
