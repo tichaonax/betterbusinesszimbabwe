@@ -139,9 +139,8 @@ describe('Reducers', () => {
             };
 
             const response = reducers.firebaseAuthReducer(undefined, df(action));
-            expect(response.auth).toExist();
-            expect(response.auth.uid).toEqual(uid);
-            expect(response.auth.displayName).toEqual(displayName);
+            expect(response.uid).toEqual(uid);
+            expect(response.displayName).toEqual(displayName);
 
         });
 

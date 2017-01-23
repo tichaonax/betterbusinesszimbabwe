@@ -3,7 +3,7 @@ export var firebaseAuthReducer = (state = {}, action) => {
         case 'TODO_LOGIN':
             console.log(action);
             return {
-                auth: action.auth
+                ...action.auth
             };
         case 'TODO_LOGOUT':
             return {};
