@@ -9,14 +9,15 @@ import TodoLogin from 'TodoLogin';
 import TodoApp from 'TodoApp';
 import firebase from 'app/firebase/'
 
-firebase.auth().onAuthStateChanged()
-store.dispatch(actions.startTodoAddItems((user) => {
+firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         hashHistory.push('/todoitems');
     } else {
         hashHistory.push('/');
     }
-}));
+});
+
+store.dispatch(actions.startTodoAddItems());
 
 // Load foundation
 $(document).foundation();
