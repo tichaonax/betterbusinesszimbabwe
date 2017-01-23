@@ -8,7 +8,7 @@ export var todoLogin = (auth) => {
     };
 };
 
-export var todoLogout = (auth) => {
+export var todoLogout = () => {
     return {
         type: 'TODO_LOGOUT'
     };
@@ -117,6 +117,14 @@ export var starTodotLogin = () => {
     return (dispatch, getState) => {
         return firebase.auth().signInWithPopup(githubProvider).then((result) => {
             console.log("Auth worked!", result);
+
+            var auth = {
+                uid: result.user.uid,
+                displayName: result.user.displayName
+            };
+
+            //call dispatch here to set the state
+            return dispatch(todoLogin(auth));
         }, (error) => {
             console.log("Unable to auth", error);
         });
@@ -124,10 +132,10 @@ export var starTodotLogin = () => {
 };
 
 
-export var startTodoLogout = (auth) => {
+export var startTodoLogout = () => {
     return (dispatch, getState) => {
         return firebase.auth().signOut().then(() => {
-            console.log("Logggedout!");
+            console.log("Logggedout!")
         });
     };
 };

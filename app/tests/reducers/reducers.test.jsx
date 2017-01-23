@@ -144,18 +144,11 @@ describe('Reducers', () => {
         });
 
         it('should logout from firebase', () => {
-            const uid = 'KYZCgUasdqGdfdf9KZaM797iYUnIA2'
-            const displayName = "Tichaona Hwandaza";
-
-            const authData = {
-                uid: uid,
-                displayName: displayName
-            };
             const action = {
                 type: 'TODO_LOGOUT',
             };
 
-            const response = reducers.firebaseAuthReducer(df(authData), df(action));
+            const response = reducers.firebaseAuthReducer(undefined, df(action));
             expect(response).toEqual({});
 
         });

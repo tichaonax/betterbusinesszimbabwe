@@ -19,7 +19,6 @@ describe('Actions', () => {
         expect(response).toEqual(action);
     });
 
-
     it('should generate addTodoItem action', () => {
         var action = {
             type: 'ADD_TODO_ITEM',
@@ -34,46 +33,6 @@ describe('Actions', () => {
         var response = actions.addTodoItem(action.todoItem);
         expect(response).toEqual(action);
     });
-
-    describe('creating a test todoItem in firebase', () => {
-
-        var testTodoItemRef;
-        var testTodoItemId;
-
-        //nest the beforeEach and afterEach so it affects only this test
-        beforeEach((done) => {
-            //use this to setup test data on firebase
-            //move to the next test only after successfully adding data
-            done();
-        });
-
-        afterEach((done) => {
-            //use this delete the test data from fire base
-            // console.log(testTodoItemId);
-            testTodoItemRef = firebaseRef.child('todoItems/' + testTodoItemId);
-            testTodoItemRef.remove().then(() => done());
-        });
-        it('should create a todoItem and dispatch ADD_TODO_ITEM', (done) => {
-
-            const store = createMockStore({});
-            const todoItemText = 'My todoItem text';
-
-            store.dispatch(actions.startAddTodoItems(todoItemText)).then(() => {
-                const actions = store.getActions();
-                //prepare to clean up the added todoItem
-                testTodoItemId = actions[0].todoItem.id;
-                expect(actions[0]).toInclude({
-                    type: 'ADD_TODO_ITEM'
-                });
-                expect(actions[0].todoItem).toInclude({
-                    text: todoItemText
-                });
-                done(); //test is done--- increase timeout in karma configuration file if needed
-            }).catch(done)
-        });
-
-    });
-
 
     it('should generate addTodoItems action', () => {
         var todoItems = [
@@ -109,7 +68,6 @@ describe('Actions', () => {
         expect(response).toEqual(action);
     });
 
-
     it('should generate update todoItem action', () => {
         var updates = {
             completed: false,
@@ -136,25 +94,31 @@ describe('Actions', () => {
             createDate: 8683
         };
 
+        var uid;
+        var todoItemsRef;
+
+
         beforeEach((done) => {
-            //use this to setup test data on firebase
-            var todoItemRef = firebaseRef.child('todoItems');
+            firebase.auth().signInAnonymously().then((user)=>{
 
-            todoItemRef.remove().then(() => {
-                testTodoItemRef = firebaseRef.child('todoItems').push();
-                return testTodoItemRef.set(testTodoItem).then(() => done());
-            }).catch(done);
+                uid = user.uid;
+                todoItemsRef = firebaseRef.child(`users/${uid}/todoItems`);
 
-            //move to the next test only after successfully adding data
+                return todoItemsRef.remove();
+            }).then(()=>{
+                testTodoItemRef = todoItemsRef.push();
+                return testTodoItemRef.set(testTodoItem);
+            }).then(() => done())
+                .catch(done);
         });
 
         afterEach((done) => {
             //use this delete the test data from fire base
-            testTodoItemRef.remove().then(() => done());
+            todoItemsRef.remove().then(() => done());
         });
 
-        it('toggle to toItem and dispatch UPDATE_TODO_ITEM', (done) => {
-            const store = createMockStore({});
+        it('toggle to todoItem and dispatch UPDATE_TODO_ITEM', (done) => {
+            const store = createMockStore({auth: {uid}});
             const action = actions.startToggleTodoItem(testTodoItemRef.key, testTodoItem.completed);
 
             store.dispatch(action).then(() => {
@@ -179,7 +143,7 @@ describe('Actions', () => {
 
         it('it should fetch data from firebase and dispatch ADD_TODO_ITEMS', (done) => {
 
-            const store = createMockStore({});
+            const store = createMockStore({auth: {uid}});
             const action = actions.startTodoAddItems();
 
             store.dispatch(action).then(() => {
@@ -201,8 +165,24 @@ describe('Actions', () => {
 
             }, done);
 
-        })
+        });
 
+        it('should create a todoItem and dispatch ADD_TODO_ITEM', (done) => {
+
+            const store = createMockStore({auth: {uid}});
+            const todoItemText = 'My todoItem text';
+
+            store.dispatch(actions.startAddTodoItems(todoItemText)).then(() => {
+                const actions = store.getActions();
+                expect(actions[0]).toInclude({
+                    type: 'ADD_TODO_ITEM'
+                });
+                expect(actions[0].todoItem).toInclude({
+                    text: todoItemText
+                });
+                done(); //test is done--- increase timeout in karma configuration file if needed
+            }).catch(done)
+        });
     });
 
     describe('firebase authentication', () => {
