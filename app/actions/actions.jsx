@@ -98,7 +98,7 @@ export var startToggleTodoItem = (id, completed) => {
     return (dispatch, getState) => {
         var uid = getState().auth.uid;
         //var todoItemRef = firebaseRef.child('users/'+ uid +'/todoItems/' + id); //ES5 syntax
-        var todoItemRef = firebaseRef.child(`users/${uid}todoItems/${id}`); //ES6 syntaxt
+        var todoItemRef = firebaseRef.child(`users/${uid}/todoItems/${id}`); //ES6 syntaxt
 
         var updates = {
             completed,
