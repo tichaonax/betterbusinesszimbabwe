@@ -1,5 +1,6 @@
-var React = require('react');
+import React from 'react';
 import * as Redux from 'react-redux';
+import * as actions from 'actions';
 
 import TodoList from 'TodoList'
 import AddTodoItem from 'AddTodoItem';
@@ -10,7 +11,7 @@ export class TodoApp extends React.Component {
         super(props);
     }
 
-    onLogout(e) {
+    onLogout = (e) => {
         var {dispatch} = this.props;
         e.preventDefault();
 
