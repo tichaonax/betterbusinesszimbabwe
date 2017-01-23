@@ -1,3 +1,19 @@
+export var firebaseAuthReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'TODO_LOGIN':
+            return {
+                ...state,
+                ...action.auth
+            };
+        case 'TODO_LOGOUT':
+            return {};
+        default:
+            return state;
+    }
+    ;
+};
+
+
 export var searchTextReducer = (state = '', action) => {
     switch (action.type) {
         case 'SET_SEARCH_TEXT':
@@ -40,9 +56,9 @@ export var todoItemsReducer = (state = [], action) => {
 
         default:
             return state;
-    };
+    }
+    ;
 };
-
 
 export var showCompletedReducer = (state = false, action) => {
     switch (action.type) {
@@ -53,3 +69,4 @@ export var showCompletedReducer = (state = false, action) => {
     }
     ;
 };
+

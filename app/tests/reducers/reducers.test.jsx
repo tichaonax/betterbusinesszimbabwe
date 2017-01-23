@@ -4,6 +4,7 @@ var df = require('deep-freeze-strict');
 var reducers = require('reducers');
 
 describe('Reducers', () => {
+
     describe('searchTextReducer', () => {
         it('should set searchText', () => {
             var action = {
@@ -65,9 +66,9 @@ describe('Reducers', () => {
                 }
             ];
 
-            var updates ={
-                completed:true,
-                completeDate:1484658800
+            var updates = {
+                completed: true,
+                completeDate: 1484658800
             }
 
             var action = {
@@ -118,6 +119,43 @@ describe('Reducers', () => {
 
             expect(response[0].id).toEqual(todoItems[0].id);
             expect(response[1].createDate).toEqual(todoItems[1].createDate);
+        });
+
+    });
+
+    describe('firebaseAuthReducer', () => {
+        it('should login to firebase', () => {
+
+            var uid = 'KYZCgUasdqGdfdf9KZaM797iYUnIA2'
+            var displayName = "Tichaona Hwandaza";
+
+            var auth = {
+                uid: uid,
+                displayName: displayName
+            };
+
+            var action = {
+                type: 'TODO_LOGIN',
+                uid: uid
+            };
+
+            var response = reducers.firebaseAuthReducer(df(auth), df(action));
+            console.log(JSON.stringify(response));
+            expect(response.uid).toEqual(action.uid);
+            expect(response.displayName).toEqual(auth.displayName);
+
+        });
+
+        it('should logout from firebase', () => {
+            var auth = {};
+            var action = {
+                type: 'TODO_LOGOUT',
+            };
+
+            var response = reducers.firebaseAuthReducer(df(auth), df(action));
+
+            expect(response).toEqual(auth);
+
         });
 
     });

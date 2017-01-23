@@ -49,7 +49,7 @@ describe('Actions', () => {
 
         afterEach((done) => {
             //use this delete the test data from fire base
-           // console.log(testTodoItemId);
+            // console.log(testTodoItemId);
             testTodoItemRef = firebaseRef.child('todoItems/' + testTodoItemId);
             testTodoItemRef.remove().then(() => done());
         });
@@ -140,7 +140,7 @@ describe('Actions', () => {
             //use this to setup test data on firebase
             var todoItemRef = firebaseRef.child('todoItems');
 
-            todoItemRef.remove().then(()=>{
+            todoItemRef.remove().then(() => {
                 testTodoItemRef = firebaseRef.child('todoItems').push();
                 return testTodoItemRef.set(testTodoItem).then(() => done());
             }).catch(done);
@@ -153,36 +153,36 @@ describe('Actions', () => {
             testTodoItemRef.remove().then(() => done());
         });
 
-        it ('toggle to toItem and dispatch UPDATE_TODO_ITEM', (done) => {
-                const store = createMockStore({});
-                const action = actions.startToggleTodoItem(testTodoItemRef.key, testTodoItem.completed);
+        it('toggle to toItem and dispatch UPDATE_TODO_ITEM', (done) => {
+            const store = createMockStore({});
+            const action = actions.startToggleTodoItem(testTodoItemRef.key, testTodoItem.completed);
 
-                store.dispatch(action).then(() => {
-                    const mockActions = store.getActions();
+            store.dispatch(action).then(() => {
+                const mockActions = store.getActions();
 
-                    expect(mockActions[0]).toInclude({
-                        type: 'UPDATE_TODO_ITEM',
-                        id: testTodoItemRef.id
-                    });
+                expect(mockActions[0]).toInclude({
+                    type: 'UPDATE_TODO_ITEM',
+                    id: testTodoItemRef.id
+                });
 
-                    expect(mockActions[0].updates).toInclude({
-                        completed: true
-                    });
+                expect(mockActions[0].updates).toInclude({
+                    completed: true
+                });
 
-                    expect(mockActions[0].updates.completeDate).toExist();
-                    done();
-
-                }, done) //<-- just call done even in failure so we can exit
-
+                expect(mockActions[0].updates.completeDate).toExist();
                 done();
-            });
 
-        it('it should fetch data from firebase and dispatch ADD_TODO_ITEMS', (done)=>{
+            }, done) //<-- just call done even in failure so we can exit
+
+            done();
+        });
+
+        it('it should fetch data from firebase and dispatch ADD_TODO_ITEMS', (done) => {
 
             const store = createMockStore({});
             const action = actions.startTodoAddItems();
 
-            store.dispatch(action).then(()=>{
+            store.dispatch(action).then(() => {
                 const mockActions = store.getActions();
 
                 //console.log(JSON.stringify(mockActions));
@@ -204,5 +204,34 @@ describe('Actions', () => {
         })
 
     });
+
+    describe('firebase authentication', () => {
+
+        it('should generate a login action', () => {
+
+            var auth = {
+                uid: 'KYZCgUasdqGdfdf9KZaM797iYUnIA2',
+                displayName: "Tichaona Hwandaza"
+            };
+            var action = {
+                type: 'TODO_LOGIN',
+                auth: auth
+            };
+
+            var response = actions.todoLogin(auth);
+            expect(response).toEqual(action);
+        });
+
+        it('should generate a logout action', () => {
+
+            var action = {
+                type: 'TODO_LOGOUT',
+            };
+
+            var response = actions.todoLogout();
+            expect(response).toEqual(action);
+        });
+
+    })
 
 });

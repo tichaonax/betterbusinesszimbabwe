@@ -1,6 +1,19 @@
 import moment from 'moment';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
+export var todoLogin = (auth) => {
+    return {
+        type: 'TODO_LOGIN',
+        auth
+    };
+};
+
+export var todoLogout = (uid) => {
+    return {
+        type: 'TODO_LOGOUT'
+    };
+};
+
 export var setSearchText = (searchText) => {
     return {
         type: 'SET_SEARCH_TEXT',
@@ -101,6 +114,14 @@ export var starTodotLogin = () => {
     return (dispatch, getState) => {
         return firebase.auth().signInWithPopup(githubProvider).then((result) => {
             console.log("Auth worked!", result);
+
+            var auth = {
+                uid: result.user.uid,
+                displayName: result.user.displayName
+            };
+
+            //call dispatch here to set the state
+            return dispatch(todoLogin(auth));
         }, (error) => {
             console.log("Unable to auth", error);
         });
