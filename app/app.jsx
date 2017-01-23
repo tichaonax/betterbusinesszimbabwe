@@ -43,8 +43,8 @@ ReactDOM.render(
     <Provider store={store}>
         <Router history={hashHistory}>
             <Route path="/">
-                <Route path="todoitems" component={TodoApp} onEnter={requireLogin()}/>
-                <IndexRoute component={TodoLogin} onEnter={redirectIfLoggedIn()}/>
+                <Route path="todoitems" component={TodoApp} onEnter={requireLogin}/>
+                <IndexRoute component={TodoLogin} onEnter={redirectIfLoggedIn}/>
             </Route>
         </Router>
 
