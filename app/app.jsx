@@ -10,12 +10,12 @@ import router from 'app/router/';
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        //var auth = {
-        //    uid: user.uid,
-        //    displayName: user.displayName
-        //};
+        var auth = {
+            uid: user.uid,
+            displayName: user.displayName
+        };
 
-        //store.dispatch(actions.todoLogin(auth));
+        store.dispatch(actions.todoLogin(auth));
         store.dispatch(actions.startTodoAddItems());
         hashHistory.push('/todoitems');
     } else {
