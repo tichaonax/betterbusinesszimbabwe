@@ -38,7 +38,8 @@ export var startAddTodoItems = (text) => {
             completeDate: null
         }
 
-        var todoItemRef = firebaseRef.child('todoItems').push(todoItem);
+        var uid = getState().auth.uid;
+        var todoItemRef = firebaseRef.child(`users/${uid}/todoItems`).push(todoItem);
         return todoItemRef.then(() => {
             dispatch(addTodoItem({
                 ...todoItem,
@@ -58,7 +59,8 @@ export var addTodoItems = (todoItems) => {
 
 export var startTodoAddItems = () => {
     return (dispatch, getState) => {
-        var todoItemRef = firebaseRef.child("todoItems");
+        var uid = getState().auth.uid;
+        var todoItemRef = firebaseRef.child(`users/${uid}/todoItems`);
 
         return todoItemRef.once('value').then((snapshot) => {
             var todoItems = snapshot.val() || {}; //return available data or empty object
@@ -94,8 +96,9 @@ export var updateTodoItem = (id, updates) => {
 
 export var startToggleTodoItem = (id, completed) => {
     return (dispatch, getState) => {
-        //var todoItemRef = firebaseRef.child('todoItems/' + id); //ES5 syntax
-        var todoItemRef = firebaseRef.child(`todoItems/${id}`); //ES6 syntaxt
+        var uid = getState().auth.uid;
+        //var todoItemRef = firebaseRef.child('users/'+ uid +'/todoItems/' + id); //ES5 syntax
+        var todoItemRef = firebaseRef.child(`users/${uid}todoItems/${id}`); //ES6 syntaxt
 
         var updates = {
             completed,

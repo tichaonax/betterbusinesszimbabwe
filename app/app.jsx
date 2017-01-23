@@ -16,14 +16,13 @@ firebase.auth().onAuthStateChanged((user) => {
         //};
 
         //store.dispatch(actions.todoLogin(auth));
+        store.dispatch(actions.startTodoAddItems());
         hashHistory.push('/todoitems');
     } else {
         store.dispatch(actions.todoLogout());
         hashHistory.push('/');
     }
 });
-
-store.dispatch(actions.startTodoAddItems());
 
 // Load foundation
 $(document).foundation();
