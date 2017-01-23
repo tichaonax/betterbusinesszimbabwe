@@ -1,28 +1,10 @@
-export var firebaseAuthReducer = (state = {}, action) => {
-    //console.log(state);
-    switch (action.type) {
-        case 'TODO_LOGIN':
-            //console.log(action);
-            return {
-                ...action.auth
-            };
-        case 'TODO_LOGOUT':
-            return {};
-        default:
-            return state;
-    }
-    ;
-};
-
-
 export var searchTextReducer = (state = '', action) => {
     switch (action.type) {
         case 'SET_SEARCH_TEXT':
             return action.searchText;
         default:
             return state;
-    }
-    ;
+    };
 };
 
 export var todoItemsReducer = (state = [], action) => {
@@ -55,11 +37,28 @@ export var todoItemsReducer = (state = [], action) => {
                 ...action.todoItems
             ];
 
+        case 'TODO_LOGOUT':
+            return [];
         default:
             return state;
     }
     ;
 };
+
+export var firebaseAuthReducer = (state = {}, action) => {
+    switch (action.type) {
+        case 'TODO_LOGIN':
+            //console.log(action);
+            return {
+                ...action.auth
+            };
+        case 'TODO_LOGOUT':
+            return {};
+        default:
+            return state;
+    };
+};
+
 
 export var showCompletedReducer = (state = false, action) => {
     switch (action.type) {
@@ -69,4 +68,3 @@ export var showCompletedReducer = (state = false, action) => {
             return state;
     };
 };
-

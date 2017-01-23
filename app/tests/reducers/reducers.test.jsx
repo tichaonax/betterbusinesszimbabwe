@@ -119,6 +119,33 @@ describe('Reducers', () => {
             expect(response[1].createDate).toEqual(todoItems[1].createDate);
         });
 
+        it('should wipe out todoItems on logout', () => {
+
+            const todoItems = [
+                {
+                    id: 1,
+                    text: 'Do something',
+                    completed: false,
+                    completeDate: undefined,
+                    createDate: 5000
+                }, {
+                    id: 2,
+                    text: 'Water the plants',
+                    completed: false,
+                    completeDate: undefined,
+                    createDate: 6000
+                }];
+
+
+            const action = {
+                type: 'TODO_LOGOUT',
+            };
+
+            const response = reducers.todoItemsReducer(df(todoItems), df(action));
+
+            expect(response.length).toEqual(0);
+        });
+
     });
 
     describe('firebaseAuthReducer', () => {

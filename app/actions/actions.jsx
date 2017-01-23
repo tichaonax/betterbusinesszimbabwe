@@ -135,7 +135,8 @@ export var starTodotLogin = () => {
 export var startTodoLogout = () => {
     return (dispatch, getState) => {
         return firebase.auth().signOut().then(() => {
-            console.log("Logggedout!")
+            console.log("Logggedout!");
+            return dispatch(todoLogout());
         });
     };
 };
