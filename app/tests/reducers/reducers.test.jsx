@@ -7,12 +7,12 @@ describe('Reducers', () => {
 
     describe('searchTextReducer', () => {
         it('should set searchText', () => {
-            var action = {
+            const action = {
                 type: 'SET_SEARCH_TEXT',
                 searchText: 'Welcome'
             };
 
-            var response = reducers.searchTextReducer(df(''), df(action));
+            const response = reducers.searchTextReducer(df(''), df(action));
             expect(response).toEqual(action.searchText);
 
         });
@@ -22,11 +22,11 @@ describe('Reducers', () => {
 
     describe('showCompletedReducer', () => {
         it('should set toggle show completed', () => {
-            var action = {
+            const action = {
                 type: 'TOGGLE_SHOW_COMPLETED'
             };
 
-            var response = reducers.showCompletedReducer(df(false), df(action));
+            const response = reducers.showCompletedReducer(df(false), df(action));
             expect(response).toEqual(true);
 
         });
@@ -35,7 +35,7 @@ describe('Reducers', () => {
     });
     describe('todoItemReducer', () => {
         it('should add a new  todoItem', () => {
-            var action = {
+            const action = {
                 type: 'ADD_TODO_ITEM',
                 todoItem: {
                     id: '4556723',
@@ -45,7 +45,7 @@ describe('Reducers', () => {
                 }
             };
 
-            var response = reducers.todoItemsReducer(df([]), df(action));
+            const response = reducers.todoItemsReducer(df([]), df(action));
 
             expect(response.length).toEqual(1);
 
@@ -56,7 +56,7 @@ describe('Reducers', () => {
 
         it('should toggle todoItem', () => {
 
-            var todoItems = [
+            const todoItems = [
                 {
                     id: '2345',
                     text: 'Feed the baby',
@@ -66,18 +66,18 @@ describe('Reducers', () => {
                 }
             ];
 
-            var updates = {
+            const updates = {
                 completed: true,
                 completeDate: 1484658800
             }
 
-            var action = {
+            const action = {
                 type: 'UPDATE_TODO_ITEM',
                 id: todoItems[0].id,
                 updates
             };
 
-            var response = reducers.todoItemsReducer(df(todoItems), df(action));
+            const response = reducers.todoItemsReducer(df(todoItems), df(action));
             //console.log(response);
             expect(response.length).toEqual(1);
             expect(response[0].completeDate).toBeA('number');
@@ -92,7 +92,7 @@ describe('Reducers', () => {
 
         it('should add existing todoItems', () => {
 
-            var todoItems = [
+            const todoItems = [
                 {
                     id: 1,
                     text: 'Do something',
@@ -108,12 +108,12 @@ describe('Reducers', () => {
                 }];
 
 
-            var action = {
+            const action = {
                 type: 'ADD_TODO_ITEMS',
                 todoItems: todoItems
             };
 
-            var response = reducers.todoItemsReducer(df([]), df(action));
+            const response = reducers.todoItemsReducer(df([]), df(action));
 
             expect(response.length).toEqual(2);
 
@@ -126,21 +126,21 @@ describe('Reducers', () => {
     describe('firebaseAuthReducer', () => {
         it('should login to firebase', () => {
 
-            var uid = 'KYZCgUasdqGdfdf9KZaM797iYUnIA2'
-            var displayName = "Tichaona Hwandaza";
+            const uid = 'KYZCgUasdqGdfdf9KZaM797iYUnIA2'
+            const displayName = "Tichaona Hwandaza";
 
-            var auth = {
+            const auth = {
                 uid: uid,
                 displayName: displayName
             };
 
-            var action = {
+            const action = {
                 type: 'TODO_LOGIN',
                 uid: uid
             };
 
-            var response = reducers.firebaseAuthReducer(df(auth), df(action));
-            console.log(JSON.stringify(response));
+            const response = reducers.firebaseAuthReducer(df(auth), df(action));
+            //console.log(JSON.stringify(response));
             expect(response.uid).toEqual(action.uid);
             expect(response.displayName).toEqual(auth.displayName);
 
@@ -152,7 +152,7 @@ describe('Reducers', () => {
                 type: 'TODO_LOGOUT',
             };
 
-            var response = reducers.firebaseAuthReducer(df(auth), df(action));
+            const response = reducers.firebaseAuthReducer(df(auth), df(action));
 
             expect(response).toEqual(auth);
 
