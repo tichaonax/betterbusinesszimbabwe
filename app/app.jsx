@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {Route, Router, IndexRoute, hashHistory} from 'react-router';
+import {hashHistory} from 'react-router';
 
 var actions = require('actions');
 var store = require('configureStore').configure();
-import TodoLogin from 'TodoLogin';
-import TodoApp from 'TodoApp';
 import firebase from 'app/firebase/'
+import router from 'app/router/';
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -25,29 +24,10 @@ $(document).foundation();
 // App css
 require('style!css!sass!applicationStyles')
 
-var requireLogin = (nextState, replace, next) => {
-    if (!firebase.auth().currentUser) {
-        replace('/');
-    }
-    next();
-};
-
-var redirectIfLoggedIn = (nextState, replace, next) => {
-    if (firebase.auth().currentUser) {
-        replace('/todoitems');
-    }
-    next();
-};
 
 ReactDOM.render(
     <Provider store={store}>
-        <Router history={hashHistory}>
-            <Route path="/">
-                <Route path="todoitems" component={TodoApp} onEnter={requireLogin}/>
-                <IndexRoute component={TodoLogin} onEnter={redirectIfLoggedIn}/>
-            </Route>
-        </Router>
-
+        {router}
     </Provider>,
     document.getElementById('app')
 );
