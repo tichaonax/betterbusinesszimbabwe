@@ -1,7 +1,8 @@
 export var firebaseAuthReducer = (state = {}, action) => {
+    //console.log(state);
     switch (action.type) {
         case 'TODO_LOGIN':
-            console.log(action);
+            //console.log(action);
             return {
                 ...action.auth
             };
@@ -66,7 +67,6 @@ export var showCompletedReducer = (state = false, action) => {
             return !state;
         default:
             return state;
-    }
-    ;
+    };
 };
 

@@ -8,7 +8,7 @@ export var todoLogin = (auth) => {
     };
 };
 
-export var todoLogout = () => {
+export var todoLogout = (auth) => {
     return {
         type: 'TODO_LOGOUT'
     };
@@ -129,10 +129,12 @@ export var starTodotLogin = () => {
 };
 
 
-export var startTodoLogout = () => {
+export var startTodoLogout = (auth) => {
     return (dispatch, getState) => {
         return firebase.auth().signOut().then(() => {
             console.log("Logggedout!")
+            //call dispatch here to set the state
+            return dispatch(todoLogout(auth));
         });
     };
 };

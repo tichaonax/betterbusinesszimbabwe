@@ -48,7 +48,6 @@ describe('Reducers', () => {
             const response = reducers.todoItemsReducer(df([]), df(action));
 
             expect(response.length).toEqual(1);
-
             expect(response[0]).toEqual(action.todoItem);
 
         });
@@ -145,13 +144,19 @@ describe('Reducers', () => {
         });
 
         it('should logout from firebase', () => {
-            const authEmpty = {};
+            const uid = 'KYZCgUasdqGdfdf9KZaM797iYUnIA2'
+            const displayName = "Tichaona Hwandaza";
+
+            const authData = {
+                uid: uid,
+                displayName: displayName
+            };
             const action = {
                 type: 'TODO_LOGOUT',
             };
 
-            const response = reducers.firebaseAuthReducer(undefined, df(action));
-            expect(response).toEqual(authEmpty);
+            const response = reducers.firebaseAuthReducer(df(authData), df(action));
+            expect(response).toEqual({});
 
         });
 
