@@ -9,6 +9,8 @@ import TodoSearch from 'TodoSearch';
 export class TodoApp extends React.Component {
     constructor(props) {
         super(props);
+
+        this.onLogout = this.onLogout.bind(this);
     }
 
     onLogout = (e) => {
