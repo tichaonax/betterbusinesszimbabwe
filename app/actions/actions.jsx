@@ -113,9 +113,9 @@ export var startToggleTodoItem = (id, completed) => {
     };
 };
 
-export var starTodotLogin = () => {
+export var starTodotLogin = (provider) => {
     return (dispatch, getState) => {
-        return firebase.auth().signInWithPopup(githubProvider).then((result) => {
+        return firebase.auth().signInWithPopup(provider).then((result) => {
             console.log("Auth worked!", result);
 
             var auth = {

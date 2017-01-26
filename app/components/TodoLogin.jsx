@@ -1,19 +1,31 @@
 import React from 'react';
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
+import {githubProvider, facebookProvider, googleProvider}  from 'app/firebase/'
 
 export class TodoLogin extends React.Component {
     constructor(props) {
         super(props);
-
-        this.onTodoLogin = this.onTodoLogin.bind(this);
     }
 
-
     onTodoLogin = (e) => {
-        var {dispatch} = this.props;
         e.preventDefault();
-        dispatch(actions.starTodotLogin());
+
+        var {dispatch} = this.props;
+
+        switch ($(e.target).attr('id')) {
+            case 'google':
+                dispatch(actions.starTodotLogin(googleProvider));
+                break;
+            case 'facebook':
+                dispatch(actions.starTodotLogin(facebookProvider));
+                break;
+            case 'github':
+                dispatch(actions.starTodotLogin(githubProvider));
+                break;
+            default:
+                break;
+        }
     };
 
     render() {
@@ -25,7 +37,15 @@ export class TodoLogin extends React.Component {
                         <div className="callout callout-auth">
                             <h3>Login</h3>
                             <p>Login with GitHub account</p>
-                            <button className="button" onClick={this.onTodoLogin}>Login with GitHub</button>
+                            <button id="github" className="button" onClick={this.onTodoLogin}>Login with GitHub
+                            </button>
+                            <p>Login with Facebook account</p>
+                            <button id="facebook" className="button" onClick={this.onTodoLogin}>Login with
+                                Facebook
+                            </button>
+                            <p>Login with Google account</p>
+                            <button id="google" className="button" onClick={this.onTodoLogin}>Login with Google
+                            </button>
                         </div>
                     </div>
                 </div>
