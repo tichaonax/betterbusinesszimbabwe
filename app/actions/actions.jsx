@@ -114,29 +114,37 @@ export var startToggleTodoItem = (id, completed) => {
 };
 
 export var starTodotLogin = (provider) => {
+    console.log("Start Login !");
     return (dispatch, getState) => {
-        return firebase.auth().signInWithPopup(provider).then((result) => {
-            console.log("Auth worked!", result);
+        //return firebase.auth().signInWithPopup(provider).then((result) => {
+           // console.log("Auth worked!", result);
 
-            var auth = {
-                uid: result.user.uid,
-                displayName: result.user.displayName
-            };
+            // var auth = {
+            //     uid: result.user.uid,
+            //     displayName: result.user.displayName
+            // };
 
+        var auth = {
+            uid: 400,
+            displayName: "Tichaona Hwandaza",
+            loggedIn: true
+        };
+
+        console.log("Inside dispatch !");
             //call dispatch here to set the state
             return dispatch(todoLogin(auth));
-        }, (error) => {
-            console.log("Unable to auth", error);
-        });
+        //}, (error) => {
+        //    console.log("Unable to auth", error);
+        //});
     };
 };
 
 export var startTodoLogout = () => {
     return (dispatch, getState) => {
-        return firebase.auth().signOut().then(() => {
+        //return firebase.auth().signOut().then(() => {
             console.log("Logggedout!");
             return dispatch(todoLogout());
-        });
+        //});
     };
 };
 

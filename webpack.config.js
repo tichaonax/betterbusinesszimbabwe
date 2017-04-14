@@ -55,7 +55,17 @@ module.exports = {
             applicationStyles: 'app/styles/app.scss',
             actions: 'app/actions/actions.jsx',
             reducers: 'app/reducers/reducers.jsx',
-            configureStore: 'app/store/configureStore.jsx'
+            EnsureLoggedInContainer: 'app/components/EnsureLoggedInContainer.jsx',
+            configureStore: 'app/store/configureStore.jsx',
+            Main: 'app/components/Main.jsx',
+            Nav: 'app/components/Nav.jsx',
+            Weather: 'app/components/Weather.jsx',
+            WeatherForm: 'app/components/WeatherForm.jsx',
+            WeatherMessage: 'app/components/WeatherMessage.jsx',
+            About: 'app/components/About.jsx',
+            Examples: 'app/components/Examples.jsx',
+            openWeatherMap: 'app/api/openWeatherMap.jsx',
+            ErrorModal: 'app/components/ErrorModal.jsx'
         },
         extensions: ['', '.js', '.jsx']
     },
