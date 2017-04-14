@@ -1,21 +1,22 @@
 var React = require('react');
 var {connect} = require('react-redux');
+import * as actions from 'actions';
 
 class EnsureLoggedInContainer extends React.Component {
     componentDidMount() {
-        const { dispatch, currentURL } = this.props
+        const {dispatch, currentURL, isLoggedIn, router} = this.props
         console.debug("currentURL", currentURL);
         if (!isLoggedIn) {
             // set the current url/path for future redirection (we use a Redux action)
-            // then redirect (we use a React Router method)
-            //dispatch(setRedirectUrl(currentURL))
-            browserHistory.replace("/login")
+            dispatch(actions.setRedirectUrl(currentURL));
+            // then redirect to login page
+            router.push("/login");
         }
     }
 
     render() {
         const { isLoggedIn } = this.props;
-        console.debug("EnsureLoggedInContainer");
+
         if (isLoggedIn) {
             return this.props.children
         } else {
@@ -24,10 +25,8 @@ class EnsureLoggedInContainer extends React.Component {
     }
 }
 
-// Grab a reference to the current URL. If this is a web app and you are
-// using React Router, you can use `ownProps` to find the URL. Other
-// platforms (Native) or routing libraries have similar ways to find
-// the current position in the app.
+// Grab a reference to the current URL from `ownProps` to find the URL.
+
 function mapStateToProps(state, ownProps) {
     return {
         isLoggedIn: state.auth.loggedIn,

@@ -1,5 +1,7 @@
 var React = require('react');
 var {Link, IndexLink} = require('react-router');
+import {connect} from 'react-redux';
+import LoginControl from 'LoginControl';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -17,6 +19,9 @@ class Nav extends React.Component {
         }
     }
 
+    renderLoginControl(){
+        return(<LoginControl/>);
+    }
     render() {
         return (
             <div className="top-bar">
@@ -36,10 +41,6 @@ class Nav extends React.Component {
                             <Link to="/examples" activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Examples</Link>
                         </li>
-                        <li>
-                            <Link to="/login" activeClassName="active"
-                                  activeStyle={{fontWeight: 'bold'}}>Login</Link>
-                        </li>
                     </ul>
 
                 </div>
@@ -52,6 +53,7 @@ class Nav extends React.Component {
                             <li>
                                 <input type="submit" className="button" value="Get Weather"/>
                             </li>
+                                {this.renderLoginControl()}
                         </ul>
                     </form>
                 </div>
@@ -60,4 +62,4 @@ class Nav extends React.Component {
     }
 }
 
-module.exports = Nav;
+export default connect()(Nav)

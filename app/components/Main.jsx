@@ -1,8 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import Nav from 'Nav';
-import { routerMiddleware, push } from 'react-router-redux'
-
 
 class Main extends React.Component {
     constructor(props) {
@@ -17,7 +15,8 @@ class Main extends React.Component {
 
         if (isLoggingIn) {
             console.debug("redirectUrl:",redirectUrl);
-            dispatch(push(redirectUrl))
+            //dispatch(actions.navigateTo(redirectUrl));
+            this.props.router.push(redirectUrl);
         } else if (isLoggingOut) {
             // do any kind of cleanup or post-logout redirection here
         }

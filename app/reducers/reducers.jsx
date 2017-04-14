@@ -36,16 +36,13 @@ export var todoItemsReducer = (state = [], action) => {
                 ...state,
                 ...action.todoItems
             ];
-
-        case 'TODO_LOGOUT':
-            return [];
         default:
             return state;
     }
     ;
 };
 
-export var firebaseAuthReducer = (state = {}, action) => {
+export var firebaseAuthReducer = (state = {loggedIn: false}, action) => {
     switch (action.type) {
         case 'TODO_LOGIN':
             //console.log(action);
@@ -53,7 +50,7 @@ export var firebaseAuthReducer = (state = {}, action) => {
                 ...action.auth
             };
         case 'TODO_LOGOUT':
-            return {};
+            return {loggedIn: false};
         default:
             return state;
     };
@@ -64,6 +61,26 @@ export var showCompletedReducer = (state = false, action) => {
     switch (action.type) {
         case 'TOGGLE_SHOW_COMPLETED':
             return !state;
+        default:
+            return state;
+    };
+};
+
+
+export var setRedirectUrlReducer = (state = '/', action) => {
+    switch (action.type) {
+        case 'SET_REDIRECT_URL':
+            return action.currentURL;
+        default:
+            return state;
+    };
+};
+
+
+export var navigateToReducer = (state = '/', action) => {
+    switch (action.type) {
+        case 'NAVIGATE_TO_URL':
+            return action.navigateToUrl;
         default:
             return state;
     };

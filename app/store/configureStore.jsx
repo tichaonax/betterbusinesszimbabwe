@@ -1,13 +1,20 @@
 import * as redux from 'redux';
 import thunk from 'redux-thunk';
-import {todoItemsReducer, searchTextReducer, showCompletedReducer, firebaseAuthReducer} from 'reducers';
+import {
+    todoItemsReducer,
+    searchTextReducer,
+    showCompletedReducer,
+    firebaseAuthReducer,
+    setRedirectUrlReducer
+} from 'reducers';
 
 export var configure = (initialState ={}) => {
     var reducer = redux.combineReducers({
         searchText: searchTextReducer,
         todoItems: todoItemsReducer,
         showCompleted: showCompletedReducer,
-        auth: firebaseAuthReducer
+        auth: firebaseAuthReducer,
+        redirectUrl : setRedirectUrlReducer
     });
 
 //create store and load developer tools if they exist
