@@ -1,16 +1,17 @@
 import React from 'react';
 import * as Redux from 'react-redux';
-import TodoItem from 'TodoItem';
-var TodoAPI = require('TodoAPI');
+import BbzItem from 'BbzItem';
+var BbzAPI = require('BbzAPI');
 
-export class TodoList extends React.Component {
+
+export class BbzList extends React.Component {
     constructor(props) {
         super(props);
     }
 
     renderTodoItems = () => {
         var {todoItems, showCompleted, searchText} = this.props;
-        var filteredTodoItems = TodoAPI.getFilteredTodoItems(todoItems, showCompleted, searchText);
+        var filteredTodoItems = BbzAPI.getFilteredTodoItems(todoItems, showCompleted, searchText);
 
         if (filteredTodoItems.length === 0) {
             return (
@@ -20,7 +21,7 @@ export class TodoList extends React.Component {
 
         return filteredTodoItems.map((todoItem) => {
             return (
-                <TodoItem key={todoItem.id} {...todoItem} />
+                <BbzItem key={todoItem.id} {...todoItem} />
             )
         });
     }
@@ -43,4 +44,4 @@ export default Redux.connect(
             searchText: state.searchText
         }
     }
-)(TodoList);
+)(BbzList);

@@ -7,23 +7,20 @@ class Main extends React.Component {
         super(props);
     }
 
-
     componentDidUpdate(prevProps) {
-        const { dispatch, redirectUrl } = this.props
-        const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn
-        const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn
+        const {redirectUrl} = this.props;
+        const isLoggingOut = prevProps.isLoggedIn && !this.props.isLoggedIn;
+        const isLoggingIn = !prevProps.isLoggedIn && this.props.isLoggedIn;
 
         if (isLoggingIn) {
-            console.debug("redirectUrl:",redirectUrl);
-            //dispatch(actions.navigateTo(redirectUrl));
             this.props.router.push(redirectUrl);
         } else if (isLoggingOut) {
-            // do any kind of cleanup or post-logout redirection here
+            // cleanup and post-logout redirection here
+            this.props.router.push("/");
         }
     }
 
     render() {
-        console.debug("Main");
         return (
             <div>
                 <div>

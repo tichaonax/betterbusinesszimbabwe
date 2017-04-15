@@ -2,9 +2,9 @@ var React = require('react');
 var {connect} = require('react-redux');
 import * as actions from 'actions';
 
-class EnsureLoggedInContainer extends React.Component {
+class BbzLoggedInContainer extends React.Component {
     componentDidMount() {
-        const {dispatch, currentURL, isLoggedIn, router} = this.props
+        const {dispatch, currentURL, isLoggedIn, router,nextState, replace, next} = this.props
         console.debug("currentURL", currentURL);
         if (!isLoggedIn) {
             // set the current url/path for future redirection (we use a Redux action)
@@ -34,4 +34,4 @@ function mapStateToProps(state, ownProps) {
     }
 }
 
-export default connect(mapStateToProps)(EnsureLoggedInContainer)
+export default connect(mapStateToProps)(BbzLoggedInContainer)

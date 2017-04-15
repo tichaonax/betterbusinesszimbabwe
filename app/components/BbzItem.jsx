@@ -3,7 +3,7 @@ import moment from 'moment';
 import * as Redux from 'react-redux';
 import * as actions from 'actions';
 
-export class TodoItem extends React.Component {
+export class BbzItem extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -38,4 +38,4 @@ export class TodoItem extends React.Component {
 }
 ;
 
-export default  Redux.connect()(TodoItem);
+export default  Redux.connect()(BbzItem);

@@ -3,7 +3,7 @@ var $ = require('jquery');
 var {connect} = require('react-redux');
 var actions = require('actions');
 
-export class TodoSearch extends React.Component {
+export class BbzSearch extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -40,4 +40,4 @@ export default connect(
             searchText: state.searchText
         }
     }
-)(TodoSearch);
+)(BbzSearch);

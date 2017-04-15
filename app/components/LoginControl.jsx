@@ -15,12 +15,11 @@ export class LoginControl extends React.Component {
         var {dispatch} = this.props;
         e.preventDefault();
         dispatch(actions.startTodoLogout());
-        location.href=("/");
     }
 
     render() {
         var {isLoggedIn} = this.props;
-        console.debug("LogignControl isLoggedIn:", isLoggedIn);
+
         if(isLoggedIn){
             return(
                 <li>

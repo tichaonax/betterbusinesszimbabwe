@@ -5,33 +5,21 @@ import Main from 'Main';
 import Weather from 'Weather';
 import About from 'About';
 import Examples from 'Examples';
-import TodoLogin from 'TodoLogin';
-import TodoApp from 'TodoApp';
-import EnsureLoggedInContainer from 'EnsureLoggedInContainer';
-
-var requireLogin = (nextState, replace, next) => {
-    if (!firebase.auth().currentUser) {
-        replace('/');
-    }
-    next();
-};
-
-var redirectIfLoggedIn = (nextState, replace, next) => {
-    if (firebase.auth().currentUser) {
-        replace('/todoitems');
-    }
-    next();
-};
+import BbzLogin from 'BbzLogin';
+import BbzLoggedInContainer from 'BbzLoggedInContainer';
+import Home from 'Home';
+import BbzReviews from 'BbzReviews';
 
 export default (
     <Router history={hashHistory}>
         <Route path="/" component={Main}>
             <Route path="about" component={About}/>
-            <Route path="login" component={TodoLogin}/>
-            <IndexRoute component={Weather}/>
-            <Route component={EnsureLoggedInContainer}>
+            <Route path="login" component={BbzLogin}/>
+            <Route path="weather" component={Weather}/>
+            <Route path="bbzreviews" component={BbzReviews}/>
+            <IndexRoute component={Home}/>
+            <Route component={BbzLoggedInContainer}>
                 <Route path="examples" component={Examples}/>
-                <Route path="todoitems" component={TodoApp}/>
             </Route>
         </Route>
     </Router>

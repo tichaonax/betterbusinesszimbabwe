@@ -35,7 +35,10 @@ module.exports = {
                 API_KEY: JSON.stringify(process.env.API_KEY),
                 AUTH_DOMAIN: JSON.stringify(process.env.AUTH_DOMAIN),
                 DATABASE_URL: JSON.stringify(process.env.DATABASE_URL),
-                STORAGE_BUCKET: JSON.stringify(process.env.STORAGE_BUCKET)
+                MESSAGING_SENDER_ID: JSON.stringify(process.env.MESSAGING_SENDER_ID),
+                STORAGE_BUCKET: JSON.stringify(process.env.STORAGE_BUCKET),
+                OPEN_WEATHER_APP_ID: JSON.stringify(process.env.OPEN_WEATHER_APP_ID),
+                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID)
             }
         }),
     ],
@@ -55,18 +58,7 @@ module.exports = {
             applicationStyles: 'app/styles/app.scss',
             actions: 'app/actions/actions.jsx',
             reducers: 'app/reducers/reducers.jsx',
-            EnsureLoggedInContainer: 'app/components/EnsureLoggedInContainer.jsx',
-            configureStore: 'app/store/configureStore.jsx',
-            Main: 'app/components/Main.jsx',
-            Nav: 'app/components/Nav.jsx',
-            Weather: 'app/components/Weather.jsx',
-            WeatherForm: 'app/components/WeatherForm.jsx',
-            WeatherMessage: 'app/components/WeatherMessage.jsx',
-            About: 'app/components/About.jsx',
-            Examples: 'app/components/Examples.jsx',
-            openWeatherMap: 'app/api/openWeatherMap.jsx',
-            ErrorModal: 'app/components/ErrorModal.jsx',
-            LoginControl: 'app/components/LoginControl'
+            configureStore: 'app/store/configureStore.jsx'
         },
         extensions: ['', '.js', '.jsx']
     },
