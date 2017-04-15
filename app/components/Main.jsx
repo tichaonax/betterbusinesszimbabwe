@@ -26,7 +26,7 @@ class Main extends React.Component {
                 <div>
                     <Nav/>
                     <div className="row">
-                        <div className="columns medium-6 large-4 small-centered">
+                        <div >
                             {this.props.children}
                         </div>
                     </div>

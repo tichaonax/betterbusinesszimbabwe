@@ -15,7 +15,7 @@ export class BbzList extends React.Component {
 
         if (filteredTodoItems.length === 0) {
             return (
-                <p className="container__message">No Tasks To Do</p>
+                <p className="container__message">No BBZ Reveiws</p>
             )
         }
 

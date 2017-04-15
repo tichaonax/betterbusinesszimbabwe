@@ -27,8 +27,8 @@ export class AddBbzItem extends React.Component {
     render() {
         var {isLoggedIn} = this.props;
         if (!isLoggedIn) {
-            console.debug("You need to be logged in first");
             const errorMessage = "To add a review you must be logged in";
+            console.debug(errorMessage);
             return (
                 <div className="container__footer">
                     {errorMessage}
