@@ -4,7 +4,7 @@ import * as actions from 'actions';
 
 class BbzLoggedInContainer extends React.Component {
     componentDidMount() {
-        const {dispatch, currentURL, isLoggedIn, router,nextState, replace, next} = this.props
+        const {dispatch, currentURL, isLoggedIn, router} = this.props
         console.debug("currentURL", currentURL);
         if (!isLoggedIn) {
             // set the current url/path for future redirection (we use a Redux action)
@@ -30,7 +30,8 @@ class BbzLoggedInContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         isLoggedIn: state.auth.loggedIn,
-        currentURL: ownProps.location.pathname
+        currentURL: ownProps.location.pathname,
+        error: state.error
     }
 }
 

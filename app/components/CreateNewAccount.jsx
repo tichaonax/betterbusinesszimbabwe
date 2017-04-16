@@ -3,14 +3,16 @@ import {connect} from 'react-redux';
 import * as actions from 'actions';
 import Error from 'Error';
 
-export class BbzResetPassword extends React.Component {
+export class CreateNewAccount extends React.Component {
     constructor(props) {
         super(props);
-        this.onBbzResetPassword = this.onBbzResetPassword.bind(this);
+        this.onCreateNewAccount = this.onCreateNewAccount.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
         this.onInputFocus = this.onInputFocus.bind(this);
-        this.state = {email: ""};
+        this.state = {email: "", password: ""};
     }
+
 
     componentDidMount() {
         const {dispatch, currentURL, isLoggedIn, error} = this.props;
@@ -25,11 +27,15 @@ export class BbzResetPassword extends React.Component {
         }
     }
 
-    onBbzResetPassword = (e) => {
+    onCreateNewAccount = (e) => {
         e.preventDefault();
         var {dispatch} = this.props;
-        dispatch(actions.startSendPasswordResetEmail(this.state.email));
+        dispatch(actions.startBbzCreateAccount(this.state.email, this.state.password));
     };
+
+    onChangePassword = (e) => {
+        this.setState({password: e.target.value});
+    }
 
     onChangeEmail = (e) => {
         this.setState({email: e.target.value});
@@ -45,7 +51,7 @@ export class BbzResetPassword extends React.Component {
     render() {
         return (
             <div>
-                <h3 className="page-title">Password Reset</h3>
+                <h3 className="page-title">Create New Account</h3>
                 <div className="row">
                     <div className="columns small-centered small-10 medium-6 large-4">
                         <div className="callout callout-auth">
@@ -55,8 +61,12 @@ export class BbzResetPassword extends React.Component {
                                 <label htmlFor="email">Email:</label>
                                 <input id="email" placeholder="Enter email address" type="text" value={this.state.email}
                                        onChange={this.onChangeEmail} onFocus={this.onInputFocus}/>
-                                <p/>
-                                <button id="email" className="button" onClick={this.onBbzResetPassword}>Reset Password
+                                <label htmlFor="password">Password:</label>
+                                <input id="password" placeholder="Enter password" type="password"
+                                       value={this.state.password} onChange={this.onChangePassword}
+                                       onFocus={this.onInputFocus}/>
+                                <button id="email" className="button" onClick={this.onCreateNewAccount}>Create New
+                                    Account
                                 </button>
                             </div>
                         </div>
@@ -66,7 +76,6 @@ export class BbzResetPassword extends React.Component {
         );
     }
 }
-
 function mapStateToProps(state, ownProps) {
     return {
         isLoggedIn: state.auth.loggedIn,
@@ -74,4 +83,4 @@ function mapStateToProps(state, ownProps) {
         error: state.error
     }
 }
-export default connect(mapStateToProps)(BbzResetPassword);
+export default connect(mapStateToProps)(CreateNewAccount);

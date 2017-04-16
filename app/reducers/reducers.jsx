@@ -44,12 +44,11 @@ export var todoItemsReducer = (state = [], action) => {
 
 export var firebaseAuthReducer = (state = {loggedIn: false}, action) => {
     switch (action.type) {
-        case 'TODO_LOGIN':
-            //console.log(action);
+        case 'BBZ_LOGIN':
             return {
                 ...action.auth
             };
-        case 'TODO_LOGOUT':
+        case 'BBZ_LOGOUT':
             return {loggedIn: false};
         default:
             return state;
@@ -84,4 +83,15 @@ export var navigateToReducer = (state = '/', action) => {
         default:
             return state;
     };
+};
+
+export var bbzErrorReducer = (state = null, action) => {
+    switch (action.type) {
+        case 'BBZ_REPORT_ERROR':
+            return action.error;
+        case 'BBZ_CLEAR_ERROR':
+            return null;
+        default:
+            return state;
+    }
 };

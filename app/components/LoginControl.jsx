@@ -14,7 +14,7 @@ export class LoginControl extends React.Component {
     onLogout = (e) => {
         var {dispatch} = this.props;
         e.preventDefault();
-        dispatch(actions.startTodoLogout());
+        dispatch(actions.startBbzLogout());
     }
 
     render() {

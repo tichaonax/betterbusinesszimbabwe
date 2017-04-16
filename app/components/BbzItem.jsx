@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import * as Redux from 'react-redux';
+import {connect} from 'react-redux';
 import * as actions from 'actions';
 
 export class BbzItem extends React.Component {
@@ -38,4 +38,4 @@ export class BbzItem extends React.Component {
 }
 ;
 
-export default  Redux.connect()(BbzItem);
+export default  connect()(BbzItem);

@@ -8,18 +8,25 @@ var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
 
+
+store.dispatch(actions.bbzClearError());
+
+
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         var auth = {
             uid: user.uid,
-            displayName: user.displayName
+            displayName: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            loggedIn: true
         };
 
-        store.dispatch(actions.todoLogin(auth));
-       // store.dispatch(actions.startTodoAddItems());
-        hashHistory.push('/todoitems');
+        store.dispatch(actions.bbzLogin(auth));
+       // store.dispatch(actions.startBbzAddItems());
+        hashHistory.push('/bbzreviews');
     } else {
-        store.dispatch(actions.todoLogout());
+        store.dispatch(actions.bbzLogout());
         hashHistory.push('/');
     }
 });

@@ -5,7 +5,8 @@ import {
     searchTextReducer,
     showCompletedReducer,
     firebaseAuthReducer,
-    setRedirectUrlReducer
+    setRedirectUrlReducer,
+    bbzErrorReducer
 } from 'reducers';
 
 export var configure = (initialState ={}) => {
@@ -14,7 +15,8 @@ export var configure = (initialState ={}) => {
         todoItems: todoItemsReducer,
         showCompleted: showCompletedReducer,
         auth: firebaseAuthReducer,
-        redirectUrl : setRedirectUrlReducer
+        redirectUrl : setRedirectUrlReducer,
+        error: bbzErrorReducer
     });
 
 //create store and load developer tools if they exist

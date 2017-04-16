@@ -1,19 +1,6 @@
 import moment from 'moment';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
-export var todoLogin = (auth) => {
-    return {
-        type: 'TODO_LOGIN',
-        auth
-    };
-};
-
-export var todoLogout = () => {
-    return {
-        type: 'TODO_LOGOUT'
-    };
-};
-
 export var setSearchText = (searchText) => {
     return {
         type: 'SET_SEARCH_TEXT',
@@ -113,41 +100,149 @@ export var startToggleTodoItem = (id, completed) => {
     };
 };
 
-export var starTodotLogin = (provider) => {
+
+export var bbzReportError = (error) => {
+    return {
+        type: 'BBZ_REPORT_ERROR',
+        error
+    };
+};
+
+export var bbzClearError = () => {
+    return {
+        type: 'BBZ_CLEAR_ERROR'
+    };
+};
+
+export var bbzLogin = (auth) => {
+    return {
+        type: 'BBZ_LOGIN',
+        auth
+    };
+};
+
+export var startBbzLogin = (provider) => {
     console.log("Start Login !");
     return (dispatch, getState) => {
-        //return firebase.auth().signInWithPopup(provider).then((result) => {
-           // console.log("Auth worked!", result);
+        return firebase.auth().signInWithPopup(provider).then((result) => {
+            console.log("Auth worked!", result);
 
-            // var auth = {
-            //     uid: result.user.uid,
-            //     displayName: result.user.displayName
-            // };
-
-        var auth = {
-            uid: 400,
-            displayName: "Tichaona Hwandaza",
-            loggedIn: true
-        };
-
-        console.log("Inside dispatch !");
-            //call dispatch here to set the state
-            return dispatch(todoLogin(auth));
-        //}, (error) => {
-        //    console.log("Unable to auth", error);
-        //});
+             var auth = {
+                 uid: result.user.uid,
+                 displayName: result.user.displayName,
+                 email: result.user.email,
+                 photoURL: result.user.photoURL,
+                 loggedIn: true
+             };
+            console.log("Auth data!", auth);
+            return dispatch(bbzLogin(auth));
+        }, (error) => {
+            console.log("Unable to auth", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(bbzReportError(errorObj));
+        });
     };
 };
 
-export var startTodoLogout = () => {
+export var startBbzEmailLogin = (email, password) => {
+    console.log("Start Email Login !");
     return (dispatch, getState) => {
-        //return firebase.auth().signOut().then(() => {
-            console.log("Logggedout!");
-            return dispatch(todoLogout());
-        //});
+        return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
+            console.log("Auth with Email and Password worked!", result);
+
+            var auth = {
+                uid: result.uid,
+                displayName: result.email,
+                email: result.email,
+                photoURL: null,
+                loggedIn: true
+            };
+
+            console.debug("Auth data!", auth);
+
+            return dispatch(bbzLogin(auth));
+        }, (error) => {
+            console.log("Unable to auth", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(bbzReportError(errorObj));
+        });
     };
 };
 
+
+export var bbzLogout = () => {
+    return {
+        type: 'BBZ_LOGOUT'
+    };
+};
+
+
+export var startBbzLogout = () => {
+    return (dispatch, getState) => {
+        return firebase.auth().signOut().then(() => {
+            console.log("Logggedout!");
+            return dispatch(bbzLogout());
+        });
+    };
+};
+
+export var startBbzCreateAccount = (email, password) => {
+    console.log("Start Create New Account !");
+    return (dispatch, getState) => {
+        return firebase.auth().createUserWithEmailAndPassword(email, password).then((result) => {
+            console.log("Auth with Email and Password worked!", result);
+
+            var auth = {
+                uid: result.user.uid,
+                displayName: result.user.displayName,
+                email: result.user.email,
+                photoURL: result.user.photoURL,
+                loggedIn: true
+            };
+            console.log("Auth data!", auth);
+            return dispatch(bbzLogin(auth));
+        }, (error) => {
+            console.log("Unable to create new Account", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(bbzReportError(errorObj));
+        });
+    };
+};
+
+export var startSendPasswordResetEmail = (email) => {
+    console.log("Start Create New Account !");
+    return (dispatch, getState) => {
+        return firebase.auth().sendPasswordResetEmail(email).then((result) => {
+            console.log("Reset Password Email Sent!", result);
+
+           /* var auth = {
+                uid: result.user.uid,
+                displayName: result.user.displayName,
+                email: result.user.email,
+                photoURL: result.user.photoURL,
+                loggedIn: true
+            };*/
+           // console.log("Auth data!", auth);
+           return dispatch(bbzClearError());
+        }, (error) => {
+            console.log("Unable to sent Password reset email", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(bbzReportError(errorObj));
+        });
+    };
+};
 
 export var setRedirectUrl = (currentURL) => {
     return {

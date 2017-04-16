@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {actions} from 'actions';
-import ErrorModal from 'ErrorModal';
 
 //export so that when testing we do use the connect version that needs the store
 export class AddBbzItem extends React.Component {

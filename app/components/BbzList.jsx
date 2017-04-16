@@ -1,5 +1,5 @@
 import React from 'react';
-import * as Redux from 'react-redux';
+import {connect} from 'react-redux';
 import BbzItem from 'BbzItem';
 var BbzAPI = require('BbzAPI');
 
@@ -36,7 +36,7 @@ export class BbzList extends React.Component {
     }
 }
 
-export default Redux.connect(
+export default connect(
     (state) => {
         return {
             todoItems: state.todoItems,
