@@ -20,18 +20,14 @@ export class LoginControl extends React.Component {
     render() {
         var {isLoggedIn} = this.props;
 
-        if(isLoggedIn){
-            return(
-                <li>
-                    <a href="#" onClick={this.onLogout}>Logout</a>
-                </li>
+        if (isLoggedIn) {
+            return (
+                <a href="#" onClick={this.onLogout}>Logout</a>
             );
-        }else{
-            return(
-                <li>
-                    <Link to="/login" activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>Login</Link>
-                </li>
+        } else {
+            return (
+                <Link to="/login" activeClassName="active"
+                      activeStyle={{fontWeight: 'bold'}}>Login</Link>
             );
         }
     }
