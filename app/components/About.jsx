@@ -22,7 +22,7 @@ class About extends React.Component {
                                     that I used.
                                 </li>
                                 <li>
-                                    <a href="https://github.com/tichaonax/WeatherApp">GitHub</a> - This codebase is
+                                    <a href="https://github.com/tichaonax/betterbusinesszimbabwe">GitHub</a> - This codebase is
                                     stored in GitHub.
                                 </li>
                                 <li>
@@ -30,12 +30,7 @@ class About extends React.Component {
                                     Map to search
                                     for weather by city name.
                                 </li>
-                                <li>
-                                    <a href="http://www.heroku.com">Heroku</a> - I used Heroku tools to deploy
-                                    application to
-                                    the Internet.
-                                </li>
-                            </ol>
+                           </ol>
                         </div>
                     </div>
                 </div>
