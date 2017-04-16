@@ -18,15 +18,15 @@ class About extends React.Component {
                                 Checkout out these resources</p>
                             <ol>
                                 <li>
-                                    <a href="https://facebook.github.io/react">React</a> - React JavaScript framework
+                                    <a href="https://facebook.github.io/react" target="_blank">React</a> - React JavaScript framework
                                     that I used.
                                 </li>
                                 <li>
-                                    <a href="https://github.com/tichaonax/betterbusinesszimbabwe">GitHub</a> - This codebase is
+                                    <a href="https://github.com/tichaonax/betterbusinesszimbabwe" target="_blank">GitHub</a> - This codebase is
                                     stored in GitHub.
                                 </li>
                                 <li>
-                                    <a href="http://www.openweathermap.org/">Open Weather Map</a> - I used Open Weather
+                                    <a href="http://www.openweathermap.org/" target="_blank">Open Weather Map</a> - I used Open Weather
                                     Map to search
                                     for weather by city name.
                                 </li>
