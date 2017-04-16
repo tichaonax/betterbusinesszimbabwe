@@ -95,3 +95,14 @@ export var bbzErrorReducer = (state = null, action) => {
             return state;
     }
 };
+
+export var userProfileReducer = (state = null, action) => {
+    switch (action.type) {
+        case 'SET_USER_PROFILE':
+            return action.profile;
+        case 'ADD_USER_PROFILE':
+            return action.profile;
+        default:
+            return state;
+    };
+};
