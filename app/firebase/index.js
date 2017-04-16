@@ -19,6 +19,5 @@ try {
 export var googleProvider = new firebase.auth.GoogleAuthProvider();
 export var githubProvider = new firebase.auth.GithubAuthProvider();
 export var facebookProvider = new firebase.auth.FacebookAuthProvider();
-export var userEamilProvider = new firebase.auth.EmailAuthProvider();
 export var firebaseRef = firebase.database().ref();
 export default firebase;
