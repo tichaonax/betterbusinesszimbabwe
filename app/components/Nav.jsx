@@ -1,5 +1,5 @@
-var React = require('react');
-var {Link, IndexLink} = require('react-router');
+import React from 'react';
+import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from 'LoginControl';
 
@@ -19,10 +19,24 @@ class Nav extends React.Component {
     //     }
     // }
 
-    renderLoginControl(){
-        return(<LoginControl/>);
+    renderLoginControl() {
+        return (<LoginControl/>);
     }
+
     render() {
+        var {auth} = this.props;
+
+        function renderAvator() {
+            if (auth.photoURL) {
+
+                return (
+                    <img src={auth.photoURL} alt="Smiley face" height="32" width="32"/>
+                );
+            } else {
+                return null
+            }
+        }
+
         return (
             <div className="top-bar">
                 <div className="top-bar-left">
@@ -46,13 +60,23 @@ class Nav extends React.Component {
                     </ul>
                 </div>
                 <div className="top-bar-right">
-                        <ul className="menu">
-                                {this.renderLoginControl()}
-                        </ul>
+                    <ul className="menu">
+                        <li>
+                            {this.renderLoginControl()}
+                        </li>
+                        <li>
+                            {renderAvator()}
+                        </li>
+                    </ul>
                 </div>
             </div>
         );
     }
 }
 
-export default connect()(Nav)
+function mapStateToProps(state, ownProps) {
+    return {
+        auth: state.auth
+    }
+}
+export default connect(mapStateToProps)(Nav);
