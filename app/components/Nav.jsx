@@ -28,12 +28,17 @@ class Nav extends React.Component {
 
         function renderAvator() {
             if (auth.photoURL) {
-
                 return (
-                    <img src={auth.photoURL} alt="Smiley face" height="32" width="32"/>
+                    <div>
+                        {auth.displayName} <img src={auth.photoURL} alt="Smiley face" height="32" width="32"/>
+                    </div>
                 );
             } else {
-                return null
+                return (
+                    <div>
+                        {auth.email}
+                    </div>
+                )
             }
         }
 
