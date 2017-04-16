@@ -2,7 +2,7 @@ var React = require('react');
 var {connect} = require('react-redux');
 import * as actions from 'actions';
 
-class BbzLoggedInContainer extends React.Component {
+export class BbzLoggedInContainer extends React.Component {
     componentDidMount() {
         const {dispatch, currentURL, isLoggedIn, router} = this.props
         console.debug("currentURL", currentURL);

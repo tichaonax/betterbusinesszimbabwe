@@ -1,7 +1,8 @@
 var React = require('react');
 var {Link} = require('react-router');
+var {connect} = require('react-redux');
 
-class Examples extends React.Component {
+export class Examples extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -17,10 +18,10 @@ class Examples extends React.Component {
                             <p>Try out the my home towns</p>
                             <ol>
                                 <li>
-                                    <Link to="/?location=Gutu">Gutu, Zimbabwe</Link>
+                                    <Link to="weather?location=Gutu">Gutu, Zimbabwe</Link>
                                 </li>
                                 <li>
-                                    <Link to="/?location=Harare">Harare, Zimbabwe</Link>
+                                    <Link to="weather?location=Harare">Harare, Zimbabwe</Link>
                                 </li>
                             </ol>
                         </div>
@@ -31,4 +32,13 @@ class Examples extends React.Component {
     }
 }
 
-module.exports = Examples;
+
+function mapStateToProps(state, ownProps) {
+    return {
+        isLoggedIn: state.auth.loggedIn,
+        currentURL: ownProps.location.pathname,
+        error: state.error
+    }
+}
+
+export default connect(mapStateToProps)(Examples)
