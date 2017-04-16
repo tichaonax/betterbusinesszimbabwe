@@ -1,20 +1,20 @@
 var expect = require('expect');
 
-var TodoAPI = require('TodoAPI');
+var BbzAPI = require('BbzAPI');
 
 function beforeEachCleanup() {
     localStorage.removeItem('todoItems');
 }
 
 
-describe('TodoAPI', () => {
+describe('BbzAPI', () => {
     //clean up before each test
     beforeEach(() => {
         beforeEachCleanup();
     });
 
     it('should exist', () => {
-        expect(TodoAPI).toExist();
+        expect(BbzAPI).toExist();
     });
 
 
@@ -78,7 +78,7 @@ describe('TodoAPI', () => {
     // });
 
 
-    describe('getFilteredTodoItems', () => {
+/*    describe('getFilteredTodoItems', () => {
 
         //create setup data common to this descibe
 
@@ -133,5 +133,5 @@ describe('TodoAPI', () => {
             var filteredTodoItems = TodoAPI.getFilteredTodoItems(todoItems, true, '401k');
             expect(filteredTodoItems.length).toBe(1);
         });
-    });
+    });*/
 });

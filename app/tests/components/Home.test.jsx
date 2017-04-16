@@ -5,17 +5,14 @@ var expect = require('expect');
 import TestUtils from 'react-addons-test-utils';
 
 var configureStore = require('configureStore');
-//import {TodoApp} from 'TodoApp';
-//import TodoList from 'TodoList';
+import {Home} from 'Home';
 
+describe('Home', () => {
+   /* it('should exist', () => {
+        expect(Home).toExist();
+    });*/
 
-/*
-describe('TodoApp', () => {
-    it('should exist', () => {
-        expect(TodoApp).toExist();
-    });
-
-    it('should render TodoList', () => {
+    /*it('should render TodoList', () => {
         var store = configureStore.configure();
         var provider = TestUtils.renderIntoDocument(
             <Provider store={store}>
@@ -27,6 +24,6 @@ describe('TodoApp', () => {
         var todoList = TestUtils.scryRenderedComponentsWithType(todoApp, TodoList);
 
         expect(todoList.length).toEqual(1);
-    });
+    });*/
 
-});*/
+});

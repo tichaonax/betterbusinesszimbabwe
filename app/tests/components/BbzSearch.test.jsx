@@ -4,12 +4,12 @@ var expect = require('expect');
 var $ = require('jquery');
 import  TestUtils from 'react-addons-test-utils';
 
-//import the TodoSearch that is not tied to redux
-import {TodoSearch} from 'TodoSearch';
+//import the BbzSearch that is not tied to redux
+import {BbzSearch} from 'BbzSearch';
 
-describe('TodoSearch', () => {
+describe('BbzSearch', () => {
     it('should exist', () => {
-        expect(TodoSearch).toExist();
+        expect(BbzSearch).toExist();
     });
 
     it('should dispatch SET_SEARCH_TEXT on input change', () => {
@@ -20,7 +20,7 @@ describe('TodoSearch', () => {
         };
 
         var spy = expect.createSpy();
-        var todoSearch = TestUtils.renderIntoDocument(<TodoSearch dispatch={spy}/>);
+        var todoSearch = TestUtils.renderIntoDocument(<BbzSearch dispatch={spy}/>);
 
         //console.log(todoSearch.refs.searchItemText);
 
@@ -37,7 +37,7 @@ describe('TodoSearch', () => {
     });
 
 
-    it('should dispatch TOGGLE_SHOW_COMPLETED when checked value changes', () => {
+   /* it('should dispatch TOGGLE_SHOW_COMPLETED when checked value changes', () => {
         var spy = expect.createSpy();
         var action = {
             type: 'TOGGLE_SHOW_COMPLETED'
@@ -54,6 +54,6 @@ describe('TodoSearch', () => {
 
         expect(spy).toHaveBeenCalledWith(action);
 
-    });
+    });*/
 
 });

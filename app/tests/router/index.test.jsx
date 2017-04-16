@@ -7,26 +7,26 @@ import TestUtils from 'react-addons-test-utils';
 var configureStore = require('configureStore');
 //import {TodoApp} from 'TodoApp';
 //import TodoList from 'TodoList';
+import router from 'app/router/';
 
 
-/*
-describe('TodoApp', () => {
+describe('router', () => {
     it('should exist', () => {
-        expect(TodoApp).toExist();
+        expect(router).toExist();
     });
 
-    it('should render TodoList', () => {
+/*    it('should render TodoList', () => {
         var store = configureStore.configure();
         var provider = TestUtils.renderIntoDocument(
             <Provider store={store}>
-                <TodoApp/>
+                {router}
             </Provider>
         );
 
-        var todoApp = TestUtils.scryRenderedComponentsWithType(provider, TodoApp)[0];
-        var todoList = TestUtils.scryRenderedComponentsWithType(todoApp, TodoList);
+        var router = TestUtils.scryRenderedComponentsWithType(provider, router)[0];
+        var todoList = TestUtils.scryRenderedComponentsWithType(router, TodoList);
 
         expect(todoList.length).toEqual(1);
-    });
+    });*/
 
-});*/
+});
