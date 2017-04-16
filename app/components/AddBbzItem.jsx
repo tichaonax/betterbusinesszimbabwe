@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 import {actions} from 'actions';
 
 //export so that when testing we do use the connect version that needs the store
@@ -30,7 +31,14 @@ export class AddBbzItem extends React.Component {
             console.debug(errorMessage);
             return (
                 <div className="container__footer">
-                    {errorMessage}
+                    <ul className="menu">
+                        <li>
+                            {errorMessage}
+                        </li>
+                        <li>
+                            <Link to="/login" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Click to login</Link>
+                        </li>
+                    </ul>
                 </div>
             );
         }
@@ -38,7 +46,7 @@ export class AddBbzItem extends React.Component {
             return (
                 <div className="container__footer">
                     <form onSubmit={this.handleSubmit}>
-                        <input type="text" ref="todoItemText" placeholder="Enter task to do?"/>
+                        <input type="text" ref="todoItemText" placeholder="Enter Reiew?"/>
                         <button className="button expanded ">Add BBZ Review</button>
                     </form>
                 </div>
