@@ -19,7 +19,7 @@ class Nav extends React.Component {
         var message = "";
 
         if (userProfile && userProfile.createDate) {
-            message = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
+            message = "Joined " + moment.unix(userProfile.createDate).format('MMM Do, YYYY');
         }
 
 
