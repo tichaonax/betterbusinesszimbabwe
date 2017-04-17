@@ -1,4 +1,5 @@
 import moment from 'moment';
+import requestip from 'clientIpAddress';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
 //<editor-fold desc="Search">
@@ -171,6 +172,10 @@ export var startBbzLogin = (provider) => {
                     }
                 )
             }
+        ).then(
+            ()=>{
+                return dispatch(startLastLogin());
+            }
         )
     };
 };
@@ -187,7 +192,7 @@ export var startBbzEmailLogin = (email, password) => {
 
             gAuth = {
                 uid: result.uid,
-                displayName: result.email,
+                displayName: email,
                 email: result.email,
                 photoURL: null,
                 loggedIn: true
@@ -215,6 +220,10 @@ export var startBbzEmailLogin = (email, password) => {
                         }
                     }
                 )
+            }
+        ).then(
+            ()=>{
+                return dispatch(startLastLogin());
             }
         )
     };
@@ -282,6 +291,10 @@ export var startBbzCreateAccount = (email, password) => {
                         }
                     }
                 )
+            }
+        ).then(
+            ()=>{
+                return dispatch(startLastLogin());
             }
         )
     };
@@ -394,6 +407,7 @@ export var addUserProfile = (profile) => {
 
 //<editor-fold desc="lastLogins">
 export var lastLogin = (loginAt, ipAddress) => {
+    console.debug("lastLogin", loginAt, ipAddress);
     return {
         type: 'ADD_LAST_LOGIN',
         loginAt,
@@ -401,7 +415,65 @@ export var lastLogin = (loginAt, ipAddress) => {
     };
 };
 
+export var startLastLogin = () => {
+    var gAuth;
+    return (dispatch, getState) => {
 
+        var gClientIp;
+
+        var uid = getState().auth.uid;
+
+        return requestip.getClientIpAddress().then(
+            (clientIp) => {
+                gClientIp = clientIp.trim();
+                console.debug("Cleint IP: ", gClientIp.trim());
+
+                var lastLoginObj = {
+                    ipAddress: gClientIp,
+                    loginAt: moment().unix()
+                }
+
+                var lastLoginRef = firebaseRef.child(`users/${uid}/userProfile/lastLogins`);
+
+                return lastLoginRef.once('value').then(
+                    (snapshot) => {
+                        var lastLogins = snapshot.val() || {}; //return available data or empty object
+
+                        const lastLoginsSize = Object.keys(lastLogins).length;
+
+                        return lastLoginRef.push(lastLoginObj).then(() => {
+
+                            console.debug("lastLoginRef.key", lastLoginRef.key);
+
+                            var parsedLastLogins = [];
+
+                            Object.keys(lastLogins).forEach((lastLogin) => {
+                                parsedLastLogins.push({
+                                    id: lastLogin,
+                                    ...lastLogins[lastLogin]
+                                });
+                            })
+
+
+                            var loginAt = lastLoginObj.loginAt;
+                            if(lastLoginsSize >0){
+                                loginAt = parsedLastLogins[lastLoginsSize-1].loginAt;
+                            }
+
+                            return dispatch(lastLogin(loginAt, gClientIp));
+                        });
+                    }
+                )
+            }, (error) => {
+                console.log("Unable to auth", error);
+                var errorObj = {
+                    errorCode: error.code,
+                    errorMessage: error.message
+                };
+                return dispatch(bbzReportError(errorObj));
+            })
+    };
+};
 
 //</editor-fold>
 

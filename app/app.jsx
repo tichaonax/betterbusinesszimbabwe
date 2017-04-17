@@ -8,15 +8,22 @@ var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
 
-
 store.dispatch(actions.bbzClearError());
-
+store.dispatch(actions.resetUserProfile());
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+        console.debug("subscribed user:", user);
+
+        var displayName = user.email;
+
+        if (user.displayName) {
+            displayName = user.displayName;
+        }
+
         var auth = {
             uid: user.uid,
-            displayName: user.displayName,
+            displayName: displayName,
             email: user.email,
             photoURL: user.photoURL,
             loggedIn: true
@@ -26,7 +33,9 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(actions.startSetUserProfile());
         hashHistory.push('/bbzreviews');
     } else {
+        console.debug("user session invlaid:", user);
         store.dispatch(actions.bbzLogout());
+        store.dispatch(actions.resetUserProfile());
         hashHistory.push('/');
     }
 });

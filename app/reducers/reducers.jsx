@@ -104,6 +104,13 @@ export var userProfileReducer = (state = null, action) => {
             return action.profile;
         case 'RESET_USER_PROFILE':
             return null
+        case 'ADD_LAST_LOGIN':
+            return {
+                ...state,
+                lastLogins: {
+                    loginAt: action.loginAt, ipAddress: action.ipAddress
+                }
+            }
         default:
             return state;
     };
