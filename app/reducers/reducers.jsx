@@ -102,6 +102,8 @@ export var userProfileReducer = (state = null, action) => {
             return action.profile;
         case 'ADD_USER_PROFILE':
             return action.profile;
+        case 'RESET_USER_PROFILE':
+            return null
         default:
             return state;
     };

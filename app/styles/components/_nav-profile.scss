@@ -1,0 +1,30 @@
+.nav-profile {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  padding: 1rem;
+  transition: backgrounnd .3s ease;
+
+  p, input {
+    margin: 0;
+  }
+
+  > :first-child {
+    margin-right: 1rem;
+  }
+
+  &:hover {
+    background: $very-light-grey;
+  }
+}
+
+.nav-profile__subtext {
+  color: $nice-grey;
+}
+
+.nav-profile-completed {
+  p, .nav-profile-subtext {
+    color: $light-color;
+    text-decoration: line-through;
+  }
+}

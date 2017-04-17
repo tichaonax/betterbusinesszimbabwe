@@ -15,7 +15,6 @@ export var addTodoItem = (todoItem) => {
     };
 };
 
-
 export var startAddTodoItems = (text) => {
     return (dispatch, getState) => {
         var todoItem = {
@@ -80,7 +79,6 @@ export var updateTodoItem = (id, updates) => {
     };
 };
 
-
 export var startToggleTodoItem = (id, completed) => {
     return (dispatch, getState) => {
         var uid = getState().auth.uid;
@@ -99,7 +97,6 @@ export var startToggleTodoItem = (id, completed) => {
 
     };
 };
-
 
 export var bbzReportError = (error) => {
     return {
@@ -214,7 +211,11 @@ export var startBbzLogout = () => {
         return firebase.auth().signOut().then(() => {
             console.log("Logggedout!");
             return dispatch(bbzLogout());
-        });
+        }).then(
+            ()=>{
+                return dispatch(resetUserProfile());
+            }
+        );
     };
 };
 
@@ -304,6 +305,12 @@ export var setUserProfile = (profile) => {
     return {
         type: 'SET_USER_PROFILE',
         profile
+    };
+};
+
+export var resetUserProfile = () => {
+    return {
+        type: 'RESET_USER_PROFILE'
     };
 };
 

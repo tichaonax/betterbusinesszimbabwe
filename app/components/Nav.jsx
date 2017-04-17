@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from 'LoginControl';
@@ -6,38 +7,53 @@ import LoginControl from 'LoginControl';
 class Nav extends React.Component {
     constructor(props) {
         super(props);
-        // this.onSearch = this.onSearch.bind(this);
     }
-
-    // onSearch(e) {
-    //     e.preventDefault();
-    //     var location = this.refs.search.value;
-    //     var encodedLocation = encodeURIComponent(location);
-    //     if (location.length > 0) {
-    //         this.refs.search.value = '';
-    //         window.location.hash = '#/?location=' + encodedLocation;
-    //     }
-    // }
 
     renderLoginControl() {
         return (<LoginControl/>);
     }
 
     render() {
-        var {auth} = this.props;
+        var {auth, userProfile} = this.props;
 
-        function renderAvator() {
-            if (auth.photoURL) {
+        var message = "";
+
+        if (userProfile && userProfile.createDate) {
+            message = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
+        }
+
+
+        function renderMessage() {
+            if (auth.loggedIn) {
                 return (
-                    <div>
-                        {auth.displayName} <img src={auth.photoURL} alt="Smiley face" height="32" width="32"/>
+                    <div className="nav-profile">
+                        <ul className="menu">
+                            <li className="nav-profile">{auth.displayName}</li>
+                        </ul>
+                        <ul className="menu">
+                            <li className="nav-profile__subtext">{message}</li>
+                        </ul>
                     </div>
                 );
             } else {
                 return (
-                    <div>
-                        {auth.email}
+                    <div/>
+                )
+            }
+        }
+
+
+        function renderAvator() {
+            if (auth.loggedIn && auth.photoURL) {
+                return (
+                    <div className="menu">
+                        <img src={auth.photoURL} alt="Smiley face" height="40"
+                             width="40"/>
                     </div>
+                );
+            } else {
+                return (
+                    <div/>
                 )
             }
         }
@@ -67,10 +83,16 @@ class Nav extends React.Component {
                 <div className="top-bar-right">
                     <ul className="menu">
                         <li>
-                            {this.renderLoginControl()}
+                            {renderMessage()}
+                        </li>
+                        <li>
+                            &nbsp;&nbsp;
                         </li>
                         <li>
                             {renderAvator()}
+                        </li>
+                        <li>
+                            {this.renderLoginControl()}
                         </li>
                     </ul>
                 </div>
@@ -81,7 +103,8 @@ class Nav extends React.Component {
 
 function mapStateToProps(state, ownProps) {
     return {
-        auth: state.auth
+        auth: state.auth,
+        userProfile: state.userProfile
     }
 }
 export default connect(mapStateToProps)(Nav);
