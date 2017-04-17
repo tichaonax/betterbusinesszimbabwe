@@ -23,7 +23,7 @@ firebase.auth().onAuthStateChanged((user) => {
         };
 
         store.dispatch(actions.bbzLogin(auth));
-       // store.dispatch(actions.startBbzAddItems());
+        store.dispatch(actions.startSetUserProfile());
         hashHistory.push('/bbzreviews');
     } else {
         store.dispatch(actions.bbzLogout());

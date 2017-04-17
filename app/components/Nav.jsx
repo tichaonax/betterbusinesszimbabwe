@@ -25,10 +25,18 @@ class Nav extends React.Component {
 
         function renderMessage() {
             if (auth.loggedIn) {
+                console.debug("auth.loggedIn", auth, userProfile);
+                var displayName = "";
+                if (auth.displayName == null) {
+                    displayName = userProfile.displayName;
+                }else{
+                    displayName = auth.displayName;
+                }
+
                 return (
                     <div className="nav-profile">
                         <ul className="menu">
-                            <li className="nav-profile">{auth.displayName}</li>
+                            <li className="nav-profile">{displayName}</li>
                         </ul>
                         <ul className="menu">
                             <li className="nav-profile__subtext">{message}</li>
