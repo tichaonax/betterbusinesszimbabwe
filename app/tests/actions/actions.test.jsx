@@ -112,15 +112,13 @@ describe('Actions', () => {
                 done(); //test is done--- increase timeout in karma configuration file if needed
             }).catch(done)
 
-
         });
-
 
         it('should dispatch SET_USER_PROFILE', (done) => {
 
             const store = createMockStore({auth: {uid}});
 
-            store.dispatch(actions.startSetUserProfile(uid)).then(() => {
+            store.dispatch(actions.startSetUserProfile()).then(() => {
                 const actions = store.getActions();
                 expect(actions[0]).toInclude({
                     type: 'SET_USER_PROFILE'
@@ -136,6 +134,23 @@ describe('Actions', () => {
 
                 done(); //test is done--- increase timeout in karma configuration file if needed
             }).catch(done)
+
+        });
+
+        it('should call startLastLogin dispatch ADD_LAST_LOGIN', (done) => {
+
+            const store = createMockStore({auth: {uid}});
+
+            store.dispatch(actions.startLastLogin()).then(() => {
+                const actions = store.getActions();
+
+                expect(actions[0]).toInclude({
+                    type: 'ADD_LAST_LOGIN'
+                });
+
+                done(); //test is done--- increase timeout in karma configuration file if needed
+            }).catch(done)
+
 
         });
 
