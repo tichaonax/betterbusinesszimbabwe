@@ -34,13 +34,9 @@ class Nav extends React.Component {
                 }
 
                 return (
-                    <div className="nav-profile">
-                        <ul className="menu">
-                            <li className="nav-profile">{displayName}</li>
-                        </ul>
-                        <ul className="menu">
-                            <li className="nav-profile__subtext">{message}</li>
-                        </ul>
+                    <div className="nav-profile" >
+                        <p>{displayName}</p>
+                        <p className="nav-profile__subtext">{message}</p>
                     </div>
                 );
             } else {
@@ -55,8 +51,8 @@ class Nav extends React.Component {
             if (auth.loggedIn && auth.photoURL) {
                 return (
                     <div className="menu">
-                        <img src={auth.photoURL} alt="Smiley face" height="40"
-                             width="40"/>
+                        <img src={auth.photoURL} alt="Smiley face" height="32"
+                             width="32"/>
                     </div>
                 );
             } else {
