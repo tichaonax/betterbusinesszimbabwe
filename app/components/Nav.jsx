@@ -51,8 +51,7 @@ class Nav extends React.Component {
             if (auth.loggedIn && auth.photoURL) {
                 return (
                     <div className="menu">
-                        <img src={auth.photoURL} alt="Smiley face" height="32"
-                             width="32"/>
+                        <img src={auth.photoURL} alt="Smiley face" height="30" width="30"/>
                     </div>
                 );
             } else {
