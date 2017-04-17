@@ -1,12 +1,18 @@
 import moment from 'moment';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
+//<editor-fold desc="Search">
+
 export var setSearchText = (searchText) => {
     return {
         type: 'SET_SEARCH_TEXT',
         searchText
     };
 };
+
+//</editor-fold>
+
+//<editor-fold desc="**** Old Stuff ****>
 
 export var addTodoItem = (todoItem) => {
     return {
@@ -98,6 +104,10 @@ export var startToggleTodoItem = (id, completed) => {
     };
 };
 
+//</editor-fold>
+
+//<editor-fold desc="Error">
+
 export var bbzReportError = (error) => {
     return {
         type: 'BBZ_REPORT_ERROR',
@@ -111,12 +121,20 @@ export var bbzClearError = () => {
     };
 };
 
+//</editor-fold>
+
+//<editor-fold desc="Login">
+
 export var bbzLogin = (auth) => {
     return {
         type: 'BBZ_LOGIN',
         auth
     };
 };
+
+//</editor-fold>
+
+//<editor-fold desc="Provider Login">
 
 export var startBbzLogin = (provider) => {
     var gAuth;
@@ -156,6 +174,10 @@ export var startBbzLogin = (provider) => {
         )
     };
 };
+
+//</editor-fold>
+
+//<editor-fold desc="Email Login">
 
 export var startBbzEmailLogin = (email, password) => {
     var gAuth;
@@ -198,6 +220,9 @@ export var startBbzEmailLogin = (email, password) => {
     };
 };
 
+//</editor-fold>
+
+//<editor-fold desc="Logout">
 
 export var bbzLogout = () => {
     return {
@@ -218,6 +243,10 @@ export var startBbzLogout = () => {
         );
     };
 };
+
+//</editor-fold>
+
+//<editor-fold desc="Create Account">
 
 export var startBbzCreateAccount = (email, password) => {
     var gAuth;
@@ -258,6 +287,10 @@ export var startBbzCreateAccount = (email, password) => {
     };
 };
 
+//</editor-fold>
+
+//<editor-fold desc="Password Reset">
+
 export var startSendPasswordResetEmail = (email) => {
     console.log("Start Create New Account !");
     return (dispatch, getState) => {
@@ -284,12 +317,17 @@ export var startSendPasswordResetEmail = (email) => {
     };
 };
 
+//</editor-fold>
+
+//<editor-fold desc="Navigation">
+
 export var setRedirectUrl = (currentURL) => {
     return {
         type: 'SET_REDIRECT_URL',
         currentURL
     };
 }
+
 
 export var navigateTo = (navigateToUrl) => {
     return {
@@ -298,8 +336,9 @@ export var navigateTo = (navigateToUrl) => {
     };
 }
 
+//</editor-fold>
 
-//// User Profile
+//<editor-fold desc="User Profile">
 
 export var setUserProfile = (profile) => {
     return {
@@ -351,6 +390,40 @@ export var addUserProfile = (profile) => {
         )
     };
 };
+//</editor-fold>
+
+//<editor-fold desc="lastLogins">
+export var lastLogin = (loginAt, ipAddress) => {
+    return {
+        type: 'ADD_LAST_LOGIN',
+        loginAt,
+        ipAddress
+    };
+};
+
+
+
+//</editor-fold>
+
+//<editor-fold desc="reviews">
+
+export var reviews = (review) => {
+    return {
+        type: 'ADD_REVIEW',
+        review
+    };
+};
+
+//</editor-fold>
+
+//<editor-fold desc="companies">
+export var companies = (company) => {
+    return {
+        type: 'ADD_COMPANY',
+        company
+    };
+};
+//</editor-fold>
 
 
 
