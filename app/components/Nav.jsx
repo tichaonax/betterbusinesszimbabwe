@@ -29,12 +29,12 @@ class Nav extends React.Component {
                 var displayName = "";
                 if (auth.displayName == null) {
                     displayName = userProfile.displayName;
-                }else{
+                } else {
                     displayName = auth.displayName;
                 }
 
                 return (
-                    <div className="nav-profile" >
+                    <div className="nav-profile">
                         <p>{displayName}</p>
                         <p className="nav-profile__subtext">{message}</p>
                     </div>
@@ -48,12 +48,32 @@ class Nav extends React.Component {
 
 
         function renderAvator() {
-            if (auth.loggedIn && auth.photoURL) {
-                return (
-                    <div className="menu">
-                        <img src={auth.photoURL} alt="Smiley face" height="30" width="30"/>
-                    </div>
-                );
+            if (auth.loggedIn) {
+
+                var lastLogin = "";
+
+                if (userProfile && userProfile.lastLogins) {
+                    lastLogin = "Last Login " + moment.unix(userProfile.lastLogins.loginAt).format('MMM Do, YYYY @ h:mm a');
+                }
+
+                if (auth.photoURL) {
+                    return (
+                        <div className="menu">
+                            <img src={auth.photoURL} alt="Smiley face" height="30" width="30"/>
+                            <p className="nav-profile__subtext">
+                                {lastLogin}
+                            </p>
+                        </div>
+                    );
+                } else {
+                    return (
+                        <div className="menu">
+                            <p className="nav-profile__subtext">
+                                {lastLogin}
+                            </p>
+                        </div>
+                    );
+                }
             } else {
                 return (
                     <div/>
@@ -67,16 +87,20 @@ class Nav extends React.Component {
                     <ul className="menu">
                         <li className="menu-text">Better Business Zimbabwe</li>
                         <li>
-                            <IndexLink to="/" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Home</IndexLink>
+                            <IndexLink to="/" activeClassName="active"
+                                       activeStyle={{fontWeight: 'bold'}}>Home</IndexLink>
                         </li>
                         <li>
-                            <Link to="/bbzreviews" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
+                            <Link to="/bbzreviews" activeClassName="active"
+                                  activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
                         </li>
                         <li>
-                            <Link to="/weather" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Weather</Link>
+                            <Link to="/weather" activeClassName="active"
+                                  activeStyle={{fontWeight: 'bold'}}>Weather</Link>
                         </li>
                         <li>
-                            <Link to="/examples" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>Examples</Link>
+                            <Link to="/examples" activeClassName="active"
+                                  activeStyle={{fontWeight: 'bold'}}>Examples</Link>
                         </li>
                         <li>
                             <Link to="/about" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>About</Link>

@@ -454,13 +454,14 @@ export var startLastLogin = () => {
                                 });
                             })
 
-
-                            var loginAt = lastLoginObj.loginAt;
+                            var lastLoginAt = lastLoginObj.loginAt;
                             if(lastLoginsSize >0){
-                                loginAt = parsedLastLogins[lastLoginsSize-1].loginAt;
+                                lastLoginAt = parsedLastLogins[lastLoginsSize-1].loginAt;
                             }
 
-                            return dispatch(lastLogin(loginAt, gClientIp));
+                            parsedLastLogins = null;
+
+                            return dispatch(lastLogin(lastLoginAt, gClientIp));
                         });
                     }
                 )
