@@ -3,6 +3,7 @@ import moment from 'moment';
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from 'LoginControl';
+import LoginStats from 'LoginStats';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -11,6 +12,10 @@ class Nav extends React.Component {
 
     renderLoginControl() {
         return (<LoginControl/>);
+    }
+
+    renderLoginStats() {
+        return (<LoginStats/>);
     }
 
     render() {
@@ -76,7 +81,8 @@ class Nav extends React.Component {
                 }
             } else {
                 return (
-                    <div/>
+                    <div>
+                    </div>
                 )
             }
         }
@@ -109,6 +115,9 @@ class Nav extends React.Component {
                 </div>
                 <div className="top-bar-right">
                     <ul className="menu">
+                        <li>
+                            {this.renderLoginStats()}
+                        </li>
                         <li>
                             {renderMessage()}
                         </li>
