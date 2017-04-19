@@ -3,7 +3,7 @@ import moment from 'moment';
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from 'LoginControl';
-import LoginStats from 'LoginStats';
+import LoginStatus from 'LoginStatus';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -15,58 +15,18 @@ class Nav extends React.Component {
     }
 
     renderLoginStats() {
-        return (<LoginStats/>);
+        return (<LoginStatus/>);
     }
 
     render() {
-        var {auth, userProfile} = this.props;
-
-        var message = "";
-
-        if (userProfile && userProfile.createDate) {
-            message = "Joined " + moment.unix(userProfile.createDate).format('MMM Do, YYYY');
-        }
-
-
-        function renderMessage() {
-            if (auth.loggedIn) {
-                console.debug("auth.loggedIn", auth, userProfile);
-                var displayName = "";
-                if (auth.displayName == null) {
-                    displayName = userProfile.displayName;
-                } else {
-                    displayName = auth.displayName;
-                }
-
-                return (
-                    <div className="nav-profile">
-                        <p>{displayName}</p>
-                        <p className="nav-profile__subtext">{message}</p>
-                    </div>
-                );
-            } else {
-                return (
-                    <div/>
-                )
-            }
-        }
-
-
+        var {auth} = this.props;
         function renderAvator() {
             if (auth.loggedIn) {
-
-                var lastLogin = "";
-
-                if (userProfile && userProfile.lastLogins) {
-                    lastLogin = "Last Login " + moment.unix(userProfile.lastLogins.loginAt).format('MMM Do, YYYY @ h:mm a');
-                }
-
                 if (auth.photoURL) {
                     return (
                         <div className="menu">
-                            <img src={auth.photoURL} alt="Smiley face" height="30" width="30"/>
+                            <img src={auth.photoURL} alt="Smiley face" height="60" width="60"/>
                             <p className="nav-profile__subtext">
-                                {lastLogin}
                             </p>
                         </div>
                     );
@@ -74,7 +34,6 @@ class Nav extends React.Component {
                     return (
                         <div className="menu">
                             <p className="nav-profile__subtext">
-                                {lastLogin}
                             </p>
                         </div>
                     );
@@ -117,9 +76,6 @@ class Nav extends React.Component {
                     <ul className="menu">
                         <li>
                             {this.renderLoginStats()}
-                        </li>
-                        <li>
-                            {renderMessage()}
                         </li>
                         <li>
                             &nbsp;&nbsp;
