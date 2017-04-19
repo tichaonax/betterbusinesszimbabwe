@@ -143,13 +143,13 @@ export var startBbzLogin = (provider) => {
         return firebase.auth().signInWithPopup(provider).then((result) => {
             console.log("Auth worked!", result);
 
-             gAuth = {
-                 uid: result.user.uid,
-                 displayName: result.user.displayName,
-                 email: result.user.email,
-                 photoURL: result.user.photoURL,
-                 loggedIn: true
-             };
+            gAuth = {
+                uid: result.user.uid,
+                displayName: result.user.displayName,
+                email: result.user.email,
+                photoURL: result.user.photoURL,
+                loggedIn: true
+            };
             console.log("Auth data!", gAuth);
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
@@ -160,20 +160,20 @@ export var startBbzLogin = (provider) => {
             };
             return dispatch(bbzReportError(errorObj));
         }).then(
-            ()=>{
+            () => {
                 return dispatch(startSetUserProfile()).then(
-                    ()=>{
+                    () => {
                         var timestamp = getState().userProfile.createDate;
-                        if(timestamp){
-                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a') );
-                        }else{
+                        if (timestamp) {
+                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                        } else {
                             return dispatch(startAddUserProfile(gAuth.email, gAuth.displayName));
                         }
                     }
                 )
             }
         ).then(
-            ()=>{
+            () => {
                 return dispatch(startLastLogin());
             }
         )
@@ -209,20 +209,20 @@ export var startBbzEmailLogin = (email, password) => {
             };
             return dispatch(bbzReportError(errorObj));
         }).then(
-            ()=>{
+            () => {
                 return dispatch(startSetUserProfile()).then(
-                    ()=>{
+                    () => {
                         var timestamp = getState().userProfile.createDate;
-                        if(timestamp){
-                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a') );
-                        }else{
+                        if (timestamp) {
+                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                        } else {
                             return dispatch(startAddUserProfile(gAuth.email, gAuth.displayName));
                         }
                     }
                 )
             }
         ).then(
-            ()=>{
+            () => {
                 return dispatch(startLastLogin());
             }
         )
@@ -246,7 +246,7 @@ export var startBbzLogout = () => {
             console.log("Logggedout!");
             return dispatch(bbzLogout());
         }).then(
-            ()=>{
+            () => {
                 return dispatch(resetUserProfile());
             }
         );
@@ -280,20 +280,20 @@ export var startBbzCreateAccount = (email, password) => {
             };
             return dispatch(bbzReportError(errorObj));
         }).then(
-            ()=>{
+            () => {
                 return dispatch(startSetUserProfile()).then(
-                    ()=>{
+                    () => {
                         var timestamp = getState().userProfile.createDate;
-                        if(timestamp){
-                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a') );
-                        }else{
+                        if (timestamp) {
+                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                        } else {
                             return dispatch(startAddUserProfile(gAuth.email, gAuth.displayName));
                         }
                     }
                 )
             }
         ).then(
-            ()=>{
+            () => {
                 return dispatch(startLastLogin());
             }
         )
@@ -310,15 +310,15 @@ export var startSendPasswordResetEmail = (email) => {
         return firebase.auth().sendPasswordResetEmail(email).then((result) => {
             console.log("Reset Password Email Sent!", result);
 
-           /* var auth = {
-                uid: result.user.uid,
-                displayName: result.user.displayName,
-                email: result.user.email,
-                photoURL: result.user.photoURL,
-                loggedIn: true
-            };*/
-           // console.log("Auth data!", auth);
-           return dispatch(bbzClearError());
+            /* var auth = {
+             uid: result.user.uid,
+             displayName: result.user.displayName,
+             email: result.user.email,
+             photoURL: result.user.photoURL,
+             loggedIn: true
+             };*/
+            // console.log("Auth data!", auth);
+            return dispatch(bbzClearError());
         }, (error) => {
             console.log("Unable to sent Password reset email", error);
             var errorObj = {
@@ -386,7 +386,7 @@ export var addUserProfile = (profile) => {
 };
 
 
-    export var startAddUserProfile = (email, displayName) => {
+export var startAddUserProfile = (email, displayName) => {
     console.log("Start Add User Profile!");
     return (dispatch, getState) => {
         var profile = {
@@ -406,12 +406,11 @@ export var addUserProfile = (profile) => {
 //</editor-fold>
 
 //<editor-fold desc="lastLogins">
-export var lastLogin = (loginAt, ipAddress) => {
-    console.debug("lastLogin", loginAt, ipAddress);
+export var lastLogin = (lastLoginInfo) => {
+    console.debug("lastLogin", lastLoginInfo);
     return {
         type: 'ADD_LAST_LOGIN',
-        loginAt,
-        ipAddress
+        lastLoginInfo
     };
 };
 
@@ -421,59 +420,77 @@ export var startLastLogin = () => {
 
         var gClientIp;
 
-        var uid = getState().auth.uid;
+        var gUid = getState().auth.uid;
 
         return requestip.getClientIpAddress().then(
             (clientIp) => {
                 gClientIp = clientIp.trim();
-                console.debug("Cleint IP: ", gClientIp.trim());
 
-                var lastLoginObj = {
-                    ipAddress: gClientIp,
-                    loginAt: moment().unix()
-                }
+                console.debug("Cleint IP: ", gClientIp);
 
-                var lastLoginRef = firebaseRef.child(`users/${uid}/userProfile/lastLogins`);
+                let ipInfoPromise = requestip.getClientLocationByIpAddress(gClientIp).then((response) => {
+                    var newLoginInfo = {};
+                    newLoginInfo.ipAddress = gClientIp;
+                    newLoginInfo.loginAt = moment().unix();
+                    console.debug("ipInfoPromise", response);
+                    newLoginInfo.country = response.country;
+                    newLoginInfo.city = response.city;
+                    Promise.resolve();
+                    return (newLoginInfo);
+                });
 
-                return lastLoginRef.once('value').then(
+                var lastLoginRef = firebaseRef.child(`users/${gUid}/userProfile/lastLogins`);
+
+                let firebasePromise = lastLoginRef.once('value').then(
                     (snapshot) => {
-                        var lastLogins = snapshot.val() || {}; //return available data or empty object
+                        var lastLogins = snapshot.val() || {};
 
+                        console.debug("lastLogins,", lastLogins);
                         const lastLoginsSize = Object.keys(lastLogins).length;
+                        console.debug("lastLoginsSize:", lastLoginsSize);
 
-                        return lastLoginRef.push(lastLoginObj).then(() => {
+                        var parsedLastLogins = [];
 
-                            console.debug("lastLoginRef.key", lastLoginRef.key);
+                        Object.keys(lastLogins).forEach((lastLogin) => {
+                            parsedLastLogins.push({
+                                id: lastLogin,
+                                ...lastLogins[lastLogin]
+                            });
+                        })
 
-                            var parsedLastLogins = [];
+                        var lastLoginInfo = {};
 
-                            Object.keys(lastLogins).forEach((lastLogin) => {
-                                parsedLastLogins.push({
-                                    id: lastLogin,
-                                    ...lastLogins[lastLogin]
-                                });
-                            })
+                        if (lastLoginsSize > 0) {
+                            const obj = parsedLastLogins[lastLoginsSize - 1];
+                            lastLoginInfo.loginAt = obj.loginAt;
+                            lastLoginInfo.city = obj.city;
+                            lastLoginInfo.country = obj.country;
+                        }
 
-                            var lastLoginAt = lastLoginObj.loginAt;
-                            if(lastLoginsSize >0){
-                                lastLoginAt = parsedLastLogins[lastLoginsSize-1].loginAt;
+                        parsedLastLogins = null;
+                        console.debug("dispatch lastLoginInfo:", lastLoginInfo);
+                        Promise.resolve();
+                        return (lastLoginInfo);
+                    });
+
+                Promise.all([ipInfoPromise, firebasePromise]).then((values) => {
+                        const newLogin = values[0];
+                        const oldLogin = values[1];
+                        console.debug("Promise.all-1", newLogin);
+                        console.debug("Promise.all-2", oldLogin);
+                        return lastLoginRef.push(newLogin).then(() => {
+                            if (oldLogin.city) {
+                                //user's last login
+                                return dispatch(lastLogin(oldLogin));
+                            } else {
+                                //this is the user's first login
+                                return dispatch(lastLogin(newLogin));
                             }
-
-                            parsedLastLogins = null;
-
-                            return dispatch(lastLogin(lastLoginAt, gClientIp));
                         });
                     }
-                )
-            }, (error) => {
-                console.log("Unable to auth", error);
-                var errorObj = {
-                    errorCode: error.code,
-                    errorMessage: error.message
-                };
-                return dispatch(bbzReportError(errorObj));
-            })
-    };
+                );
+            });
+    }
 };
 
 //</editor-fold>

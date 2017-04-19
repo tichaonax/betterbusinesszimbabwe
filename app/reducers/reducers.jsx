@@ -108,7 +108,7 @@ export var userProfileReducer = (state = null, action) => {
             return {
                 ...state,
                 lastLogins: {
-                    loginAt: action.loginAt, ipAddress: action.ipAddress
+                    ...action.lastLoginInfo
                 }
             }
         default:
