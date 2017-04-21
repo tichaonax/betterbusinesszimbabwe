@@ -51,17 +51,18 @@ module.exports = {
         modulesDirectories: [
             'node_modules',
             './app/account',
+            './app/admin',
             './app/components',
             './app/api',
             './app/home',
             './app/login',
             './app/company',
+            './app/review',
             './app/weather',
             './app/userprofile',
             './app/search',
             './app/error',
             './app/url'
-
         ],
         alias: {
             app: 'app',
