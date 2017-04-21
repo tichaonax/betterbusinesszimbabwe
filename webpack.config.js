@@ -51,12 +51,21 @@ module.exports = {
         modulesDirectories: [
             'node_modules',
             './app/components',
-            './app/api'
+            './app/api',
+            './app/home',
+            './app/login',
+            './app/company',
         ],
         alias: {
             app: 'app',
             applicationStyles: 'app/styles/app.scss',
             actions: 'app/actions/actions.jsx',
+            loginActions: 'app/login/loginActions.jsx',
+            loginReducers: 'app/login/LoginReducers.jsx',
+            errorActions: 'app/error/errorActions.jsx',
+            errorReducers: 'app/error/errorReducers.jsx',
+            searchActions: 'app/search/searchActions.jsx',
+            searchReducers: 'app/search/searchReducers.jsx'
             reducers: 'app/reducers/reducers.jsx',
             configureStore: 'app/store/configureStore.jsx'
         },

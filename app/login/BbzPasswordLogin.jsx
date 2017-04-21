@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
 import * as actions from 'actions';
-import Error from 'Error';
+import Error from '../error/Error';
 
 export class BbzPasswordLogin extends React.Component {
     constructor(props) {
