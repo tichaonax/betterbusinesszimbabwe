@@ -1,6 +1,5 @@
 import moment from 'moment';
-import requestip from 'clientIpAddress';
-import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
+import firebase, {firebaseRef} from 'app/firebase/index';
 
 //<editor-fold desc="User Profile">
 
@@ -56,8 +55,3 @@ export var startAddUserProfile = (email, displayName) => {
     };
 };
 //</editor-fold>
-
-
-
-
-

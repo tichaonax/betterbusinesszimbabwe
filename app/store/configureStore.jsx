@@ -1,6 +1,13 @@
 import * as redux from 'redux';
 import thunk from 'redux-thunk';
-import {
+import {userProfileReducer} from 'profileReducers';
+import {firebaseAuthReducer} from 'loginReducers';
+import {setRedirectUrlReducer} from 'urlReducers';
+import {bbzErrorReducer} from 'errorReducers';
+import {searchTextReducer} from 'searchReducers';
+import {todoItemsReducer, showCompletedReducer} from 'reducers';
+
+/*import {
     todoItemsReducer,
     searchTextReducer,
     showCompletedReducer,
@@ -8,17 +15,17 @@ import {
     setRedirectUrlReducer,
     bbzErrorReducer,
     userProfileReducer
-} from 'reducers';
+} from 'reducers';*/
 
-export var configure = (initialState ={}) => {
+export var configure = (initialState = {}) => {
     var reducer = redux.combineReducers({
         searchText: searchTextReducer,
-        todoItems: todoItemsReducer,
-        showCompleted: showCompletedReducer,
         auth: firebaseAuthReducer,
-        redirectUrl : setRedirectUrlReducer,
+        redirectUrl: setRedirectUrlReducer,
         error: bbzErrorReducer,
-        userProfile: userProfileReducer
+        userProfile: userProfileReducer,
+        todoItems: todoItemsReducer,
+        showCompleted: showCompletedReducer
     });
 
 //create store and load developer tools if they exist

@@ -1,6 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import * as actions from 'actions';
+var accountActions = require('accountActions');
+var loginActions = require('loginActions');
+var errorActions = require('errorActions');
+var urlActions = require('urlActions');
 import Error from '../error/Error';
 
 export class CreateNewAccount extends React.Component {
@@ -17,20 +20,20 @@ export class CreateNewAccount extends React.Component {
     componentDidMount() {
         const {dispatch, currentURL, isLoggedIn, error} = this.props;
         if (!isLoggedIn) {
-            dispatch(actions.setRedirectUrl(currentURL));
+            dispatch(urlActions.setRedirectUrl(currentURL));
         } else {
-            dispatch(actions.startBbzLogout());
+            dispatch(loginActions.startBbzLogout());
         }
 
         if (error) {
-            dispatch(actions.bbzClearError());
+            dispatch(errorActions.bbzClearError());
         }
     }
 
     onCreateNewAccount = (e) => {
         e.preventDefault();
         var {dispatch} = this.props;
-        dispatch(actions.startBbzCreateAccount(this.state.email, this.state.password));
+        dispatch(accountActions.startBbzCreateAccount(this.state.email, this.state.password));
     };
 
     onChangePassword = (e) => {
@@ -44,7 +47,7 @@ export class CreateNewAccount extends React.Component {
     onInputFocus = (e) => {
         const {dispatch, error} = this.props;
         if (error) {
-            dispatch(actions.bbzClearError());
+            dispatch(errorActions.bbzClearError());
         }
     }
 

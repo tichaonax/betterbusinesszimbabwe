@@ -2,8 +2,8 @@ import moment from 'moment';
 import requestip from 'clientIpAddress';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
-import * as errorActions from 'errorActions';
-import * as profileActions from 'profileActions';
+var errorActions = require('errorActions');
+var profileActions = require('profileActions');
 
 //<editor-fold desc="Login">
 
@@ -42,13 +42,13 @@ export var startBbzLogin = (provider) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(startSetUserProfile()).then(
+                return dispatch(profileActions.startSetUserProfile()).then(
                     () => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(startAddUserProfile(gAuth.email, gAuth.displayName));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName));
                         }
                     }
                 )
@@ -91,13 +91,13 @@ export var startBbzEmailLogin = (email, password) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(startSetUserProfile()).then(
+                return dispatch(profileActions.startSetUserProfile()).then(
                     () => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(startAddUserProfile(gAuth.email, gAuth.displayName));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName));
                         }
                     }
                 )
@@ -128,86 +128,9 @@ export var startBbzLogout = () => {
             return dispatch(bbzLogout());
         }).then(
             () => {
-                return dispatch(resetUserProfile());
+                return dispatch(profileActions.resetUserProfile());
             }
         );
-    };
-};
-
-//</editor-fold>
-
-//<editor-fold desc="Create Account">
-
-export var startBbzCreateAccount = (email, password) => {
-    var gAuth;
-    return (dispatch, getState) => {
-        return firebase.auth().createUserWithEmailAndPassword(email, password).then((result) => {
-            console.log("Auth with Email and Password worked!", result);
-
-            gAuth = {
-                uid: result.uid,
-                displayName: result.email,
-                email: result.email,
-                photoURL: result.photoURL,
-                loggedIn: true
-            };
-            console.log("Auth data!", gAuth);
-            return dispatch(bbzLogin(gAuth));
-        }, (error) => {
-            console.log("Unable to create new Account", error);
-            var errorObj = {
-                errorCode: error.code,
-                errorMessage: error.message
-            };
-            return dispatch(errorActions.bbzReportError(errorObj));
-        }).then(
-            () => {
-                return dispatch(startSetUserProfile()).then(
-                    () => {
-                        var timestamp = getState().userProfile.createDate;
-                        if (timestamp) {
-                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
-                        } else {
-                            return dispatch(startAddUserProfile(gAuth.email, gAuth.displayName));
-                        }
-                    }
-                )
-            }
-        ).then(
-            () => {
-                return dispatch(startLastLogin());
-            }
-        )
-    };
-};
-
-//</editor-fold>
-
-//<editor-fold desc="Password Reset">
-
-export var startSendPasswordResetEmail = (email) => {
-    console.log("Start Create New Account !");
-    return (dispatch, getState) => {
-        return firebase.auth().sendPasswordResetEmail(email).then((result) => {
-            console.log("Reset Password Email Sent!", result);
-
-            /* var auth = {
-             uid: result.user.uid,
-             displayName: result.user.displayName,
-             email: result.user.email,
-             photoURL: result.user.photoURL,
-             loggedIn: true
-             };*/
-            // console.log("Auth data!", auth);
-            return dispatch(errorActions.bbzClearError());
-        }, (error) => {
-            console.log("Unable to sent Password reset email", error);
-            var errorObj = {
-                errorCode: error.code,
-                errorMessage: error.message
-            };
-            return dispatch(errorActions.bbzReportError(errorObj));
-        });
     };
 };
 

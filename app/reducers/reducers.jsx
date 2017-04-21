@@ -42,20 +42,6 @@ export var todoItemsReducer = (state = [], action) => {
     ;
 };
 
-export var firebaseAuthReducer = (state = {loggedIn: false}, action) => {
-    switch (action.type) {
-        case 'BBZ_LOGIN':
-            return {
-                ...action.auth
-            };
-        case 'BBZ_LOGOUT':
-            return {loggedIn: false};
-        default:
-            return state;
-    };
-};
-
-
 export var showCompletedReducer = (state = false, action) => {
     switch (action.type) {
         case 'TOGGLE_SHOW_COMPLETED':
@@ -65,53 +51,3 @@ export var showCompletedReducer = (state = false, action) => {
     };
 };
 
-
-export var setRedirectUrlReducer = (state = '/', action) => {
-    switch (action.type) {
-        case 'SET_REDIRECT_URL':
-            return action.currentURL;
-        default:
-            return state;
-    };
-};
-
-
-export var navigateToReducer = (state = '/', action) => {
-    switch (action.type) {
-        case 'NAVIGATE_TO_URL':
-            return action.navigateToUrl;
-        default:
-            return state;
-    };
-};
-
-export var bbzErrorReducer = (state = null, action) => {
-    switch (action.type) {
-        case 'BBZ_REPORT_ERROR':
-            return action.error;
-        case 'BBZ_CLEAR_ERROR':
-            return null;
-        default:
-            return state;
-    }
-};
-
-export var userProfileReducer = (state = null, action) => {
-    switch (action.type) {
-        case 'SET_USER_PROFILE':
-            return action.profile;
-        case 'ADD_USER_PROFILE':
-            return action.profile;
-        case 'RESET_USER_PROFILE':
-            return null
-        case 'ADD_LAST_LOGIN':
-            return {
-                ...state,
-                lastLogins: {
-                    ...action.lastLoginInfo
-                }
-            }
-        default:
-            return state;
-    };
-};

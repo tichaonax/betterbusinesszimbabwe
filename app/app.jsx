@@ -3,13 +3,16 @@ import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {hashHistory} from 'react-router';
 
-var actions = require('actions');
+var loginActions = require('loginActions');
+var errorActions = require('errorActions');
+var profileActions = require('profileActions');
 var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
 
-store.dispatch(actions.bbzClearError());
-store.dispatch(actions.resetUserProfile());
+
+store.dispatch(errorActions.bbzClearError());
+store.dispatch(profileActions.resetUserProfile());
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -29,13 +32,13 @@ firebase.auth().onAuthStateChanged((user) => {
             loggedIn: true
         };
 
-        store.dispatch(actions.bbzLogin(auth));
-        store.dispatch(actions.startSetUserProfile());
+        store.dispatch(loginActions.bbzLogin(auth));
+        store.dispatch(profileActions.startSetUserProfile());
         hashHistory.push('/bbzreviews');
     } else {
         console.debug("user session invlaid:", user);
-        store.dispatch(actions.bbzLogout());
-        store.dispatch(actions.resetUserProfile());
+        store.dispatch(loginActions.bbzLogout());
+        store.dispatch(profileActions.resetUserProfile());
         hashHistory.push('/');
     }
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import * as actions from 'actions';
+var loginActions = require('loginActions');
 import {connect} from 'react-redux';
 var {Link} = require('react-router');
 
@@ -14,7 +14,7 @@ export class LoginControl extends React.Component {
     onLogout = (e) => {
         var {dispatch} = this.props;
         e.preventDefault();
-        dispatch(actions.startBbzLogout());
+        dispatch(loginActions.startBbzLogout());
     }
 
     render() {

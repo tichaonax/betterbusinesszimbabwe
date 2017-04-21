@@ -1,6 +1,6 @@
 var React = require('react');
 var {connect} = require('react-redux');
-import * as actions from 'actions';
+var urlActions = require('urlActions');
 
 export class BbzLoggedInContainer extends React.Component {
     componentDidMount() {
@@ -8,7 +8,7 @@ export class BbzLoggedInContainer extends React.Component {
         console.debug("currentURL", currentURL);
         if (!isLoggedIn) {
             // set the current url/path for future redirection (we use a Redux action)
-            dispatch(actions.setRedirectUrl(currentURL));
+            dispatch(urlActions.setRedirectUrl(currentURL));
             // then redirect to login page
             router.push("/login");
         }

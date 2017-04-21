@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import Nav from '../components/Nav';
+import Nav from '../navigation/Nav';
 
 class Main extends React.Component {
     constructor(props) {

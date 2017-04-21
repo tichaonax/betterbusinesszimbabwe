@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from '../login/LoginControl';

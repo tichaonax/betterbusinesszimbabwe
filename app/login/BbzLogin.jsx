@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import * as actions from 'actions';
+var loginActions = require('loginActions');
 import {githubProvider, facebookProvider, googleProvider}  from 'app/firebase/';
 import {Link} from 'react-router';
 
@@ -20,13 +20,13 @@ export class BbzLogin extends React.Component {
 
         switch ($(e.target).attr('id')) {
             case 'google':
-                dispatch(actions.startBbzLogin(googleProvider));
+                dispatch(loginActions.startBbzLogin(googleProvider));
                 break;
             case 'facebook':
-                dispatch(actions.startBbzLogin(facebookProvider));
+                dispatch(loginActions.startBbzLogin(facebookProvider));
                 break;
             case 'github':
-                dispatch(actions.startBbzLogin(githubProvider));
+                dispatch(loginActions.startBbzLogin(githubProvider));
                 break;
             default:
                 break;

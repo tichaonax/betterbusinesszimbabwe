@@ -50,22 +50,34 @@ module.exports = {
         root: __dirname,
         modulesDirectories: [
             'node_modules',
+            './app/account',
             './app/components',
             './app/api',
             './app/home',
             './app/login',
             './app/company',
+            './app/weather',
+            './app/userprofile',
+            './app/search',
+            './app/error',
+            './app/url'
+
         ],
         alias: {
             app: 'app',
             applicationStyles: 'app/styles/app.scss',
-            actions: 'app/actions/actions.jsx',
             loginActions: 'app/login/loginActions.jsx',
             loginReducers: 'app/login/LoginReducers.jsx',
             errorActions: 'app/error/errorActions.jsx',
             errorReducers: 'app/error/errorReducers.jsx',
             searchActions: 'app/search/searchActions.jsx',
-            searchReducers: 'app/search/searchReducers.jsx'
+            searchReducers: 'app/search/searchReducers.jsx',
+            profileActions: 'app/userprofile/profileActions.jsx',
+            profileReducers: 'app/userprofile/profileReducers.jsx',
+            urlActions: 'app/url/urlActions.jsx',
+            urlReducers: 'app/url/urlReducers.jsx',
+            accountActions: 'app/account/accountActions.jsx',
+            actions: 'app/actions/actions.jsx',
             reducers: 'app/reducers/reducers.jsx',
             configureStore: 'app/store/configureStore.jsx'
         },
