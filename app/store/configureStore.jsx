@@ -6,16 +6,7 @@ import {setRedirectUrlReducer} from 'urlReducers';
 import {bbzErrorReducer} from 'errorReducers';
 import {searchTextReducer} from 'searchReducers';
 import {todoItemsReducer, showCompletedReducer} from 'reducers';
-
-/*import {
-    todoItemsReducer,
-    searchTextReducer,
-    showCompletedReducer,
-    firebaseAuthReducer,
-    setRedirectUrlReducer,
-    bbzErrorReducer,
-    userProfileReducer
-} from 'reducers';*/
+import {serviceItemsReducer} from 'serviceItemsReducer';
 
 export var configure = (initialState = {}) => {
     var reducer = redux.combineReducers({
@@ -25,7 +16,8 @@ export var configure = (initialState = {}) => {
         error: bbzErrorReducer,
         userProfile: userProfileReducer,
         todoItems: todoItemsReducer,
-        showCompleted: showCompletedReducer
+        showCompleted: showCompletedReducer,
+        serviceItems: serviceItemsReducer
     });
 
 //create store and load developer tools if they exist
