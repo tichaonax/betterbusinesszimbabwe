@@ -1,0 +1,33 @@
+login-status {
+  p {
+    margin: 0;
+  }
+
+  h6 {
+    font-size: 1.0em;
+    margin: -1.5em 0 .5em 0;
+    color: rgb(244, 134, 66);
+    text-align: center;
+  }
+
+  div {
+    margin: 10px 10px 0 10px;
+    color: rgba(16, 16, 17, 2);
+  }
+
+  div p {
+    color: rgba(163, 168, 167, 7);
+  }
+
+  div aside {
+    width: 33%;
+    float: left;
+    border-left: 1px solid rgba(0, 0, 255, .2);
+    padding: 0 20px 0 30px;
+    box-sizing: border-box;
+  }
+
+  div aside :first-of-type {
+    border-left: none;
+  }
+}

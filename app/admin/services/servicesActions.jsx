@@ -24,7 +24,7 @@ export var startAddNewServiceItem = (title, description) => {
         return serviceItemRef.then(() => {
             dispatch(addServiceItem({
                 ...serviceItem,
-                serviceId: serviceItemRef.key
+                serviceItemId: serviceItemRef.key
             }));
         }, (error) => {
             console.log("Unable to add new service", error);
@@ -37,14 +37,12 @@ export var startAddNewServiceItem = (title, description) => {
     };
 };
 
-
 export var addServiceItems = (serviceItems) => {
     return {
         type: 'ADD_SERVICE_ITEMS',
         serviceItems
     };
 };
-
 
 export var startAddServiceItems = () => {
     return (dispatch, getState) => {

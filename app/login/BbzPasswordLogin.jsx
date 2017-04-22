@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 var loginActions = require('loginActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
-import Error from '../error/Error';
+import Error from 'Error';
 
 export class BbzPasswordLogin extends React.Component {
     constructor(props) {

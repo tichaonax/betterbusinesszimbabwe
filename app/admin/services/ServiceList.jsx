@@ -12,13 +12,16 @@ export class ServiceList extends React.Component {
         var {serviceItems} = this.props;
         if (serviceItems.length === 0) {
             return (
-                <div className="alert alert-warning" role="alert">
+                <tr>
+                    <td colSpan={2}>
                     No Services Defined
-                </div>
+                    </td>
+                </tr>
             )
         } else {
             return serviceItems.map((serviceItem) => {
-                return (<ServiceItem key={serviceItem.serviceItemId} {...serviceItem} />);
+                return (
+                    <ServiceItem key={serviceItem.serviceItemId} {...serviceItem} />);
             });
         }
     }
@@ -26,7 +29,16 @@ export class ServiceList extends React.Component {
     render() {
         return (
             <div>
-                {this.renderServiceItems()}
+                <table className="admin-services-list">
+                    <tbody>
+                    <tr>
+                        <th>Service Title</th>
+                        <th>Description</th>
+                    </tr>
+
+                    {this.renderServiceItems()}
+                    </tbody>
+                </table>
             </div>
         );
     }

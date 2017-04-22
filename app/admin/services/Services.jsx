@@ -12,7 +12,7 @@ export class Services extends React.Component {
     }
 
     componentDidMount() {
-      this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(servicesActions.startAddServiceItems());
     }
 
     render() {

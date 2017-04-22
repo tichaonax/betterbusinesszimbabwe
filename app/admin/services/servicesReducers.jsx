@@ -32,11 +32,13 @@ export var serviceItemsReducer = (state = [], action) => {
             });
 
         case 'ADD_SERVICE_ITEMS':
-            return [
+            /*return [
                 //preserve original serviceItems then add a new ones passed in
                 ...state,
                 ...action.serviceItems
-            ];
+            ];*/
+            return action.serviceItems;
+
         default:
             return state;
     };

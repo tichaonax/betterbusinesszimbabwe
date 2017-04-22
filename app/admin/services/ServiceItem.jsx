@@ -17,12 +17,11 @@ export class ServiceItem extends React.Component {
     render() {
         var {serviceItemId, serviceTitle, serviceDesc, createAt, updateAt, dispatch} = this.props;
 
-        serviceItem ="Hello";
-
         return (
-              <div className="alert alert-generic" role="alert">
-                {serviceItem}
-              </div>
+              <tr>
+                  <td>{serviceTitle}</td>
+                  <td>{serviceDesc}</td>
+              </tr>
         );
     }
 }

@@ -83,7 +83,9 @@ module.exports = {
             accountActions: 'app/account/accountActions.jsx',
             actions: 'app/actions/actions.jsx',
             reducers: 'app/reducers/reducers.jsx',
-            configureStore: 'app/store/configureStore.jsx'
+            configureStore: 'app/store/configureStore.jsx',
+            Error: 'app/error/Error.jsx',
+
         },
         extensions: ['', '.js', '.jsx']
     },
