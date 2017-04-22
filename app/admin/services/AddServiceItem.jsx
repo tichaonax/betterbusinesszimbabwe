@@ -18,6 +18,16 @@ export class AddServiceItem extends React.Component {
         }
     }
 
+    findDupeServices(serviceTitle, serviceItems) {
+        var dupes =[];
+        serviceItems.map((serviceItem) => {
+            if(serviceItem.serviceTitle.toLowerCase() === serviceTitle.toLowerCase()){
+                dupes.push(serviceItem);
+            };
+        });
+        return dupes;
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
         var error = {}
@@ -30,7 +40,16 @@ export class AddServiceItem extends React.Component {
             error.errorMessage = "Service title required";
             dispatch(errorActions.bbzReportError(error));
             this.refs.serviceTitle.focus();
-            return
+            return;
+        }
+
+        var {serviceItems} = this.props;
+
+        if (this.findDupeServices(serviceTitle, serviceItems).length != 0) {
+            error.errorMessage = "This service title is in the list of services provided, please enter a different one!";
+            dispatch(errorActions.bbzReportError(error));
+            this.refs.serviceTitle.focus();
+            return;
         }
 
         var serviceDesc = this.refs.serviceDesc.value;
@@ -40,7 +59,7 @@ export class AddServiceItem extends React.Component {
             error.errorMessage = "Service description required";
             dispatch(errorActions.bbzReportError(error));
             this.refs.serviceDesc.focus();
-            return
+            return;
         }
 
         this.refs.serviceTitle.value = '';
@@ -58,10 +77,9 @@ export class AddServiceItem extends React.Component {
                     <form onSubmit={this.handleSubmit}>
                         <label htmlFor="stitle">Service Title</label>
                         <input type="text" name="serviceTitle" ref="serviceTitle" placeholder="Service Title"/>
-
                         <label htmlFor="sdescription">Service Description</label>
                         <input type="text" name="serviceDesc" ref="serviceDesc" placeholder="Service Description"/>
-                        <input type="submit" value="Submit"/>
+                        <input type="submit" value="Add New Service"/>
                     </form>
                 </div>
             </div>
@@ -69,4 +87,10 @@ export class AddServiceItem extends React.Component {
     }
 }
 
-export default connect()(AddServiceItem);
+export default connect(
+    (state) => {
+        return {
+            serviceItems: state.serviceItems
+        }
+    }
+)(AddServiceItem);

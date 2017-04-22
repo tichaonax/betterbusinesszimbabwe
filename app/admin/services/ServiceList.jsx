@@ -29,7 +29,7 @@ export class ServiceList extends React.Component {
     render() {
         return (
             <div>
-                <table className="admin-services-list">
+                <table className="common-table">
                     <tbody>
                     <tr>
                         <th>Service Title</th>

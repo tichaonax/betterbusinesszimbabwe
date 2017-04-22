@@ -29,28 +29,33 @@ class LoginStats extends React.Component {
                 joined = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
             }
             return(
-                <div>
-                    <aside>
-                        <h6>{displayName}</h6>
-                        <p>Welcome!</p>
-                    </aside>
-                    <aside>
-                        <h6>Member Since</h6>
-                        <p>{joined}</p>
-                    </aside>
-                    <aside>
-                        <h6>Last Login</h6>
-                        <p>{lastLogin}</p>
-                    </aside>
+                <div className="common-div float-left">
+                    <table className="common-table">
+                        <tbody>
+                        <tr>
+                            <th>{displayName}</th>
+                            <th>Member Since</th>
+                            <th>Last Login</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                Welcome!
+                            </td>
+                            <td>
+                                {joined}
+                            </td>
+                            <td>
+                                {lastLogin}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             )
-
         }
 
         function renderLoggedOut() {
-            return (
-                <div>
-                </div>)
+            return null
         }
 
         if (isLoggedIn) {

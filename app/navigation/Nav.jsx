@@ -77,23 +77,22 @@ class Nav extends React.Component {
                     </ul>
                 </div>
                 <div className="top-bar-right">
-                    <ul className="menu">
-                        <li>
-                            {this.renderAdminNavigation()}
-                        </li>
-                        <li>
-                            {this.renderLoginStats()}
-                        </li>
-                        <li>
-                            &nbsp;&nbsp;
-                        </li>
-                        <li>
-                            {renderAvator()}
-                        </li>
-                        <li>
-                            {this.renderLoginControl()}
-                        </li>
-                    </ul>
+                    {this.renderLoginStats()}
+                        <ul className="menu">
+                            <li>
+                                {this.renderAdminNavigation()}
+                            </li>
+                            <li>
+                                &nbsp;&nbsp;
+                            </li>
+                            <li>
+                                {renderAvator()}
+                            </li>
+                            <li>
+                                {this.renderLoginControl()}
+                            </li>
+                        </ul>
+
                 </div>
             </div>
         );
@@ -103,6 +102,9 @@ class Nav extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         auth: state.auth,
+        avator: state.auth.photoURL,
+        isLoggedIn: state.auth.loggedIn,
+        displayName: state.auth.displayName,
         userProfile: state.userProfile
     }
 }
