@@ -2,7 +2,7 @@ export var serviceItemsReducer = (state = [], action) => {
     switch (action.type) {
         case 'ADD_SERVICE_ITEM':
             return [
-                //preserve original todoItems then add a new one
+                //preserve original serviceItems then add a new one
                 ...state,
                 action.serviceItem
             ];
