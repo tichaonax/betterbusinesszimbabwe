@@ -12,6 +12,7 @@ import BbzLoggedInContainer from 'BbzLoggedInContainer';
 import Home from 'Home';
 import BbzReviews from 'BbzReviews';
 import CreateNewAccount from 'CreateNewAccount';
+import Services from 'app/admin/services/Services';
 
 export default (
     <Router history={hashHistory}>
@@ -26,6 +27,7 @@ export default (
             <Route component={BbzLoggedInContainer}>
                 <Route path="examples" component={Examples}/>
                 <Route path="bbzreviews" component={BbzReviews}/>
+                <Route path="services" component={Services}/>
             </Route>
         </Route>
     </Router>

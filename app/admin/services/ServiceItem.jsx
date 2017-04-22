@@ -17,7 +17,7 @@ export class ServiceItem extends React.Component {
     render() {
         var {serviceItemId, serviceTitle, serviceDesc, createAt, updateAt, dispatch} = this.props;
 
-        serviceItem ="";
+        serviceItem ="Hello";
 
         return (
               <div className="alert alert-generic" role="alert">

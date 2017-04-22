@@ -3,10 +3,15 @@ import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from '../login/LoginControl';
 import LoginStatus from '../login/LoginStatus';
+import AdminNavigation from 'app/admin/AdminNavigation';
 
 class Nav extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    renderAdminNavigation(){
+        return (<AdminNavigation/>);
     }
 
     renderLoginControl() {
@@ -73,6 +78,9 @@ class Nav extends React.Component {
                 </div>
                 <div className="top-bar-right">
                     <ul className="menu">
+                        <li>
+                            {this.renderAdminNavigation()}
+                        </li>
                         <li>
                             {this.renderLoginStats()}
                         </li>

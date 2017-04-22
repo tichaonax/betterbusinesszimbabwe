@@ -6,7 +6,7 @@ import {setRedirectUrlReducer} from 'urlReducers';
 import {bbzErrorReducer} from 'errorReducers';
 import {searchTextReducer} from 'searchReducers';
 import {todoItemsReducer, showCompletedReducer} from 'reducers';
-import {serviceItemsReducer} from 'serviceItemsReducer';
+import {serviceItemsReducer} from 'servicesItemsReducer';
 
 export var configure = (initialState = {}) => {
     var reducer = redux.combineReducers({
