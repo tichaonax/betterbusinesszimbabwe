@@ -32,6 +32,7 @@ export class ServiceList extends React.Component {
                 <table className="common-table">
                     <tbody>
                     <tr>
+                        <th>ServiceItemID</th>
                         <th>Service Title</th>
                         <th>Description</th>
                     </tr>
