@@ -71,10 +71,10 @@ export var startAddServiceItems = () => {
     };
 };
 
-export var deleteServiceItem = (serviceItem) => {
+export var deleteServiceItem = (serviceItemId) => {
     return {
         type: 'DELETE_SERVICE_ITEM',
-        serviceItem
+        serviceItemId
     };
 };
 

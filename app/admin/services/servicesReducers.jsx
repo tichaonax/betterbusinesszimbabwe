@@ -21,15 +21,12 @@ export var serviceItemsReducer = (state = [], action) => {
                 }
             });
         case 'DELETE_SERVICE_ITEM':
-            return state.map((serviceItem) => {
-                //toggle the completed status of the matching id
-                if (serviceItem.serviceItemId === action.serviceItemId) {
-                    //do nothing
-                } else {
-                    //no match return unmodified
-                    return serviceItem;
-                }
-            });
+            //remove deleted item
+            let toRemoveServiceItem = state.findIndex((serviceItem) => serviceItem.serviceItemId === action.serviceItemId);
+            return [
+                ...state.slice(0, toRemoveServiceItem),
+                ...state.slice(toRemoveServiceItem + 1)
+            ];
 
         case 'ADD_SERVICE_ITEMS':
             /*return [

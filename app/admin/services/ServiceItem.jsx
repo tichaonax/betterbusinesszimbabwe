@@ -11,6 +11,7 @@ export class ServiceItem extends React.Component {
     handleOnButtonClick = (e) => {
         e.preventDefault();
         var {serviceItemId, dispatch} = this.props;
+        console.debug("serviceItemId", serviceItemId);
         dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
     }
 
@@ -20,7 +21,10 @@ export class ServiceItem extends React.Component {
         return (
               <tr>
                   <td>{serviceTitle}</td>
-                  <td>{serviceDesc}</td>
+                  <td>{serviceDesc} <button type="button" className="close" data-dismiss="alert" aria-label="Close" onClick={this.handleOnButtonClick}>
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  </td>
               </tr>
         );
     }
