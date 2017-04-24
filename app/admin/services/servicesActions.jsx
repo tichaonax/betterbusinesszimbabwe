@@ -125,3 +125,19 @@ export var startUpdateServiceItem = (serviceItemId, title, description) => {
         });
     };
 };
+
+export var setAddServiceOperation = (data, operation = 'ADD') => {
+    return {
+        type: 'SET_SERVICE_OPERATION',
+        data,
+        operation
+    };
+};
+
+export var setUpdateServiceOperation = (data, operation = 'UPDATE') => {
+    return {
+        type: 'SET_SERVICE_OPERATION',
+        data,
+        operation
+    };
+};

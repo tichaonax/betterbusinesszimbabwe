@@ -20,9 +20,20 @@ export class ServiceItem extends React.Component {
         return (
             <tr>
                 <td>
-                    <form onSubmit={this.handleOnButtonClick}>
-                        <input type="submit" value="&times;"/>
-                        {serviceItemId}
+                    <form>
+                        <input type="submit" value="&times;" onClick={this.handleOnButtonClick}/>
+                        <input type="submit" value={serviceItemId} onClick={() => {
+
+                            var data = {
+                                serviceItemId,
+                                serviceTitle,
+                                serviceDesc
+                            }
+
+                            console.debug("ServiceItems Data:", data);
+
+                            dispatch(servicesActions.setUpdateServiceOperation(data));
+                        }}/>
                     </form>
                 </td>
                 <td>{serviceTitle}</td>

@@ -41,3 +41,15 @@ export var serviceItemsReducer = (state = [], action) => {
     };
 };
 
+export var serviceOperationReducer = (state = {operation: 'ADD'}, action) => {
+    switch (action.type) {
+        case 'SET_SERVICE_OPERATION':
+            return {
+                data: action.data,
+                operation: action.operation
+            };
+        default:
+            return state;
+    }
+}
+

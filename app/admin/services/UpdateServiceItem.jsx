@@ -21,25 +21,22 @@ export class AddServiceItem extends React.Component {
     }
 
     componentDidMount() {
-        const {dispatch, error} = this.props;
+        const {dispatch, serviceOperation, error} = this.props;
         if (error) {
             dispatch(errorActions.bbzClearError());
-            dispatch(servicesActions.setAddServiceOperation());
         }
-    }
 
+        var {serviceOperation} = this.props;
 
-    componentWillReceiveProps(nextProps) {
-
-        this.setState({operation: nextProps.serviceOperation.operation});
-
-        if (nextProps.serviceOperation.data) {
+        if (serviceOperation.data) {
             this.setState({
-                serviceItemId: nextProps.serviceOperation.data.serviceItemId,
-                serviceTitle: nextProps.serviceOperation.data.serviceTitle,
-                serviceDesc: nextProps.serviceOperation.data.serviceDesc
+                operation: serviceOperation.operation,
+                serviceItemId: serviceOperation.data.serviceItemId,
+                serviceTitle: serviceOperation.data.serviceTitle,
+                serviceDesc: serviceOperation.data.serviceDesc
             });
-        }
+
+           // dispatch(servicesActions.setAddServiceOperation());
     }
 
     findDupeServices(serviceTitle, serviceItems) {
@@ -52,34 +49,9 @@ export class AddServiceItem extends React.Component {
         return dupes;
     }
 
-
-    renderAddView = () => {
-        return (
-            <input ref="add" type="submit" value="Add New Service"/>
-        )
-    }
-
-    renderUpdateView() {
-        return (
-            <div>
-                <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
-                <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
-            </div>)
-    }
-
-
-    resetInputs = () => {
-        this.setState({
-            serviceItemId: '',
-            serviceTitle: '',
-            serviceDesc: ''
-        });
-    }
-
     handleCancel = (e) => {
         e.preventDefault();
         this.dispatch(servicesActions.setAddServiceOperation());
-        this.resetInputs();
     }
 
     handleUpdate = (e) => {
@@ -89,8 +61,6 @@ export class AddServiceItem extends React.Component {
             this.state.serviceItemId,
             this.state.serviceTitle,
             this.state.serviceDesc));
-
-        this.resetInputs();
 
         this.dispatch(servicesActions.setAddServiceOperation());
     }
@@ -112,6 +82,8 @@ export class AddServiceItem extends React.Component {
             return;
         }
 
+        //we need to check if this an update or a new
+
         if (this.findDupeServices(serviceTitle, serviceItems).length != 0) {
             error.errorMessage = "This service title is in the list of services provided, please enter a different one!";
             dispatch(errorActions.bbzReportError(error));
@@ -129,21 +101,23 @@ export class AddServiceItem extends React.Component {
             return;
         }
 
-        this.resetInputs();
+        this.refs.serviceTitle.value = '';
+        this.refs.serviceDesc.value = '';
         dispatch(errorActions.bbzClearError());
         dispatch(servicesActions.startAddNewServiceItem(serviceTitle, serviceDesc));
     }
 
     onChangeServiceTitle =(e)=>{
+        console.debug("onChangeServiceTitle:", e.target.value);
         this.setState({serviceTitle: e.target.value});
     }
 
     onChangeServiceDesc =(e)=>{
+        console.debug("onChangeServiceDesc:", e.target.value);
         this.setState({serviceDesc: e.target.value});
     }
 
     render() {
-
         return (
             <div className="form-group admin-services">
                 <div>
@@ -155,8 +129,8 @@ export class AddServiceItem extends React.Component {
                         <label htmlFor="sdescription">Service Description</label>
                         <input type="text" name="serviceDesc" ref="serviceDesc" value={this.state.serviceDesc}
                                placeholder="Service Description" onChange={this.onChangeServiceDesc}/>
-                        {this.state.operation === 'ADD' && this.renderAddView()}
-                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                        <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
+                        <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
                     </form>
                 </div>
             </div>
