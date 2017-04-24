@@ -13,7 +13,7 @@ export class ServiceList extends React.Component {
         if (serviceItems.length === 0) {
             return (
                 <tr>
-                    <td colSpan={2}>
+                    <td colSpan={3}>
                     No Services Defined
                     </td>
                 </tr>
