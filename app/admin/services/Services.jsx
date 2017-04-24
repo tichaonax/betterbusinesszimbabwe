@@ -21,23 +21,18 @@ export class Services extends React.Component {
 
         if(isLoggedIn && userProfile && userProfile.isAdmin){
             return (
-                <div>
-                    <div className="container ">
-                        <AddServiceItem/>
-                        <ServiceList/>
-                    </div>
+                <div className="container ">
+                    <AddServiceItem/>
+                    <ServiceList/>
                 </div>
             );
         }else{
             return (
-                <div>
-                    <div className="container ">
-                        You must be admin to update services
-                    </div>
+                <div className="container ">
+                    You must be admin to update services
                 </div>
             );
         }
-
     }
 }
 
