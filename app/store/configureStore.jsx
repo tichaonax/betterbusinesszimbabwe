@@ -7,6 +7,7 @@ import {bbzErrorReducer} from 'errorReducers';
 import {searchTextReducer} from 'searchReducers';
 import {todoItemsReducer, showCompletedReducer} from 'reducers';
 import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer';
+import {companyItemsReducer, companyOperationReducer} from 'companiesItemsReducer';
 
 export var configure = (initialState = {}) => {
     var reducer = redux.combineReducers({
@@ -18,7 +19,9 @@ export var configure = (initialState = {}) => {
         todoItems: todoItemsReducer,
         showCompleted: showCompletedReducer,
         serviceItems: serviceItemsReducer,
-        serviceOperation: serviceOperationReducer
+        serviceOperation: serviceOperationReducer,
+        companyItems: companyItemsReducer,
+        companyOperation: companyOperationReducer
     });
 
 //create store and load developer tools if they exist

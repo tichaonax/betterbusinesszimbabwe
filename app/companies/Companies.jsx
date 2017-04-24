@@ -1,7 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
-import CompnayList from 'CompnayList'
+import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
 var companiesActions = require('companiesActions');
 
@@ -12,7 +12,7 @@ export class Companies extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(servicesActions.startAddCompanyItems());
+        this.dispatch(companiesActions.startAddCompanyItems());
     }
 
     render() {
@@ -23,7 +23,7 @@ export class Companies extends React.Component {
             return (
                 <div className="container ">
                     <AddCompanyItem/>
-                    <CompnayList/>
+                    <CompanyList/>
                 </div>
             );
         }else{

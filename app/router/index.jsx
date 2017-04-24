@@ -12,6 +12,7 @@ import BbzLoggedInContainer from 'BbzLoggedInContainer';
 import Home from 'Home';
 import BbzReviews from 'BbzReviews';
 import CreateNewAccount from 'CreateNewAccount';
+import Companies from 'app/companies/Companies';
 import Services from 'app/admin/services/Services';
 
 export default (
@@ -20,6 +21,7 @@ export default (
             <Route path="about" component={About}/>
             <Route path="login" component={BbzLogin}/>
             <Route path="weather" component={Weather}/>
+            <Route path="companies" component={Companies}/>
             <Route path="emaillogin" component={BbzPasswordLogin}/>
             <Route path="resetpassword" component={BbzResetPassword}/>
             <Route path="createaccount" component={CreateNewAccount}/>

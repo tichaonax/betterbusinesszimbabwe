@@ -60,6 +60,10 @@ class Nav extends React.Component {
                                        activeStyle={{fontWeight: 'bold'}}>Home</IndexLink>
                         </li>
                         <li>
+                            <Link to="/companies" activeClassName="active"
+                                  activeStyle={{fontWeight: 'bold'}}>Companies</Link>
+                        </li>
+                        <li>
                             <Link to="/bbzreviews" activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
                         </li>

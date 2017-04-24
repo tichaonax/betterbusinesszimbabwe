@@ -10,34 +10,34 @@ export class CompanyItem extends React.Component {
 
     handleOnButtonClick = (e) => {
         e.preventDefault();
-        var {serviceItemId, dispatch} = this.props;
-        dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
+        var {companyItemId, dispatch} = this.props;
+        dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
     }
 
     render() {
-        var {serviceItemId, serviceTitle, serviceDesc, createAt, updateAt, dispatch} = this.props;
+        var {companyItemId, companyTitle, companyDesc, createAt, updateAt, dispatch} = this.props;
 
         return (
             <tr>
                 <td>
                     <form>
                         <input type="submit" value="&times;" onClick={this.handleOnButtonClick}/>
-                        <input type="submit" value={serviceItemId} onClick={() => {
+                        <input type="submit" value={companyItemId} onClick={() => {
 
                             var data = {
-                                serviceItemId,
-                                serviceTitle,
-                                serviceDesc
+                                companyItemId,
+                                compnayTitle,
+                                companyDesc
                             }
 
-                            console.debug("ServiceItems Data:", data);
+                            console.debug("CompanyItems Data:", data);
 
-                            dispatch(servicesActions.setUpdateServiceOperation(data));
+                            dispatch(companiesActions.setUpdateCompanyOperation(data));
                         }}/>
                     </form>
                 </td>
-                <td>{serviceTitle}</td>
-                <td>{serviceDesc}
+                <td>{companyTitle}</td>
+                <td>{companyDesc}
                 </td>
             </tr>
         );

@@ -8,7 +8,7 @@ export class CompanyList extends React.Component {
         super(props);
     }
 
-    renderServiceItems = () => {
+    renderCompanyItems = () => {
         var {companyItems} = this.props;
         if (companyItems.length === 0) {
             return (
@@ -37,7 +37,7 @@ export class CompanyList extends React.Component {
                         <th>Description</th>
                     </tr>
 
-                    {this.renderServiceItems()}
+                    {this.renderCompanyItems()}
                     </tbody>
                 </table>
             </div>

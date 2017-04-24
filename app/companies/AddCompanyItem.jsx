@@ -1,7 +1,6 @@
 var React = require('react');
 var {connect} = require('react-redux');
 var companiesActions = require('companiesActions');
-= require('servicesActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
 
@@ -25,7 +24,7 @@ export class AddCompnayItem extends React.Component {
         const {dispatch, error} = this.props;
         if (error) {
             dispatch(errorActions.bbzClearError());
-            dispatch(servicesActions.setAddServiceOperation());
+            dispatch(companiesActions.setAddCompanyOperation());
         }
     }
 
@@ -36,18 +35,18 @@ export class AddCompnayItem extends React.Component {
 
         if (nextProps.serviceOperation.data) {
             this.setState({
-                serviceItemId: nextProps.serviceOperation.data.serviceItemId,
-                serviceTitle: nextProps.serviceOperation.data.serviceTitle,
-                serviceDesc: nextProps.serviceOperation.data.serviceDesc
+                companyItemId: nextProps.companyOperation.data.companyItemId,
+                companyTitle: nextProps.companyOperation.data.companyTitle,
+                companyDesc: nextProps.companyOperation.data.companyDesc
             });
         }
     }
 
-    findDupeServices(serviceTitle, serviceItems) {
+    findDupeCompanies(companyTitle, companyItems) {
         var dupes =[];
-        serviceItems.map((serviceItem) => {
-            if(serviceItem.serviceTitle.toLowerCase() === serviceTitle.toLowerCase()){
-                dupes.push(serviceItem);
+        companyItems.map((companyItem) => {
+            if(companyItem.companyTitle.toLowerCase() === companyTitle.toLowerCase()){
+                dupes.push(companyItems);
             };
         });
         return dupes;
@@ -56,7 +55,7 @@ export class AddCompnayItem extends React.Component {
 
     renderAddView = () => {
         return (
-            <input ref="add" type="submit" value="Add New Service"/>
+            <input ref="add" type="submit" value="Add New Company"/>
         )
     }
 
@@ -71,91 +70,91 @@ export class AddCompnayItem extends React.Component {
 
     resetInputs = () => {
         this.setState({
-            serviceItemId: '',
-            serviceTitle: '',
-            serviceDesc: ''
+            companyItemId: '',
+            companyTitle: '',
+            companyDesc: ''
         });
     }
 
     handleCancel = (e) => {
         e.preventDefault();
-        this.dispatch(servicesActions.setAddServiceOperation());
+        this.dispatch(companiesActions.setAddCompanyOperation());
         this.resetInputs();
     }
 
     handleUpdate = (e) => {
         e.preventDefault();
 
-        this.dispatch(servicesActions.startUpdateServiceItem(
-            this.state.serviceItemId,
-            this.state.serviceTitle,
-            this.state.serviceDesc));
+        this.dispatch(companiesActions.startUpdateCompanyItem(
+            this.state.companyItemId,
+            this.state.companyTitle,
+            this.state.companyDesc));
 
         this.resetInputs();
 
-        this.dispatch(servicesActions.setAddServiceOperation());
+        this.dispatch(companiesActions.setAddCompanyOperation());
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {serviceItems} = this.props;
+        var {companyItems} = this.props;
 
         var error = {}
         var {dispatch} = this.props;
-        var serviceTitle = this.refs.serviceTitle.value;
+        var companyTitle = this.refs.companyTitle.value;
 
-        if (serviceTitle.length > 0) {
+        if (companyTitle.length > 0) {
 
         } else {
-            error.errorMessage = "Service title required";
+            error.errorMessage = "Company title required";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceTitle.focus();
+            this.refs.companyTitle.focus();
             return;
         }
 
-        if (this.findDupeServices(serviceTitle, serviceItems).length != 0) {
-            error.errorMessage = "This service title is in the list of services provided, please enter a different one!";
+        if (this.findDupeCompanies(companyTitle, companyItems).length != 0) {
+            error.errorMessage = "This company title is in the list of companies provided, please enter a different one!";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceTitle.focus();
+            this.refs.companyTitle.focus();
             return;
         }
 
-        var serviceDesc = this.refs.serviceDesc.value;
-        if (serviceDesc.length > 0) {
+        var companyDesc = this.refs.companyDesc.value;
+        if (companyDesc.length > 0) {
 
         } else {
-            error.errorMessage = "Service description required";
+            error.errorMessage = "Company description required";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceDesc.focus();
+            this.refs.companyDesc.focus();
             return;
         }
 
         this.resetInputs();
         dispatch(errorActions.bbzClearError());
-        dispatch(servicesActions.startAddNewServiceItem(serviceTitle, serviceDesc));
+        dispatch(companiesActions.startAddNewCompanyItem(companyTitle, companyDesc));
     }
 
-    onChangeServiceTitle =(e)=>{
-        this.setState({serviceTitle: e.target.value});
+    onChangeCompanyTitle =(e)=>{
+        this.setState({companyTitle: e.target.value});
     }
 
-    onChangeServiceDesc =(e)=>{
-        this.setState({serviceDesc: e.target.value});
+    onChangeCompanyDesc =(e)=>{
+        this.setState({companyDesc: e.target.value});
     }
 
     render() {
 
         return (
-            <div className="form-group admin-services">
+            <div className="form-group admin-companies">
                 <div>
                     <Error/>
                     <form onSubmit={this.handleSubmit}>
-                        <label htmlFor="stitle">Service Title</label>
-                        <input type="text" name="serviceTitle" ref="serviceTitle" value={this.state.serviceTitle}
-                               placeholder="Service Title" onChange={this.onChangeServiceTitle}/>
-                        <label htmlFor="sdescription">Service Description</label>
-                        <input type="text" name="serviceDesc" ref="serviceDesc" value={this.state.serviceDesc}
-                               placeholder="Service Description" onChange={this.onChangeServiceDesc}/>
+                        <label htmlFor="stitle">Company Title</label>
+                        <input type="text" name="companyTitle" ref="companyTitle" value={this.state.companyTitle}
+                               placeholder="Company Title" onChange={this.onChangeCompanyTitle}/>
+                        <label htmlFor="sdescription">Company Description</label>
+                        <input type="text" name="companyDesc" ref="companyDesc" value={this.state.companyDesc}
+                               placeholder="Company Description" onChange={this.onChangeCompanyDesc}/>
                         {this.state.operation === 'ADD' && this.renderAddView()}
                         {this.state.operation === 'UPDATE' && this.renderUpdateView()}
                     </form>
@@ -168,8 +167,8 @@ export class AddCompnayItem extends React.Component {
 export default connect(
     (state) => {
         return {
-            serviceItems: state.serviceItems,
-            serviceOperation: state.serviceOperation
+            companyItems: state.companyItems,
+            companyOperation: state.companyOperation
         }
     }
 )(AddCompnayItem);
