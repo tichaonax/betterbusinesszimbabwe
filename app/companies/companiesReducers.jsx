@@ -22,7 +22,7 @@ export var companyItemsReducer = (state = [], action) => {
             });
         case 'DELETE_COMPANY_ITEM':
             //remove deleted item
-            let toRemoveCompnayItem = state.findIndex((companyItem) => companyItem.companyItemId === action.companyItemId);
+            let toRemoveCompanyItem = state.findIndex((companyItem) => companyItem.companyItemId === action.companyItemId);
             return [
                 ...state.slice(0, toRemoveCompanyItem),
                 ...state.slice(toRemoveCompanyItem + 1)

@@ -1,38 +1,50 @@
 import React from 'react';
 var {connect} = require('react-redux');
 var companiesActions = require('companiesActions');
+var errorActions = require('errorActions');
 
 export class CompanyItem extends React.Component {
     constructor(props) {
         super(props);
-        this.handleOnButtonClick = this.handleOnButtonClick.bind(this);
-    }
-
-    handleOnButtonClick = (e) => {
-        e.preventDefault();
-        var {companyItemId, dispatch} = this.props;
-        dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+        this.dispatch = props.dispatch;
     }
 
     render() {
-        var {companyItemId, companyTitle, companyDesc, createAt, updateAt, dispatch} = this.props;
+        var {uid, userProfile, companyItemId, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
 
         return (
             <tr>
                 <td>
                     <form>
-                        <input type="submit" value="&times;" onClick={this.handleOnButtonClick}/>
+                        <input type="submit" value="&times;" onClick={() => {
+                            if (userProfile.isAdmin) {
+                                var {companyItemId} = this.props;
+                                this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+                            } else {
+                                var error = {};
+                                error.errorMessage = "You must be admin to delete this company information";
+                                this.dispatch(errorActions.bbzReportError(error));
+                            }
+                        }}/>
+
                         <input type="submit" value={companyItemId} onClick={() => {
 
-                            var data = {
-                                companyItemId,
-                                compnayTitle,
-                                companyDesc
+                            if (auth.uid === uid || userProfile.isAdmin) {
+                                var data = {
+                                    companyItemId,
+                                    companyTitle,
+                                    companyDesc
+                                }
+
+                                console.debug("CompanyItems Data:", data);
+
+                                this.dispatch(companiesActions.setUpdateCompanyOperation(data));
                             }
-
-                            console.debug("CompanyItems Data:", data);
-
-                            dispatch(companiesActions.setUpdateCompanyOperation(data));
+                            else {
+                                var error = {};
+                                error.errorMessage = "You must be the creater or admin to update this company information";
+                                this.dispatch(errorActions.bbzReportError(error));
+                            }
                         }}/>
                     </form>
                 </td>
@@ -44,4 +56,10 @@ export class CompanyItem extends React.Component {
     }
 }
 
-export default  connect()(CompanyItem);
+function mapStateToProps(state, ownProps) {
+    return {
+        auth: state.auth,
+        userProfile: state.userProfile
+    }
+}
+export default  connect(mapStateToProps)(CompanyItem);

@@ -14,26 +14,26 @@ export class AddCompnayItem extends React.Component {
 
         this.state = {
             operation: 'ADD',
-            serviceTitle: null,
-            serviceDesc: null,
-            serviceItemId: null
+            companyTitle: null,
+            companyDesc: null,
+            companyItemId: null
         }
     }
 
     componentDidMount() {
-        const {dispatch, error} = this.props;
+        const {error} = this.props;
         if (error) {
-            dispatch(errorActions.bbzClearError());
-            dispatch(companiesActions.setAddCompanyOperation());
+            this.dispatch(errorActions.bbzClearError());
+            this.dispatch(companiesActions.setAddCompanyOperation());
         }
     }
 
 
     componentWillReceiveProps(nextProps) {
 
-        this.setState({operation: nextProps.serviceOperation.operation});
+        this.setState({operation: nextProps.companyOperation.operation});
 
-        if (nextProps.serviceOperation.data) {
+        if (nextProps.companyOperation.data) {
             this.setState({
                 companyItemId: nextProps.companyOperation.data.companyItemId,
                 companyTitle: nextProps.companyOperation.data.companyTitle,
@@ -80,6 +80,7 @@ export class AddCompnayItem extends React.Component {
         e.preventDefault();
         this.dispatch(companiesActions.setAddCompanyOperation());
         this.resetInputs();
+        this.dispatch(errorActions.bbzClearError());
     }
 
     handleUpdate = (e) => {
@@ -91,30 +92,29 @@ export class AddCompnayItem extends React.Component {
             this.state.companyDesc));
 
         this.resetInputs();
-
+        this.dispatch(errorActions.bbzClearError());
         this.dispatch(companiesActions.setAddCompanyOperation());
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {companyItems} = this.props;
+        var {auth, companyItems} = this.props;
 
         var error = {}
-        var {dispatch} = this.props;
         var companyTitle = this.refs.companyTitle.value;
 
         if (companyTitle.length > 0) {
 
         } else {
             error.errorMessage = "Company title required";
-            dispatch(errorActions.bbzReportError(error));
+            this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyTitle.focus();
             return;
         }
 
         if (this.findDupeCompanies(companyTitle, companyItems).length != 0) {
             error.errorMessage = "This company title is in the list of companies provided, please enter a different one!";
-            dispatch(errorActions.bbzReportError(error));
+            this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyTitle.focus();
             return;
         }
@@ -124,14 +124,14 @@ export class AddCompnayItem extends React.Component {
 
         } else {
             error.errorMessage = "Company description required";
-            dispatch(errorActions.bbzReportError(error));
+            this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyDesc.focus();
             return;
         }
 
         this.resetInputs();
-        dispatch(errorActions.bbzClearError());
-        dispatch(companiesActions.startAddNewCompanyItem(companyTitle, companyDesc));
+        this.dispatch(errorActions.bbzClearError());
+        this.dispatch(companiesActions.startAddNewCompanyItem(auth.uid, companyTitle, companyDesc));
     }
 
     onChangeCompanyTitle =(e)=>{
@@ -145,7 +145,7 @@ export class AddCompnayItem extends React.Component {
     render() {
 
         return (
-            <div className="form-group admin-companies">
+            <div className="form-group bbz-general">
                 <div>
                     <Error/>
                     <form onSubmit={this.handleSubmit}>
@@ -167,6 +167,7 @@ export class AddCompnayItem extends React.Component {
 export default connect(
     (state) => {
         return {
+            auth: state.auth,
             companyItems: state.companyItems,
             companyOperation: state.companyOperation
         }

@@ -145,7 +145,7 @@ export class AddServiceItem extends React.Component {
     render() {
 
         return (
-            <div className="form-group admin-services">
+            <div className="form-group bbz-general">
                 <div>
                     <Error/>
                     <form onSubmit={this.handleSubmit}>

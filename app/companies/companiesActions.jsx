@@ -10,9 +10,10 @@ export var addCompanyItem = (companyItem) => {
     };
 };
 
-export var startAddNewCompanyItem = (title, description, serviceList) => {
+export var startAddNewCompanyItem = (uid, title, description, serviceList) => {
     return (dispatch, getState) => {
         var companyItem = {
+            uid: uid,
             companyTitle: title,
             companyDesc: description,
             createAt: moment().unix(),
