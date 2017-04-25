@@ -28,6 +28,13 @@ class LoginStats extends React.Component {
             if (userProfile && userProfile.createDate) {
                 joined = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
             }
+
+            var admin = "";
+
+            if(userProfile && userProfile.isAdmin){
+                admin = "Admin";
+            }
+
             return(
                 <div className="common-div float-left">
                     <table className="common-table">
@@ -39,7 +46,7 @@ class LoginStats extends React.Component {
                         </tr>
                         <tr>
                             <td>
-                                Welcome!
+                                {admin} Welcome!
                             </td>
                             <td>
                                 {joined}
