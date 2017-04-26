@@ -17,7 +17,9 @@ export var startAddNewCompanyItem = (uid, title, description, serviceList) => {
             companyTitle: title,
             companyDesc: description,
             createAt: moment().unix(),
-            updateAt: null
+            updateAt: null,
+            reviewCount: 0,
+            rating: 0
         }
 
         //This will add a mew company item to firebase and dispatch the newly created

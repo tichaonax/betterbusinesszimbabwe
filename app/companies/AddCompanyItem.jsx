@@ -113,7 +113,7 @@ export class AddCompnayItem extends React.Component {
         }
 
         if (this.findDupeCompanies(companyTitle, companyItems).length != 0) {
-            error.errorMessage = "This company title is in the list of companies provided, please enter a different one!";
+            error.errorMessage = "This company title is in the list of companies provided, please enter a uniquie name!";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyTitle.focus();
             return;

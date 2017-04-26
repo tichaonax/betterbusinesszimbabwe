@@ -5,34 +5,41 @@ var servicesActions = require('servicesActions');
 export class ServiceItem extends React.Component {
     constructor(props) {
         super(props);
-        this.handleOnButtonClick = this.handleOnButtonClick.bind(this);
-    }
-
-    handleOnButtonClick = (e) => {
-        e.preventDefault();
-        var {serviceItemId, dispatch} = this.props;
-        dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
+        this.dispatch = props.dispatch;
     }
 
     render() {
-        var {serviceItemId, serviceTitle, serviceDesc, createAt, updateAt, dispatch} = this.props;
+        var {userProfile, serviceItemId, serviceTitle, serviceDesc, createAt, updateAt} = this.props;
 
         return (
             <tr>
                 <td>
                     <form>
-                        <input type="submit" value="&times;" onClick={this.handleOnButtonClick}/>
-                        <input type="submit" value={serviceItemId} onClick={() => {
-
-                            var data = {
-                                serviceItemId,
-                                serviceTitle,
-                                serviceDesc
+                        <input type="submit" value="&times;" onClick={() => {
+                            if (userProfile.isAdmin) {
+                                this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
+                            } else {
+                                var error = {};
+                                error.errorMessage = "You must be admin to delete this service information";
+                                this.dispatch(errorActions.bbzReportError(error));
                             }
+                        }}/>
+                        <input type="submit" value={serviceItemId} onClick={() => {
+                            if (userProfile.isAdmin) {
+                                var data = {
+                                    serviceItemId,
+                                    serviceTitle,
+                                    serviceDesc
+                                }
 
-                            console.debug("ServiceItems Data:", data);
+                                console.debug("ServiceItems Data:", data);
 
-                            dispatch(servicesActions.setUpdateServiceOperation(data));
+                                this.dispatch(servicesActions.setUpdateServiceOperation(data));
+                            } else {
+                                var error = {};
+                                error.errorMessage = "You must be admin to update this service information";
+                                this.dispatch(errorActions.bbzReportError(error));
+                            }
                         }}/>
                     </form>
                 </td>
@@ -44,4 +51,10 @@ export class ServiceItem extends React.Component {
     }
 }
 
-export default  connect()(ServiceItem);
+function mapStateToProps(state) {
+    return {
+        auth: state.auth,
+        userProfile: state.userProfile
+    }
+}
+export default connect(mapStateToProps)(ServiceItem);

@@ -18,7 +18,6 @@ export class CompanyItem extends React.Component {
                     <form>
                         <input type="submit" value="&times;" onClick={() => {
                             if (userProfile.isAdmin) {
-                                var {companyItemId} = this.props;
                                 this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
                             } else {
                                 var error = {};
