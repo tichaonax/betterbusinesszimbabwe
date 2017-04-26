@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import BbzSearch from '../components/BbzSearch';
-import BbzList from '../components/BbzList';
-import AddBbzItem from '../components/AddBbzItem';
+import BbzSearch from 'BbzSearch';
+import BbzList from 'BbzList';
+import AddBbzItem from 'AddBbzItem';
 
 class Home extends React.Component {
     constructor(props) {

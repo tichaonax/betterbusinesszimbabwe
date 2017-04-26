@@ -8,6 +8,7 @@ import {searchTextReducer} from 'searchReducers';
 import {todoItemsReducer, showCompletedReducer} from 'reducers';
 import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer';
 import {companyItemsReducer, companyOperationReducer} from 'companiesItemsReducer';
+import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 
 export var configure = (initialState = {}) => {
     var reducer = redux.combineReducers({
@@ -21,7 +22,9 @@ export var configure = (initialState = {}) => {
         serviceItems: serviceItemsReducer,
         serviceOperation: serviceOperationReducer,
         companyItems: companyItemsReducer,
-        companyOperation: companyOperationReducer
+        companyOperation: companyOperationReducer,
+        reviewItems: reviewItemsReducer,
+        reviewOperation: reviewOperationReducer
     });
 
 //create store and load developer tools if they exist

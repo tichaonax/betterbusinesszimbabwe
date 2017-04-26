@@ -64,7 +64,7 @@ class Nav extends React.Component {
                                   activeStyle={{fontWeight: 'bold'}}>Companies</Link>
                         </li>
                         <li>
-                            <Link to="/bbzreviews" activeClassName="active"
+                            <Link to="/reviews" activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
                         </li>
                         <li>
