@@ -46,7 +46,7 @@ export class CompanyList extends React.Component {
                         <th>CompanyItemID</th>
                         <th>Reviews</th>
                         <th>Rating</th>
-                        {auth.loggedIn && userProfile && userProfile.isAdmin &&( <th>Status</th>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}
                         <th>Company Name</th>
                         <th>Description</th>
                     </tr>
