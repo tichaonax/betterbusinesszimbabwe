@@ -11,7 +11,7 @@ import {companyItemsReducer, companyOperationReducer} from 'companiesItemsReduce
 import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 
 export var configure = (initialState = {}) => {
-    var reducer = redux.combineReducers({
+    var reducers = redux.combineReducers({
         searchText: searchTextReducer,
         showApprovalPending: showApprovalPendingReducer,
         auth: firebaseAuthReducer,
@@ -27,9 +27,18 @@ export var configure = (initialState = {}) => {
         reviewOperation: reviewOperationReducer
     });
 
+    const rootReducer = ( state, action ) => {
+        if ( action.type === 'BBZ_LOGOUT' ) {
+            state = undefined;
+            //this will force the other reducers to return their default states
+        }
+
+        return reducers(state, action)
+    }
+
 //create store and load developer tools if they exist
 //redux-thunk provides support for store configuration from functions
-    var store = redux.createStore(reducer, initialState, redux.compose(
+    var store = redux.createStore(rootReducer, initialState, redux.compose(
         redux.applyMiddleware(thunk),
         window.devToolsExtension ? window.devToolsExtension() : (f) => {
                 return f
