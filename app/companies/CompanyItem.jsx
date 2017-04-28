@@ -11,7 +11,7 @@ export class CompanyItem extends React.Component {
 
 
     render() {
-        var {uid, userProfile, companyItemId, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
+        var {uid, userProfile, companyItemId, rating, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
 
         return (
             <tr>
@@ -53,6 +53,8 @@ export class CompanyItem extends React.Component {
 
                             </form>
                 </td>
+                <td>{reviewCount}</td>
+                <td>{rating}</td>
                 <td>{companyTitle}</td>
                 <td>{companyDesc}
                 </td>

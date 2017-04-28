@@ -42,10 +42,11 @@ export class CompanyList extends React.Component {
                     <tbody>
                     <tr>
                         <th>CompanyItemID</th>
+                        <th>Reviews</th>
+                        <th>Rating</th>
                         <th>Company Name</th>
                         <th>Description</th>
                     </tr>
-
                     {this.renderCompanyItems()}
                     </tbody>
                 </table>
