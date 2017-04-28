@@ -1,5 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import Rating from 'react-rating-system';
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 
@@ -57,7 +58,11 @@ export class CompanyItem extends React.Component {
                             </form>
                 </td>
                 <td>{reviewCount}</td>
-                <td>{rating}</td>
+                <td>
+                    <Rating image="images/rating/heart.png" fillBG="red" initialBG="white" initialValue={rating}
+                            callback={(index) => alert(`You rated my component with a ${index}`)}
+                            containerStyle={{maxWidth: '200px'}}/>
+                </td>
                 {auth.loggedIn && userProfile && userProfile.isAdmin &&( <td>{approved}</td>)}
                 <td>{companyTitle}</td>
                 <td>{companyDesc}
