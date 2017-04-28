@@ -36,6 +36,8 @@ export class CompanyList extends React.Component {
     }
 
     render() {
+        var {userProfile, auth} = this.props;
+
         return (
             <div>
                 <table className="common-table">
@@ -44,6 +46,7 @@ export class CompanyList extends React.Component {
                         <th>CompanyItemID</th>
                         <th>Reviews</th>
                         <th>Rating</th>
+                        {auth.loggedIn && userProfile && userProfile.isAdmin &&( <th>Status</th>)}
                         <th>Company Name</th>
                         <th>Description</th>
                     </tr>
@@ -59,6 +62,7 @@ export default connect(
     (state) => {
         return {
             auth: state.auth,
+            userProfile: state.userProfile,
             companyItems: state.companyItems,
             showApprovalPending: state.showApprovalPending,
             searchText: state.searchText

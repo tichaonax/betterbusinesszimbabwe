@@ -11,8 +11,11 @@ export class CompanyItem extends React.Component {
 
 
     render() {
-        var {uid, userProfile, companyItemId, rating, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
-
+        var {uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
+        var approved = "No";
+        if (isApproved) {
+            approved = "Yes"
+        }
         return (
             <tr>
                 <td>
@@ -55,6 +58,7 @@ export class CompanyItem extends React.Component {
                 </td>
                 <td>{reviewCount}</td>
                 <td>{rating}</td>
+                {auth.loggedIn && userProfile && userProfile.isAdmin &&( <td>{approved}</td>)}
                 <td>{companyTitle}</td>
                 <td>{companyDesc}
                 </td>
