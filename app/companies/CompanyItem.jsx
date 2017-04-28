@@ -17,6 +17,20 @@ export class CompanyItem extends React.Component {
         if (isApproved) {
             approved = "Yes"
         }
+
+        var fillColor = "black";
+
+        if (rating > 4) {
+            fillColor = "red";
+        }
+        else if (rating > 3) {
+            fillColor = "blue";
+        } else if (rating > 2.5) {
+            fillColor = "green";
+        } else if (rating > 1) {
+            fillColor = "orange";
+        }
+
         return (
             <tr>
                 <td>
@@ -59,9 +73,9 @@ export class CompanyItem extends React.Component {
                 </td>
                 <td>{reviewCount}</td>
                 <td>
-                    <Rating image="images/rating/heart.png" fillBG="red" initialBG="white" initialValue={rating}
-                            callback={(index) => alert(`You rated my component with a ${index}`)}
-                            containerStyle={{maxWidth: '200px'}}/>
+                    <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white" initialValue={rating}
+                            /*callback={(index) => alert(`You rated my component with a ${index}`)}*/
+                            containerStyle={{maxWidth: '200px'}} editable={false}/>
                 </td>
                 {auth.loggedIn && userProfile && userProfile.isAdmin &&( <td>{approved}</td>)}
                 <td>{companyTitle}</td>
