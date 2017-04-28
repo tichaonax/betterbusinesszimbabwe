@@ -8,4 +8,9 @@ export var setSearchText = (searchText) => {
     };
 };
 
+export var togggleshowApprovalPendingItem = () => {
+    return {
+        type: 'TOGGLE_SHOW_APPROVAL_PENDING'
+    };
+};
 //</editor-fold>

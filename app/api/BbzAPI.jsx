@@ -24,6 +24,45 @@ module.exports = {
     //     return $.isArray(todoItems) ? todoItems : [];
     // },
 
+    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid=0) {
+        console.debug("companyItems", companyItems);
+        console.debug("showApprovalPending", showApprovalPending);
+        var filteredCompanyItems = companyItems;
+
+        //filter by showApprovalPending
+
+        filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
+            return companyItem.isApproved || showApprovalPending || companyItem.uid ==uid
+        })
+
+        //filter by searchText
+        if(searchText.length>0) {
+            filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
+                var text = companyItem.companyTitle.toLowerCase();
+                if(text.indexOf(searchText.toLowerCase()) > -1){
+                    return companyItem.companyTitle;
+                }
+            });
+        }
+
+        //sort companyItems with Approval Pending first
+
+        filteredCompanyItems.sort((a, b) => {
+            if (!a.isApproved && b.isApproved) {
+                //take a first
+                return -1
+            } else if (a.isApproved && !b.isApproved) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+        return filteredCompanyItems;
+    },
+
     getFilteredTodoItems: function (todoItems, showCompleted, searchText) {
 
         var filteredTodoItems = todoItems;

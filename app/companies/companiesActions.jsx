@@ -19,7 +19,8 @@ export var startAddNewCompanyItem = (uid, title, description, serviceList) => {
             createAt: moment().unix(),
             updateAt: null,
             reviewCount: 0,
-            rating: 0
+            rating: 0,
+            isApproved: false
         }
 
         //This will add a mew company item to firebase and dispatch the newly created
@@ -113,7 +114,8 @@ export var startUpdateCompanyItem = (companyItemId, title, description) => {
         var updates = {
             updateAt: moment().unix(),
             companyTitle: title,
-            companyDesc: description
+            companyDesc: description,
+            isApproved: false
         };
 
         return companyItemRef.update(updates).then(() => {  //return needed to chain our tests

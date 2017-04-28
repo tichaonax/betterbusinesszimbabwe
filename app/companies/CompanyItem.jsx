@@ -9,6 +9,7 @@ export class CompanyItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
+
     render() {
         var {uid, userProfile, companyItemId, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
 
@@ -16,7 +17,9 @@ export class CompanyItem extends React.Component {
             <tr>
                 <td>
                     <form>
+                        {auth.loggedIn && (
                         <input type="submit" value="&times;" onClick={() => {
+                            this.dispatch(errorActions.bbzClearError());
                             if (userProfile.isAdmin) {
                                 this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
                             } else {
@@ -24,10 +27,10 @@ export class CompanyItem extends React.Component {
                                 error.errorMessage = "You must be admin to delete this company information";
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
-                        }}/>
+                        }}/>)}
 
-                        <input type="submit" value={companyItemId} onClick={() => {
-
+                        {auth.loggedIn && (<input type="submit" value={companyItemId} onClick={() => {
+                            this.dispatch(errorActions.bbzClearError());
                             if (auth.uid === uid || userProfile.isAdmin) {
                                 var data = {
                                     companyItemId,
@@ -44,8 +47,11 @@ export class CompanyItem extends React.Component {
                                 error.errorMessage = "You must be the creater or admin to update this company information";
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
-                        }}/>
-                    </form>
+                        }}/>)}
+
+                        {!auth.loggedIn && (<input type="submit" value={companyItemId}/>)}
+
+                            </form>
                 </td>
                 <td>{companyTitle}</td>
                 <td>{companyDesc}

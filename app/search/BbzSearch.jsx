@@ -1,15 +1,16 @@
-var React = require('react');
+import React from 'react';
 var $ = require('jquery');
 var {connect} = require('react-redux');
-var actions = require('actions');
+var searchActions = require('searchActions');
 
 export class BbzSearch extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
     }
 
     render() {
-        var {showCompleted, searchText, dispatch} = this.props;
+        var {isLoggedIn, userProfile, showApprovalPending, searchText} = this.props;
 
         return (
             <div className="container__header">
@@ -17,17 +18,18 @@ export class BbzSearch extends React.Component {
                     <input id="searchItemText" type="text"  value={searchText} placeholder="Enter text to search?"
                            onChange={() => {
                                var searchText = $('#searchItemText').val();
-                               dispatch(actions.setSearchText(searchText));
+                               console.debug("searchText:", searchText);
+                               this.dispatch(searchActions.setSearchText(searchText));
                            }}/>
                 </div>
-                <div>
+                {isLoggedIn && userProfile && userProfile.isAdmin && (<div>
                     <label>
-                        <input type="checkbox" ref="showCompleted" checked={showCompleted} onChange={() => {
-                            dispatch(actions.togggleShowCompletedItem());
+                        <input type="checkbox" ref="showCompleted" checked={showApprovalPending} onChange={() => {
+                            this.dispatch(searchActions.togggleshowApprovalPendingItem());
                         }}/>
-                        Show Completed tasks
+                        Show Approval Pending
                     </label>
-                </div>
+                </div>)}
             </div>
         );
     }
@@ -36,8 +38,9 @@ export class BbzSearch extends React.Component {
 export default connect(
     (state) => {
         return {
-            showCompleted: state.showCompleted,
-            searchText: state.searchText
+            isLoggedIn: state.auth.loggedIn,
+            userProfile: state.userProfile,
+            showApprovalPending: state.showApprovalPending
         }
     }
 )(BbzSearch);

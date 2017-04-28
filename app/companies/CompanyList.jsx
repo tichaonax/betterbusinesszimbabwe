@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import CompanyItem from 'CompanyItem';
+var BbzAPI = require('BbzAPI');
 
 
 export class CompanyList extends React.Component {
@@ -9,8 +10,16 @@ export class CompanyList extends React.Component {
     }
 
     renderCompanyItems = () => {
-        var {companyItems} = this.props;
-        if (companyItems.length === 0) {
+        var {companyItems, showApprovalPending, searchText, auth} = this.props;
+
+        var uid = 0;
+        if (auth.loggedIn) {
+            uid = auth.uid;
+        }
+
+        var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, showApprovalPending, searchText, uid);
+
+        if (filteredCompanyItems.length === 0) {
             return (
                 <tr>
                     <td colSpan={3}>
@@ -19,7 +28,7 @@ export class CompanyList extends React.Component {
                 </tr>
             )
         } else {
-            return companyItems.map((companyItem) => {
+            return filteredCompanyItems.map((companyItem) => {
                 return (
                     <CompanyItem key={companyItem.companyItemId} {...companyItem} />);
             });
@@ -48,7 +57,10 @@ export class CompanyList extends React.Component {
 export default connect(
     (state) => {
         return {
-            companyItems: state.companyItems
+            auth: state.auth,
+            companyItems: state.companyItems,
+            showApprovalPending: state.showApprovalPending,
+            searchText: state.searchText
         }
     }
 )(CompanyList);

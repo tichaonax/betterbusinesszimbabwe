@@ -3,12 +3,6 @@ var errorActions = require('errorActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
-export var togggleshowApprovalPendingItem = () => {
-    return {
-        type: 'TOGGLE_SHOW_APPROVAL_PENDING'
-    };
-};
-
 export var addReviewItem = (reviewItem) => {
     return {
         type: 'ADD_REVIEW_ITEM',

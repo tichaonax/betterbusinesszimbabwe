@@ -3,6 +3,7 @@ var {connect} = require('react-redux');
 
 import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
+import BbzSearch from "BbzSearch";
 var companiesActions = require('companiesActions');
 
 export class Companies extends React.Component {
@@ -17,22 +18,15 @@ export class Companies extends React.Component {
 
     render() {
 
-        var {isLoggedIn, userProfile} = this.props;
+        var {isLoggedIn} = this.props;
 
-        if(isLoggedIn && userProfile){
-            return (
-                <div className="container ">
-                    <AddCompanyItem/>
-                    <CompanyList/>
-                </div>
-            );
-        }else{
-            return (
-                <div className="container ">
-                    You must be logged in to manage companies
-                </div>
-            );
-        }
+        return (
+            <div className="container ">
+                <BbzSearch/>
+                {isLoggedIn && (<AddCompanyItem/>)}
+                <CompanyList/>
+            </div>
+        );
     }
 }
 

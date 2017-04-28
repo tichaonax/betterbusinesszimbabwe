@@ -6,3 +6,12 @@ export var searchTextReducer = (state = '', action) => {
             return state;
     };
 };
+
+export var showApprovalPendingReducer = (state = false, action) => {
+    switch (action.type) {
+        case 'TOGGLE_SHOW_APPROVAL_PENDING':
+            return !state;
+        default:
+            return state;
+    };
+};
