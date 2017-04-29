@@ -35,13 +35,14 @@ export class ReviewList extends React.Component {
     }
 
     render() {
+        var {auth}=this.props;
         return (
             <div>
                 <table className="common-table">
                     <tbody>
                     <tr>
                         <th>Review ID</th>
-                        <th>Rating ID</th>
+                        {auth.loggedIn && (<th>Rating ID</th>)}
                         <th>Rating</th>
                         <th>Company Name</th>
                         <th>Review Comment</th>
