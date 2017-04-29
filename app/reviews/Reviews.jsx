@@ -5,6 +5,7 @@ import ReviewList from 'ReviewList'
 //import AddReviewItem from 'AddReviewItem';
 import {BbzSearch} from "BbzSearch";
 var reviewsActions = require('reviewsActions');
+var searchActions = require('searchActions');
 
 export class Reviews extends React.Component {
     constructor(props) {
@@ -12,9 +13,27 @@ export class Reviews extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-    componentDidMount() {
+    loadData(props) {
         this.dispatch(reviewsActions.startAddReviewItems());
+        var company = props.location.query.company;
+        if (company && company.length > 0) {
+            this.dispatch(searchActions.setSearchText(company));
+        }
     }
+
+    componentDidMount() {
+        this.loadData(this.props);
+    }
+
+    componentWillUnmount(){
+        //clear searchText
+        this.dispatch(searchActions.setSearchText(""));
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.loadData(newProps);
+    }
+
 
     render() {
         return (

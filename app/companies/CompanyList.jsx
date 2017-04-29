@@ -43,7 +43,8 @@ export class CompanyList extends React.Component {
                 <table className="common-table">
                     <tbody>
                     <tr>
-                        <th>CompanyItemID</th>
+                        <th>Company ID</th>
+                        {auth.loggedIn && (<th>CompanyItemID</th>)}
                         <th>Reviews</th>
                         <th>Rating</th>
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}

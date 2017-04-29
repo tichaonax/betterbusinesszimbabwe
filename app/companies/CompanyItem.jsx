@@ -1,5 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import {Link} from 'react-router';
 import Rating from 'react-rating-system';
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
@@ -18,10 +19,10 @@ export class CompanyItem extends React.Component {
             approved = "Yes"
         }
 
-        var fillColor = "black";
+        var fillColor = "black"; //lowest ranking
 
         if (rating > 4) {
-            fillColor = "red";
+            fillColor = "red"; //highest ranking
         }
         else if (rating > 3) {
             fillColor = "blue";
@@ -31,21 +32,23 @@ export class CompanyItem extends React.Component {
             fillColor = "orange";
         }
 
+        const CompanyId = createAt;
         return (
             <tr>
-                <td>
+                <td>{CompanyId}</td>
+                {auth.loggedIn && (<td>
                     <form>
                         {auth.loggedIn && (
-                        <input type="submit" value="&times;" onClick={() => {
-                            this.dispatch(errorActions.bbzClearError());
-                            if (userProfile.isAdmin) {
-                                this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
-                            } else {
-                                var error = {};
-                                error.errorMessage = "You must be admin to delete this company information";
-                                this.dispatch(errorActions.bbzReportError(error));
-                            }
-                        }}/>)}
+                            <input type="submit" value="&times;" onClick={() => {
+                                this.dispatch(errorActions.bbzClearError());
+                                if (userProfile.isAdmin) {
+                                    this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+                                } else {
+                                    var error = {};
+                                    error.errorMessage = "You must be admin to delete this company information";
+                                    this.dispatch(errorActions.bbzReportError(error));
+                                }
+                            }}/>)}
 
                         {auth.loggedIn && (<input type="submit" value={companyItemId} onClick={() => {
                             this.dispatch(errorActions.bbzClearError());
@@ -66,12 +69,12 @@ export class CompanyItem extends React.Component {
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
                         }}/>)}
-
-                        {!auth.loggedIn && (<input type="submit" value={companyItemId}/>)}
-
-                            </form>
+                    </form>
+                </td>)}
+                <td>
+                    <Link to={`/reviews?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                 </td>
-                <td>{reviewCount}</td>
                 <td>
                     <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white" initialValue={rating}
                             /*callback={(index) => alert(`You rated my component with a ${index}`)}*/
@@ -79,8 +82,7 @@ export class CompanyItem extends React.Component {
                 </td>
                 {auth.loggedIn && userProfile && userProfile.isAdmin &&( <td>{approved}</td>)}
                 <td>{companyTitle}</td>
-                <td>{companyDesc}
-                </td>
+                <td>{companyDesc}</td>
             </tr>
         );
     }

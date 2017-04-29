@@ -2,28 +2,6 @@ var React = require('react');
 var $ = require('jquery');
 
 module.exports = {
-
-    // setTodoItems: function (todoItems) {
-    //     if ($.isArray(todoItems)) {
-    //         localStorage.setItem('todoItems', JSON.stringify(todoItems));
-    //         return (todoItems);
-    //     }
-    // },
-
-    // getTodoItems: function () {
-    //     //debugger;
-    //     var strTodoItems = localStorage.getItem('todoItems');
-    //     var todoItems = [];
-    //
-    //     try {
-    //         todoItems = JSON.parse(strTodoItems);
-    //     } catch (e) {
-    //         //do nothing send default array
-    //     }
-    //
-    //     return $.isArray(todoItems) ? todoItems : [];
-    // },
-
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid=0) {
         console.debug("companyItems", companyItems);
         console.debug("showApprovalPending", showApprovalPending);
@@ -32,15 +10,24 @@ module.exports = {
         //filter by showApprovalPending
 
         filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
-            return companyItem.isApproved || showApprovalPending || companyItem.uid ==uid
-        })
+            return companyItem.isApproved || showApprovalPending || companyItem.uid == uid
+        });
 
         //filter by searchText
-        if(searchText.length>0) {
+        //we want to also search by company description
+        //and company id whci is stored as unix createAt date time
+        if (searchText.length > 0) {
             filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
-                var text = companyItem.companyTitle.toLowerCase();
-                if(text.indexOf(searchText.toLowerCase()) > -1){
+                var companyTitle = companyItem.companyTitle.toLowerCase();
+                var companyDesc = companyItem.companyDesc.toLowerCase();
+                var companyId = companyItem.createAt.toString();
+
+                if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyTitle;
+                } else if (companyDesc.indexOf(searchText.toLowerCase()) > -1) {
+                    return companyItem.companyDesc;
+                } else if (companyId.indexOf(searchText.toLowerCase()) > -1) {
+                    return companyItem.createAt;
                 }
             });
         }
