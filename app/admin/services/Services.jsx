@@ -15,6 +15,12 @@ export class Services extends React.Component {
         this.dispatch(servicesActions.startAddServiceItems());
     }
 
+    componentWillUnmount(){
+        //clear searchText
+        this.dispatch(searchActions.setSearchText(""));
+    }
+
+
     render() {
 
         var {isLoggedIn, userProfile} = this.props;

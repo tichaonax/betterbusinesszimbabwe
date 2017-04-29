@@ -4,6 +4,7 @@ var {connect} = require('react-redux');
 import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
 import BbzSearch from "BbzSearch";
+var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
 
 export class Companies extends React.Component {
@@ -14,6 +15,11 @@ export class Companies extends React.Component {
 
     componentDidMount() {
         this.dispatch(companiesActions.startAddCompanyItems());
+    }
+
+    componentWillUnmount(){
+        //clear searchText
+        this.dispatch(searchActions.setSearchText(""));
     }
 
     render() {

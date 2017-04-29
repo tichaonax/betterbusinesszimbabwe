@@ -43,12 +43,15 @@ export class AddCompnayItem extends React.Component {
     }
 
     findDupeCompanies(companyTitle, companyItems) {
-        var dupes =[];
-        companyItems.map((companyItem) => {
-            if(companyItem.companyTitle.toLowerCase() === companyTitle.toLowerCase()){
-                dupes.push(companyItems);
-            };
-        });
+        var dupes = [];
+        if (companyItems) {
+            companyItems.map((companyItem) => {
+                if (companyItem.companyTitle.toLowerCase() === companyTitle.toLowerCase()) {
+                    dupes.push(companyItems);
+                }
+                ;
+            });
+        }
         return dupes;
     }
 
@@ -143,7 +146,6 @@ export class AddCompnayItem extends React.Component {
     }
 
     render() {
-
         return (
             <div className="form-group bbz-general">
                 <div>

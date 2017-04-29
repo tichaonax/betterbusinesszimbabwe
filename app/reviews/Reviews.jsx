@@ -2,7 +2,7 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 import ReviewList from 'ReviewList'
-//import AddReviewItem from 'AddReviewItem';
+import AddReview from 'AddReview';
 import {BbzSearch} from "BbzSearch";
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
@@ -36,9 +36,11 @@ export class Reviews extends React.Component {
 
 
     render() {
+        var {isLoggedIn} = this.props;
         return (
             <div className="container ">
                 <BbzSearch/>
+                {isLoggedIn && (<AddReview/>)}
                 <ReviewList/>
             </div>
         );

@@ -10,7 +10,7 @@ export var addCompanyItem = (companyItem) => {
     };
 };
 
-export var startAddNewCompanyItem = (uid, title, description, serviceList) => {
+export var startAddNewCompanyItem = (uid, title, description) => {
     return (dispatch, getState) => {
         var companyItem = {
             uid: uid,
@@ -107,7 +107,7 @@ export var updateCompanyItem = (companyItemId, updates) => {
     };
 };
 
-export var startUpdateCompanyItem = (companyItemId, title, description) => {
+export var startUpdateCompanyItem = (companyItemId, title, description, rating) => {
     return (dispatch, getState) => {
         var companyItemRef = firebaseRef.child(`companies/${companyItemId}`); //ES6 syntax
 
@@ -115,7 +115,8 @@ export var startUpdateCompanyItem = (companyItemId, title, description) => {
             updateAt: moment().unix(),
             companyTitle: title,
             companyDesc: description,
-            isApproved: false
+            isApproved: false,
+            rating: rating
         };
 
         return companyItemRef.update(updates).then(() => {  //return needed to chain our tests

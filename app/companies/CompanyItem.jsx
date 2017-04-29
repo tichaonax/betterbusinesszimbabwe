@@ -32,55 +32,57 @@ export class CompanyItem extends React.Component {
             fillColor = "orange";
         }
 
-        const CompanyId = createAt;
+        const companyId = createAt;
         return (
             <tr>
-                <td>{CompanyId}</td>
-                {auth.loggedIn && (<td>
-                    <form>
-                        {auth.loggedIn && (
-                            <input type="submit" value="&times;" onClick={() => {
+                <td>{companyId}</td>
+                {auth.loggedIn && (
+                    <td>
+                        <form>
+                            {auth.loggedIn && (
+                                <input type="submit" value="&times;" onClick={() => {
+                                    this.dispatch(errorActions.bbzClearError());
+                                    if (userProfile.isAdmin) {
+                                        this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+                                    } else {
+                                        var error = {};
+                                        error.errorMessage = "You must be admin to delete this company information";
+                                        this.dispatch(errorActions.bbzReportError(error));
+                                    }
+                                }}/>)}
+
+                            {auth.loggedIn && (<input type="submit" value={companyItemId} onClick={() => {
                                 this.dispatch(errorActions.bbzClearError());
-                                if (userProfile.isAdmin) {
-                                    this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
-                                } else {
+                                if (auth.uid === uid || userProfile.isAdmin) {
+                                    var data = {
+                                        uid,
+                                        companyItemId,
+                                        companyTitle,
+                                        companyDesc
+                                    }
+
+                                    console.debug("CompanyItems Data:", data);
+
+                                    this.dispatch(companiesActions.setUpdateCompanyOperation(data));
+                                }
+                                else {
                                     var error = {};
-                                    error.errorMessage = "You must be admin to delete this company information";
+                                    error.errorMessage = "You must be the creater or admin to update this company information";
                                     this.dispatch(errorActions.bbzReportError(error));
                                 }
                             }}/>)}
-
-                        {auth.loggedIn && (<input type="submit" value={companyItemId} onClick={() => {
-                            this.dispatch(errorActions.bbzClearError());
-                            if (auth.uid === uid || userProfile.isAdmin) {
-                                var data = {
-                                    companyItemId,
-                                    companyTitle,
-                                    companyDesc
-                                }
-
-                                console.debug("CompanyItems Data:", data);
-
-                                this.dispatch(companiesActions.setUpdateCompanyOperation(data));
-                            }
-                            else {
-                                var error = {};
-                                error.errorMessage = "You must be the creater or admin to update this company information";
-                                this.dispatch(errorActions.bbzReportError(error));
-                            }
-                        }}/>)}
-                    </form>
-                </td>)}
+                        </form>
+                    </td>)}
                 <td>
                     <Link to={`/reviews?company=${companyItemId}`} activeClassName="active"
                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                 </td>
                 <td>
                     <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white" initialValue={rating}
-                            /*callback={(index) => alert(`You rated my component with a ${index}`)}*/
+                        /*callback={(index) => alert(`You rated my component with a ${index}`)}*/
                             containerStyle={{maxWidth: '200px'}} editable={false}/>
                 </td>
-                {auth.loggedIn && userProfile && userProfile.isAdmin &&( <td>{approved}</td>)}
+                {auth.loggedIn && userProfile && userProfile.isAdmin && ( <td>{approved}</td>)}
                 <td>{companyTitle}</td>
                 <td>{companyDesc}</td>
             </tr>

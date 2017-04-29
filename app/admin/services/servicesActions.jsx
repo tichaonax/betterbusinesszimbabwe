@@ -78,6 +78,7 @@ export var deleteServiceItem = (serviceItemId) => {
     };
 };
 
+
 export var startDeleteServiceItem = (serviceItemId) => {
     return (dispatch, getState) => {
         var serviceItemRef = firebaseRef.child(`services/${serviceItemId}`); //ES6 syntax

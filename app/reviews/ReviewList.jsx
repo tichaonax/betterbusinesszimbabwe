@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import ReviewItem from 'ReviewItem';
+var BbzAPI = require('BbzAPI');
 
 
 export class ReviewList extends React.Component {
@@ -9,17 +10,24 @@ export class ReviewList extends React.Component {
     }
 
     renderReviewItems = () => {
-        var {reviewItems} = this.props;
-        if (reviewItems.length === 0) {
+        var {reviewItems, showApprovalPending, searchText, auth} = this.props;
+
+        var uid = 0;
+        if (auth.loggedIn) {
+            uid = auth.uid;
+        }
+
+        var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+        if (filteredReviewItems.length === 0) {
             return (
                 <tr>
-                    <td colSpan={3}>
-                    No Reviews Added
+                    <td colSpan={4}>
+                        No Reviews Added
                     </td>
                 </tr>
             )
         } else {
-            return reviewItems.map((reviewItem) => {
+            return filteredReviewItems.map((reviewItem) => {
                 return (
                     <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} />);
             });
@@ -32,9 +40,11 @@ export class ReviewList extends React.Component {
                 <table className="common-table">
                     <tbody>
                     <tr>
-                        <th>ReviewItemID</th>
-                        <th>Review Name</th>
-                        <th>Description</th>
+                        <th>Review ID</th>
+                        <th>Rating ID</th>
+                        <th>Rating</th>
+                        <th>Company Name</th>
+                        <th>Review Comment</th>
                     </tr>
 
                     {this.renderReviewItems()}
@@ -48,7 +58,11 @@ export class ReviewList extends React.Component {
 export default connect(
     (state) => {
         return {
-            reviewItems: state.reviewItems
+            auth: state.auth,
+            userProfile: state.userProfile,
+            reviewItems: state.reviewItems,
+            showApprovalPending: state.showApprovalPending,
+            searchText: state.searchText
         }
     }
 )(ReviewList);

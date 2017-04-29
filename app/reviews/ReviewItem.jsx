@@ -1,5 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import Rating from 'react-rating-system';
+import {Link} from 'react-router';
 var reviewsActions = require('reviewsActions');
 var errorActions = require('errorActions');
 
@@ -10,46 +12,71 @@ export class ReviewItem extends React.Component {
     }
 
     render() {
-        var {uid, userProfile, reviewItemId, reviewTitle, reviewDesc, createAt, updateAt, auth} = this.props;
+        var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth} = this.props;
+
+        var fillColor = "black"; //lowest ranking
+
+        if (rating > 4) {
+            fillColor = "red"; //highest ranking
+        }
+        else if (rating > 3) {
+            fillColor = "blue";
+        } else if (rating > 2.5) {
+            fillColor = "green";
+        } else if (rating > 1) {
+            fillColor = "orange";
+        }
+
+        const reviewId = createAt;
 
         return (
             <tr>
-                <td>
-                    <form>
-                        <input type="submit" value="&times;" onClick={() => {
-                            if (userProfile.isAdmin) {
-                                this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
-                            } else {
-                                var error = {};
-                                error.errorMessage = "You must be admin to delete this review information";
-                                this.dispatch(errorActions.bbzReportError(error));
-                            }
-                        }}/>
-
-                        <input type="submit" value={reviewItemId} onClick={() => {
-
-                            if (auth.uid === uid || userProfile.isAdmin) {
-                                var data = {
-                                    reviewItemId,
-                                    reviewTitle,
-                                    reviewDesc
+                <td>{reviewId}</td>
+                {auth.loggedIn && (
+                    <td>
+                        <form>
+                            <input type="submit" value="&times;" onClick={() => {
+                                if (userProfile && userProfile.isAdmin) {
+                                    this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
+                                } else {
+                                    var error = {};
+                                    error.errorMessage = "You must be admin to delete this review information";
+                                    this.dispatch(errorActions.bbzReportError(error));
                                 }
+                            }}/>
 
-                                console.debug("ReviewItems Data:", data);
+                            <input type="submit" value={reviewItemId} onClick={() => {
 
-                                this.dispatch(reviewsActions.setUpdateReviewOperation(data));
-                            }
-                            else {
-                                var error = {};
-                                error.errorMessage = "You must be the creater or admin to update this review information";
-                                this.dispatch(errorActions.bbzReportError(error));
-                            }
-                        }}/>
-                    </form>
+                                if (auth.uid === uid || userProfile.isAdmin) {
+                                    var data = {
+                                        uid,
+                                        reviewItemId,
+                                        companyItemId,
+                                        rating,
+                                        review
+                                    }
+
+                                    console.debug("ReviewItems Data:", data);
+
+                                    this.dispatch(reviewsActions.setUpdateReviewOperation(data));
+                                }
+                                else {
+                                    var error = {};
+                                    error.errorMessage = "You must be the creater or admin to update this review information";
+                                    this.dispatch(errorActions.bbzReportError(error));
+                                }
+                            }}/>
+                        </form>
+                    </td>)}
+                <td>
+                    <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white" initialValue={rating}
+                            containerStyle={{maxWidth: '200px'}} editable={false}/>
                 </td>
-                <td>{reviewTitle}</td>
-                <td>{reviewDesc}
+                <td>
+                    <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                 </td>
+                <td>{review}</td>
             </tr>
         );
     }
