@@ -24,7 +24,7 @@ export class CompanyList extends React.Component {
             return (
                 <tr>
                     <td colSpan={3}>
-                        No Companies Defined
+                        No Companies Match Search Criteria
                     </td>
                 </tr>
             )

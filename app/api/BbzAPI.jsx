@@ -107,6 +107,7 @@ module.exports = {
                 var companyTitle = reviewItem.companyTitle.toLowerCase();
                 var review = reviewItem.review.toLowerCase();
                 var reviewId = reviewItem.createAt.toString();
+                var companyItemId = reviewItem.companyItemId;
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.companyTitle;
@@ -114,6 +115,8 @@ module.exports = {
                     return reviewItem.review;
                 } else if (reviewId.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.createAt;
+                } else if (companyItemId.indexOf(searchText) > -1) {
+                    return reviewItem.companyItemId;
                 }
             });
         }

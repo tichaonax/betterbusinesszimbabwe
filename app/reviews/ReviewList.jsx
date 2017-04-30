@@ -24,7 +24,7 @@ export class ReviewList extends React.Component {
             return (
                 <tr>
                     <td colSpan={4}>
-                        No Reviews Added
+                        No Reviews Match Search Criteria
                     </td>
                 </tr>
             )
