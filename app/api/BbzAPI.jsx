@@ -104,11 +104,14 @@ module.exports = {
         //and review id stored as unix createAt date time
         if (searchText.length > 0) {
             filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
+                var companyTitle = reviewItem.companyTitle.toLowerCase();
                 var review = reviewItem.review.toLowerCase();
                 var reviewId = reviewItem.createAt.toString();
 
-                if (review.indexOf(searchText.toLowerCase()) > -1) {
-                    return reviewItem.reviewTitle;
+                if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
+                    return reviewItem.companyTitle;
+                } else if (review.indexOf(searchText.toLowerCase()) > -1) {
+                    return reviewItem.review;
                 } else if (reviewId.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.createAt;
                 }
