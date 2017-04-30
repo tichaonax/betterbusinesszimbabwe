@@ -53,18 +53,15 @@ export class AddReview extends React.Component {
                 companyItemId: nextProps.reviewOperation.data.companyItemId,
                 uid: nextProps.reviewOperation.data.uid
             });
-            console.debug("uid: nextProps.reviewOperation.data.uid",nextProps.reviewOperation.data.uid);
         }
     }
 
     findDupeReviews(reviewItems, uid, companyItemId) {
         var dupes = [];
-        console.debug("this.state.uid, this.state.companyItemId",this.state.uid, this.state.companyItemId);
         if (reviewItems) {
             reviewItems.map((reviewItem) => {
-                if (reviewItem.companyItemId === companyItemId && reviewItem.uid === this.state.loggedUid) {
-                    console.debug("dupe uid, companyItemId", uid, companyItemId);
-                    dupes.push(reviewItems);
+                if (reviewItem.companyItemId == companyItemId && reviewItem.uid == uid) {
+                    dupes.push(reviewItem);
                 };
             });
         }
@@ -90,7 +87,8 @@ export class AddReview extends React.Component {
     resetInputs = () => {
         this.setState({
             reviewItemId: '',
-            review: ''
+            review: '',
+            ration: 0
         });
     }
 
@@ -104,7 +102,7 @@ export class AddReview extends React.Component {
     handleUpdate = (e) => {
         e.preventDefault();
 
-        console.debug("rating", this.state.rating);
+
         this.dispatch(reviewsActions.startUpdateReviewItem(
             this.state.reviewItemId,
             this.state.review,
@@ -118,7 +116,6 @@ export class AddReview extends React.Component {
     handleSubmit = (e) => {
         e.preventDefault();
         var {auth, reviewItems} = this.props;
-       // console.debug("companyItemId", companyItemId);
 
         var error = {}
         var review = this.refs.review.value;
@@ -132,10 +129,16 @@ export class AddReview extends React.Component {
             return;
         }
 
-        if (this.findDupeReviews(reviewItems, this.state.uid, this.state.companyItemId).length != 0) {
-            error.errorMessage = "You can only add one review per company!";
+        if (this.findDupeReviews(reviewItems, auth.uid, this.state.selectedCompanyItemId).length != 0) {
+            error.errorMessage = "You can only add one review per company, please select another company from drop down!";
             this.dispatch(errorActions.bbzReportError(error));
-            this.refs.companyTitle.focus();
+            return;
+        }
+
+
+        if(this.state.rating==0){
+            error.errorMessage = "You must select a review rating before you can save review!";
+            this.dispatch(errorActions.bbzReportError(error));
             return;
         }
 
@@ -233,7 +236,8 @@ export default connect(
         return {
             auth: state.auth,
             reviewOperation: state.reviewOperation,
-            companyItems: state.companyItems
+            companyItems: state.companyItems,
+            reviewItems: state.reviewItems
         }
     }
 )(AddReview);

@@ -4,6 +4,7 @@ var {connect} = require('react-redux');
 import ServiceList from 'ServiceList'
 import AddServiceItem from 'AddServiceItem';
 var servicesActions = require('servicesActions');
+var searchActions = require('searchActions');
 
 export class Services extends React.Component {
     constructor(props) {

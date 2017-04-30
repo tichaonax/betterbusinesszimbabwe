@@ -3,7 +3,7 @@ var {connect} = require('react-redux');
 
 import ReviewList from 'ReviewList'
 import AddReview from 'AddReview';
-import {BbzSearch} from "BbzSearch";
+import BbzSearch from "BbzSearch";
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 
