@@ -132,6 +132,27 @@ export var startUpdateCompanyItem = (companyItemId, title, description, rating) 
     };
 };
 
+export var startApproveUpdateCompanyItem = (companyItemId, isApproved) => {
+    return (dispatch, getState) => {
+        var companyItemRef = firebaseRef.child(`companies/${companyItemId}`); //ES6 syntax
+
+        var updates = {
+            isApproved: isApproved,
+        };
+
+        return companyItemRef.update(updates).then(() => {  //return needed to chain our tests
+            dispatch(updateCompanyItem(companyItemId, updates));
+        }, (error) => {
+            console.log("Unable to update company", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        });
+    };
+};
+
 export var setAddCompanyOperation = (data, operation = 'ADD') => {
     return {
         type: 'SET_COMPANY_OPERATION',

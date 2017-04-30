@@ -17,10 +17,10 @@ export class CompanyItem extends React.Component {
     render() {
         var {uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
 
-        var approved = "No";
+        var approveImageSource = "images/like-64.png";
 
         if (isApproved) {
-            approved = "Yes"
+            approveImageSource = "images/check-blue-64.png"
         }
 
         const companyId = createAt;
@@ -93,7 +93,21 @@ export class CompanyItem extends React.Component {
                         value={rating}
                     />
                 </td>
-                {auth.loggedIn && userProfile && userProfile.isAdmin && ( <td>{approved}</td>)}
+                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                    <td>
+                        <img type="image" value="submit" height="30" width="30" src={approveImageSource}
+                             onClick={() => {
+                                 this.dispatch(errorActions.bbzClearError());
+                                 if (userProfile.isAdmin) {
+                                     this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyItemId,!isApproved));
+                                 } else {
+                                     var error = {};
+                                     error.errorMessage = "You must be admin to approve";
+                                     this.dispatch(errorActions.bbzReportError(error));
+                                 }
+                             }}/>
+                    </td>
+                )}
                 <td>{companyTitle}</td>
                 <td>{companyDesc}</td>
             </tr>
