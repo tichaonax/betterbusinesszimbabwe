@@ -1,6 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
-import Rating from 'react-rating-system';
+var Rate = require('rc-rate');
 import {Link} from 'react-router';
 var reviewsActions = require('reviewsActions');
 var errorActions = require('errorActions');
@@ -13,19 +13,6 @@ export class ReviewItem extends React.Component {
 
     render() {
         var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth} = this.props;
-
-        var fillColor = "black"; //lowest ranking
-
-        if (rating > 4) {
-            fillColor = "red"; //highest ranking
-        }
-        else if (rating > 3) {
-            fillColor = "blue";
-        } else if (rating > 2.5) {
-            fillColor = "green";
-        } else if (rating > 1) {
-            fillColor = "orange";
-        }
 
         const reviewId = createAt;
 
@@ -69,9 +56,14 @@ export class ReviewItem extends React.Component {
                         </form>
                     </td>)}
                 <td>
-                    <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white" initialValue={rating}
-                            containerStyle={{maxWidth: '200px'}} editable={false}/>
+                    <Rate
+                        defaultValue={rating}
+                        style={{fontSize: 15}}
+                        allowHalf
+                        value={rating}
+                    />
                 </td>
+
                 <td>
                     <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
                           activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>

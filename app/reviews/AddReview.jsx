@@ -1,7 +1,7 @@
 var React = require('react');
 var {connect} = require('react-redux');
 import get from 'lodash.get';
-import Rating from 'react-rating-system';
+var Rate = require('rc-rate');
 import Select from 'react-select';
 var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
@@ -120,6 +120,13 @@ export class AddReview extends React.Component {
         var error = {}
         var review = this.refs.review.value;
 
+
+        if(this.state.selectedCompanyItemId==null){
+            error.errorMessage = "You must select compant to review";
+            this.dispatch(errorActions.bbzReportError(error));
+            return;
+        }
+
         if (review.length > 0) {
 
         } else {
@@ -215,13 +222,21 @@ export class AddReview extends React.Component {
                         <input type="text" name="review" ref="review" value={this.state.review}
                                placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
                         <label htmlFor="rating">Rating</label>
-                        <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white"
+                        <Rate
+                            defaultValue={0.5}
+                            onChange={(index)=>{
+                                this.setState({rating: index});
+                            }}
+                            style={{ fontSize: 40 }}
+                            allowHalf
+                        />
+                       {/* <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white"
                                 initialValue={this.state.rating}
                                 callback={(index) => {
                                     this.setState({rating: index});
                                 }}
                                 containerStyle={{maxWidth: '200px'}}
-                                editable={(this.state.uid === auth.uid) || this.state.operation === 'ADD'}/>
+                                editable={(this.state.uid === auth.uid) || this.state.operation === 'ADD'}/>*/}
                         {this.state.operation === 'ADD' && this.renderAddView()}
                         {this.state.operation === 'UPDATE' && this.renderUpdateView()}
                     </form>

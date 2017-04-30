@@ -1,7 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import {Link} from 'react-router';
-import Rating from 'react-rating-system';
+var Rate = require('rc-rate');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 
@@ -17,19 +17,6 @@ export class CompanyItem extends React.Component {
         var approved = "No";
         if (isApproved) {
             approved = "Yes"
-        }
-
-        var fillColor = "black"; //lowest ranking
-
-        if (rating > 4) {
-            fillColor = "red"; //highest ranking
-        }
-        else if (rating > 3) {
-            fillColor = "blue";
-        } else if (rating > 2.5) {
-            fillColor = "green";
-        } else if (rating > 1) {
-            fillColor = "orange";
         }
 
         const companyId = createAt;
@@ -78,9 +65,12 @@ export class CompanyItem extends React.Component {
                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                 </td>
                 <td>
-                    <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white" initialValue={rating}
-                        /*callback={(index) => alert(`You rated my component with a ${index}`)}*/
-                            containerStyle={{maxWidth: '200px'}} editable={false}/>
+                    <Rate
+                        defaultValue={rating}
+                        style={{fontSize: 15}}
+                        allowHalf
+                        value={rating}
+                    />
                 </td>
                 {auth.loggedIn && userProfile && userProfile.isAdmin && ( <td>{approved}</td>)}
                 <td>{companyTitle}</td>
