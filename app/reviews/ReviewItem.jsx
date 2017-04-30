@@ -14,7 +14,7 @@ export class ReviewItem extends React.Component {
     }
 
     render() {
-        var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth, foo} = this.props;
+        var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
 
         const reviewId = createAt;
 
@@ -24,14 +24,12 @@ export class ReviewItem extends React.Component {
                 {auth.loggedIn && (
                     <td>
                         <form>
-                            <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png" alt="Delete Review"
-                                 onMouseOver={()=>{
-                                     console.debug("onMousever");
-                                     ReactTooltip.show(findDOMNode(foo))
+                            <img type="image" value="submit" height="30" width="30" src="images/delete-blue-x-64.png" alt="Delete Review"
+                                 onMouseOver={() => {
+                                     ReactTooltip.show(findDOMNode(deleteReview));
                                  }}
-                                 onMouseOut={()=>{
-                                     console.debug("onMouseOut");
-                                     ReactTooltip.hide(findDOMNode(foo))
+                                 onMouseOut={() => {
+                                     ReactTooltip.hide(findDOMNode(deleteReview));
                                  }}
                                  onClick={() => {
                                 if (userProfile && userProfile.isAdmin) {
@@ -43,7 +41,14 @@ export class ReviewItem extends React.Component {
                                 }
                             }}/>
 
-                            <img type="image" value="submit" height="30" width="30" src="images/update-blue-64.png" alt="Update Review" onClick={() => {
+                            <img type="image" value="submit" height="40" width="40" src="images/update-blue-64.png" alt="Update Review"
+                                 onMouseOver={() => {
+                                     ReactTooltip.show(findDOMNode(updateReview));
+                                 }}
+                                 onMouseOut={() => {
+                                     ReactTooltip.hide(findDOMNode(updateReview));
+                                 }}
+                                 onClick={() => {
 
                                 if (auth.uid === uid || userProfile.isAdmin) {
                                     var data = {
@@ -85,7 +90,7 @@ export class ReviewItem extends React.Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {
         auth: state.auth,
         userProfile: state.userProfile

@@ -71,13 +71,15 @@ export class AddReview extends React.Component {
 
     renderAddView = () => {
         return (
-            <input ref="add" type="submit" value="Add New Review"/>
+            <div className="bbz-general">
+                <input ref="add" type="submit" value="Add New Review"/>
+            </div>
         )
     }
 
     renderUpdateView() {
         return (
-            <div>
+            <div className="bbz-general">
                 <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
                 <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
             </div>)
@@ -193,33 +195,28 @@ export class AddReview extends React.Component {
     }
 
     render() {
-
-        var {auth} = this.props;
-
         return (
-            <div className="form-group bbz-general">
-                <div>
-                    <Error/>
-                    <form onSubmit={this.handleSubmit}>
-                        {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
-                        {this.state.operation === 'ADD' && this.renderCompanyDropDownList()}}
-                        <label htmlFor="sreview">Review Comment</label>
-                        <input type="text" name="review" ref="review" value={this.state.review}
-                               placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
-                        <label htmlFor="rating">Rating</label>
-                        <Rate
-                            defaultValue={this.state.rating}
-                            onChange={(index)=>{
-                                this.setState({rating: index});
-                            }}
-                            style={{ fontSize: 40 }}
-                            allowHalf
-                            value={this.state.rating}
-                        />
-                        {this.state.operation === 'ADD' && this.renderAddView()}
-                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
-                    </form>
-                </div>
+            <div className="form-group">
+                <Error/>
+                <form onSubmit={this.handleSubmit}>
+                    {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
+                    {this.state.operation === 'ADD' && this.renderCompanyDropDownList()}
+                    <label htmlFor="sreview">Review Comment</label>
+                    <input type="text" name="review" ref="review" value={this.state.review}
+                           placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
+                    <label htmlFor="rating">Rating</label>
+                    <Rate
+                        defaultValue={this.state.rating}
+                        onChange={(index) => {
+                            this.setState({rating: index});
+                        }}
+                        style={{fontSize: 40}}
+                        allowHalf
+                        value={this.state.rating}
+                    />
+                    {this.state.operation === 'ADD' && this.renderAddView()}
+                    {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                </form>
             </div>
         );
     }

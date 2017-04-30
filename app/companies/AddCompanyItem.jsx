@@ -58,13 +58,15 @@ export class AddCompnayItem extends React.Component {
 
     renderAddView = () => {
         return (
-            <input ref="add" type="submit" value="Add New Company"/>
+            <div className="bbz-general">
+                <input ref="add" type="submit" value="Add New Company"/>
+            </div>
         )
     }
 
     renderUpdateView() {
         return (
-            <div>
+            <div className="bbz-general">
                 <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
                 <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
             </div>)
@@ -147,7 +149,7 @@ export class AddCompnayItem extends React.Component {
 
     render() {
         return (
-            <div className="form-group bbz-general">
+            <div className="form-group">
                 <div>
                     <Error/>
                     <form onSubmit={this.handleSubmit}>

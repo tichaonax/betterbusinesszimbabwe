@@ -1,6 +1,8 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import {Link} from 'react-router';
+import {findDOMNode} from 'react-dom'
+import ReactTooltip from 'react-tooltip'
 var Rate = require('rc-rate');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
@@ -13,8 +15,10 @@ export class CompanyItem extends React.Component {
 
 
     render() {
-        var {uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth} = this.props;
+        var {uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
+
         var approved = "No";
+
         if (isApproved) {
             approved = "Yes"
         }
@@ -27,38 +31,54 @@ export class CompanyItem extends React.Component {
                     <td>
                         <form>
                             {auth.loggedIn && (
-                                <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png" alt="Delete Company" onClick={() => {
-                                    this.dispatch(errorActions.bbzClearError());
-                                    if (userProfile.isAdmin) {
-                                        this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
-                                    } else {
-                                        var error = {};
-                                        error.errorMessage = "You must be admin to delete this company information";
-                                        this.dispatch(errorActions.bbzReportError(error));
-                                    }
-                                }}/>)}
+                                <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png"
+                                     alt="Delete Company"
+                                     onMouseOver={() => {
+                                         ReactTooltip.show(findDOMNode(deleteCompany));
+                                     }}
+                                     onMouseOut={() => {
+                                         ReactTooltip.hide(findDOMNode(deleteCompany));
+                                     }}
+                                     onClick={() => {
+                                         this.dispatch(errorActions.bbzClearError());
+                                         if (userProfile.isAdmin) {
+                                             this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+                                         } else {
+                                             var error = {};
+                                             error.errorMessage = "You must be admin to delete this company information";
+                                             this.dispatch(errorActions.bbzReportError(error));
+                                         }
+                                     }}/>)}
 
-                            {auth.loggedIn && (<img type="image" value="submit" height="30" width="30"
-                                                      src="images/update-blue-64.png" alt="Update Company" onClick={() => {
-                                this.dispatch(errorActions.bbzClearError());
-                                if (auth.uid === uid || userProfile.isAdmin) {
-                                    var data = {
-                                        uid,
-                                        companyItemId,
-                                        companyTitle,
-                                        companyDesc
-                                    }
+                            {auth.loggedIn && (
+                                <img type="image" value="submit" height="30" width="30" src="images/update-blue-64.png"
+                                     alt="Update Company"
+                                     onMouseOver={() => {
+                                         ReactTooltip.show(findDOMNode(updateCompany));
+                                     }}
+                                     onMouseOut={() => {
+                                         ReactTooltip.hide(findDOMNode(updateCompany));
+                                     }}
+                                     onClick={() => {
+                                         this.dispatch(errorActions.bbzClearError());
+                                         if (auth.uid === uid || userProfile.isAdmin) {
+                                             var data = {
+                                                 uid,
+                                                 companyItemId,
+                                                 companyTitle,
+                                                 companyDesc
+                                             }
 
-                                    console.debug("CompanyItems Data:", data);
+                                             console.debug("CompanyItems Data:", data);
 
-                                    this.dispatch(companiesActions.setUpdateCompanyOperation(data));
-                                }
-                                else {
-                                    var error = {};
-                                    error.errorMessage = "You must be the creater or admin to update this company information";
-                                    this.dispatch(errorActions.bbzReportError(error));
-                                }
-                            }}/>)}
+                                             this.dispatch(companiesActions.setUpdateCompanyOperation(data));
+                                         }
+                                         else {
+                                             var error = {};
+                                             error.errorMessage = "You must be the creater or admin to update this company information";
+                                             this.dispatch(errorActions.bbzReportError(error));
+                                         }
+                                     }}/>)}
                         </form>
                     </td>)}
                 <td>
@@ -81,7 +101,7 @@ export class CompanyItem extends React.Component {
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {
         auth: state.auth,
         userProfile: state.userProfile

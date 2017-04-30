@@ -1,5 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import ReactTooltip from 'react-tooltip'
 import CompanyItem from 'CompanyItem';
 var BbzAPI = require('BbzAPI');
 
@@ -23,14 +24,15 @@ export class CompanyList extends React.Component {
             return (
                 <tr>
                     <td colSpan={3}>
-                    No Companies Defined
+                        No Companies Defined
                     </td>
                 </tr>
             )
         } else {
             return filteredCompanyItems.map((companyItem) => {
                 return (
-                    <CompanyItem key={companyItem.companyItemId} {...companyItem} />);
+                    <CompanyItem key={companyItem.companyItemId} {...companyItem}
+                                 deleteCompany={this.refs.deleteCompany} updateCompany={this.refs.updateCompany}/>);
             });
         }
     }
@@ -40,11 +42,17 @@ export class CompanyList extends React.Component {
 
         return (
             <div>
+                <ReactTooltip />
                 <table className="common-table">
                     <tbody>
                     <tr>
                         <th>Company ID</th>
-                        {auth.loggedIn && (<th>Action</th>)}
+                        {auth.loggedIn && (
+                            <th>
+                                <div ref='deleteCompany' data-tip='Delete Company'></div>
+                                Action
+                                <div ref='updateCompany' data-tip='Update Company'></div>
+                            </th>)}
                         <th>Reviews</th>
                         <th>Rating</th>
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}

@@ -31,7 +31,8 @@ export class ReviewList extends React.Component {
         } else {
             return filteredReviewItems.map((reviewItem) => {
                 return (
-                    <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} foo={this.refs.foo} />);
+                    <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} deleteReview={this.refs.deleteReview}
+                                updateReview={this.refs.updateReview}/>);
             });
         }
     }
@@ -40,13 +41,17 @@ export class ReviewList extends React.Component {
         var {auth}=this.props;
         return (
             <div>
-                <p ref='foo' data-tip='tooltip'></p>
                 <ReactTooltip />
                 <table className="common-table">
                     <tbody>
                     <tr>
                         <th>Review ID</th>
-                        {auth.loggedIn && (<th>Action</th>)}
+                        {auth.loggedIn &&
+                        (<th>
+                            <div ref='deleteReview' data-tip='Delete Review'></div>
+                            Action
+                            <div ref='updateReview' data-tip='Update Review'></div>
+                        </th>)}
                         <th>Rating</th>
                         <th>Company Name</th>
                         <th>Review Comment</th>

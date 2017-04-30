@@ -17,7 +17,6 @@ export class Services extends React.Component {
     }
 
     componentWillUnmount(){
-        //clear searchText
         this.dispatch(searchActions.setSearchText(""));
     }
 
