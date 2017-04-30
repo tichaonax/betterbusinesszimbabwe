@@ -25,8 +25,7 @@ export class AddReview extends React.Component {
             companyItems: null,
             selectedCompanyItemId: null,
             selectedCompanyTitle: null,
-            uid: null,
-            loggedUid: null
+            uid: null
         }
     }
 
@@ -51,7 +50,8 @@ export class AddReview extends React.Component {
                 reviewItemId: nextProps.reviewOperation.data.reviewItemId,
                 review: nextProps.reviewOperation.data.review,
                 companyItemId: nextProps.reviewOperation.data.companyItemId,
-                uid: nextProps.reviewOperation.data.uid
+                uid: nextProps.reviewOperation.data.uid,
+                rating: nextProps.reviewOperation.data.rating
             });
         }
     }
@@ -196,21 +196,6 @@ export class AddReview extends React.Component {
 
         var {auth} = this.props;
 
-        this.state.loggedUid = auth.uid;
-
-        var fillColor = "black"; //lowest ranking
-
-        if (this.state.rating > 4) {
-            fillColor = "red"; //highest ranking
-        }
-        else if (this.state.rating > 3) {
-            fillColor = "blue";
-        } else if (this.state.rating > 2.5) {
-            fillColor = "green";
-        } else if (this.state.rating > 1) {
-            fillColor = "orange";
-        }
-
         return (
             <div className="form-group bbz-general">
                 <div>
@@ -223,20 +208,14 @@ export class AddReview extends React.Component {
                                placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
                         <label htmlFor="rating">Rating</label>
                         <Rate
-                            defaultValue={0.5}
+                            defaultValue={this.state.rating}
                             onChange={(index)=>{
                                 this.setState({rating: index});
                             }}
                             style={{ fontSize: 40 }}
                             allowHalf
+                            value={this.state.rating}
                         />
-                       {/* <Rating image="images/rating/heart.png" fillBG={fillColor} initialBG="white"
-                                initialValue={this.state.rating}
-                                callback={(index) => {
-                                    this.setState({rating: index});
-                                }}
-                                containerStyle={{maxWidth: '200px'}}
-                                editable={(this.state.uid === auth.uid) || this.state.operation === 'ADD'}/>*/}
                         {this.state.operation === 'ADD' && this.renderAddView()}
                         {this.state.operation === 'UPDATE' && this.renderUpdateView()}
                     </form>
