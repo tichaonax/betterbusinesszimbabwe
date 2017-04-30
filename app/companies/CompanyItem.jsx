@@ -27,7 +27,7 @@ export class CompanyItem extends React.Component {
                     <td>
                         <form>
                             {auth.loggedIn && (
-                                <input type="submit" value="&times;" onClick={() => {
+                                <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png" alt="Delete Company" onClick={() => {
                                     this.dispatch(errorActions.bbzClearError());
                                     if (userProfile.isAdmin) {
                                         this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
@@ -38,7 +38,8 @@ export class CompanyItem extends React.Component {
                                     }
                                 }}/>)}
 
-                            {auth.loggedIn && (<input type="submit" value={companyItemId} onClick={() => {
+                            {auth.loggedIn && (<img type="image" value="submit" height="30" width="30"
+                                                      src="images/update-blue-64.png" alt="Update Company" onClick={() => {
                                 this.dispatch(errorActions.bbzClearError());
                                 if (auth.uid === uid || userProfile.isAdmin) {
                                     var data = {

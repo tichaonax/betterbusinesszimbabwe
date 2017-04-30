@@ -22,7 +22,7 @@ export class ReviewItem extends React.Component {
                 {auth.loggedIn && (
                     <td>
                         <form>
-                            <input type="submit" value="&times;" onClick={() => {
+                            <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png" alt="Delete Review" onClick={() => {
                                 if (userProfile && userProfile.isAdmin) {
                                     this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
                                 } else {
@@ -32,7 +32,7 @@ export class ReviewItem extends React.Component {
                                 }
                             }}/>
 
-                            <input type="submit" value={reviewItemId} onClick={() => {
+                            <img type="image" value="submit" height="30" width="30" src="images/update-blue-64.png" alt="Update Review" onClick={() => {
 
                                 if (auth.uid === uid || userProfile.isAdmin) {
                                     var data = {

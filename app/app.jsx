@@ -34,7 +34,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
         store.dispatch(loginActions.bbzLogin(auth));
         store.dispatch(profileActions.startSetUserProfile());
-        hashHistory.push('/bbzreviews');
+        hashHistory.push('/reviews');
     } else {
         console.debug("user session invlaid:", user);
         store.dispatch(loginActions.bbzLogout());

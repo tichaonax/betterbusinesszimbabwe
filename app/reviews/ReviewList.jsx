@@ -42,7 +42,7 @@ export class ReviewList extends React.Component {
                     <tbody>
                     <tr>
                         <th>Review ID</th>
-                        {auth.loggedIn && (<th>Rating ID</th>)}
+                        {auth.loggedIn && (<th>Action</th>)}
                         <th>Rating</th>
                         <th>Company Name</th>
                         <th>Review Comment</th>
