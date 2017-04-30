@@ -1,5 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import {findDOMNode} from 'react-dom'
+import ReactTooltip from 'react-tooltip'
 import ReviewItem from 'ReviewItem';
 var BbzAPI = require('BbzAPI');
 
@@ -29,7 +31,7 @@ export class ReviewList extends React.Component {
         } else {
             return filteredReviewItems.map((reviewItem) => {
                 return (
-                    <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} />);
+                    <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} foo={this.refs.foo} />);
             });
         }
     }
@@ -38,6 +40,8 @@ export class ReviewList extends React.Component {
         var {auth}=this.props;
         return (
             <div>
+                <p ref='foo' data-tip='tooltip'></p>
+                <ReactTooltip />
                 <table className="common-table">
                     <tbody>
                     <tr>

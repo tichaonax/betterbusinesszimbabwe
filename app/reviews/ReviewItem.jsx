@@ -2,6 +2,8 @@ import React from 'react';
 var {connect} = require('react-redux');
 var Rate = require('rc-rate');
 import {Link} from 'react-router';
+import {findDOMNode} from 'react-dom'
+import ReactTooltip from 'react-tooltip'
 var reviewsActions = require('reviewsActions');
 var errorActions = require('errorActions');
 
@@ -12,7 +14,7 @@ export class ReviewItem extends React.Component {
     }
 
     render() {
-        var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth} = this.props;
+        var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth, foo} = this.props;
 
         const reviewId = createAt;
 
@@ -22,7 +24,16 @@ export class ReviewItem extends React.Component {
                 {auth.loggedIn && (
                     <td>
                         <form>
-                            <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png" alt="Delete Review" onClick={() => {
+                            <img type="image" value="submit" height="30" width="30" src="images/delete-blue-64.png" alt="Delete Review"
+                                 onMouseOver={()=>{
+                                     console.debug("onMousever");
+                                     ReactTooltip.show(findDOMNode(foo))
+                                 }}
+                                 onMouseOut={()=>{
+                                     console.debug("onMouseOut");
+                                     ReactTooltip.hide(findDOMNode(foo))
+                                 }}
+                                 onClick={() => {
                                 if (userProfile && userProfile.isAdmin) {
                                     this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
                                 } else {
