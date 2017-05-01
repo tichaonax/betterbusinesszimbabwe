@@ -12,21 +12,23 @@ class LoginStats extends React.Component {
             avator,
             isLoggedIn,
             displayName,
-            userProfile
+            userProfile,
+            lastLogin
         } = this.props;
 
         function renderLoggedIn()
         {
-            var lastLogin = "";
+            var lastLoginAt = "";
 
-            if (userProfile && userProfile.lastLogins) {
-                lastLogin = moment.unix(userProfile.lastLogins.loginAt).format('MMM Do, YYYY @ h:mm a');
+            if (userProfile && lastLogin) {
+                console.debug("Last Login:",lastLogin.loginAt);
+                lastLoginAt = moment.unix(lastLogin.loginAt).format('MMM Do, YYYY @ h:mm a');
             }
 
-            var joined = "";
+            var joinedAt = "";
 
             if (userProfile && userProfile.createDate) {
-                joined = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
+                joinedAt = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
             }
 
             var admin = "";
@@ -49,10 +51,10 @@ class LoginStats extends React.Component {
                                 {admin} Welcome!
                             </td>
                             <td>
-                                {joined}
+                                {joinedAt}
                             </td>
                             <td>
-                                {lastLogin}
+                                {lastLoginAt}
                             </td>
                         </tr>
                         </tbody>
@@ -88,7 +90,8 @@ function mapStateToProps(state) {
         avator: state.auth.photoURL,
         isLoggedIn: state.auth.loggedIn,
         displayName: state.auth.displayName,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
+        lastLogin: state.lastLogin
     }
 }
 

@@ -137,16 +137,15 @@ export var startBbzLogout = () => {
 //</editor-fold>
 
 //<editor-fold desc="lastLogins">
-export var lastLogin = (lastLoginInfo) => {
-    console.debug("lastLogin", lastLoginInfo);
+export var lastLogin = (lastLogin) => {
+    console.debug("lastLogin", lastLogin);
     return {
         type: 'ADD_LAST_LOGIN',
-        lastLoginInfo
+        lastLogin
     };
 };
 
 export var startLastLogin = () => {
-    var gAuth;
     return (dispatch, getState) => {
 
         var gClientIp;
@@ -222,6 +221,46 @@ export var startLastLogin = () => {
                 );
             });
     }
+};
+
+export var startGetLastLogin = () => {
+    return (dispatch, getState) => {
+        var uid = getState().auth.uid;
+        var lastLoginRef = firebaseRef.child(`users/${uid}/userProfile/lastLogins`);
+        return lastLoginRef.once('value').then((snapshot) => {
+            var lastLogins = snapshot.val() || {}; //return available data or empty object
+
+            var parsedLastLogins = [];
+
+            Object.keys(lastLogins).forEach((lastLogin) => {
+                parsedLastLogins.push({
+                    id: lastLogin,
+                    ...lastLogins[lastLogin]
+                });
+            });
+
+            var lastLoginInfo = {};
+
+            const lastLoginsSize = Object.keys(lastLogins).length;
+
+            if (lastLoginsSize > 0) {
+                const obj = parsedLastLogins[lastLoginsSize - 1];
+                lastLoginInfo.loginAt = obj.loginAt;
+                lastLoginInfo.city = obj.city;
+                lastLoginInfo.country = obj.country;
+            }
+
+            dispatch(lastLogin(lastLoginInfo));
+
+        }, (error) => {
+            console.log("Unable to fetch lastLogin", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        });
+    };
 };
 
 //</editor-fold>

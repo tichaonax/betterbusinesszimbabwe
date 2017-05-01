@@ -10,3 +10,14 @@ export var firebaseAuthReducer = (state = {loggedIn: false}, action) => {
             return state;
     };
 };
+
+export var lastLoginReducer  = (state = {}, action) => {
+    switch (action.type) {
+        case 'ADD_LAST_LOGIN':
+            return {
+                ...action.lastLogin
+            };
+        default:
+            return state;
+    };
+};

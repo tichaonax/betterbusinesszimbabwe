@@ -1,7 +1,7 @@
 import * as redux from 'redux';
 import thunk from 'redux-thunk';
 import {userProfileReducer} from 'profileReducers';
-import {firebaseAuthReducer} from 'loginReducers';
+import {firebaseAuthReducer, lastLoginReducer} from 'loginReducers';
 import {setRedirectUrlReducer} from 'urlReducers';
 import {bbzErrorReducer} from 'errorReducers';
 import {searchTextReducer, showApprovalPendingReducer} from 'searchReducers';
@@ -15,6 +15,7 @@ export var configure = (initialState = {}) => {
         searchText: searchTextReducer,
         showApprovalPending: showApprovalPendingReducer,
         auth: firebaseAuthReducer,
+        lastLogin: lastLoginReducer,
         redirectUrl: setRedirectUrlReducer,
         error: bbzErrorReducer,
         userProfile: userProfileReducer,

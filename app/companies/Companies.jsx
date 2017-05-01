@@ -6,6 +6,7 @@ import AddCompanyItem from 'AddCompanyItem';
 import BbzSearch from "BbzSearch";
 var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
+var servicesActions = require('servicesActions');
 
 export class Companies extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ export class Companies extends React.Component {
 
     componentDidMount() {
         this.dispatch(companiesActions.startAddCompanyItems());
+        this.dispatch(servicesActions.startAddServiceItems());
     }
 
     componentWillUnmount(){

@@ -15,7 +15,7 @@ export class CompanyItem extends React.Component {
 
 
     render() {
-        var {displayName, email,uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
+        var {serviceTitle, displayName, email,uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
 
         var reviewer = displayName;
 
@@ -121,6 +121,9 @@ export class CompanyItem extends React.Component {
                     <td>
                         {email}
                     </td>)}
+                <td>
+                    {serviceTitle}
+                </td>
                 <td>{companyDesc}</td>
             </tr>
         );

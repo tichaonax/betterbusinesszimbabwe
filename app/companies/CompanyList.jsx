@@ -60,6 +60,7 @@ export class CompanyList extends React.Component {
                         <th>Company Name</th>
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reporter</th>)}
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reporter Email</th>)}
+                        <th>Service</th>
                         <th>Description</th>
                     </tr>
                     {this.renderCompanyItems()}
@@ -77,7 +78,8 @@ export default connect(
             userProfile: state.userProfile,
             companyItems: state.companyItems,
             showApprovalPending: state.showApprovalPending,
-            searchText: state.searchText
+            searchText: state.searchText,
+            serviceItems:state.serviceItems
         }
     }
 )(CompanyList);
