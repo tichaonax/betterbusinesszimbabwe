@@ -14,8 +14,20 @@ export class ReviewItem extends React.Component {
     }
 
     render() {
-        var {uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
+        var {displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
 
+        var reviewer = displayName;
+
+        if (displayName) {
+            reviewer = displayName.split('@')[0];
+        }
+
+        console.debug("reviewer", reviewer);
+        var approveImageSource = "images/like-64.png";
+
+        if (isApproved) {
+            approveImageSource = "images/check-blue-64.png"
+        }
         const reviewId = createAt;
 
         return (
@@ -24,7 +36,7 @@ export class ReviewItem extends React.Component {
                 {auth.loggedIn && (
                     <td>
                         <form>
-                            <img type="image" value="submit" height="30" width="30" src="images/delete-blue-x-64.png" alt="Delete Review"
+                            <img type="image" value="submit" height="15" width="15" src="images/delete-blue-x-64.png" alt="Delete Review"
                                  onMouseOver={() => {
                                      ReactTooltip.show(findDOMNode(deleteReview));
                                  }}
@@ -41,7 +53,7 @@ export class ReviewItem extends React.Component {
                                 }
                             }}/>
 
-                            <img type="image" value="submit" height="40" width="40" src="images/update-blue-64.png" alt="Update Review"
+                            <img type="image" value="submit" height="20" width="20" src="images/update-blue-64.png" alt="Update Review"
                                  onMouseOver={() => {
                                      ReactTooltip.show(findDOMNode(updateReview));
                                  }}
@@ -79,11 +91,30 @@ export class ReviewItem extends React.Component {
                         value={rating}
                     />
                 </td>
-
+                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                    <td>
+                        <img type="image" value="submit" height="20" width="20" src={approveImageSource}
+                             onClick={() => {
+                                 this.dispatch(errorActions.bbzClearError());
+                                 if (userProfile.isAdmin) {
+                                     this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId,!isApproved));
+                                 } else {
+                                     var error = {};
+                                     error.errorMessage = "You must be admin to approve";
+                                     this.dispatch(errorActions.bbzReportError(error));
+                                 }
+                             }}/>
+                    </td>
+                )}
                 <td>
                     <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
                           activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                 </td>
+                <td>{reviewer}</td>
+                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                    <td>
+                        {email}
+                    </td>)}
                 <td>{review}</td>
             </tr>
         );

@@ -10,7 +10,7 @@ export var addReviewItem = (reviewItem) => {
     };
 };
 
-export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyTitle) => {
+export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyTitle, displayName, email) => {
     return (dispatch, getState) => {
         var reviewItem = {
             uid: uid,
@@ -20,7 +20,9 @@ export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyT
             rating: rating,
             createAt: moment().unix(),
             updateAt: null,
-            isApproved: false
+            isApproved: false,
+            displayName: displayName,
+            email: email
         }
 
         //This will add a mew review item to firebase and dispatch the newly created
@@ -114,7 +116,30 @@ export var startUpdateReviewItem = (reviewItemId, review, rating) => {
         var updates = {
             updateAt: moment().unix(),
             review: review,
-            rating: rating
+            rating: rating,
+            isApproved: false
+        };
+
+        return reviewItemRef.update(updates).then(() => {  //return needed to chain our tests
+            dispatch(updateReviewItem(reviewItemId, updates));
+        }, (error) => {
+            console.log("Unable to update review", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        });
+    };
+};
+
+
+export var startApproveUpdateReviewItem = (reviewItemId, isApproved) => {
+    return (dispatch, getState) => {
+        var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`); //ES6 syntax
+
+        var updates = {
+            isApproved: isApproved
         };
 
         return reviewItemRef.update(updates).then(() => {  //return needed to chain our tests

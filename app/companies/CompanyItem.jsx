@@ -24,6 +24,7 @@ export class CompanyItem extends React.Component {
         }
 
         const companyId = createAt;
+
         return (
             <tr>
                 <td>{companyId}</td>

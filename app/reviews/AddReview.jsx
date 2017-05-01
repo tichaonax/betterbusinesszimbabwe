@@ -117,7 +117,7 @@ export class AddReview extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {auth, reviewItems} = this.props;
+        var {auth, reviewItems, userProfile} = this.props;
 
         var error = {}
         var review = this.refs.review.value;
@@ -153,7 +153,12 @@ export class AddReview extends React.Component {
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(reviewsActions.startAddNewReviewItem(auth.uid, this.state.selectedCompanyItemId, review, this.state.rating, this.state.selectedCompanyTitle));
+        this.dispatch(reviewsActions.startAddNewReviewItem(
+            auth.uid, this.state.selectedCompanyItemId, review,
+            this.state.rating, this.state.selectedCompanyTitle,
+            userProfile.displayName,
+            userProfile.email
+        ));
     }
 
     onChangeReviewComment =(e)=>{
@@ -228,7 +233,8 @@ export default connect(
             auth: state.auth,
             reviewOperation: state.reviewOperation,
             companyItems: state.companyItems,
-            reviewItems: state.reviewItems
+            reviewItems: state.reviewItems,
+            userProfile: state.userProfile
         }
     }
 )(AddReview);

@@ -38,7 +38,9 @@ export class ReviewList extends React.Component {
     }
 
     render() {
-        var {auth}=this.props;
+
+        var {auth, userProfile}=this.props;
+
         return (
             <div>
                 <ReactTooltip />
@@ -53,7 +55,10 @@ export class ReviewList extends React.Component {
                             <div ref='updateReview' data-tip='Update Review'></div>
                         </th>)}
                         <th>Rating</th>
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}
                         <th>Company Name</th>
+                        <th>Reviewer</th>
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reviewer Emai</th>)}
                         <th>Review Comment</th>
                     </tr>
 

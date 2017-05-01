@@ -38,6 +38,7 @@ export class CompanyList extends React.Component {
     }
 
     render() {
+
         var {userProfile, auth} = this.props;
 
         return (
