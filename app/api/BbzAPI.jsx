@@ -3,8 +3,8 @@ var $ = require('jquery');
 
 module.exports = {
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid=0) {
-        console.debug("companyItems", companyItems);
-        console.debug("showApprovalPending", showApprovalPending);
+        //console.debug("companyItems", companyItems);
+        //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
 
         //filter by showApprovalPending
@@ -89,8 +89,8 @@ module.exports = {
     },
 
     getFilteredReviews: function (reviewItems, showApprovalPending, searchText, uid=0) {
-        console.debug("reviewItems", reviewItems);
-        console.debug("showApprovalPending", showApprovalPending);
+        //console.debug("reviewItems", reviewItems);
+        //console.debug("showApprovalPending", showApprovalPending);
         var filteredreviewItems = reviewItems;
 
         //filter by showApprovalPending

@@ -14,7 +14,7 @@ export class Error extends React.Component {
 
    render() {
       var {error, redirectUrl} = this.props;
-        console.debug("redirectUrl",redirectUrl);
+        //console.debug("redirectUrl",redirectUrl);
       if ( error && error.errorMessage ) {
           console.debug("error",error);
           return (

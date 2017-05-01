@@ -18,7 +18,6 @@ export class BbzSearch extends React.Component {
                     <input id="searchItemText" type="text"  value={searchText} placeholder="Enter text to search?"
                            onChange={() => {
                                var searchText = $('#searchItemText').val();
-                               console.debug("searchText:", searchText);
                                this.dispatch(searchActions.setSearchText(searchText));
                            }}/>
                 </div>
