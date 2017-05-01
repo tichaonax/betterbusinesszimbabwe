@@ -15,8 +15,13 @@ export class CompanyItem extends React.Component {
 
 
     render() {
-        var {uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
+        var {displayName, email,uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
 
+        var reviewer = displayName;
+
+        if (displayName) {
+            reviewer = displayName.split('@')[0];
+        }
         var approveImageSource = "images/like-64.png";
 
         if (isApproved) {
@@ -110,6 +115,12 @@ export class CompanyItem extends React.Component {
                     </td>
                 )}
                 <td>{companyTitle}</td>
+                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                    <td>{reviewer}</td>)}
+                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                    <td>
+                        {email}
+                    </td>)}
                 <td>{companyDesc}</td>
             </tr>
         );

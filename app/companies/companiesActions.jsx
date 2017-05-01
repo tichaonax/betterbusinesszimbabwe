@@ -153,6 +153,61 @@ export var startApproveUpdateCompanyItem = (companyItemId, isApproved) => {
     };
 };
 
+export var startUpdateCompanyItemReviewCount = (companyItemId, isApproved, rating) => {
+    return (dispatch, getState) => {
+        var companyItemRef = firebaseRef.child(`companies/${companyItemId}`); //ES6 syntax
+        return companyItemRef.once('value').then((snapshot) => {
+            var companyItem = snapshot.val() || {}; //return available data or empty object
+
+            console.debug("companyItem, isApproved, rating", companyItem, isApproved, rating);
+
+            var newRating = (companyItem.rating) ? companyItem.ratin : 0;
+
+            var newReviewCount = (companyItem.reviewCount) ? companyItem.reviewCount : 0;
+
+            console.debug("Rating:", companyItem.rating);
+
+            if (isApproved) {
+                newReviewCount = companyItem.reviewCount + 1;
+                newRating = ((companyItem.rating * companyItem.reviewCount ) + rating) / newReviewCount;
+            } else {
+                if (companyItem.reviewCount < 2) {
+                    newRating = 0;
+                    newReviewCount = 0;
+                } else {
+                    newReviewCount = companyItem.reviewCount - 1;
+                    newRating = ((companyItem.rating * companyItem.reviewCount ) - rating) / newReviewCount;
+                }
+            }
+
+            if (newRating < 0) {
+                newRating = 0
+            } else if (newRating > 5) {
+                newRating = 5
+            }
+
+            console.debug("New Rating, newReviewCount", newRating, newReviewCount);
+
+            var updates = {
+                rating: newRating,
+                reviewCount: newReviewCount
+            };
+
+            return companyItemRef.update(updates).then(() => {
+                dispatch(updateCompanyItem(companyItemId, updates))
+            })
+        }, (error) => {
+            console.log("Unable to update company rating", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        })
+    }
+};
+
+
 export var setAddCompanyOperation = (data, operation = 'ADD') => {
     return {
         type: 'SET_COMPANY_OPERATION',

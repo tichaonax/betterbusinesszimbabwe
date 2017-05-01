@@ -58,6 +58,8 @@ export class CompanyList extends React.Component {
                         <th>Rating</th>
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}
                         <th>Company Name</th>
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reporter</th>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reporter Email</th>)}
                         <th>Description</th>
                     </tr>
                     {this.renderCompanyItems()}

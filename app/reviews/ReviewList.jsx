@@ -58,7 +58,7 @@ export class ReviewList extends React.Component {
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}
                         <th>Company Name</th>
                         <th>Reviewer</th>
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reviewer Emai</th>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reviewer Email</th>)}
                         <th>Review Comment</th>
                     </tr>
 

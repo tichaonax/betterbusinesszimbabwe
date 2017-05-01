@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import {findDOMNode} from 'react-dom'
 import ReactTooltip from 'react-tooltip'
 var reviewsActions = require('reviewsActions');
+var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 
 export class ReviewItem extends React.Component {
@@ -22,7 +23,6 @@ export class ReviewItem extends React.Component {
             reviewer = displayName.split('@')[0];
         }
 
-        console.debug("reviewer", reviewer);
         var approveImageSource = "images/like-64.png";
 
         if (isApproved) {
@@ -98,6 +98,7 @@ export class ReviewItem extends React.Component {
                                  this.dispatch(errorActions.bbzClearError());
                                  if (userProfile.isAdmin) {
                                      this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId,!isApproved));
+                                     this.dispatch(companiesActions.startUpdateCompanyItemReviewCount(companyItemId, !isApproved, rating))
                                  } else {
                                      var error = {};
                                      error.errorMessage = "You must be admin to approve";
