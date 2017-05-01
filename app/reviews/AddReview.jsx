@@ -124,8 +124,9 @@ export class AddReview extends React.Component {
 
 
         if(this.state.selectedCompanyItemId==null){
-            error.errorMessage = "You must select compant to review";
+            error.errorMessage = "You must select company to review";
             this.dispatch(errorActions.bbzReportError(error));
+            this.refs.companySelect.focus();
             return;
         }
 
@@ -184,6 +185,7 @@ export class AddReview extends React.Component {
             return (
                 <div>
                     <Select
+                        ref="companySelect"
                         name="company-select"
                         value={this.state.selectedCompanyItemId}
                         options={selectedCompanyItemIds}
