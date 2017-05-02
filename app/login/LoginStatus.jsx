@@ -21,7 +21,6 @@ class LoginStats extends React.Component {
             var lastLoginAt = "";
 
             if (userProfile && lastLogin) {
-                console.debug("Last Login:",lastLogin.loginAt);
                 lastLoginAt = moment.unix(lastLogin.loginAt).format('MMM Do, YYYY @ h:mm a');
             }
 

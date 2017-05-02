@@ -10,7 +10,7 @@ export var addCompanyItem = (companyItem) => {
     };
 };
 
-export var startAddNewCompanyItem = (uid, title, description) => {
+export var startAddNewCompanyItem = (uid, title, description, serviceId, category) => {
     return (dispatch, getState) => {
         var companyItem = {
             uid: uid,
@@ -20,7 +20,9 @@ export var startAddNewCompanyItem = (uid, title, description) => {
             updateAt: null,
             reviewCount: 0,
             rating: 0,
-            isApproved: false
+            isApproved: false,
+            serviceItemId: serviceId,
+            serviceCategory: category
         }
 
         //This will add a mew company item to firebase and dispatch the newly created
@@ -107,16 +109,17 @@ export var updateCompanyItem = (companyItemId, updates) => {
     };
 };
 
-export var startUpdateCompanyItem = (companyItemId, title, description, rating) => {
+export var startUpdateCompanyItem = (companyItemId, title, description, rating, serviceId, category) => {
     return (dispatch, getState) => {
         var companyItemRef = firebaseRef.child(`companies/${companyItemId}`); //ES6 syntax
-
         var updates = {
             updateAt: moment().unix(),
             companyTitle: title,
             companyDesc: description,
             isApproved: false,
-            rating: rating
+            rating: rating,
+            serviceItemId: serviceId,
+            serviceCategory: category
         };
 
         return companyItemRef.update(updates).then(() => {  //return needed to chain our tests
@@ -207,6 +210,48 @@ export var startUpdateCompanyItemReviewCount = (companyItemId, isApproved, ratin
     }
 };
 
+export var startCategoryUpdateCompanyItem = (companyItemId, category) => {
+    return (dispatch, getState) => {
+        var companyItemRef = firebaseRef.child(`companies/${companyItemId}`);
+
+        var updates = {
+            serviceCategory: category,
+        };
+
+        return companyItemRef.update(updates).then(() => {
+            dispatch(updateCompanyItem(companyItemId, updates));
+        }, (error) => {
+            console.log("Unable to update company category", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        });
+    };
+};
+
+export var startUpdateCompaniesCategory = (serviceId, category) => {
+    return (dispatch, getState) => {
+        var companyItemRef = firebaseRef.child(`companies`);
+        return companyItemRef.once('value').then((snapshot) => {
+            var companyItems = snapshot.val() || {};
+            Object.keys(companyItems).forEach((companyItemId) => {
+                //update matching company with new category description
+                if (companyItems[companyItemId].serviceItemId == serviceId) {
+                    dispatch(startCategoryUpdateCompanyItem(companyItemId, category));
+                }
+            });
+        }, (error) => {
+            console.log("startUpdateCompaniesCategory failed", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        });
+    };
+}
 
 export var setAddCompanyOperation = (data, operation = 'ADD') => {
     return {

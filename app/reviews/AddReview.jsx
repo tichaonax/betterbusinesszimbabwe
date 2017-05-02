@@ -155,8 +155,11 @@ export class AddReview extends React.Component {
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
         this.dispatch(reviewsActions.startAddNewReviewItem(
-            auth.uid, this.state.selectedCompanyItemId, review,
-            this.state.rating, this.state.selectedCompanyTitle,
+            auth.uid,
+            this.state.selectedCompanyItemId,
+            review,
+            this.state.rating,
+            this.state.selectedCompanyTitle,
             userProfile.displayName,
             userProfile.email
         ));
@@ -173,7 +176,7 @@ export class AddReview extends React.Component {
         this.setState({selectedCompanyItemId: companyItemId, selectedCompanyTitle: companyTitle});
     }
 
-    renderCompanyDropDownList(){
+    renderCompanySelect(){
         var selectedCompanyItemIds =[];
         var companyItems = this.state.companyItems;
         if (companyItems) {
@@ -207,7 +210,7 @@ export class AddReview extends React.Component {
                 <Error/>
                 <form onSubmit={this.handleSubmit}>
                     {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
-                    {this.state.operation === 'ADD' && this.renderCompanyDropDownList()}
+                    {this.state.operation === 'ADD' && this.renderCompanySelect()}
                     <label htmlFor="sreview">Review Comment</label>
                     <input type="text" name="review" ref="review" value={this.state.review}
                            placeholder="Review Comment" onChange={this.onChangeReviewComment}/>

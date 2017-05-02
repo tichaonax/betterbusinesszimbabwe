@@ -142,6 +142,9 @@ export class AddServiceItem extends React.Component {
         this.setState({serviceDesc: e.target.value});
     }
 
+    //****TODO call this method when a serviceCategory changes
+    //startUpdateCompaniesCategory
+
     render() {
 
         return (

@@ -1,5 +1,7 @@
 var React = require('react');
 var {connect} = require('react-redux');
+import Select from 'react-select';
+import get from 'lodash.get';
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
@@ -16,7 +18,11 @@ export class AddCompnayItem extends React.Component {
             operation: 'ADD',
             companyTitle: null,
             companyDesc: null,
-            companyItemId: null
+            companyItemId: null,
+            serviceItems: null,
+            selectedServiceItemId: null,
+            selectedCategory: null,
+            rating: 0
         }
     }
 
@@ -32,12 +38,16 @@ export class AddCompnayItem extends React.Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({operation: nextProps.companyOperation.operation});
+        this.setState({serviceItems: nextProps.serviceItems});
 
         if (nextProps.companyOperation.data) {
             this.setState({
                 companyItemId: nextProps.companyOperation.data.companyItemId,
                 companyTitle: nextProps.companyOperation.data.companyTitle,
-                companyDesc: nextProps.companyOperation.data.companyDesc
+                rating: nextProps.companyOperation.data.rating,
+                companyDesc: nextProps.companyOperation.data.companyDesc,
+                selectedServiceItemId: nextProps.companyOperation.data.selectedServiceItemId,
+                serviceCategory: nextProps.companyOperation.data.serviceCategory
             });
         }
     }
@@ -77,7 +87,9 @@ export class AddCompnayItem extends React.Component {
         this.setState({
             companyItemId: '',
             companyTitle: '',
-            companyDesc: ''
+            companyDesc: '',
+            selectedServiceItemId: null,
+            serviceCategory: null
         });
     }
 
@@ -91,10 +103,16 @@ export class AddCompnayItem extends React.Component {
     handleUpdate = (e) => {
         e.preventDefault();
 
+        //*********to do validate inputs
+
         this.dispatch(companiesActions.startUpdateCompanyItem(
             this.state.companyItemId,
             this.state.companyTitle,
-            this.state.companyDesc));
+            this.state.companyDesc,
+            this.state.rating,
+            this.state.selectedServiceItemId,
+            this.state.selectedCategory
+        ));
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
@@ -106,6 +124,14 @@ export class AddCompnayItem extends React.Component {
         var {auth, companyItems} = this.props;
 
         var error = {}
+
+        if (this.state.selectedServiceItemId == null) {
+            error.errorMessage = "You must select Service Category";
+            this.dispatch(errorActions.bbzReportError(error));
+            this.refs.serviceSelect.focus();
+            return;
+        }
+
         var companyTitle = this.refs.companyTitle.value;
 
         if (companyTitle.length > 0) {
@@ -136,7 +162,13 @@ export class AddCompnayItem extends React.Component {
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(companiesActions.startAddNewCompanyItem(auth.uid, companyTitle, companyDesc));
+        this.dispatch(companiesActions.startAddNewCompanyItem(
+            auth.uid,
+            companyTitle,
+            companyDesc,
+            this.state.selectedServiceItemId,
+            this.state.selectedCategory
+        ));
     }
 
     onChangeCompanyTitle =(e)=>{
@@ -147,12 +179,51 @@ export class AddCompnayItem extends React.Component {
         this.setState({companyDesc: e.target.value});
     }
 
+    onServiceItemIdChange = (val) => {
+        let serviceItemId = get(val, 'value');
+        let serviceTitle = get(val, 'label');
+        this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
+    }
+
+    renderServiceSelect(){
+        var selectedServiceItemIds =[];
+        var serviceItems = this.props.serviceItems;//state.serviceItems;
+        console.debug("serviceItems",serviceItems);
+        if (serviceItems) {
+
+            serviceItems.map((serviceItem) => {
+                selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceTitle});
+            });
+
+            console.debug("selectedServiceItemIds",selectedServiceItemIds);
+            return (
+                <div>
+                    <Select
+                        ref="serviceSelect"
+                        name="service-select"
+                        value={this.state.selectedServiceItemId}
+                        options={selectedServiceItemIds}
+                        onChange={this.onServiceItemIdChange}
+                        matchPos="start"
+                        ignoreCase={true}
+                        clearable={false}
+                    />
+                </div>
+            );
+        } else {
+            return null
+        }
+    }
+
+
     render() {
         return (
             <div className="form-group">
                 <div>
                     <Error/>
                     <form onSubmit={this.handleSubmit}>
+                        <label htmlFor="service-item-id">Service Category</label>
+                        {this.renderServiceSelect()}
                         <label htmlFor="stitle">Company Title</label>
                         <input type="text" name="companyTitle" ref="companyTitle" value={this.state.companyTitle}
                                placeholder="Company Title" onChange={this.onChangeCompanyTitle}/>
@@ -173,7 +244,8 @@ export default connect(
         return {
             auth: state.auth,
             companyItems: state.companyItems,
-            companyOperation: state.companyOperation
+            companyOperation: state.companyOperation,
+            serviceItems: state.serviceItems
         }
     }
 )(AddCompnayItem);

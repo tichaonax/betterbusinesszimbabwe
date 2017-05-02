@@ -15,7 +15,7 @@ export class CompanyItem extends React.Component {
 
 
     render() {
-        var {serviceTitle, displayName, email,uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
+        var {serviceItemId, serviceCategory, displayName, email,uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
 
         var reviewer = displayName;
 
@@ -72,7 +72,10 @@ export class CompanyItem extends React.Component {
                                                  uid,
                                                  companyItemId,
                                                  companyTitle,
-                                                 companyDesc
+                                                 companyDesc,
+                                                 rating,
+                                                 selectedServiceItemId: serviceItemId,
+                                                 serviceCategory
                                              }
 
                                              console.debug("CompanyItems Data:", data);
@@ -122,7 +125,7 @@ export class CompanyItem extends React.Component {
                         {email}
                     </td>)}
                 <td>
-                    {serviceTitle}
+                    {serviceCategory}
                 </td>
                 <td>{companyDesc}</td>
             </tr>
