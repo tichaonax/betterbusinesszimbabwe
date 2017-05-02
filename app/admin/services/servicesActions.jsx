@@ -1,5 +1,6 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
+var companiesActions = require('companiesActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -86,7 +87,7 @@ export var startDeleteServiceItem = (serviceItemId) => {
         return serviceItemRef.remove().then(() => {
             dispatch(deleteServiceItem(serviceItemId));
         }, (error) => {
-            console.log("Unable to fetch services", error);
+            console.debug("Unable to fetch services", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -114,10 +115,12 @@ export var startUpdateServiceItem = (serviceItemId, title, description) => {
             serviceDesc: description
         };
 
-        return serviceItemRef.update(updates).then(() => {  //return needed to chain our tests
+        return serviceItemRef.update(updates).then(() => {
             dispatch(updateServiceItem(serviceItemId, updates));
+            //start the process to update all the companies that reference this service
+            dispatch(companiesActions.startUpdateCompaniesCategory(serviceItemId, title));
         }, (error) => {
-            console.log("Unable to update service", error);
+            console.debug("Unable to update service", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message

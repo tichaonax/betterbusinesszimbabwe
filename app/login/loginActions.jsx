@@ -22,7 +22,7 @@ export var startBbzLogin = (provider) => {
     var gAuth;
     return (dispatch, getState) => {
         return firebase.auth().signInWithPopup(provider).then((result) => {
-            console.log("Auth worked!", result);
+            console.debug("Auth worked!", result);
 
             gAuth = {
                 uid: result.user.uid,
@@ -31,10 +31,10 @@ export var startBbzLogin = (provider) => {
                 photoURL: result.user.photoURL,
                 loggedIn: true
             };
-            console.log("Auth data!", gAuth);
+            console.debug("Auth data!", gAuth);
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
-            console.log("Unable to auth", error);
+            console.debug("Unable to auth", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -69,7 +69,7 @@ export var startBbzEmailLogin = (email, password) => {
     var gAuth;
     return (dispatch, getState) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
-            console.log("Auth with Email and Password worked!", result);
+            console.debug("Auth with Email and Password worked!", result);
 
             gAuth = {
                 uid: result.uid,
@@ -83,7 +83,7 @@ export var startBbzEmailLogin = (email, password) => {
 
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
-            console.log("Unable to auth", error);
+            console.debug("Unable to auth", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -124,7 +124,7 @@ export var bbzLogout = () => {
 export var startBbzLogout = () => {
     return (dispatch, getState) => {
         return firebase.auth().signOut().then(() => {
-            console.log("Logggedout!");
+            console.debug("Logggedout!");
             return dispatch(bbzLogout());
         }).then(
             () => {
@@ -253,7 +253,7 @@ export var startGetLastLogin = () => {
             dispatch(lastLogin(lastLoginInfo));
 
         }, (error) => {
-            console.log("Unable to fetch lastLogin", error);
+            console.debug("Unable to fetch lastLogin", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message

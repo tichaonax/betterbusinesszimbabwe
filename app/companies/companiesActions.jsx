@@ -33,7 +33,7 @@ export var startAddNewCompanyItem = (uid, title, description, serviceId, categor
                 companyItemId: companyItemRef.key
             }));
         }, (error) => {
-            console.log("Unable to add new company", error);
+            console.debug("Unable to add new company", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -67,7 +67,7 @@ export var startAddCompanyItems = () => {
 
             dispatch(addCompanyItems(parsedCompanyItems));
         }, (error) => {
-            console.log("Unable to fetch companies", error);
+            console.debug("Unable to fetch companies", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -91,7 +91,7 @@ export var startDeleteCompanyItem = (companyItemId) => {
         return companyItemRef.remove().then(() => {
             dispatch(deleteCompanyItem(companyItemId));
         }, (error) => {
-            console.log("Unable to fetch companies", error);
+            console.debug("Unable to fetch companies", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -125,7 +125,7 @@ export var startUpdateCompanyItem = (companyItemId, title, description, rating, 
         return companyItemRef.update(updates).then(() => {  //return needed to chain our tests
             dispatch(updateCompanyItem(companyItemId, updates));
         }, (error) => {
-            console.log("Unable to update company", error);
+            console.debug("Unable to update company", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -146,7 +146,7 @@ export var startApproveUpdateCompanyItem = (companyItemId, isApproved) => {
         return companyItemRef.update(updates).then(() => {  //return needed to chain our tests
             dispatch(updateCompanyItem(companyItemId, updates));
         }, (error) => {
-            console.log("Unable to update company", error);
+            console.debug("Unable to update company", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -200,7 +200,7 @@ export var startUpdateCompanyItemReviewCount = (companyItemId, isApproved, ratin
                 dispatch(updateCompanyItem(companyItemId, updates))
             })
         }, (error) => {
-            console.log("Unable to update company rating", error);
+            console.debug("Unable to update company rating", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -221,7 +221,7 @@ export var startCategoryUpdateCompanyItem = (companyItemId, category) => {
         return companyItemRef.update(updates).then(() => {
             dispatch(updateCompanyItem(companyItemId, updates));
         }, (error) => {
-            console.log("Unable to update company category", error);
+            console.debug("Unable to update company category", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -243,7 +243,7 @@ export var startUpdateCompaniesCategory = (serviceId, category) => {
                 }
             });
         }, (error) => {
-            console.log("startUpdateCompaniesCategory failed", error);
+            console.debug("startUpdateCompaniesCategory failed", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message

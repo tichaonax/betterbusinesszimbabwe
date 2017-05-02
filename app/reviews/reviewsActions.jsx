@@ -67,7 +67,7 @@ export var startAddReviewItems = () => {
 
             dispatch(addReviewItems(parsedReviewItems));
         }, (error) => {
-            console.log("Unable to fetch reviews", error);
+            console.debug("Unable to fetch reviews", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -91,7 +91,7 @@ export var startDeleteReviewItem = (reviewItemId) => {
         return reviewItemRef.remove().then(() => {
             dispatch(deleteReviewItem(reviewItemId));
         }, (error) => {
-            console.log("Unable to fetch reviews", error);
+            console.debug("Unable to fetch reviews", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -123,7 +123,7 @@ export var startUpdateReviewItem = (reviewItemId, review, rating) => {
         return reviewItemRef.update(updates).then(() => {  //return needed to chain our tests
             dispatch(updateReviewItem(reviewItemId, updates));
         }, (error) => {
-            console.log("Unable to update review", error);
+            console.debug("Unable to update review", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
@@ -145,7 +145,7 @@ export var startApproveUpdateReviewItem = (reviewItemId, isApproved) => {
         return reviewItemRef.update(updates).then(() => {  //return needed to chain our tests
             dispatch(updateReviewItem(reviewItemId, updates));
         }, (error) => {
-            console.log("Unable to update review", error);
+            console.debug("Unable to update review", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message

@@ -14,6 +14,7 @@ export class Reviews extends React.Component {
     }
 
     loadData(props) {
+        this.dispatch(searchActions.setApprovalPendingItem(true));
         this.dispatch(reviewsActions.startAddReviewItems());
         var company = props.location.query.company;
         if (company && company.length > 0) {
@@ -26,8 +27,8 @@ export class Reviews extends React.Component {
     }
 
     componentWillUnmount(){
-        //clear searchText
         this.dispatch(searchActions.setSearchText(""));
+        this.dispatch(searchActions.setApprovalPendingItem(false));
     }
 
     componentWillReceiveProps(newProps) {

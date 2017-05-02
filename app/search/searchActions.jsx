@@ -13,4 +13,11 @@ export var togggleshowApprovalPendingItem = () => {
         type: 'TOGGLE_SHOW_APPROVAL_PENDING'
     };
 };
+
+export var setApprovalPendingItem = (flag) => {
+    return {
+        type: 'SET_SHOW_APPROVAL_PENDING',
+        flag
+    };
+};
 //</editor-fold>

@@ -4,6 +4,7 @@ var Rate = require('rc-rate');
 import {Link} from 'react-router';
 import {findDOMNode} from 'react-dom'
 import ReactTooltip from 'react-tooltip'
+import Linkify from 'react-linkify';
 var reviewsActions = require('reviewsActions');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
@@ -116,7 +117,11 @@ export class ReviewItem extends React.Component {
                     <td>
                         {email}
                     </td>)}
-                <td>{review}</td>
+                <td>
+                    <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
+                        {review}
+                    </Linkify>
+                </td>
             </tr>
         );
     }

@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import {findDOMNode} from 'react-dom'
 import ReactTooltip from 'react-tooltip'
 var Rate = require('rc-rate');
+import Linkify from 'react-linkify';
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 
@@ -127,7 +128,11 @@ export class CompanyItem extends React.Component {
                 <td>
                     {serviceCategory}
                 </td>
-                <td>{companyDesc}</td>
+                <td>
+                    <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
+                        {companyDesc}
+                    </Linkify>
+                </td>
             </tr>
         );
     }

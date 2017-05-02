@@ -11,7 +11,9 @@ export var showApprovalPendingReducer = (state = false, action) => {
     switch (action.type) {
         case 'TOGGLE_SHOW_APPROVAL_PENDING':
             return !state;
+        case 'SET_SHOW_APPROVAL_PENDING':
+            return action.flag
         default:
             return state;
     };
-};
+};;

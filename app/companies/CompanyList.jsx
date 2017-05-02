@@ -4,7 +4,6 @@ import ReactTooltip from 'react-tooltip'
 import CompanyItem from 'CompanyItem';
 var BbzAPI = require('BbzAPI');
 
-
 export class CompanyList extends React.Component {
     constructor(props) {
         super(props);
@@ -61,7 +60,7 @@ export class CompanyList extends React.Component {
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reporter</th>)}
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reporter Email</th>)}
                         <th>Service</th>
-                        <th>Description</th>
+                        <th>Business Description</th>
                     </tr>
                     {this.renderCompanyItems()}
                     </tbody>

@@ -15,13 +15,14 @@ export class Companies extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(searchActions.setApprovalPendingItem(true));
         this.dispatch(companiesActions.startAddCompanyItems());
         this.dispatch(servicesActions.startAddServiceItems());
     }
 
     componentWillUnmount(){
-        //clear searchText
         this.dispatch(searchActions.setSearchText(""));
+        this.dispatch(searchActions.setApprovalPendingItem(false));
     }
 
     render() {

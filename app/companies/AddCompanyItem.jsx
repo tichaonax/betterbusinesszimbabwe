@@ -38,7 +38,7 @@ export class AddCompnayItem extends React.Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({operation: nextProps.companyOperation.operation});
-        this.setState({serviceItems: nextProps.serviceItems});
+        //this.setState({serviceItems: nextProps.serviceItems});
 
         if (nextProps.companyOperation.data) {
             this.setState({
@@ -188,14 +188,14 @@ export class AddCompnayItem extends React.Component {
     renderServiceSelect(){
         var selectedServiceItemIds =[];
         var serviceItems = this.props.serviceItems;//state.serviceItems;
-        console.debug("serviceItems",serviceItems);
         if (serviceItems) {
 
             serviceItems.map((serviceItem) => {
                 selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceTitle});
             });
 
-            console.debug("selectedServiceItemIds",selectedServiceItemIds);
+           // console.debug("selectedServiceItemIds",selectedServiceItemIds);
+
             return (
                 <div>
                     <Select
