@@ -1,6 +1,5 @@
 import React from 'react';
 import {Route, Router, IndexRoute, hashHistory} from 'react-router';
-import firebase from 'app/firebase/'
 import Main from 'Main';
 import Weather from 'Weather';
 import About from 'About';
@@ -12,6 +11,7 @@ import BbzLoggedInContainer from 'BbzLoggedInContainer';
 import Home from 'Home';
 import BbzReviews from 'BbzReviews';
 import CreateNewAccount from 'CreateNewAccount';
+import AddReview from 'AddReview';
 import Companies from 'Companies';
 import Reviews from 'Reviews';
 import Services from 'app/admin/services/Services';
@@ -32,6 +32,7 @@ export default (
                 <Route path="examples" component={Examples}/>
                 <Route path="bbzreviews" component={BbzReviews}/>
                 <Route path="services" component={Services}/>
+                <Route path="addreview" component={AddReview}/>
             </Route>
         </Route>
     </Router>

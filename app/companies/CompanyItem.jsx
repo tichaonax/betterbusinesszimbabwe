@@ -6,6 +6,7 @@ import ReactTooltip from 'react-tooltip'
 var Rate = require('rc-rate');
 import Linkify from 'react-linkify';
 var companiesActions = require('companiesActions');
+var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 
 export class CompanyItem extends React.Component {
@@ -133,15 +134,19 @@ export class CompanyItem extends React.Component {
                         {companyDesc}
                     </Linkify>
                 </td>
+                <td>
+                    <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                </td>
             </tr>
         );
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps(state, ownProps) {
     return {
         auth: state.auth,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
     }
 }
 export default  connect(mapStateToProps)(CompanyItem);

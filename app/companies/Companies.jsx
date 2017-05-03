@@ -6,7 +6,10 @@ import AddCompanyItem from 'AddCompanyItem';
 import BbzSearch from "BbzSearch";
 var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
+var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
+var urlActions = require('urlActions');
+var errorActions = require('errorActions');
 
 export class Companies extends React.Component {
     constructor(props) {
@@ -15,9 +18,11 @@ export class Companies extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(searchActions.setApprovalPendingItem(true));
+        this.dispatch(errorActions.bbzClearError());
         this.dispatch(companiesActions.startAddCompanyItems());
+        this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 
     componentWillUnmount(){

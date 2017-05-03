@@ -1,5 +1,7 @@
-var React = require('react');
+import React, {PropTypes} from 'react';
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 var {connect} = require('react-redux');
+import { Link, browserHistory, hashHistory } from 'react-router';
 import get from 'lodash.get';
 var Rate = require('rc-rate');
 import Select from 'react-select';
@@ -25,25 +27,71 @@ export class AddReview extends React.Component {
             companyItems: null,
             selectedCompanyItemId: null,
             selectedCompanyTitle: null,
-            uid: null
+            uid: null,
+            calledFromOutside: false,
+            isShowingModal: false,
+            cancelOperation: false
         }
     }
 
-    componentDidMount() {
+    onGoBack = (evt) => {
+        this.dispatch(errorActions.bbzClearError());
+        browserHistory.goBack();
+    }
+
+    validateAddNewReviewParameters(companyItemId) {
+        console.debug("validateAddNewReviewParameters",companyItemId);
+        var {companyItems} = this.props;
+
+        var isMatch = false;
+
+        companyItems.map((companyItem) => {
+            if (companyItem.companyItemId == companyItemId) {
+
+                console.debug("Match",companyItem);
+
+                this.state = {
+                    selectedCompanyItemId: companyItem.companyItemId,
+                    selectedCompanyTitle: companyItem.companyTitle,
+                    calledFromOutside: true
+                }
+
+                isMatch = true;
+            }
+        });
+
+        if (!isMatch) {
+            this.dispatch(companiesActions.startAddCompanyItems());
+        }
+    }
+
+    loadData(props) {
+        this.dispatch(companiesActions.startAddCompanyItems());
+
         const {error} = this.props;
         if (error) {
             this.dispatch(errorActions.bbzClearError());
             this.dispatch(reviewsActions.setAddReviewOperation());
         }
 
-        this.dispatch(companiesActions.startAddCompanyItems());
+        var {location} = this.props;
+
+        if (location && location.query) {
+            this.validateAddNewReviewParameters(location.query.company);
+        } else {
+            this.dispatch(companiesActions.startAddCompanyItems());
+        }
     }
 
+    componentDidMount() {
+        this.loadData(this.props);
+    }
 
     componentWillReceiveProps(nextProps) {
 
         this.setState({operation: nextProps.reviewOperation.operation});
         this.setState({companyItems: nextProps.companyItems});
+        this.setState({reviewItems: nextProps.reviewItems});
 
         if (nextProps.reviewOperation.data) {
             this.setState({
@@ -68,11 +116,35 @@ export class AddReview extends React.Component {
         return dupes;
     }
 
+    onModalClick = () => this.setState({isShowingModal: true});
+
+    renderModalFeedback(redirectUrl) {
+        return (
+            <div onClick={this.onModalClick}>
+                {
+                    this.state.isShowingModal &&
+                    <ModalContainer onClose={() => {
+                        this.setState({isShowingModal: false});
+                        hashHistory.push(redirectUrl);
+                    }}>
+                        <ModalDialog onClose={() => {
+                            this.setState({isShowingModal: false});
+                            hashHistory.push(redirectUrl);
+                        }}>
+                            <h1>Thank you, Review Added!</h1>
+                            <p>After review by Admin it will be made available to the public</p>
+                        </ModalDialog>
+                    </ModalContainer>}
+
+            </div>);
+    }
 
     renderAddView = () => {
         return (
             <div className="bbz-general">
                 <input ref="add" type="submit" value="Add New Review"/>
+                {this.state.calledFromOutside && (
+                    <input ref="cancel" type="submit" value="Cancel" onClick={this.onGoBack}/>)}
             </div>
         )
     }
@@ -85,7 +157,6 @@ export class AddReview extends React.Component {
             </div>)
     }
 
-
     resetInputs = () => {
         this.setState({
             reviewItemId: '',
@@ -95,15 +166,20 @@ export class AddReview extends React.Component {
     }
 
     handleCancel = (e) => {
+        this.setState({
+            cancelOperation: true,
+        });
+        this.dispatch(errorActions.bbzClearError());
         e.preventDefault();
         this.dispatch(reviewsActions.setAddReviewOperation());
         this.resetInputs();
-        this.dispatch(errorActions.bbzClearError());
     }
 
     handleUpdate = (e) => {
         e.preventDefault();
-
+        if(this.state.cancelOperation){
+            return;
+        }
 
         this.dispatch(reviewsActions.startUpdateReviewItem(
             this.state.reviewItemId,
@@ -117,13 +193,12 @@ export class AddReview extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {auth, reviewItems, userProfile} = this.props;
+        var {auth, reviewItems, userProfile, redirectUrl} = this.props;
 
         var error = {}
         var review = this.refs.review.value;
 
-
-        if(this.state.selectedCompanyItemId==null){
+        if (this.state.selectedCompanyItemId == null) {
             error.errorMessage = "You must select company to review";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companySelect.focus();
@@ -146,14 +221,12 @@ export class AddReview extends React.Component {
         }
 
 
-        if(this.state.rating==0){
+        if (this.state.rating == 0) {
             error.errorMessage = "You must select a review rating before you can save review!";
             this.dispatch(errorActions.bbzReportError(error));
             return;
         }
 
-        this.resetInputs();
-        this.dispatch(errorActions.bbzClearError());
         this.dispatch(reviewsActions.startAddNewReviewItem(
             auth.uid,
             this.state.selectedCompanyItemId,
@@ -163,6 +236,16 @@ export class AddReview extends React.Component {
             userProfile.displayName,
             userProfile.email
         ));
+
+        if (this.state.calledFromOutside) {
+            //console.debug("redirectUrl calledFromOutside",redirectUrl);
+            this.state = {
+                isShowingModal: true
+            }
+        }
+
+        this.resetInputs();
+        this.dispatch(errorActions.bbzClearError());
     }
 
     onChangeReviewComment =(e)=>{
@@ -196,6 +279,7 @@ export class AddReview extends React.Component {
                         matchPos="start"
                         ignoreCase={true}
                         clearable={false}
+                        disabled={this.state.calledFromOutside}
                     />
                 </div>
             );
@@ -205,10 +289,13 @@ export class AddReview extends React.Component {
     }
 
     render() {
+        var {redirectUrl} = this.props;
         return (
             <div className="form-group">
                 <Error/>
                 <form onSubmit={this.handleSubmit}>
+                    {this.renderModalFeedback(redirectUrl)}
+                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
                     {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
                     {this.state.operation === 'ADD' && this.renderCompanySelect()}
                     <label htmlFor="sreview">Review Comment</label>
@@ -239,7 +326,8 @@ export default connect(
             reviewOperation: state.reviewOperation,
             companyItems: state.companyItems,
             reviewItems: state.reviewItems,
-            userProfile: state.userProfile
+            userProfile: state.userProfile,
+            redirectUrl: state.redirectUrl
         }
     }
 )(AddReview);

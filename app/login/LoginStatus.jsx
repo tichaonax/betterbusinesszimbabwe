@@ -1,10 +1,12 @@
 import React from 'react';
 import moment from 'moment';
 import {connect} from 'react-redux';
+var searchActions = require('searchActions');
 
 class LoginStats extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
     }
 
     render() {
@@ -34,6 +36,7 @@ class LoginStats extends React.Component {
 
             if(userProfile && userProfile.isAdmin){
                 admin = "Admin";
+                this.dispatch(searchActions.setApprovalPendingItem(true));
             }
 
             return(
