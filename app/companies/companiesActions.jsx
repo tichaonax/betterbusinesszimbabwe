@@ -64,7 +64,7 @@ export var startAddCompanyItems = () => {
                     ...companyItems[companyItemId]
                 });
             });
-
+            console.debug("startAddCompanyItems:",parsedCompanyItems);
             dispatch(addCompanyItems(parsedCompanyItems));
         }, (error) => {
             console.debug("Unable to fetch companies", error);

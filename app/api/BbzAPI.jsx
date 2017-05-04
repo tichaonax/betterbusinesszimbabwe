@@ -2,8 +2,8 @@ var React = require('react');
 var $ = require('jquery');
 
 module.exports = {
-    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid=0) {
-        //console.debug("companyItems", companyItems);
+    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0, perPage = 10, offset = 0) {
+        console.debug("companyItems", companyItems);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
 
@@ -18,6 +18,7 @@ module.exports = {
         //and company id which is stored as unix createAt date time
         if (searchText.length > 0) {
             filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
+                var serviceCategory = (companyItem.serviceCategory) ? companyItem.serviceCategory.toLowerCase() : "";
                 var companyTitle = companyItem.companyTitle.toLowerCase();
                 var companyDesc = companyItem.companyDesc.toLowerCase();
                 var companyId = companyItem.createAt.toString();
@@ -25,6 +26,8 @@ module.exports = {
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyTitle;
                 } else if (companyDesc.indexOf(searchText.toLowerCase()) > -1) {
+                    return companyItem.companyDesc;
+                } else if (serviceCategory.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyDesc;
                 } else if (companyId.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.createAt;
@@ -47,7 +50,36 @@ module.exports = {
                 return 0;
             }
         });
-        return filteredCompanyItems;
+
+        const totalCount = filteredCompanyItems.length;
+
+        var indexStart = (perPage * offset) - perPage;
+
+        if (indexStart > totalCount) {
+            indexStart = totalCount - 1;
+        } else {
+            if (indexStart < 1) {
+                indexStart = 0
+            }
+        }
+
+        var indexEnd = indexStart + perPage;
+
+
+        if (indexEnd > totalCount) {
+            indexEnd = totalCount;
+        }
+
+        //console.debug("totalCount", totalCount);
+        //console.debug("indexStart", indexStart);
+        //console.debug("endexEnd", indexEnd);
+        //console.debug("filteredCompanyItems",filteredCompanyItems);
+        var slicedFilteredCompanyItems = filteredCompanyItems.slice(indexStart, indexEnd);
+
+        return ({
+            data: slicedFilteredCompanyItems,
+            pageCount: Math.ceil(totalCount / perPage)
+        });
     },
 
     getFilteredTodoItems: function (todoItems, showCompleted, searchText) {

@@ -1,5 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import ReactPaginate from 'react-paginate';
 import ReactTooltip from 'react-tooltip'
 import CompanyItem from 'CompanyItem';
 var BbzAPI = require('BbzAPI');
@@ -7,39 +8,60 @@ var BbzAPI = require('BbzAPI');
 export class CompanyList extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            data: [],
+            offset: 0
+        }
+
+        this.handlePageClick=this.handlePageClick.bind(this);
     }
 
-    renderCompanyItems = () => {
-        var {companyItems, showApprovalPending, searchText, auth} = this.props;
+    componentDidMount() {
+        this.loadNextPage(this.state.offset);
+    }
 
+    componentWillReceiveProps(newProps) {
+        if (this.props.searchText != newProps.searchText) {
+            console.debug("Search Properties changes", this.props.searchText, newProps.searchText);
+            this.setState({offset: 0}, () => {
+                this.loadNextPage();
+            });
+        }
+    }
+
+    loadNextPage = () => {
+        var {companyItems, showApprovalPending, searchText, auth} = this.props;
         var uid = 0;
         if (auth.loggedIn) {
             uid = auth.uid;
         }
+        var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, showApprovalPending, searchText, uid, this.props.perPage, this.state.offset);
+       // console.debug("filteredCompanyItems", filteredCompanyItems);
+        this.setState({data: filteredCompanyItems.data, pageCount: filteredCompanyItems.pageCount});
+    }
 
-        var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, showApprovalPending, searchText, uid);
+    handlePageClick = (data) => {
+        let selected = data.selected;
+        //console.debug("data.selected", selected);
+        let offset = Math.ceil(selected * this.props.perPage);
 
-        if (filteredCompanyItems.length === 0) {
+        this.setState({offset: offset}, () => {
+            this.loadNextPage();
+        });
+    };
+
+    renderCompanyItems() {
+        return this.state.data.map((companyItem) => {
             return (
-                <tr>
-                    <td colSpan={3}>
-                        No Companies Match Search Criteria
-                    </td>
-                </tr>
-            )
-        } else {
-            return filteredCompanyItems.map((companyItem) => {
-                return (
-                    <CompanyItem key={companyItem.companyItemId} {...companyItem}
-                                 deleteCompany={this.refs.deleteCompany} updateCompany={this.refs.updateCompany}/>);
-            });
-        }
+                <CompanyItem key={companyItem.companyItemId} {...companyItem}
+                             deleteCompany={this.refs.deleteCompany} updateCompany={this.refs.updateCompany}/>);
+        });
     }
 
     render() {
 
         var {userProfile, auth} = this.props;
-
         return (
             <div>
                 <ReactTooltip />
@@ -66,6 +88,17 @@ export class CompanyList extends React.Component {
                     {this.renderCompanyItems()}
                     </tbody>
                 </table>
+                <ReactPaginate previousLabel={"previous"}
+                               nextLabel={"next"}
+                               breakLabel={<a href="">...</a>}
+                               breakClassName={"break-me"}
+                               pageCount={this.state.pageCount}
+                               marginPagesDisplayed={2}
+                               pageRangeDisplayed={5}
+                               onPageChange={this.handlePageClick}
+                               containerClassName={"pagination"}
+                               subContainerClassName={"pages pagination"}
+                               activeClassName={"active"}/>
             </div>
         );
     }
