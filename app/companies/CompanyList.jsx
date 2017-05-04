@@ -23,7 +23,8 @@ export class CompanyList extends React.Component {
 
     componentWillReceiveProps(newProps) {
         if (this.props.searchText != newProps.searchText) {
-            console.debug("Search Properties changes", this.props.searchText, newProps.searchText);
+            //you want to force reload of data with new search criteria
+            //notice that only after the offset state change is guaranteed do we reload the data
             this.setState({offset: 0}, () => {
                 this.loadNextPage();
             });
@@ -37,13 +38,12 @@ export class CompanyList extends React.Component {
             uid = auth.uid;
         }
         var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, showApprovalPending, searchText, uid, this.props.perPage, this.state.offset);
-       // console.debug("filteredCompanyItems", filteredCompanyItems);
         this.setState({data: filteredCompanyItems.data, pageCount: filteredCompanyItems.pageCount});
     }
 
     handlePageClick = (data) => {
         let selected = data.selected;
-        //console.debug("data.selected", selected);
+
         let offset = Math.ceil(selected * this.props.perPage);
 
         this.setState({offset: offset}, () => {
