@@ -27,7 +27,6 @@ export class Reviews extends React.Component {
 
     componentWillUnmount(){
         this.dispatch(searchActions.setSearchText(""));
-        this.dispatch(searchActions.setApprovalPendingItem(false));
     }
 
     componentWillReceiveProps(newProps) {

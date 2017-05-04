@@ -2,11 +2,17 @@ import React from 'react';
 import moment from 'moment';
 import {connect} from 'react-redux';
 var searchActions = require('searchActions');
+var reviewsActions = require('reviewsActions');
 
-class LoginStats extends React.Component {
+export class LoginStats extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+    }
+
+    componentDidMount() {
+        this.dispatch(reviewsActions.startAddReviewItems());
+        this.dispatch(searchActions.setApprovalPendingItem(true));
     }
 
     render() {
@@ -36,7 +42,6 @@ class LoginStats extends React.Component {
 
             if(userProfile && userProfile.isAdmin){
                 admin = "Admin";
-                this.dispatch(searchActions.setApprovalPendingItem(true));
             }
 
             return(
@@ -85,7 +90,6 @@ class LoginStats extends React.Component {
         }
     }
 }
-
 
 function mapStateToProps(state) {
     return {

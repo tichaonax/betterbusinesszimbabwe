@@ -25,6 +25,7 @@ export class AddReview extends React.Component {
             reviewItemId: null,
             rating: 0,
             companyItems: null,
+            companyItemId: null,
             selectedCompanyItemId: null,
             selectedCompanyTitle: null,
             uid: null,
@@ -184,7 +185,9 @@ export class AddReview extends React.Component {
         this.dispatch(reviewsActions.startUpdateReviewItem(
             this.state.reviewItemId,
             this.state.review,
-            this.state.rating));
+            this.state.rating,
+            this.state.companyItemId
+        ));
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());

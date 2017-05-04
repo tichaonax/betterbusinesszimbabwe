@@ -98,8 +98,8 @@ export class ReviewItem extends React.Component {
                              onClick={() => {
                                  this.dispatch(errorActions.bbzClearError());
                                  if (userProfile.isAdmin) {
-                                     this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId,!isApproved));
-                                     this.dispatch(companiesActions.startUpdateCompanyItemReviewCount(companyItemId, !isApproved, rating))
+                                     this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId,!isApproved,companyItemId));
+                                     //this.dispatch(companiesActions.startUpdateCompanyItemReviewCount(companyItemId, !isApproved, rating))
                                  } else {
                                      var error = {};
                                      error.errorMessage = "You must be admin to approve";

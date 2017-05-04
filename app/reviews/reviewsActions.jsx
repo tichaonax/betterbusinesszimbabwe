@@ -1,5 +1,6 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
+var companiesActions = require('companiesActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -109,7 +110,7 @@ export var updateReviewItem = (reviewItemId, updates) => {
     };
 };
 
-export var startUpdateReviewItem = (reviewItemId, review, rating) => {
+export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId) => {
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`); //ES6 syntax
 
@@ -120,38 +121,51 @@ export var startUpdateReviewItem = (reviewItemId, review, rating) => {
             isApproved: false
         };
 
-        return reviewItemRef.update(updates).then(() => {  //return needed to chain our tests
-            dispatch(updateReviewItem(reviewItemId, updates));
-        }, (error) => {
-            console.debug("Unable to update review", error);
-            var errorObj = {
-                errorCode: error.code,
-                errorMessage: error.message
-            };
-            return dispatch(errorActions.bbzReportError(errorObj));
-        });
+        return reviewItemRef.update(updates).then(() => {
+                return dispatch(updateReviewItem(reviewItemId, updates));
+            }
+        ).then(
+            () => {
+                return dispatch(recalculateCompanyReview(companyItemId));
+            }
+        ).catch(
+            (error) => {
+                console.debug("Unable to update review", error);
+                var errorObj = {
+                    errorCode: error.code,
+                    errorMessage: error.message
+                };
+                return dispatch(errorActions.bbzReportError(errorObj));
+            });
     };
 };
 
 
-export var startApproveUpdateReviewItem = (reviewItemId, isApproved) => {
+export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItemId) => {
     return (dispatch, getState) => {
-        var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`); //ES6 syntax
+        var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`);
 
         var updates = {
             isApproved: isApproved
         };
 
-        return reviewItemRef.update(updates).then(() => {  //return needed to chain our tests
+        return reviewItemRef.update(updates).then(() => {
             dispatch(updateReviewItem(reviewItemId, updates));
-        }, (error) => {
-            console.debug("Unable to update review", error);
-            var errorObj = {
-                errorCode: error.code,
-                errorMessage: error.message
-            };
-            return dispatch(errorActions.bbzReportError(errorObj));
-        });
+        }).then(
+            () => {
+                return dispatch(recalculateCompanyReview(companyItemId));
+            }
+        ).catch(
+            (error) => {
+
+                console.debug("Unable to update review", error);
+                var errorObj = {
+                    errorCode: error.code,
+                    errorMessage: error.message
+                };
+                return dispatch(errorActions.bbzReportError(errorObj));
+            }
+        );
     };
 };
 
@@ -170,3 +184,60 @@ export var setUpdateReviewOperation = (data, operation = 'UPDATE') => {
         operation
     };
 };
+
+export var recalculateCompanyReview = (companyItemId) => {
+    return (dispatch, getState) => {
+        var reviewItemRef = firebaseRef.child(`reviews`);
+        return reviewItemRef.once('value').then((snapshot) => {
+            var reviewItems = snapshot.val() || {};
+
+            var parsedReviewItems = [];
+
+            Object.keys(reviewItems).forEach((reviewItemId) => {
+                parsedReviewItems.push({
+                    reviewItemId: reviewItemId,
+                    ...reviewItems[reviewItemId]
+                });
+            });
+            return (parsedReviewItems);
+        }).then(
+            (reviews) => {
+
+                //we want to update the company affected based on currently approved reviews
+                console.debug("Need to sumu all reviews of companyItemId", companyItemId);
+                console.debug("Company reviews:", reviews);
+
+                var ratingsTotal = 0;
+                var newReviewCount = 0;
+
+                reviews.map((review) => {
+                    if (review.companyItemId == companyItemId && review.isApproved) {
+                        ratingsTotal = ratingsTotal + review.rating;
+                        newReviewCount++;
+                    }
+                });
+
+                //round down to 0.5
+                //rating of 2.74 becomes 2.5
+                var newRating = 0;
+                if (newReviewCount > 0) {
+                    newRating = Math.round(ratingsTotal / newReviewCount * 2) / 2;
+                }
+
+                console.debug("Company reviews found:", newReviewCount);
+                console.debug("Company new rating:", newRating);
+
+
+                var updates = {
+                    rating: newRating,
+                    reviewCount: newReviewCount
+                };
+
+                var companyItemRef = firebaseRef.child(`companies/${companyItemId}`);
+                return companyItemRef.update(updates).then(() => {
+                    dispatch(companiesActions.updateCompanyItem(companyItemId, updates))
+                })
+            }
+        );
+    }
+}
