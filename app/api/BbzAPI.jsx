@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 module.exports = {
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0, perPage = 10, offset = 0) {
-        console.debug("companyItems", companyItems);
+        //console.debug("companyItems", companyItems);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
 
