@@ -14,14 +14,14 @@ module.exports = {
         });
 
         //filter by searchText
-        //we want to also search by company description
+        //we want to also search by company description and others
         //and company id which is stored as unix createAt date time
         if (searchText.length > 0) {
             filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
-                var serviceCategory = (companyItem.serviceCategory) ? companyItem.serviceCategory.toLowerCase() : "";
-                var companyTitle = companyItem.companyTitle.toLowerCase();
-                var companyDesc = companyItem.companyDesc.toLowerCase();
-                var companyId = companyItem.createAt.toString();
+                const serviceCategory = (companyItem.serviceCategory) ? companyItem.serviceCategory.toLowerCase() : "";
+                const companyTitle = (companyItem.companyTitle) ? companyItem.companyTitle.toLowerCase() : "";
+                const companyDesc = (companyItem.companyDesc) ? companyItem.companyDesc.toLowerCase() : "";
+                const companyId = (companyItem.createAt) ? companyItem.createAt.toString() : "";
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyTitle;
