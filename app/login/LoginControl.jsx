@@ -6,14 +6,13 @@ var {Link} = require('react-router');
 export class LoginControl extends React.Component {
     constructor(props) {
         super(props);
-        this.dispatch = this.props;
         this.onLogout = this.onLogout.bind(this);
     }
 
 
     onLogout = (e) => {
         e.preventDefault();
-        this.dispatch(loginActions.startBbzLogout());
+        this.props.dispatch(loginActions.startBbzLogout());
     }
 
     render() {
