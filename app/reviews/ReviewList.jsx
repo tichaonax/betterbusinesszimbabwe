@@ -1,6 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
-import {findDOMNode} from 'react-dom'
+import VirtualList from 'react-tiny-virtual-list';
 import ReactTooltip from 'react-tooltip'
 import ReviewItem from 'ReviewItem';
 var BbzAPI = require('BbzAPI');
@@ -37,15 +37,18 @@ export class ReviewList extends React.Component {
         }
     }
 
+
     render() {
 
         var {auth, userProfile}=this.props;
-
+        const data =this.renderReviewItems();
+        console.debug("data", data);
         return (
             <div>
                 <ReactTooltip />
                 <table className="common-table">
                     <tbody>
+
                     <tr>
                         <th>Review ID</th>
                         {auth.loggedIn &&
@@ -62,9 +65,24 @@ export class ReviewList extends React.Component {
                         <th>Review Comment</th>
                     </tr>
 
-                    {this.renderReviewItems()}
+
+
+
+
+             {/*       {this.renderReviewItems()}*/}
+
                     </tbody>
                 </table>
+                <VirtualList className="VirtualList"
+                    height={300}
+                    itemCount={data.length}
+                    itemSize={50}
+                    renderItem={({style, index}) =>
+                        <div className="Row" style={style} key={index}>
+                            {data[index]}
+                        </div>
+                    }
+                />
             </div>
         );
     }
