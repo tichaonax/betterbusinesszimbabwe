@@ -57,6 +57,7 @@ export class Companies extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
+        companyItems: state.companyItems,
     }
 })(Companies);
