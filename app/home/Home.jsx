@@ -30,7 +30,8 @@ class Home extends React.Component {
 
 function mapStateToProps(state) {
     return {
-        isLoggedIn: state.auth.loggedIn
+        isLoggedIn: state.auth.loggedIn,
+        reviewItems: state.reviewItems,
     }
 }
 

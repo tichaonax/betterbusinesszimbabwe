@@ -6,13 +6,15 @@ import {hashHistory} from 'react-router';
 var loginActions = require('loginActions');
 var errorActions = require('errorActions');
 var profileActions = require('profileActions');
+var searchActions = require('searchActions');
+var companiesActions = require('companiesActions');
 var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
 
-
 store.dispatch(errorActions.bbzClearError());
 store.dispatch(profileActions.resetUserProfile());
+store.dispatch(searchActions.setSearchText(""));
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -35,6 +37,8 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(loginActions.bbzLogin(auth));
         store.dispatch(loginActions.startGetLastLogin());
         store.dispatch(profileActions.startSetUserProfile());
+        store.dispatch(companiesActions.startAddCompanyItems());
+        store.dispatch(searchActions.setSearchText(""));
        // hashHistory.push('/reviews');
         //hashHistory.push(redirectUrl);
     } else {

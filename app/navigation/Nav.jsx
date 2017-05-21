@@ -56,24 +56,16 @@ class Nav extends React.Component {
                     <ul className="menu">
                         <li className="menu-text">Better Business Zimbabwe</li>
                         <li>
-                            <IndexLink to="/" activeClassName="active"
-                                       activeStyle={{fontWeight: 'bold'}}>Home</IndexLink>
-                        </li>
-                        <li>
-                            <Link to="/companies" activeClassName="active"
-                                  activeStyle={{fontWeight: 'bold'}}>Companies</Link>
-                        </li>
-                        <li>
-                            <Link to="/reviews" activeClassName="active"
+                            <Link to="/" activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
+                        </li>
+                        <li>
+                            <IndexLink to="/companies" activeClassName="active"
+                                       activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
                         </li>
                         <li>
                             <Link to="/weather" activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Weather</Link>
-                        </li>
-                        <li>
-                            <Link to="/examples" activeClassName="active"
-                                  activeStyle={{fontWeight: 'bold'}}>Examples</Link>
                         </li>
                         <li>
                             <Link to="/about" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>About</Link>

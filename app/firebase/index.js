@@ -12,6 +12,7 @@ try {
     };
 
     firebase.initializeApp(config);
+
 } catch (e) {
 
 }

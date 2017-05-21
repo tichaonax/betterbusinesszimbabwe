@@ -17,10 +17,8 @@ export class Companies extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-
     loadData(props) {
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(companiesActions.startAddCompanyItems());
 
         var company = props.location.query.company;
         if (company && company.length > 0) {
@@ -28,11 +26,13 @@ export class Companies extends React.Component {
         }
 
         this.dispatch(reviewsActions.startAddReviewItems());
+        this.dispatch(companiesActions.startAddCompanyItems());
         this.dispatch(servicesActions.startAddServiceItems());
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 
     componentDidMount() {
+        //this.dispatch(searchActions.setSearchText(""));
         this.loadData(this.props);
     }
 
