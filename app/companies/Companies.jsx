@@ -17,12 +17,27 @@ export class Companies extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-    componentDidMount() {
+
+    loadData(props) {
         this.dispatch(errorActions.bbzClearError());
+
+        console.log("loadData startAddCompanyItems");
         this.dispatch(companiesActions.startAddCompanyItems());
+
+        var company = props.location.query.company;
+        if (company && company.length > 0) {
+            this.dispatch(searchActions.setSearchText(company));
+            console.log("search by query", company);
+        }
+
         this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(servicesActions.startAddServiceItems());
         this.dispatch(urlActions.setRedirectUrl('/companies'));
+
+    }
+
+    componentDidMount() {
+        this.loadData(this.props);
     }
 
     componentWillUnmount(){

@@ -22,7 +22,7 @@ export class CompanyList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (this.props.searchText != newProps.searchText) {
+        if (this.props.searchText != newProps.searchText || this.props.companyItems != newProps.companyItems) {
             //you want to force reload of data with new search criteria
             //notice that only after the offset state change is guaranteed do we reload the data
             this.setState({offset: 0}, () => {
@@ -33,6 +33,8 @@ export class CompanyList extends React.Component {
 
     loadNextPage = () => {
         var {companyItems, showApprovalPending, searchText, auth} = this.props;
+        console.log("companyItems",companyItems);
+        console.log("searchText",searchText);
         var uid = 0;
         if (auth.loggedIn) {
             uid = auth.uid;

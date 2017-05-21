@@ -51,6 +51,7 @@ export var addCompanyItems = (companyItems) => {
 };
 
 export var startAddCompanyItems = () => {
+    console.debug("startAddCompanyItems:");
     return (dispatch, getState) => {
         var companyItemRef = firebaseRef.child(`companies`);
         return companyItemRef.once('value').then((snapshot) => {

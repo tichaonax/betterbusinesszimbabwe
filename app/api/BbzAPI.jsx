@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 module.exports = {
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0, perPage = 10, offset = 0) {
-        //console.debug("companyItems", companyItems);
+        //console.debug("searchText", searchText);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
 
@@ -22,6 +22,7 @@ module.exports = {
                 const companyTitle = (companyItem.companyTitle) ? companyItem.companyTitle.toLowerCase() : "";
                 const companyDesc = (companyItem.companyDesc) ? companyItem.companyDesc.toLowerCase() : "";
                 const companyId = (companyItem.createAt) ? companyItem.createAt.toString() : "";
+                const companyItemId = (companyItem.companyItemId) ? companyItem.companyItemId : "";
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyTitle;
@@ -31,6 +32,8 @@ module.exports = {
                     return companyItem.companyDesc;
                 } else if (companyId.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.createAt;
+                }else if (companyItemId.indexOf(searchText) > -1) {
+                    return companyItem.companyItemId;
                 }
             });
         }
