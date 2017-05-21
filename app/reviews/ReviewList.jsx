@@ -39,7 +39,7 @@ export class ReviewList extends React.Component {
                 });
 
                 this.setState({rowCount: filteredReviewItems.length, reviews: reviews}, () => {
-                    console.log("state-reviews", this.state.reviews);
+                   // console.log("state-reviews", this.state.reviews);
                 });
             }
         }
