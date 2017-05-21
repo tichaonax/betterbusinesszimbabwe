@@ -1,31 +1,25 @@
 .review-item-header {
   position: relative;
+  top: 10px;
   align-items: center;
   display: flex;
+  font-weight: bold;
 
   transition: backgrounnd .3s ease;
   left: 1px;
   right: 1px;
-  text-align: left;
+  text-align: center;
   padding: 1px;
-
-  p, input {
-    margin: 0;
-  }
 }
 
 .review-header-item {
-  position: relative;
+  position: absolute;
   align-items: center;
   display: flex;
   padding: 1rem;
   transition: backgrounnd .3s ease;
   left: 1px;
   right: 1px;
-
-  p, input {
-    margin: 0;
-  }
 }
 
 .review-item {
@@ -42,10 +36,6 @@
     margin: 0;
   }
 
-  > :first-child {
-    margin-right: 1rem;
-  }
-
   &:hover {
     background: $very-light-grey;
   }
@@ -55,10 +45,21 @@
   position: relative;
 }
 
+.review-item-id-header {
+  position: absolute;
+  width: 120px;
+}
+
 .review-item-id {
   position: absolute;
   width: 100px;
   top: 5px;
+}
+
+.review-item-rating-header {
+  position: absolute;
+  width : 120px;
+  margin-left: 120px;
 }
 
 .review-item-rating {
@@ -68,11 +69,23 @@
   margin-left: 100px;
 }
 
+.review-item-company-header{
+  position: absolute;
+  width : 200px;
+  margin-left: 220px;
+}
+
 .review-item-company{
   position: absolute;
   top: 5px;
   width : 200px;
   margin-left: 220px;
+}
+
+.review-item-reviewer-header{
+  position: absolute;
+  width : 200px;
+  margin-left: 400px;
 }
 
 .review-item-reviewer{
@@ -82,31 +95,56 @@
   margin-left: 400px;
 }
 
+.review-item-description-header {
+  position: absolute;
+  height: auto;
+  width: 400px;
+  margin-left: 580px;
+}
+
 .review-item-description {
   position: absolute;
   top: 2px;
   height: auto;
   width: 400px;
   margin-left: 580px;
-  height:200px;
+}
+
+.review-item-action-header {
+  position: absolute;
+  width : 50px;
+  margin-left: 990px;
 }
 
 .review-item-action {
   position: absolute;
   top: 5px;
   width : 50px;
-  margin-left: 800px;
+  margin-left: 980px;
+}
+
+.review-item-status-header {
+  position: absolute;
+  width : 50px;
+  margin-left: 1020px;
 }
 
 .review-item-status {
   position: absolute;
   top: 5px;
   width : 50px;
-  margin-left: 900px;
+  margin-left: 1020px;
 }
+
+.review-item-email-header{
+  position: absolute;
+  width : 200px;
+  margin-left: 1100px;
+}
+
 .review-item-email{
   position: absolute;
   top: 5px;
   width : 200px;
-  margin-left: 1000px;
+  margin-left: 1050px;
 }

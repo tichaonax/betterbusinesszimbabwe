@@ -57,22 +57,22 @@ export class ReviewList extends React.Component {
                 <ReactTooltip />
                 <div className="review-item-container">
                     <div className="review-item-header">
-                        <div className="review-header-item">Review ID</div>
-                        <div className="review-header-item">Rating</div>
-                        <div className="review-header-item">Company Name</div>
-                        <div className="review-header-item">Reviewer</div>
-                        <div className="review-header-item">Review Comment</div>
+                        <div className="review-header-item review-item-id-header">Review ID</div>
+                        <div className="review-header-item review-item-rating-header">Rating</div>
+                        <div className="review-header-item review-item-company-header">Company Name</div>
+                        <div className="review-header-item review-item-reviewer-header">Reviewer</div>
+                        <div className="review-header-item review-item-description-header">Review Comment</div>
                         {auth.loggedIn &&
-                        (<div className="review-header-item">
+                        (<div className="review-header-item review-item-action-header">
                             <div ref='deleteReview' data-tip='Delete Review'></div>
-                            Action
+                            A
                             <div ref='updateReview' data-tip='Update Review'></div>
                         </div>)}
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div>Status</div>)}
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div>Reviewer Email</div>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div className=" review-header-item review-item-status-header" >S</div>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div className="review-header-item review-item-email-header">Email</div>)}
                     </div>
 
-                    <div style={{overflow: 'auto', maxHeight: 400}}>
+                    <div style={{overflow: 'auto', maxHeight: 400, marginTop: '20px'}}>
                         <ReactList
                             itemRenderer={this.renderItem}
                             length={this.state.reviews.length}
