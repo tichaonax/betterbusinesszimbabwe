@@ -15,6 +15,14 @@ export class ReviewItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
+    itemSizeGetter = (review) => {
+        var divHeight = 30;
+        if (review.length > 50) {
+            divHeight = 10 + Math.round((review.length / 60)) * 30
+        }
+        return divHeight;
+    }
+
     render() {
         var {displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
 
@@ -31,11 +39,34 @@ export class ReviewItem extends React.Component {
         }
         const reviewId = createAt;
 
+        var divHeight = "50px";
+        if (review) {
+            divHeight = this.itemSizeGetter(review) + 'px';
+        }
+
         return (
-            <tr>
-                <td>{reviewId}</td>
+            <div className="review-item" style={{height: divHeight}}>
+                <div className="review-item-id">{reviewId}</div>
+                <div className="review-item-rating">
+                    <Rate
+                        defaultValue={rating}
+                        style={{fontSize: 15}}
+                        allowHalf
+                        value={rating}
+                    />
+                </div>
+                <div className="review-item-company">
+                    <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
+                </div>
+                <div className="review-item-reviewer">{reviewer}</div>
+                <div className="review-item-description">
+                    <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
+                        {review}
+                    </Linkify>
+                </div>
                 {auth.loggedIn && (
-                    <td>
+                    <div className="review-item-action" >
                         <form>
                             <img type="image" value="submit" height="15" width="15" src="images/delete-blue-x-64.png" alt="Delete Review"
                                  onMouseOver={() => {
@@ -45,14 +76,14 @@ export class ReviewItem extends React.Component {
                                      ReactTooltip.hide(findDOMNode(deleteReview));
                                  }}
                                  onClick={() => {
-                                if (userProfile && userProfile.isAdmin) {
-                                    this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
-                                } else {
-                                    var error = {};
-                                    error.errorMessage = "You must be admin to delete this review information";
-                                    this.dispatch(errorActions.bbzReportError(error));
-                                }
-                            }}/>
+                                     if (userProfile && userProfile.isAdmin) {
+                                         this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
+                                     } else {
+                                         var error = {};
+                                         error.errorMessage = "You must be admin to delete this review information";
+                                         this.dispatch(errorActions.bbzReportError(error));
+                                     }
+                                 }}/>
 
                             <img type="image" value="submit" height="20" width="20" src="images/update-blue-64.png" alt="Update Review"
                                  onMouseOver={() => {
@@ -63,37 +94,29 @@ export class ReviewItem extends React.Component {
                                  }}
                                  onClick={() => {
 
-                                if (auth.uid === uid || userProfile.isAdmin) {
-                                    var data = {
-                                        uid,
-                                        reviewItemId,
-                                        companyItemId,
-                                        rating,
-                                        review
-                                    }
+                                     if (auth.uid === uid || userProfile.isAdmin) {
+                                         var data = {
+                                             uid,
+                                             reviewItemId,
+                                             companyItemId,
+                                             rating,
+                                             review
+                                         }
 
-                                    console.debug("ReviewItems Data:", data);
+                                         console.debug("ReviewItems Data:", data);
 
-                                    this.dispatch(reviewsActions.setUpdateReviewOperation(data));
-                                }
-                                else {
-                                    var error = {};
-                                    error.errorMessage = "You must be the creater or admin to update this review information";
-                                    this.dispatch(errorActions.bbzReportError(error));
-                                }
-                            }}/>
+                                         this.dispatch(reviewsActions.setUpdateReviewOperation(data));
+                                     }
+                                     else {
+                                         var error = {};
+                                         error.errorMessage = "You must be the creater or admin to update this review information";
+                                         this.dispatch(errorActions.bbzReportError(error));
+                                     }
+                                 }}/>
                         </form>
-                    </td>)}
-                <td>
-                    <Rate
-                        defaultValue={rating}
-                        style={{fontSize: 15}}
-                        allowHalf
-                        value={rating}
-                    />
-                </td>
+                    </div>)}
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                    <td>
+                    <div className="review-item-status">
                         <img type="image" value="submit" height="20" width="20" src={approveImageSource}
                              onClick={() => {
                                  this.dispatch(errorActions.bbzClearError());
@@ -106,23 +129,13 @@ export class ReviewItem extends React.Component {
                                      this.dispatch(errorActions.bbzReportError(error));
                                  }
                              }}/>
-                    </td>
+                    </div>
                 )}
-                <td>
-                    <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
-                </td>
-                <td>{reviewer}</td>
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                    <td>
+                    <div className="review-item-email">
                         {email}
-                    </td>)}
-                <td>
-                    <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
-                        {review}
-                    </Linkify>
-                </td>
-            </tr>
+                    </div>)}
+            </div>
         );
     }
 }

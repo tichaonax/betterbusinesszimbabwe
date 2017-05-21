@@ -21,7 +21,7 @@ export class BbzItem extends React.Component {
                 timestamp = completeDate;
             }
 
-            return message + moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a')
+            git
         }
         return (
             <div className={todoClassName} onClick={() => {dispatch(actions.startToggleTodoItem(id, !completed));}}>

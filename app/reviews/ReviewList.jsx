@@ -1,6 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
-import VirtualList from 'react-tiny-virtual-list';
+import ReactList from 'react-list';
 import ReactTooltip from 'react-tooltip'
 import ReviewItem from 'ReviewItem';
 var BbzAPI = require('BbzAPI');
@@ -9,80 +9,77 @@ var BbzAPI = require('BbzAPI');
 export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            reviews: []
+        }
+        this.renderItem = this.renderItem.bind(this);
     }
 
-    renderReviewItems = () => {
-        var {reviewItems, showApprovalPending, searchText, auth} = this.props;
+    componentWillReceiveProps(newProps) {
+        if (this.props.reviewItems != newProps.reviewItems) {
 
-        var uid = 0;
-        if (auth.loggedIn) {
-            uid = auth.uid;
-        }
+            var {reviewItems, showApprovalPending, searchText, auth} = newProps;
 
-        var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
-        if (filteredReviewItems.length === 0) {
-            return (
-                <tr>
-                    <td colSpan={4}>
-                        No Reviews Match Search Criteria
-                    </td>
-                </tr>
-            )
-        } else {
-            return filteredReviewItems.map((reviewItem) => {
-                return (
-                    <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} deleteReview={this.refs.deleteReview}
-                                updateReview={this.refs.updateReview}/>);
-            });
+            var uid = 0;
+            if (auth.loggedIn) {
+                uid = auth.uid;
+            }
+
+            var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+            if (filteredReviewItems.length === 0) {
+                this.setState({rowCount: filteredReviewItems.length, reviews: []}, () => {
+                });
+
+            } else {
+                const reviews = filteredReviewItems.map((reviewItem) => {
+                    return (
+                        <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} deleteReview={this.refs.deleteReview}
+                                    updateReview={this.refs.updateReview}/>);
+                });
+
+                this.setState({rowCount: filteredReviewItems.length, reviews: reviews}, () => {
+                    console.log("state-reviews", this.state.reviews);
+                });
+            }
         }
     }
 
+    renderItem=(index, key)=> {
+        return <div key={key}>{this.state.reviews[index]}</div>;
+    }
 
     render() {
 
-        var {auth, userProfile}=this.props;
-        const data =this.renderReviewItems();
-        console.debug("data", data);
+        var {auth, userProfile} = this.props;
         return (
             <div>
                 <ReactTooltip />
-                <table className="common-table">
-                    <tbody>
-
-                    <tr>
-                        <th>Review ID</th>
+                <div className="review-item-container">
+                    <div className="review-item-header">
+                        <div className="review-header-item">Review ID</div>
+                        <div className="review-header-item">Rating</div>
+                        <div className="review-header-item">Company Name</div>
+                        <div className="review-header-item">Reviewer</div>
+                        <div className="review-header-item">Review Comment</div>
                         {auth.loggedIn &&
-                        (<th>
+                        (<div className="review-header-item">
                             <div ref='deleteReview' data-tip='Delete Review'></div>
                             Action
                             <div ref='updateReview' data-tip='Update Review'></div>
-                        </th>)}
-                        <th>Rating</th>
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Status</th>)}
-                        <th>Company Name</th>
-                        <th>Reviewer</th>
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <th>Reviewer Email</th>)}
-                        <th>Review Comment</th>
-                    </tr>
+                        </div>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div>Status</div>)}
+                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div>Reviewer Email</div>)}
+                    </div>
 
-
-
-
-
-             {/*       {this.renderReviewItems()}*/}
-
-                    </tbody>
-                </table>
-                <VirtualList className="VirtualList"
-                    height={300}
-                    itemCount={data.length}
-                    itemSize={50}
-                    renderItem={({style, index}) =>
-                        <div className="Row" style={style} key={index}>
-                            {data[index]}
-                        </div>
-                    }
-                />
+                    <div style={{overflow: 'auto', maxHeight: 400}}>
+                        <ReactList
+                            itemRenderer={this.renderItem}
+                            length={this.state.reviews.length}
+                            type='variable'
+                        />
+                    </div>
+                </div>
             </div>
         );
     }
