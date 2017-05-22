@@ -46,7 +46,7 @@ export class LoginStats extends React.Component {
 
             return(
                 <div className="common-div float-left">
-                    <table className="common-table">
+                    <table className="common-table common-table-logged-in">
                         <tbody>
                         <tr>
                             <th>{displayName}</th>

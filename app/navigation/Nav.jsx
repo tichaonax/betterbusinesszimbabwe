@@ -82,7 +82,6 @@ class Nav extends React.Component {
                     <ul className="menu">
                         <li>
                             {renderAvator()}
-
                         </li>
                         <li>
                             {this.renderLoginStats()}
