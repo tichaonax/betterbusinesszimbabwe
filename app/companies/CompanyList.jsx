@@ -22,7 +22,7 @@ export class CompanyList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        if (this.props.searchText != newProps.searchText) {
+        if (this.props.searchText != newProps.searchText || this.props.companyItems != newProps.companyItems) {
             //you want to force reload of data with new search criteria
             //notice that only after the offset state change is guaranteed do we reload the data
             this.setState({offset: 0}, () => {
@@ -33,22 +33,23 @@ export class CompanyList extends React.Component {
 
     loadNextPage = () => {
         var {companyItems, showApprovalPending, searchText, auth} = this.props;
-        //console.log("companyItems",companyItems);
+        console.log("companyItems",companyItems);
         //console.log("searchText",searchText);
         var uid = 0;
         if (auth.loggedIn) {
             uid = auth.uid;
         }
         var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, showApprovalPending, searchText, uid, this.props.perPage, this.state.offset);
-        this.setState({data: filteredCompanyItems.data, pageCount: filteredCompanyItems.pageCount});
+        this.setState({data: filteredCompanyItems.data, pageCount: filteredCompanyItems.pageCount},()=>{
+            console.log("paged items:", filteredCompanyItems.data);
+        });
     }
 
     handlePageClick = (data) => {
         let selected = data.selected;
-
-        let offset = Math.ceil(selected * this.props.perPage);
-
-        this.setState({offset: offset}, () => {
+        //console.log("selected:", selected);
+        //console.log("offset:", selected);
+        this.setState({offset: selected}, () => {
             this.loadNextPage();
         });
     };

@@ -13,6 +13,8 @@ module.exports = {
             return companyItem.isApproved || showApprovalPending || companyItem.uid == uid
         });
 
+        console.debug("1st-filteredCompanyItems", filteredCompanyItems);
+
         //filter by searchText
         //we want to also search by company description and others
         //and company id which is stored as unix createAt date time
@@ -56,18 +58,13 @@ module.exports = {
 
         const totalCount = filteredCompanyItems.length;
 
-        var indexStart = (perPage * offset) - perPage;
-
-        if (indexStart > totalCount) {
-            indexStart = totalCount - 1;
-        } else {
-            if (indexStart < 1) {
-                indexStart = 0
-            }
-        }
+        var indexStart = perPage * offset;
 
         var indexEnd = indexStart + perPage;
 
+        if (indexStart > totalCount) {
+            indexStart = totalCount - 1;
+        }
 
         if (indexEnd > totalCount) {
             indexEnd = totalCount;
@@ -76,7 +73,7 @@ module.exports = {
         //console.debug("totalCount", totalCount);
         //console.debug("indexStart", indexStart);
         //console.debug("endexEnd", indexEnd);
-        //console.debug("filteredCompanyItems",filteredCompanyItems);
+        console.debug("filteredCompanyItems",filteredCompanyItems);
         var slicedFilteredCompanyItems = filteredCompanyItems.slice(indexStart, indexEnd);
 
         return ({
@@ -104,6 +101,8 @@ module.exports = {
                 }
             });
         }
+
+        //sort todoItems with non-completed first
 
         //sort todoItems with non-completed first
 
@@ -155,6 +154,22 @@ module.exports = {
                 }
             });
         }
+
+        //sort reviewItems with latest additions at the top
+
+        filteredreviewItems.sort((a, b) => {
+            if (parseInt(a.createAt) > parseInt(b.createAt)) {
+                //take a first
+                return -1
+            } else if (parseInt(a.createAt) < parseInt(b.createAt)) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
 
         //sort reviewItems with Approval Pending first
 

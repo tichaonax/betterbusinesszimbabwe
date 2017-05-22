@@ -25,14 +25,13 @@ export class Companies extends React.Component {
             this.dispatch(searchActions.setSearchText(company));
         }
 
-        this.dispatch(reviewsActions.startAddReviewItems());
+        //this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(companiesActions.startAddCompanyItems());
-        this.dispatch(servicesActions.startAddServiceItems());
+        //this.dispatch(servicesActions.startAddServiceItems());
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 
     componentDidMount() {
-        //this.dispatch(searchActions.setSearchText(""));
         this.loadData(this.props);
     }
 
@@ -57,7 +56,6 @@ export class Companies extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile,
-        companyItems: state.companyItems,
+        userProfile: state.userProfile
     }
 })(Companies);

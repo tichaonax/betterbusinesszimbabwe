@@ -4,12 +4,12 @@
   align-items: center;
   display: flex;
   font-weight: bold;
-
+  border-bottom: 1px solid rgba(0,0,0,0.15);
   transition: backgrounnd .3s ease;
   left: 1px;
   right: 1px;
   text-align: center;
-  padding: 1px;
+  padding: 10px;
 }
 
 .review-header-item {

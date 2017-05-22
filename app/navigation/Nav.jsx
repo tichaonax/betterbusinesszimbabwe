@@ -56,7 +56,7 @@ class Nav extends React.Component {
                     <ul className="menu">
                         <li className="menu-text">Better Business Zimbabwe</li>
                         <li>
-                            <Link to="/" activeClassName="active"
+                            <Link to="/reviews" activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
                         </li>
                         <li>
