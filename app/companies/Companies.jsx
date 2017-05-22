@@ -47,7 +47,7 @@ export class Companies extends React.Component {
             <div className="container ">
                 <BbzSearch/>
                 {isLoggedIn && (<AddCompanyItem/>)}
-                <CompanyList perPage={2}/>
+                <CompanyList perPage={10}/>
             </div>
         );
     }
