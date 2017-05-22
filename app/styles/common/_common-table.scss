@@ -6,8 +6,19 @@
 
   th, td {
     text-align: left;
-    padding: 8px;
-    width: 300px;
+    padding: 0px;
+    width: 150px;
+    font-size: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  th {
+    background-color: #4CAF50;
+    color: white;
+    height: 15px;
+  }
+
+  td {
+    height: 14px;
   }
 
   tr:nth-child(even){background-color: #f2f2f2}

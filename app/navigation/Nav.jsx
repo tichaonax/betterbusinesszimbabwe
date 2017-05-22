@@ -29,7 +29,7 @@ class Nav extends React.Component {
                 if (auth.photoURL) {
                     return (
                         <div className="menu">
-                            <img src={auth.photoURL} alt="Smiley face" height="60" width="60"/>
+                            <img src={auth.photoURL} alt="Smiley face" height="35" width="35"/>
                             <p className="nav-profile__subtext">
                             </p>
                         </div>
@@ -70,25 +70,24 @@ class Nav extends React.Component {
                         <li>
                             <Link to="/about" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>About</Link>
                         </li>
+                        <li>
+                            {this.renderAdminNavigation()}
+                        </li>
+                        <li>
+                            {this.renderLoginControl()}
+                        </li>
                     </ul>
                 </div>
-                <div className="top-bar-right">
-                    {this.renderLoginStats()}
-                        <ul className="menu">
-                            <li>
-                                {this.renderAdminNavigation()}
-                            </li>
-                            <li>
-                                &nbsp;&nbsp;
-                            </li>
-                            <li>
-                                {renderAvator()}
-                            </li>
-                            <li>
-                                {this.renderLoginControl()}
-                            </li>
-                        </ul>
+                <div className="top-bar-right login-status">
+                    <ul className="menu">
+                        <li>
+                            {renderAvator()}
 
+                        </li>
+                        <li>
+                            {this.renderLoginStats()}
+                        </li>
+                    </ul>
                 </div>
             </div>
         );

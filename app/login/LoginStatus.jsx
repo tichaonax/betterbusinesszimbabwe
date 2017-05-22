@@ -76,14 +76,14 @@ export class LoginStats extends React.Component {
 
         if (isLoggedIn) {
             return (
-                <div>
+                <div className="login-status">
                     {renderLoggedIn()}
                 </div>
             );
         }
         else {
             return (
-                <div>
+                <div className="login-status">
                     {renderLoggedOut()}
                 </div>
             );
