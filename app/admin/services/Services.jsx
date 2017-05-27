@@ -27,14 +27,14 @@ export class Services extends React.Component {
 
         if(isLoggedIn && userProfile && userProfile.isAdmin){
             return (
-                <div className="container ">
+                <div className="container">
                     <AddServiceItem/>
                     <ServiceList/>
                 </div>
             );
         }else{
             return (
-                <div className="container ">
+                <div className="container">
                     You must be admin to update services
                 </div>
             );

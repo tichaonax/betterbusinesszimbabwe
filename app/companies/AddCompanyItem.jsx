@@ -218,8 +218,8 @@ export class AddCompnayItem extends React.Component {
 
     render() {
         return (
-            <div className="form-group">
-                <div>
+            <div className="bbz-general">
+                <div className="form-group">
                     <Error/>
                     <form onSubmit={this.handleSubmit}>
                         <label htmlFor="service-item-id">Service Category</label>

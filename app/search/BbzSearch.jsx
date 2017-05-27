@@ -13,7 +13,7 @@ export class BbzSearch extends React.Component {
         var {isLoggedIn, userProfile, showApprovalPending, searchText} = this.props;
 
         return (
-            <div className="container__header">
+            <div className="container__header bbz-general">
                 <div>
                     <input id="searchItemText" type="text"  value={searchText} placeholder="Enter text to search?"
                            onChange={() => {

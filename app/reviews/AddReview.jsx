@@ -294,29 +294,31 @@ export class AddReview extends React.Component {
     render() {
         var {redirectUrl} = this.props;
         return (
-            <div className="form-group">
-                <Error/>
-                <form onSubmit={this.handleSubmit}>
-                    {this.renderModalFeedback(redirectUrl)}
-                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
-                    {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
-                    {this.state.operation === 'ADD' && this.renderCompanySelect()}
-                    <label htmlFor="sreview">Review Comment</label>
-                    <input type="text" name="review" ref="review" value={this.state.review}
-                           placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
-                    <label htmlFor="rating">Rating</label>
-                    <Rate
-                        defaultValue={this.state.rating}
-                        onChange={(index) => {
-                            this.setState({rating: index});
-                        }}
-                        style={{fontSize: 40}}
-                        allowHalf
-                        value={this.state.rating}
-                    />
-                    {this.state.operation === 'ADD' && this.renderAddView()}
-                    {this.state.operation === 'UPDATE' && this.renderUpdateView()}
-                </form>
+            <div className="bbz-general">
+                <div className="form-group">
+                    <Error/>
+                    <form onSubmit={this.handleSubmit}>
+                        {this.renderModalFeedback(redirectUrl)}
+                        {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
+                        {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
+                        {this.state.operation === 'ADD' && this.renderCompanySelect()}
+                        <label htmlFor="sreview">Review Comment</label>
+                        <input type="text" name="review" ref="review" value={this.state.review}
+                               placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
+                        <label htmlFor="rating">Rating</label>
+                        <Rate
+                            defaultValue={this.state.rating}
+                            onChange={(index) => {
+                                this.setState({rating: index});
+                            }}
+                            style={{fontSize: 30}}
+                            allowHalf
+                            value={this.state.rating}
+                        />
+                        {this.state.operation === 'ADD' && this.renderAddView()}
+                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                    </form>
+                </div>
             </div>
         );
     }
