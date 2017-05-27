@@ -27,7 +27,7 @@ export class Companies extends React.Component {
 
         //this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(companiesActions.startAddCompanyItems());
-        //this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(servicesActions.startAddServiceItems());
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 
