@@ -69,7 +69,7 @@ export class CompanyList extends React.Component {
             <div>
                 <ReactTooltip />
                 <table className="common-table">
-                    <tbody>
+                    <thead>
                     <tr>
                         <th>Company ID</th>
                         {auth.loggedIn && (
@@ -88,6 +88,8 @@ export class CompanyList extends React.Component {
                         <th>Business Description</th>
                         <th>Add Review</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     {this.renderCompanyItems()}
                     </tbody>
                 </table>

@@ -44,10 +44,14 @@ export class Companies extends React.Component {
         var {isLoggedIn} = this.props;
 
         return (
-            <div className="container container__header bbz-general">
-                <BbzSearch/>
-                {isLoggedIn && (<AddCompanyItem/>)}
-                <CompanyList perPage={10}/>
+            <div className="container container__header">
+                <div className="bbz-general">
+                    <BbzSearch/>
+                    {isLoggedIn && (<AddCompanyItem/>)}
+                </div>
+                <div className="bbz-general">
+                    <CompanyList perPage={10}/>
+                </div>
             </div>
         );
     }

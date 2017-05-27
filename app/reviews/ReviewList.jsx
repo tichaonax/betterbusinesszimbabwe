@@ -72,7 +72,7 @@ export class ReviewList extends React.Component {
                         {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div className="review-header-item review-item-email-header">Email</div>)}
                     </div>
 
-                    <div style={{overflow: 'auto', maxHeight: 400, marginTop: '20px'}}>
+                    <div style={{overflow: 'auto', maxHeight: 350, marginTop: '20px'}}>
                         <ReactList
                             itemRenderer={this.renderItem}
                             length={this.state.reviews.length}

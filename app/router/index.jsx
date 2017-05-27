@@ -7,7 +7,6 @@ import BbzLogin from 'BbzLogin';
 import BbzPasswordLogin from 'BbzPasswordLogin';
 import BbzResetPassword from 'BbzResetPassword';
 import BbzLoggedInContainer from 'BbzLoggedInContainer';
-import BbzReviews from 'BbzReviews';
 import CreateNewAccount from 'CreateNewAccount';
 import AddReview from 'AddReview';
 import Companies from 'Companies';
@@ -27,7 +26,6 @@ export default (
             <Route path="createaccount" component={CreateNewAccount}/>
             <IndexRoute component={Reviews}/>
             <Route component={BbzLoggedInContainer}>
-                <Route path="bbzreviews" component={BbzReviews}/>
                 <Route path="services" component={Services}/>
                 <Route path="addreview" component={AddReview}/>
             </Route>

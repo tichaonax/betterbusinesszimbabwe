@@ -38,9 +38,14 @@ export class Reviews extends React.Component {
         var {isLoggedIn} = this.props;
         return (
             <div className="container">
+                <div>
                     <BbzSearch/>
                     {isLoggedIn && (<AddReview/>)}
                     <ReviewList/>
+                </div>
+                <div>
+                    <span> Footer</span>
+                </div>
             </div>
         );
     }
