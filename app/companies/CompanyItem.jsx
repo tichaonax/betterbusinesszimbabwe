@@ -170,7 +170,7 @@ export class CompanyItem extends React.Component {
                 </div>
                 <div className="column">
                     <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                          activeStyle={{fontWeight: 'bold'}}>&nbsp;Add Review</Link>
                 </div>
                 <div className="column">
                     <hr/>
