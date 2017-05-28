@@ -47,6 +47,12 @@ export class ReviewItem extends React.Component {
         return (
             <div className="row align-top" style={{height: divHeight}}>
                 <div className="column">
+                    <span className="bbz-review-span">Company:</span>
+                    <span>&nbsp;</span>
+                    <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
+                </div>
+                <div className="column">
                     <span className="label bbz-review-span">Rating:</span>
                     <span>&nbsp;</span>
                     <Rate
@@ -60,12 +66,6 @@ export class ReviewItem extends React.Component {
                     <span className="bbz-review-span">ID:</span>
                     <span>&nbsp;</span>
                     {reviewId}
-                </div>
-                <div className="column">
-                    <span className="bbz-review-span">Company:</span>
-                    <span>&nbsp;</span>
-                    <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                 </div>
                 <div className="column">
                     <span className="bbz-review-span">Reviewer:</span>
@@ -123,7 +123,7 @@ export class ReviewItem extends React.Component {
                                              review
                                          }
 
-                                         console.debug("ReviewItems Data:", data);
+                                        // console.debug("ReviewItems Data:", data);
 
                                          this.dispatch(reviewsActions.setUpdateReviewOperation(data));
                                      }
@@ -159,6 +159,9 @@ export class ReviewItem extends React.Component {
                         <span>&nbsp;</span>
                         {email}
                     </div>)}
+                    <div>
+                        <hr/>
+                    </div>
             </div>
         );
     }

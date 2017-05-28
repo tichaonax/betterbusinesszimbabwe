@@ -43,6 +43,27 @@ export class CompanyItem extends React.Component {
         return (
             <div className="row align-top" style={{height: divHeight}}>
                 <div className="column">
+                    <span className="bbz-review-span">Company:</span>
+                    <span>&nbsp;</span>
+                    {companyTitle}
+                </div>
+                <div className="column">
+                    <span className="bbz-review-span">Reviews:</span>
+                    <span>&nbsp;</span>
+                    <Link to={`/reviews?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
+                </div>
+                <div className="column">
+                    <span className="label bbz-review-span">Rating:</span>
+                    <span>&nbsp;</span>
+                    <Rate
+                        defaultValue={rating}
+                        style={{fontSize: 15}}
+                        allowHalf
+                        value={rating}
+                    />
+                </div>
+                <div className="column">
                     <span className="bbz-review-span">ID:</span>
                     <span>&nbsp;</span>{companyId}</div>
                 {auth.loggedIn && (
@@ -74,7 +95,7 @@ export class CompanyItem extends React.Component {
                                 </div>)}
                             {auth.loggedIn && (
                                 <div className="column">
-                                    <span className="bbz-review-span">Delete:</span>
+                                    <span className="bbz-review-span">Update:</span>
                                     <span>&nbsp;</span>
                                     <img className="bbz-general-pointer" type="image" value="submit" height="30"
                                          width="30" src="images/update-blue-64.png"
@@ -98,7 +119,7 @@ export class CompanyItem extends React.Component {
                                                      serviceCategory
                                                  }
 
-                                                 console.debug("CompanyItems Data:", data);
+                                                // console.debug("CompanyItems Data:", data);
 
                                                  this.dispatch(companiesActions.setUpdateCompanyOperation(data));
                                              }
@@ -111,22 +132,6 @@ export class CompanyItem extends React.Component {
                                 </div>)}
                         </div>
                     </form>)}
-                <div className="column">
-                    <span className="bbz-review-span">Reviews:</span>
-                    <span>&nbsp;</span>
-                    <Link to={`/reviews?company=${companyItemId}`} activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
-                </div>
-                <div className="column">
-                    <span className="label bbz-review-span">Rating:</span>
-                    <span>&nbsp;</span>
-                    <Rate
-                        defaultValue={rating}
-                        style={{fontSize: 15}}
-                        allowHalf
-                        value={rating}
-                    />
-                </div>
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
                     <div className="column">
                         <span className="bbz-review-span">Approve:</span>
@@ -145,11 +150,6 @@ export class CompanyItem extends React.Component {
                              }}/>
                     </div>
                 )}
-                <div className="column">
-                    <span className="bbz-review-span">Company:</span>
-                    <span>&nbsp;</span>
-                    {companyTitle}
-                </div>
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
                     <div className="column">
                         <Link to={`/users?uid=${uid}`} activeClassName="active"
@@ -170,6 +170,9 @@ export class CompanyItem extends React.Component {
                 <div className="column">
                     <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
                           activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                </div>
+                <div>
+                    <hr/>
                 </div>
             </div>
         );

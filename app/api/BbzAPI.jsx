@@ -13,7 +13,7 @@ module.exports = {
             return companyItem.isApproved || showApprovalPending || companyItem.uid == uid
         });
 
-        console.debug("1st-filteredCompanyItems", filteredCompanyItems);
+       // console.debug("1st-filteredCompanyItems", filteredCompanyItems);
 
         //filter by searchText
         //we want to also search by company description and others

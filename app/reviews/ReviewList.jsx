@@ -1,7 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import ReactList from 'react-list';
-import ReactTooltip from 'react-tooltip'
 import ReviewItem from 'ReviewItem';
 var BbzAPI = require('BbzAPI');
 
@@ -51,15 +50,15 @@ export class ReviewList extends React.Component {
     render() {
      return (
             <div>
-                <ReactTooltip />
-                <div className="review-item-container">
-                    <div style={{overflow: 'auto', maxHeight: 350, marginTop: '20px'}}>
+         {/*       <div className="review-item-container">*/}
+                    <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
+                    <div style={{overflow: 'auto', maxHeight: 350, marginLeft: '5px', marginRight: '5px'}}>
                         <ReactList
                             itemRenderer={this.renderReviewItem}
                             length={this.state.reviews.length}
                             type='variable'
                         />
-                    </div>
+       {/*             </div>*/}
                 </div>
             </div>
         );

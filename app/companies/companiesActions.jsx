@@ -51,7 +51,6 @@ export var addCompanyItems = (companyItems) => {
 };
 
 export var startAddCompanyItems = () => {
-    console.debug("startAddCompanyItems:");
     return (dispatch, getState) => {
         var companyItemRef = firebaseRef.child(`companies`);
         return companyItemRef.once('value').then((snapshot) => {
@@ -65,7 +64,7 @@ export var startAddCompanyItems = () => {
                     ...companyItems[companyItemId]
                 });
             });
-            console.debug("startAddCompanyItems:",parsedCompanyItems);
+            //console.debug("startAddCompanyItems:",parsedCompanyItems);
             dispatch(addCompanyItems(parsedCompanyItems));
         }, (error) => {
             console.debug("Unable to fetch companies", error);

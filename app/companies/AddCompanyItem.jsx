@@ -32,6 +32,7 @@ export class AddCompnayItem extends React.Component {
             this.dispatch(errorActions.bbzClearError());
             this.dispatch(companiesActions.setAddCompanyOperation());
         }
+       // this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
     }
 
 
@@ -187,20 +188,18 @@ export class AddCompnayItem extends React.Component {
 
     renderServiceSelect(){
         var selectedServiceItemIds =[];
-        var serviceItems = this.props.serviceItems;//state.serviceItems;
+        var serviceItems = this.props.serviceItems;
         if (serviceItems) {
 
             serviceItems.map((serviceItem) => {
                 selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceTitle});
             });
 
-           // console.debug("selectedServiceItemIds",selectedServiceItemIds);
-
             return (
                 <div>
                     <Select
                         ref="serviceSelect"
-                        name="service-select"
+                        name="service"
                         value={this.state.selectedServiceItemId}
                         options={selectedServiceItemIds}
                         onChange={this.onServiceItemIdChange}

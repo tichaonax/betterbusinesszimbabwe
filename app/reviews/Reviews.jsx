@@ -33,7 +33,6 @@ export class Reviews extends React.Component {
         this.loadData(newProps);
     }
 
-
     render() {
         var {isLoggedIn} = this.props;
         return (
@@ -44,9 +43,6 @@ export class Reviews extends React.Component {
                             <BbzSearch/>
                             {isLoggedIn && (<AddReview/>)}
                             <ReviewList/>
-                        </div>
-                        <div>
-                            <span> Footer</span>
                         </div>
                     </div>
                 </div>

@@ -58,36 +58,36 @@ class Nav extends React.Component {
                         <div className="column">
                             <div className="row">
                                 <div className="menu-text">Better Business Zimbabwe</div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     <Link to="/reviews" activeClassName="active"
                                           activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
                                 </div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     <IndexLink to="/companies" activeClassName="active"
                                                activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
                                 </div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     <Link to="/weather" activeClassName="active"
                                           activeStyle={{fontWeight: 'bold'}}>Weather</Link>
                                 </div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     <Link to="/about" activeClassName="active"
                                           activeStyle={{fontWeight: 'bold'}}>About</Link>
                                 </div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     {this.renderAdminNavigation()}
                                 </div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     {this.renderLoginControl()}
                                 </div>
                             </div>
                         </div>
                         <div className="column">
                             <div className="row">
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     {renderAvator()}
                                 </div>
-                                <div>
+                                <div className="small-12 large-expand columns">
                                     {this.renderLoginStats()}
                                 </div>
                             </div>
