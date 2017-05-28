@@ -2,7 +2,7 @@ var React = require('react');
 var $ = require('jquery');
 
 module.exports = {
-    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0, perPage = 10, offset = 0) {
+    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0) {
         //console.debug("searchText", searchText);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
@@ -56,30 +56,7 @@ module.exports = {
             }
         });
 
-        const totalCount = filteredCompanyItems.length;
-
-        var indexStart = perPage * offset;
-
-        var indexEnd = indexStart + perPage;
-
-        if (indexStart > totalCount) {
-            indexStart = totalCount - 1;
-        }
-
-        if (indexEnd > totalCount) {
-            indexEnd = totalCount;
-        }
-
-        //console.debug("totalCount", totalCount);
-        //console.debug("indexStart", indexStart);
-        //console.debug("endexEnd", indexEnd);
-        console.debug("filteredCompanyItems",filteredCompanyItems);
-        var slicedFilteredCompanyItems = filteredCompanyItems.slice(indexStart, indexEnd);
-
-        return ({
-            data: slicedFilteredCompanyItems,
-            pageCount: Math.ceil(totalCount / perPage)
-        });
+        return (filteredCompanyItems);
     },
 
     getFilteredReviews: function (reviewItems, showApprovalPending, searchText, uid=0) {

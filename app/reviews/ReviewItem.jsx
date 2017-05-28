@@ -45,9 +45,10 @@ export class ReviewItem extends React.Component {
         }
 
         return (
-            <div className="review-item" style={{height: divHeight}}>
-                <div className="review-item-id">{reviewId}</div>
-                <div className="review-item-rating">
+            <div className="row align-top" style={{height: divHeight}}>
+                <div className="column">
+                    <span className="label bbz-review-span">Rating:</span>
+                    <span>&nbsp;</span>
                     <Rate
                         defaultValue={rating}
                         style={{fontSize: 15}}
@@ -55,20 +56,35 @@ export class ReviewItem extends React.Component {
                         value={rating}
                     />
                 </div>
-                <div className="review-item-company">
+                <div className="column">
+                    <span className="bbz-review-span">ID:</span>
+                    <span>&nbsp;</span>
+                    {reviewId}
+                </div>
+                <div className="column">
+                    <span className="bbz-review-span">Company:</span>
+                    <span>&nbsp;</span>
                     <Link to={`/companies?company=${companyItemId}`} activeClassName="active"
                           activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                 </div>
-                <div className="review-item-reviewer">{reviewer}</div>
-                <div className="review-item-description">
+                <div className="column">
+                    <span className="bbz-review-span">Reviewer:</span>
+                    <span>&nbsp;</span>
+                    {reviewer}</div>
+                <div className="column">
+                    <span className="bbz-review-span">Review:</span>
+                    <span>&nbsp;</span>
                     <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
                         {review}
                     </Linkify>
                 </div>
                 {auth.loggedIn && (
-                    <div className="review-item-action" >
-                        <form>
-                            <img type="image" value="submit" height="15" width="15" src="images/delete-blue-x-64.png" alt="Delete Review"
+                    <form>
+                        <div className="column">
+                            <span className="bbz-review-span">Delete:</span>
+                            <span>&nbsp;</span>
+                            <img className="bbz-general-pointer" type="image" value="submit" height="15" width="15" src="images/delete-blue-x-64.png"
+                                 alt="Delete Review"
                                  onMouseOver={() => {
                                      ReactTooltip.show(findDOMNode(deleteReview));
                                  }}
@@ -84,8 +100,12 @@ export class ReviewItem extends React.Component {
                                          this.dispatch(errorActions.bbzReportError(error));
                                      }
                                  }}/>
-
-                            <img type="image" value="submit" height="20" width="20" src="images/update-blue-64.png" alt="Update Review"
+                        </div>
+                        <div className="column">
+                            <span className="bbz-review-span">Update:</span>
+                            <span>&nbsp;</span>
+                            <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src="images/update-blue-64.png"
+                                 alt="Update Review"
                                  onMouseOver={() => {
                                      ReactTooltip.show(findDOMNode(updateReview));
                                  }}
@@ -113,11 +133,13 @@ export class ReviewItem extends React.Component {
                                          this.dispatch(errorActions.bbzReportError(error));
                                      }
                                  }}/>
-                        </form>
-                    </div>)}
+                        </div>
+                    </form>)}
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                    <div className="review-item-status">
-                        <img type="image" value="submit" height="20" width="20" src={approveImageSource}
+                    <div className="column">
+                        <span className="bbz-review-span">Approve:</span>
+                        <span>&nbsp;</span>
+                        <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src={approveImageSource}
                              onClick={() => {
                                  this.dispatch(errorActions.bbzClearError());
                                  if (userProfile.isAdmin) {
@@ -132,7 +154,9 @@ export class ReviewItem extends React.Component {
                     </div>
                 )}
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                    <div className="review-item-email">
+                    <div className="column">
+                        <span className="bbz-review-span">Email:</span>
+                        <span>&nbsp;</span>
                         {email}
                     </div>)}
             </div>

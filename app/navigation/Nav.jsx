@@ -28,7 +28,7 @@ class Nav extends React.Component {
             if (auth.loggedIn) {
                 if (auth.photoURL) {
                     return (
-                        <div className="menu">
+                        <div>
                             <img src={auth.photoURL} alt="Smiley face" height="35" width="35"/>
                             <p className="nav-profile__subtext">
                             </p>
@@ -36,7 +36,7 @@ class Nav extends React.Component {
                     );
                 } else {
                     return (
-                        <div className="menu">
+                        <div>
                             <p className="nav-profile__subtext">
                             </p>
                         </div>
@@ -51,42 +51,48 @@ class Nav extends React.Component {
         }
 
         return (
-            <div className="top-bar">
-                <div className="top-bar-left">
-                    <ul className="menu">
-                        <li className="menu-text">Better Business Zimbabwe</li>
-                        <li>
-                            <Link to="/reviews" activeClassName="active"
-                                  activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
-                        </li>
-                        <li>
-                            <IndexLink to="/companies" activeClassName="active"
-                                       activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
-                        </li>
-                        <li>
-                            <Link to="/weather" activeClassName="active"
-                                  activeStyle={{fontWeight: 'bold'}}>Weather</Link>
-                        </li>
-                        <li>
-                            <Link to="/about" activeClassName="active" activeStyle={{fontWeight: 'bold'}}>About</Link>
-                        </li>
-                        <li>
-                            {this.renderAdminNavigation()}
-                        </li>
-                        <li>
-                            {this.renderLoginControl()}
-                        </li>
-                    </ul>
-                </div>
-                <div className="top-bar-right login-status">
-                    <ul className="menu">
-                        <li>
-                            {renderAvator()}
-                        </li>
-                        <li>
-                            {this.renderLoginStats()}
-                        </li>
-                    </ul>
+
+            <div className="row">
+                <div className="columns medium-centered medium-12 large-12">
+                    <div className="callout callout-auth">
+                        <div className="column">
+                            <div className="row">
+                                <div className="menu-text">Better Business Zimbabwe</div>
+                                <div>
+                                    <Link to="/reviews" activeClassName="active"
+                                          activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
+                                </div>
+                                <div>
+                                    <IndexLink to="/companies" activeClassName="active"
+                                               activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
+                                </div>
+                                <div>
+                                    <Link to="/weather" activeClassName="active"
+                                          activeStyle={{fontWeight: 'bold'}}>Weather</Link>
+                                </div>
+                                <div>
+                                    <Link to="/about" activeClassName="active"
+                                          activeStyle={{fontWeight: 'bold'}}>About</Link>
+                                </div>
+                                <div>
+                                    {this.renderAdminNavigation()}
+                                </div>
+                                <div>
+                                    {this.renderLoginControl()}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="column">
+                            <div className="row">
+                                <div>
+                                    {renderAvator()}
+                                </div>
+                                <div>
+                                    {this.renderLoginStats()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

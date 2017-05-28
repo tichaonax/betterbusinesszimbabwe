@@ -13,7 +13,7 @@ export class ReviewList extends React.Component {
         this.state = {
             reviews: []
         }
-        this.renderItem = this.renderItem.bind(this);
+        this.renderReviewItem = this.renderReviewItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -39,42 +39,23 @@ export class ReviewList extends React.Component {
                 });
 
                 this.setState({rowCount: filteredReviewItems.length, reviews: reviews}, () => {
-                   // console.log("state-reviews", this.state.reviews);
                 });
             }
         }
     }
 
-    renderItem=(index, key)=> {
+    renderReviewItem = (index, key) => {
         return <div key={key}>{this.state.reviews[index]}</div>;
     }
 
     render() {
-
-        var {auth, userProfile} = this.props;
-        return (
+     return (
             <div>
                 <ReactTooltip />
                 <div className="review-item-container">
-                    <div className="review-item-header">
-                        <div className="review-header-item review-item-id-header">Review ID</div>
-                        <div className="review-header-item review-item-rating-header">Rating</div>
-                        <div className="review-header-item review-item-company-header">Company Name</div>
-                        <div className="review-header-item review-item-reviewer-header">Reviewer</div>
-                        <div className="review-header-item review-item-description-header">Review Comment</div>
-                        {auth.loggedIn &&
-                        (<div className="review-header-item review-item-action-header">
-                            <div ref='deleteReview' data-tip='Delete Review'></div>
-                            A
-                            <div ref='updateReview' data-tip='Update Review'></div>
-                        </div>)}
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div className=" review-header-item review-item-status-header" >S</div>)}
-                        {auth.loggedIn && userProfile && userProfile.isAdmin && ( <div className="review-header-item review-item-email-header">Email</div>)}
-                    </div>
-
                     <div style={{overflow: 'auto', maxHeight: 350, marginTop: '20px'}}>
                         <ReactList
-                            itemRenderer={this.renderItem}
+                            itemRenderer={this.renderReviewItem}
                             length={this.state.reviews.length}
                             type='variable'
                         />
