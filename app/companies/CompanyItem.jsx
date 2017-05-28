@@ -126,7 +126,7 @@ export class CompanyItem extends React.Component {
                                              }
                                              else {
                                                  var error = {};
-                                                 error.errorMessage = "You must be the creater or admin to update this company information";
+                                                 error.errorMessage = "You must be the owner or admin to update this company information";
                                                  this.dispatch(errorActions.bbzReportError(error));
                                              }
                                          }}/>
