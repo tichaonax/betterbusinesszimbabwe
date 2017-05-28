@@ -31,11 +31,12 @@ export class CompanyItem extends React.Component {
             divHeight = this.itemSizeGetter(companyDesc) + 'px';
         }
 
-
         var approveImageSource = "images/like-64.png";
+        var approveMessage ="Approval Pending";
 
         if (isApproved) {
-            approveImageSource = "images/check-blue-64.png"
+            approveImageSource = "images/check-blue-64.png";
+            approveMessage ="Approved";
         }
 
         const companyId = createAt;
@@ -134,7 +135,7 @@ export class CompanyItem extends React.Component {
                     </form>)}
                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
                     <div className="column">
-                        <span className="bbz-review-span">Approve:</span>
+                        <span className="bbz-review-span">{approveMessage}:</span>
                         <span>&nbsp;</span>
                         <img className="bbz-general-pointer" type="image" value="submit" height="30" width="30"
                              src={approveImageSource}
