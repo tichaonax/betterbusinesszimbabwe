@@ -132,7 +132,7 @@ export class ReviewItem extends React.Component {
                                      }
                                      else {
                                          var error = {};
-                                         error.errorMessage = "You must be the creater or admin to update this review information";
+                                         error.errorMessage = "You must be the owner or admin to update this review information";
                                          this.dispatch(errorActions.bbzReportError(error));
                                      }
                                  }}/>
