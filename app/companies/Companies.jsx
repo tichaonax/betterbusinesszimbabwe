@@ -52,7 +52,7 @@ export class Companies extends React.Component {
                             {isLoggedIn && (<AddCompanyItem/>)}
                         </div>
                         <div className="bbz-general">
-                            <CompanyList perPage={10}/>
+                            <CompanyList/>
                         </div>
                     </div>
                 </div>
