@@ -53,7 +53,7 @@ export class CompanyList extends React.Component {
         return (
             <div>
                 <h4 className="text-center">{this.state.companies.length} Companies...</h4>
-                <div style={{overflow: 'auto', maxHeight: 350, marginLeft: '5px', marginRight: '5px'}}>
+                <div style={{overflow: 'auto', maxHeight: 1000, marginLeft: '10px', marginRight: '10px'}}>
                     <ReactList
                         itemRenderer={this.renderCompanyItem}
                         length={this.state.companies.length}

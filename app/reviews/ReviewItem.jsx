@@ -162,7 +162,7 @@ export class ReviewItem extends React.Component {
                         <span>&nbsp;</span>
                         {email}
                     </div>)}
-                    <div>
+                    <div className="column">
                         <hr/>
                     </div>
             </div>

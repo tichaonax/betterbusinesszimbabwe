@@ -53,7 +53,7 @@ class Nav extends React.Component {
         return (
 
             <div className="row">
-                <div className="columns medium-centered medium-12 large-12">
+                <div className="columns medium-centered">
                     <div className="callout callout-auth">
                         <div className="column">
                             <div className="row">

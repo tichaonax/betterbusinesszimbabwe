@@ -45,7 +45,7 @@ export class Companies extends React.Component {
 
         return (
             <div className="row">
-                <div className="columns medium-centered small-10 medium-6 large-4">
+                <div className="columns medium-centered">
                     <div className="container">
                         <div className="bbz-general">
                             <BbzSearch/>
