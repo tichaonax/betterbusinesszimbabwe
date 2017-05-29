@@ -124,7 +124,7 @@ export class BbzLogin extends React.Component {
                             <div className="col-sm-4">
                                 <div className="btn-group">
                                     <button id="github" onClick={this.onBbzLogin} type="button"
-                                            className="btn btn-info"><i className="fa"></i>Sign in with GitHub
+                                            className="btn btn-success"><i className="fa"></i>Sign in with GitHub
                                     </button>
                                 </div>
                             </div>
@@ -137,13 +137,13 @@ export class BbzLogin extends React.Component {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-sm-4">
+                            <div className="col-sm-6">
                                 <div className="btn-group">
                                     <Link to="/createaccount" activeClassName="active"
                                           activeStyle={{fontWeight: 'bold'}}>Create New Account</Link>
                                 </div>
                             </div>
-                            <div className="col-sm-4">
+                            <div className="col-sm-6">
                                 <div className="btn-group">
                                     <Link to="/resetpassword" activeClassName="active"
                                           activeStyle={{fontWeight: 'bold'}}>Forgot My Password :-)</Link>
