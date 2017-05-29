@@ -3,3 +3,8 @@ node_modules/
 npm-debug.log
 public/bundle.js
 config/
+*.woff2
+*.eot
+*.svg
+*.ttf
+*.woff

@@ -13,7 +13,7 @@ try {
 module.exports = {
     entry: [
         'script!jquery/dist/jquery.min.js',
-        'script!foundation-sites/dist/js/foundation.min.js',
+        '!style!css!bootstrap/dist/css/bootstrap.min.css',
         './app/app.jsx'
     ],
     externals: {
@@ -24,6 +24,7 @@ module.exports = {
             '$': 'jquery',
             'jQuery': 'jquery'
         }),
+
         new webpack.optimize.UglifyJsPlugin({
             compressor: {
                 warnings: false,
@@ -102,12 +103,43 @@ module.exports = {
                 },
                 test: /\.jsx?$/,
                 exclude: /(node_modules|bower_components)/
+
+            },
+
+            {
+                test: /\.css$/,
+                loader: "style-loader!css-loader"
+            },
+            {
+                test: /\.png$/,
+                loader: "url-loader?limit=100000"
+            },
+            {
+                test: /\.jpg$/,
+                loader: "file-loader"
+            },
+            {
+                test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=application/font-woff'
+            },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=application/octet-stream'
+            },
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'file'
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                loader: 'url?limit=10000&mimetype=image/svg+xml'
             }
         ]
     },
     sassLoader: {
         includePaths: [
-            path.resolve(__dirname, './node_modules/foundation-sites/scss')
+           /* path.resolve(__dirname, './node_modules/foundation-sites/scss')*/
+
         ]
     },
     devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map'
