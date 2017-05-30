@@ -49,7 +49,6 @@ export class Companies extends React.Component {
                 <div className="columns medium-centered">
                     <div className="container">
                         <div className="bbz-general">
-                           {/* <BbzSearch/>*/}
                             {isLoggedIn && (<AddCompanyItem/>)}
                         </div>
                         <div className="bbz-general">

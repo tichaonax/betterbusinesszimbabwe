@@ -40,11 +40,7 @@ export class Reviews extends React.Component {
             <div className="row">
                 <div className="columns medium-centered">
                     <div className="container">
-                        {/*<div className="bbz-general">
-                            <BbzSearch/>
-                        </div>*/}
                         {isLoggedIn && (
-
                             <div className="bbz-general">
                                 <AddReview/>
                             </div>)}

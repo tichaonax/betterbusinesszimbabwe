@@ -14,7 +14,6 @@ export class BbzSearch extends React.Component {
         e.preventDefault();
         var location = $('#searchItemText').val();
         this.dispatch(searchActions.setSearchText(location));
-       // console.debug("#searchItemText",location);
         var encodedLocation = encodeURIComponent(location);
         if (location.length > 0) {
             $('#searchItemText').val('');
