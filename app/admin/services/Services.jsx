@@ -20,7 +20,6 @@ export class Services extends React.Component {
         this.dispatch(searchActions.setSearchText(""));
     }
 
-
     render() {
 
         var {isLoggedIn, userProfile} = this.props;

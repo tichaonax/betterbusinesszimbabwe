@@ -4,7 +4,7 @@ import {userProfileReducer} from 'profileReducers';
 import {firebaseAuthReducer, lastLoginReducer} from 'loginReducers';
 import {setRedirectUrlReducer} from 'urlReducers';
 import {bbzErrorReducer} from 'errorReducers';
-import {searchTextReducer, showApprovalPendingReducer} from 'searchReducers';
+import {searchTextReducer, searchOptionsReducer} from 'searchReducers';
 import {todoItemsReducer} from 'reducers';
 import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer';
 import {companyItemsReducer, companyOperationReducer} from 'companiesItemsReducer';
@@ -13,7 +13,7 @@ import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 export var configure = (initialState = {}) => {
     var reducers = redux.combineReducers({
         searchText: searchTextReducer,
-        showApprovalPending: showApprovalPendingReducer,
+        searchOptions: searchOptionsReducer,
         auth: firebaseAuthReducer,
         lastLogin: lastLoginReducer,
         redirectUrl: setRedirectUrlReducer,

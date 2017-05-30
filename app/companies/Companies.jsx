@@ -32,6 +32,7 @@ export class Companies extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(searchActions.setSearchButton(false));
         this.loadData(this.props);
     }
 
@@ -48,7 +49,7 @@ export class Companies extends React.Component {
                 <div className="columns medium-centered">
                     <div className="container">
                         <div className="bbz-general">
-                            <BbzSearch/>
+                           {/* <BbzSearch/>*/}
                             {isLoggedIn && (<AddCompanyItem/>)}
                         </div>
                         <div className="bbz-general">

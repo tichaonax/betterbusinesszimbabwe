@@ -22,6 +22,7 @@ export class Reviews extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(searchActions.setSearchButton(false));
         this.loadData(this.props);
     }
 
@@ -39,9 +40,9 @@ export class Reviews extends React.Component {
             <div className="row">
                 <div className="columns medium-centered">
                     <div className="container">
-                        <div className="bbz-general">
+                        {/*<div className="bbz-general">
                             <BbzSearch/>
-                        </div>
+                        </div>*/}
                         {isLoggedIn && (
 
                             <div className="bbz-general">
@@ -61,7 +62,6 @@ export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
-        showApprovalPending: state.showApprovalPending,
         searchText: state.searchText
     }
 })(Reviews);

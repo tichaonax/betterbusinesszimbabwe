@@ -12,7 +12,9 @@ export class LoginControl extends React.Component {
 
     onLogout = (e) => {
         e.preventDefault();
+        console.debug("start log out");
         this.props.dispatch(loginActions.startBbzLogout());
+        //this.props.closeNav;
     }
 
     render() {
@@ -20,11 +22,12 @@ export class LoginControl extends React.Component {
 
         if (isLoggedIn) {
             return (
-                <a href="#" onClick={this.onLogout}>Logout</a>
+               <li className="upper-links"><a className="links" href="#" onClick={this.onLogout}>Logout</a>
+               </li>
             );
         } else {
             return (
-                <Link to="/login" activeClassName="active"
+                <Link to="/login" activeClassName="active" className="links" onClick={()=>this.props.closeNav}
                       activeStyle={{fontWeight: 'bold'}}>Login</Link>
             );
         }

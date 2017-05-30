@@ -1,12 +1,15 @@
 var React = require('react');
+var {connect} = require('react-redux');
 var WeatherForm = require('WeatherForm');
 var WeatherMessage = require('WeatherMessage');
 var openWeatherMap = require('openWeatherMap');
 var ErrorModal = require('ErrorModal');
+var searchActions = require('searchActions');
 
-class Weather extends React.Component {
+export class Weather extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
 
         this.state = {
             temperature: undefined,
@@ -26,12 +29,24 @@ class Weather extends React.Component {
         }
         else {
             //load my home city
-            this.handleSearch("Gutu, Zimbabwe");
+            //this.handleSearch("Gutu, Zimbabwe");
+        }
+    }
+
+    componentWillReceiveProps(newProps) {
+        if (this.props.searchText != newProps.searchText) {
+            this.setState({locationSearch: newProps.searchText});
         }
     }
 
     componentDidMount() {
+        this.dispatch(searchActions.setSearchButton(true));
         this.loadData(this.props);
+    }
+
+    componentWillUnmount(){
+        this.dispatch(searchActions.setSearchButton(false));
+        this.dispatch(searchActions.setSearchText(""));
     }
 
     componentWillReceiveProps(newProps){
@@ -39,6 +54,10 @@ class Weather extends React.Component {
     }
 
     handleSearch(location) {
+        console.debug("handleSearch", location);
+        if (location && location.length == 0) {
+            return;
+        }
         var that = this;
 
         this.setState({
@@ -48,7 +67,7 @@ class Weather extends React.Component {
             temp: undefined
         })
 
-        openWeatherMap.getTemperature(location).then(function (temperatue) {
+       openWeatherMap.getTemperature(location).then(function (temperatue) {
             that.setState({
                 location: location,
                 temperature: temperatue,
@@ -64,6 +83,7 @@ class Weather extends React.Component {
 
     render() {
 
+        var {searchText} = this.props;
         var {isLoading, temperature, location, errorMessage} = this.state;
 
         function renderError() {
@@ -73,7 +93,7 @@ class Weather extends React.Component {
         }
 
         function rendeMessage() {
-            if (isLoading) {
+            if (isLoading &&  searchText.length > 0) {
                 return (<div><h3 className="text-center">Fetching weather ...</h3></div>);
             } else if (temperature && location) {
                 return (<WeatherMessage temperature={temperature} location={location}/>);
@@ -86,7 +106,6 @@ class Weather extends React.Component {
                 <div className="row">
                     <div className="columns small-centered small-10 medium-6 large-4">
                         <div className="callout callout-auth">
-                            <WeatherForm onSearch={this.handleSearch}/>
                             {rendeMessage()}
                             {renderError()}
                         </div>
@@ -97,4 +116,11 @@ class Weather extends React.Component {
     }
 }
 
-module.exports = Weather;
+export default connect((state) => {
+    return {
+        isLoggedIn: state.auth.loggedIn,
+        userProfile: state.userProfile,
+        searchText: state.searchText,
+        searchOptions: state.searchOptions
+    }
+})(Weather);

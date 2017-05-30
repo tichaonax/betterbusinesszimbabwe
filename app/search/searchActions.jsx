@@ -14,10 +14,17 @@ export var togggleshowApprovalPendingItem = () => {
     };
 };
 
-export var setApprovalPendingItem = (flag) => {
+export var setApprovalPendingItem = (pending) => {
     return {
         type: 'SET_SHOW_APPROVAL_PENDING',
-        flag
+        pending
+    };
+};
+
+export var setSearchButton = (showButton) => {
+    return {
+        type: 'SET_SEARCH_BUTTON',
+        showButton
     };
 };
 //</editor-fold>

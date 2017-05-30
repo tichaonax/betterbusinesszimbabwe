@@ -7,13 +7,12 @@ export class AdminNavigation extends React.Component {
         super(props);
     }
 
-
     render() {
         var {isLoggedIn, userProfile} = this.props;
 
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             return (
-                <Link to="/services" activeClassName="active"
+                <Link to="/services" activeClassName="active" className="links" onClick={()=>this.props.closeNav}
                       activeStyle={{fontWeight: 'bold'}}>Services</Link>
             );
         } else {

@@ -23,13 +23,9 @@ class Main extends React.Component {
     render() {
         return (
             <div>
-                <div>
-                    <Nav/>
-                    <div className="row">
-                        <div >
-                            {this.props.children}
-                        </div>
-                    </div>
+                <Nav/>
+                <div >
+                    {this.props.children}
                 </div>
             </div>
         );
