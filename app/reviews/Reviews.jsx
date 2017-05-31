@@ -146,8 +146,8 @@ export class Reviews extends React.Component {
                                         <div className="row">
                                             <div className="col-sm-3">
                                                 <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" className="img-rounded"/>
-                                                    <div className="review-block-name"><a href="#">nktailor</a></div>
-                                                    <div className="review-block-date">January 29, 2016<br/>1 day ago</div>
+                                                    <div className="review-block-name"><a href="#">Tichaona Hwandaza</a></div>
+                                                    <div className="review-block-date">January 29, 2016<br/>1 year ago</div>
                                             </div>
                                             <div className="col-sm-7">
                                                 <div className="review-block-rate">
@@ -167,16 +167,16 @@ export class Reviews extends React.Component {
                                                         <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
                                                     </button>
                                                 </div>
-                                                <div className="review-block-title">this was nice in buy</div>
-                                                <div className="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
+                                                <div className="review-block-title">Great company</div>
+                                                <div className="review-block-description">Great company. Very friendly people and good customer service</div>
                                             </div>
                                         </div>
                                         <hr/>
                                         <div className="row">
                                             <div className="col-sm-3">
                                                 <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" className="img-rounded"/>
-                                                    <div className="review-block-name"><a href="#">nktailor</a></div>
-                                                    <div className="review-block-date">January 29, 2016<br/>1 day ago</div>
+                                                    <div className="review-block-name"><a href="#">Mavhunga</a></div>
+                                                    <div className="review-block-date">May 2, 2017<br/>15 days ago</div>
                                             </div>
                                             <div className="col-sm-7">
                                                 <div className="review-block-rate">
@@ -196,38 +196,8 @@ export class Reviews extends React.Component {
                                                         <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
                                                     </button>
                                                 </div>
-                                                <div className="review-block-title">this was nice in buy</div>
-                                                <div className="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
-                                            </div>
-                                        </div>
-                                        <hr/>
-                                        <div className="row">
-                                            <div className="col-sm-3">
-                                                <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" className="img-rounded"/>
-                                                    <div className="review-block-name"><a href="#">nktailor</a></div>
-                                                    <div className="review-block-date">January 29, 2016<br/>1 day ago</div>
-                                            </div>
-                                            <div className="col-sm-9">
-                                                <div className="review-block-rate">
-                                                    <button type="button" className="btn btn-warning btn-xs" aria-label="Left Align">
-                                                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                                    </button>
-                                                    <button type="button" className="btn btn-warning btn-xs" aria-label="Left Align">
-                                                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                                    </button>
-                                                    <button type="button" className="btn btn-warning btn-xs" aria-label="Left Align">
-                                                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                                    </button>
-                                                    <button type="button" className="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-                                                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                                    </button>
-                                                    <button type="button" className="btn btn-default btn-grey btn-xs" aria-label="Left Align">
-                                                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                                                    </button>
-                                                </div>
-                                                <div className="review-block-title">this was nice in buy</div>
-                                                <div className="review-block-description">this was nice in buy. this was nice in buy. this was nice in buy. this was nice in buy this was nice in buy this was nice in buy this was nice in buy this was nice in buy</div>
-                                            </div>
+                                                <div className="review-block-title">Watch out for this company</div>
+                                                <div className="review-block-description">Watch out for this company. Poor service, save your cash</div></div>
                                         </div>
                                     </div>
                                 </div>
