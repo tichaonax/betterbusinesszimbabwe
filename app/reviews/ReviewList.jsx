@@ -26,39 +26,31 @@ export class ReviewList extends React.Component {
             }
 
             var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
-            if (filteredReviewItems.length === 0) {
-                this.setState({rowCount: filteredReviewItems.length, reviews: []}, () => {
-                });
 
-            } else {
-                const reviews = filteredReviewItems.map((reviewItem) => {
-                    return (
-                        <ReviewItem key={reviewItem.reviewItemId} {...reviewItem} deleteReview={this.refs.deleteReview}
-                                    updateReview={this.refs.updateReview}/>);
-                });
-
-                this.setState({rowCount: filteredReviewItems.length, reviews: reviews}, () => {
-                });
-            }
+            this.setState({rowCount: filteredReviewItems.length, reviews: filteredReviewItems}, () => {});
         }
     }
 
+
     renderReviewItem = (index, key) => {
-        return <div key={key}>{this.state.reviews[index]}</div>;
+        //the idea is you want to construct the row data on the fly from the reviews
+        //this will result is less memory used if you were to store all that rendering data with the reviews
+        var reviewItem = this.state.reviews[index];
+        var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
+                              deleteReview={this.refs.deleteReview}
+                              updateReview={this.refs.updateReview}/>;
+        return <div key={key}>{row}</div>;
     }
 
     render() {
-     return (
-            <div>
-         {/*       <div className="review-item-container">*/}
-                    <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
-                    <div style={{overflow: 'auto', maxHeight: 1000, marginLeft: '10px', marginRight: '10px'}}>
-                        <ReactList
-                            itemRenderer={this.renderReviewItem}
-                            length={this.state.reviews.length}
-                            type='variable'
-                        />
-       {/*             </div>*/}
+        return (
+            <div className="container">
+                <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
+                <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '10px', marginRight: '10px'}}>
+                    <ReactList
+                        itemRenderer={this.renderReviewItem}
+                        length={this.state.reviews.length}
+                    />
                 </div>
             </div>
         );

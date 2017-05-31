@@ -143,7 +143,7 @@ export class AddReview extends React.Component {
     renderAddView = () => {
         return (
             <div className="bbz-general">
-                <input ref="add" type="submit" value="Add New Review"/>
+                <button ref="add" type="button" className="btn btn-primary btn-lg btn-block" value="Add New Review" onClick={this.handleSubmit}>Add New Review</button>
                 {this.state.calledFromOutside && (
                     <input ref="cancel" type="submit" value="Cancel" onClick={this.onGoBack}/>)}
             </div>
@@ -302,7 +302,7 @@ export class AddReview extends React.Component {
                     {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
                     {this.state.operation === 'ADD' && this.renderCompanySelect()}
                     <label htmlFor="sreview">Review Comment</label>
-                    <input type="text" name="review" ref="review" value={this.state.review}
+                    <textarea className="form-control" rows="3" type="text" name="review" ref="review" value={this.state.review}
                            placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
                     <label htmlFor="rating">Rating</label>
                     <Rate

@@ -139,7 +139,7 @@ export class Reviews extends React.Component {
                                 </div>
 
 
-                            <div className="row">
+                         {/*   <div className="row">
                                 <div className="col-sm-12">
                                     <hr/>
                                     <div className="review-block">
@@ -201,13 +201,12 @@ export class Reviews extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>*/}
                       {/*  </div>*/}
-                        <div className="bbz-general">
-
+                       {/* <div>*/}
 
                             <ReviewList/>
-                        </div>
+                       {/* </div>*/}
                    {/* </div>*/}
                 </div>
             </div>
