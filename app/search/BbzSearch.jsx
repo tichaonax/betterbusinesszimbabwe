@@ -13,9 +13,9 @@ export class BbzSearch extends React.Component {
     onSearch(e) {
         e.preventDefault();
         var location = $('#searchItemText').val();
-        this.dispatch(searchActions.setSearchText(location));
-        var encodedLocation = encodeURIComponent(location);
         if (location.length > 0) {
+            this.dispatch(searchActions.setSearchText(location));
+            var encodedLocation = encodeURIComponent(location);
             $('#searchItemText').val('');
             window.location.hash = '#/weather?location=' + encodedLocation;
         }

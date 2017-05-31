@@ -1,11 +1,8 @@
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
+@import url(https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css);
 @import "base/variables";
 
-// foundation
 /*
-@import "base/foundation-settings";
-@import "foundation";
-@include foundation-everything;
-
 // Components
 @import "components/callout-auth";
 @import "components/container";
@@ -27,6 +24,6 @@
 @import "react-select/react-select";
 @import "rc-rate/rc-rate";
 @import "common/bbz_general";
-@import "font-awesome/font-awesome";
 @import "login/login";
 @import "navigation/nav";
+@import "review-item/review-rating";

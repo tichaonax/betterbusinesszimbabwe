@@ -55,7 +55,7 @@ export class Weather extends React.Component {
 
     handleSearch(location) {
         console.debug("handleSearch", location);
-        if (location && location.length == 0) {
+        if ((location == undefined) || (location && location.length == 0)) {
             return;
         }
         var that = this;

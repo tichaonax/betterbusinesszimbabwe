@@ -13,7 +13,7 @@ try {
 module.exports = {
     entry: [
         'script!jquery/dist/jquery.min.js',
-        '!style!css!bootstrap/dist/css/bootstrap.min.css',
+       /* '!style!css!bootstrap/dist/css/bootstrap.min.css',*/
         './app/app.jsx'
     ],
     externals: {
@@ -68,6 +68,7 @@ module.exports = {
         ],
         alias: {
             app: 'app',
+            modules     : path.join(__dirname, "node_modules"),
             applicationStyles: 'app/styles/app.scss',
             loginActions: 'app/login/loginActions.jsx',
             loginReducers: 'app/login/LoginReducers.jsx',
@@ -139,7 +140,6 @@ module.exports = {
     sassLoader: {
         includePaths: [
            /* path.resolve(__dirname, './node_modules/foundation-sites/scss')*/
-
         ]
     },
     devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map'

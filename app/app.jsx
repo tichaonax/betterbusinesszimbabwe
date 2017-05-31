@@ -51,10 +51,11 @@ firebase.auth().onAuthStateChanged((user) => {
 
 // Load foundation
 //$(document).foundation();
+//load bootstrap
+require("modules/bootstrap-sass/assets/javascripts/bootstrap.js");
 
 // App css
-require('style!css!sass!applicationStyles')
-
+require('style!css!sass!applicationStyles');
 
 ReactDOM.render(
     <Provider store={store}>
