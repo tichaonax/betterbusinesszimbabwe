@@ -38,17 +38,15 @@ export class Reviews extends React.Component {
         var {isLoggedIn} = this.props;
         return (
             <div className="row">
-               {/* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>*/}
-                <div className="columns medium-centered">
-                    <div className="container">
+                <div className="columns container">
+                    {/*<div className="container">*/}
                         {isLoggedIn && (
                             <div className="bbz-general">
                                 <AddReview/>
                             </div>)}
                        {/* <div>*/}
-
                             <div className="row">
-                                <div className="col-sm-3">
+                                <div className="col-sm-5">
                                     <div className="rating-block">
                                         <h4>Average user rating</h4>
                                         <h2 className="bold padding-bottom-7">4.3 <small>/ 5</small></h2>
@@ -69,7 +67,8 @@ export class Reviews extends React.Component {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="col-sm-3">
+                                <div>
+                                <div className="col-sm-7">
                                     <h4>Rating breakdown</h4>
                                     <div className="pull-left">
                                         <div className="pull-left" style={{width:'35px', lineHeight :'1px'}}>
@@ -77,12 +76,11 @@ export class Reviews extends React.Component {
                                         </div>
                                         <div className="pull-left" style={{width:'180px'}}>
                                             <div className="progress" style={{height:'9px',margin:'8px 0'}}>
-                                                <div className="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="5" style={{width: '1000%'}}>
-                                                    <span className="sr-only">80% Complete (danger)</span>
+                                                <div className="progress-bar progress-bar-success" role="progressbar" style={{width: '100%'}}>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="pull-right" style={{marginLeft:'10px'}}>1</div>
+                                        <div className="pull-right" style={{marginLeft:'10px', marginRight:'10px'}}>1234</div>
                                     </div>
                                     <div className="pull-left">
                                         <div className="pull-left" style={{width:'35px', lineHeight :'1px'}}>
@@ -137,10 +135,12 @@ export class Reviews extends React.Component {
                                         <div className="pull-right" style={{marginLeft:'10px'}}>0</div>
                                     </div>
                                 </div>
-                            </div>
+                                </div>
+                                </div>
+
 
                             <div className="row">
-                                <div className="col-sm-7">
+                                <div className="col-sm-12">
                                     <hr/>
                                     <div className="review-block">
                                         <div className="row">
@@ -149,7 +149,7 @@ export class Reviews extends React.Component {
                                                     <div className="review-block-name"><a href="#">nktailor</a></div>
                                                     <div className="review-block-date">January 29, 2016<br/>1 day ago</div>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-7">
                                                 <div className="review-block-rate">
                                                     <button type="button" className="btn btn-warning btn-xs" aria-label="Left Align">
                                                         <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -178,7 +178,7 @@ export class Reviews extends React.Component {
                                                     <div className="review-block-name"><a href="#">nktailor</a></div>
                                                     <div className="review-block-date">January 29, 2016<br/>1 day ago</div>
                                             </div>
-                                            <div className="col-sm-9">
+                                            <div className="col-sm-7">
                                                 <div className="review-block-rate">
                                                     <button type="button" className="btn btn-warning btn-xs" aria-label="Left Align">
                                                         <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
@@ -232,14 +232,13 @@ export class Reviews extends React.Component {
                                     </div>
                                 </div>
                             </div>
-
                       {/*  </div>*/}
                         <div className="bbz-general">
 
 
                             <ReviewList/>
                         </div>
-                    </div>
+                   {/* </div>*/}
                 </div>
             </div>
         );

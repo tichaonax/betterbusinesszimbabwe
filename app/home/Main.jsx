@@ -24,7 +24,7 @@ class Main extends React.Component {
         return (
             <div>
                 <Nav/>
-                <div >
+                <div>
                     {this.props.children}
                 </div>
             </div>

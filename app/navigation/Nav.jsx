@@ -189,7 +189,6 @@ class Nav extends React.Component {
                     {this.renderMenu()}
                 </div>
             </div>
-
         );
     }
 }

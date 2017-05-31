@@ -48,7 +48,7 @@ export class BbzSearch extends React.Component {
                         <input type="checkbox" ref="showApproved" checked={searchOptions.pending} onChange={() => {
                             this.dispatch(searchActions.togggleshowApprovalPendingItem());
                         }}/>
-                        Show Approval Pending
+                        <small>&nbsp;Show Approval Pending</small>
                     </label>
                 </div>)}
             </div>
