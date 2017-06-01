@@ -1,6 +1,8 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import moment from 'moment';
+import {findDOMNode} from 'react-dom'
+import ReactTooltip from 'react-tooltip'
 import RatingItem from 'RatingItem';
 var reviewsActions = require('reviewsActions');
 var companiesActions = require('companiesActions');
@@ -53,6 +55,87 @@ export class ReviewItem extends React.Component {
                                         <span>&nbsp;</span>
                                     </div>)}
                                 <div className="review-block-date">{reviewDate}<br/>1 year ago</div>
+
+                                {auth.loggedIn && (
+                                    <form className="form-inline">
+                                        <div className="form-group">
+                                            <span className="bbz-review-span">Delete:</span>
+                                            <span>&nbsp;</span>
+                                            <img className="bbz-general-pointer" type="image" value="submit" height="15" width="15" src="images/delete-blue-x-64.png"
+                                                 alt="Delete Review"
+                                                 onMouseOver={() => {
+                                                     ReactTooltip.show(findDOMNode(deleteReview));
+                                                 }}
+                                                 onMouseOut={() => {
+                                                     ReactTooltip.hide(findDOMNode(deleteReview));
+                                                 }}
+                                                 onClick={() => {
+                                                     if (userProfile && userProfile.isAdmin) {
+                                                         this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
+                                                     } else {
+                                                         var error = {};
+                                                         error.errorMessage = "You must be admin to delete this review information";
+                                                         this.dispatch(errorActions.bbzReportError(error));
+                                                     }
+                                                 }}/>
+                                        </div>
+                                        <div className="form-group">
+                                            <span className="bbz-review-span">Update:</span>
+                                            <span>&nbsp;</span>
+                                            <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src="images/update-blue-64.png"
+                                                 alt="Update Review"
+                                                 onMouseOver={() => {
+                                                     ReactTooltip.show(findDOMNode(updateReview));
+                                                 }}
+                                                 onMouseOut={() => {
+                                                     ReactTooltip.hide(findDOMNode(updateReview));
+                                                 }}
+                                                 onClick={() => {
+
+                                                     if (auth.uid === uid || userProfile.isAdmin) {
+                                                         var data = {
+                                                             uid,
+                                                             reviewItemId,
+                                                             companyItemId,
+                                                             rating,
+                                                             review
+                                                         }
+
+                                                          console.debug("ReviewItems Data:", data);
+
+                                                         this.dispatch(reviewsActions.setUpdateReviewOperation(data));
+                                                     }
+                                                     else {
+                                                         var error = {};
+                                                         error.errorMessage = "You must be the owner or admin to update this review information";
+                                                         this.dispatch(errorActions.bbzReportError(error));
+                                                     }
+                                                 }}/>
+                                        </div>
+                                    </form>)}
+                                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                                    <div className="column">
+                                        <span className="bbz-review-span">{approveMessage}:</span>
+                                        <span>&nbsp;</span>
+                                        <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src={approveImageSource}
+                                             onClick={() => {
+                                                 this.dispatch(errorActions.bbzClearError());
+                                                 if (userProfile.isAdmin) {
+                                                     this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId,!isApproved,companyItemId));
+                                                     //this.dispatch(companiesActions.startUpdateCompanyItemReviewCount(companyItemId, !isApproved, rating))
+                                                 } else {
+                                                     var error = {};
+                                                     error.errorMessage = "You must be admin to approve";
+                                                     this.dispatch(errorActions.bbzReportError(error));
+                                                 }
+                                             }}/>
+                                    </div>
+                                )}
+
+
+
+
+
                             </div>
                             <div className="col-sm-8">
                                 {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId)}

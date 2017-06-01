@@ -20,20 +20,20 @@ export class ReviewList extends React.Component {
         var bCompanyTitle;
         var uid = 0;
 
-        if (this.props.reviewItems != newProps.reviewItems) {
-            var {reviewItems, showApprovalPending, searchText, auth, showCompanyTitle} = newProps;
+        if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions ) {
+            var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid);
         } else {
-            var {reviewItems, showApprovalPending, searchText, auth, showCompanyTitle} = this.props;
+            var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = this.props;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid);
         }
 
         this.setState({
@@ -58,7 +58,7 @@ export class ReviewList extends React.Component {
         return (
             <div className="columns container">
                 <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
-                <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '2px', marginRight: '10px'}}>
+                <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '2px', marginRight: '20px'}}>
                     <ReactList
                         itemRenderer={this.renderReviewItem}
                         length={this.state.reviews.length}
@@ -76,7 +76,8 @@ export default connect(
             userProfile: state.userProfile,
             reviewItems: state.reviewItems,
             showApprovalPending: state.showApprovalPending,
-            searchText: state.searchText
+            searchText: state.searchText,
+            searchOptions: state.searchOptions,
         }
     }
 )(ReviewList);

@@ -21,14 +21,14 @@ export class CompanyList extends React.Component {
     componentWillReceiveProps(newProps) {
         if (this.props.searchText != newProps.searchText || this.props.companyItems != newProps.companyItems) {
 
-            var {companyItems, showApprovalPending, searchText, auth} = newProps;
+            var {companyItems, searchOptions, searchText, auth} = newProps;
 
             var uid = 0;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
 
-            var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, showApprovalPending, searchText, uid);
+            var filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
 
 
             if (filteredCompanyItems.length === 0) {
@@ -71,7 +71,7 @@ export default connect(
             auth: state.auth,
             userProfile: state.userProfile,
             companyItems: state.companyItems,
-            showApprovalPending: state.showApprovalPending,
+            searchOptions: state.searchOptions,
             searchText: state.searchText,
             serviceItems:state.serviceItems
         }

@@ -17,7 +17,7 @@ export class Error extends React.Component {
       if ( error && error.errorMessage ) {
           console.debug("error",error);
           return (
-              <div data-alert className="alert-box alert round">
+              <div className="bbz-general-warning">
                   { error.errorMessage }
               </div>
           );

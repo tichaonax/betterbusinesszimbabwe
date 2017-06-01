@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 var {connect} = require('react-redux');
-import { Link, browserHistory, hashHistory } from 'react-router';
+import {Link, browserHistory, hashHistory} from 'react-router';
 import get from 'lodash.get';
 var Rate = require('rc-rate');
 import Select from 'react-select';
@@ -17,6 +17,7 @@ export class AddReview extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.onReviewFocus = this.onReviewFocus.bind(this);
 
         this.state = {
             operation: 'ADD',
@@ -31,7 +32,9 @@ export class AddReview extends React.Component {
             uid: null,
             calledFromOutside: false,
             isShowingModal: false,
-            cancelOperation: false
+            cancelOperation: false,
+            remainingCharacters: null,
+            maxReviewCharacters: 300
         }
     }
 
@@ -41,7 +44,7 @@ export class AddReview extends React.Component {
     }
 
     validateAddNewReviewParameters(companyItemId) {
-        console.debug("validateAddNewReviewParameters",companyItemId);
+        console.debug("validateAddNewReviewParameters", companyItemId);
         var {companyItems} = this.props;
 
         var isMatch = false;
@@ -49,7 +52,7 @@ export class AddReview extends React.Component {
         companyItems.map((companyItem) => {
             if (companyItem.companyItemId == companyItemId) {
 
-                console.debug("Match",companyItem);
+                console.debug("Match", companyItem);
 
                 this.state = {
                     selectedCompanyItemId: companyItem.companyItemId,
@@ -111,7 +114,8 @@ export class AddReview extends React.Component {
             reviewItems.map((reviewItem) => {
                 if (reviewItem.companyItemId == companyItemId && reviewItem.uid == uid) {
                     dupes.push(reviewItem);
-                };
+                }
+                ;
             });
         }
         return dupes;
@@ -143,7 +147,9 @@ export class AddReview extends React.Component {
     renderAddView = () => {
         return (
             <div className="bbz-general">
-                <button ref="add" type="button" className="btn btn-primary btn-lg btn-block" value="Add New Review" onClick={this.handleSubmit}>Add New Review</button>
+                <button ref="add" type="button" className="btn btn-primary btn-lg btn-block" value="Add New Review"
+                        onClick={this.handleSubmit}>Add New Review
+                </button>
                 {this.state.calledFromOutside && (
                     <input ref="cancel" type="submit" value="Cancel" onClick={this.onGoBack}/>)}
             </div>
@@ -162,7 +168,8 @@ export class AddReview extends React.Component {
         this.setState({
             reviewItemId: '',
             review: '',
-            ration: 0
+            ration: 0,
+            remainingCharacters: null
         });
     }
 
@@ -178,7 +185,7 @@ export class AddReview extends React.Component {
 
     handleUpdate = (e) => {
         e.preventDefault();
-        if(this.state.cancelOperation){
+        if (this.state.cancelOperation) {
             return;
         }
 
@@ -209,9 +216,14 @@ export class AddReview extends React.Component {
         }
 
         if (review.length > 0) {
-
+            if (review.length > this.state.maxReviewCharacters) {
+                error.errorMessage = `Review comment exceeds maximum ${this.state.maxReviewCharacters} characters`;
+                this.dispatch(errorActions.bbzReportError(error));
+                this.refs.review.focus();
+                return;
+            }
         } else {
-            error.errorMessage = "review comment required";
+            error.errorMessage = "Review comment required";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.review.focus();
             return;
@@ -251,10 +263,17 @@ export class AddReview extends React.Component {
         this.dispatch(errorActions.bbzClearError());
     }
 
-    onChangeReviewComment =(e)=>{
+    onChangeReviewComment = (e) => {
         this.setState({review: e.target.value});
+        var textRemaining = this.state.maxReviewCharacters - e.target.value.length;
+        this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
+    onReviewFocus = (e) => {
+        if (this.state.review) {
+            this.setState({remainingCharacters: (this.state.maxReviewCharacters - this.state.review.length) + ' remaining'});
+        }
+    }
 
     onCompanyItemIdChange = (val) => {
         let companyItemId = get(val, 'value');
@@ -262,8 +281,8 @@ export class AddReview extends React.Component {
         this.setState({selectedCompanyItemId: companyItemId, selectedCompanyTitle: companyTitle});
     }
 
-    renderCompanySelect(){
-        var selectedCompanyItemIds =[];
+    renderCompanySelect() {
+        var selectedCompanyItemIds = [];
         var companyItems = this.state.companyItems;
         if (companyItems) {
 
@@ -291,6 +310,7 @@ export class AddReview extends React.Component {
         }
     }
 
+
     render() {
         var {redirectUrl} = this.props;
         return (
@@ -302,8 +322,10 @@ export class AddReview extends React.Component {
                     {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
                     {this.state.operation === 'ADD' && this.renderCompanySelect()}
                     <label htmlFor="sreview">Review Comment</label>
-                    <textarea className="form-control" rows="3" type="text" name="review" ref="review" value={this.state.review}
-                           placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
+                    <textarea acceptCharset="UTF-8" maxlength="250" className="form-control col-sm-4 well" rows="3"
+                              type="text" name="review" ref="review" value={this.state.review}
+                              placeholder="Review Comment" onChange={this.onChangeReviewComment} onFocus={this.onReviewFocus} />
+                    <h6 className="pull-right">{this.state.remainingCharacters}</h6>
                     <label htmlFor="rating">Rating</label>
                     <Rate
                         defaultValue={this.state.rating}
