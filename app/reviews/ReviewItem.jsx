@@ -1,11 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
-var Rate = require('rc-rate');
 import moment from 'moment';
-import {Link} from 'react-router';
-import {findDOMNode} from 'react-dom'
-import ReactTooltip from 'react-tooltip'
-import Linkify from 'react-linkify';
+import RatingItem from 'RatingItem';
 var reviewsActions = require('reviewsActions');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
@@ -16,52 +12,13 @@ export class ReviewItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-    itemSizeGetter = (review) => {
-        var divHeight = 30;
-        if (review.length > 50) {
-            divHeight = 10 + Math.round((review.length / 60)) * 30
-        }
-        return divHeight;
-    }
 
-    renderCompanyRating = (rating, review) => {
-        const btnGrey = 'btn-grey';
-        const baseRatingStyle ='btn btn-warning btn-xs';
-        const ratingOneStyle = (rating < 1) ? baseRatingStyle + ' ' + btnGrey : baseRatingStyle;
-        const ratingTwoStyle = (rating < 2) ? baseRatingStyle + ' ' + btnGrey : baseRatingStyle;
-        const ratingThreeStyle = (rating < 3) ? baseRatingStyle + ' ' + btnGrey : baseRatingStyle;
-        const ratingFourStyle = (rating < 4) ? baseRatingStyle + ' ' + btnGrey : baseRatingStyle;
-        const ratingFiveStyle = (rating < 5) ? baseRatingStyle + ' ' + btnGrey : baseRatingStyle;
-
-        const reviewHeader = review.slice(0, 15);
-
-        return (
-            <div className="col-sm-7">
-                <div className="review-block-rate">
-                    <button type="button" className={ratingOneStyle} aria-label="Left Align">
-                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" className={ratingTwoStyle} aria-label="Left Align">
-                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" className={ratingThreeStyle} aria-label="Left Align">
-                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" className={ratingFourStyle} aria-label="Left Align">
-                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    </button>
-                    <button type="button" className={ratingFiveStyle} aria-label="Left Align">
-                        <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
-                    </button>
-                </div>
-                <div className="review-block-title">{reviewHeader}</div>
-                <div className="review-block-description">{review}</div>
-            </div>
-        )
+    renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle) => {
+        return (<RatingItem rating={rating} review={review} companyItemId={companyItemId} companyTitle={companyTitle} showCompanyTitle={showCompanyTitle}/>);
     }
 
     render() {
-        var {displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
+        var {showCompanyTitle, displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
 
         var reviewer = displayName;
 
@@ -79,23 +36,27 @@ export class ReviewItem extends React.Component {
 
         const reviewId = createAt;
 
-        var divHeight = "50px";
-        if (review) {
-            divHeight = this.itemSizeGetter(review) + 'px';
-        }
-
         const reviewDate = moment.unix(createAt).format('MMM Do, YYYY');
 
         return (
                 <div className="col-sm-12">
                     <div className="review-block">
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-sm-4">
                                 <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" className="img-rounded"/>
-                                <div className="review-block-name"><a href="#">{reviewer}</a></div>
+                                <div className="review-block-name">{reviewer}</div>
+                                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                                    <div className="review-block-name">
+                                        <span className="bbz-review-span">Email:</span>
+                                        <span>&nbsp;</span>
+                                        {email}
+                                        <span>&nbsp;</span>
+                                    </div>)}
                                 <div className="review-block-date">{reviewDate}<br/>1 year ago</div>
                             </div>
-                            {this.renderCompanyRating(rating, review)}
+                            <div className="col-sm-8">
+                                {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle)}
+                            </div>
                         </div>
                     </div>
                 </div>

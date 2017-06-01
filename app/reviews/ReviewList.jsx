@@ -4,7 +4,6 @@ import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
 var BbzAPI = require('BbzAPI');
 
-
 export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
@@ -16,10 +15,22 @@ export class ReviewList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+
         if (this.props.reviewItems != newProps.reviewItems) {
 
+            console.debug("props", this.props.reviewItems);
             var {reviewItems, showApprovalPending, searchText, auth} = newProps;
 
+            var uid = 0;
+            if (auth.loggedIn) {
+                uid = auth.uid;
+            }
+
+            var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+
+            this.setState({rowCount: filteredReviewItems.length, reviews: filteredReviewItems}, () => {});
+        } else {
+            var {reviewItems, showApprovalPending, searchText, auth} = this.props;
             var uid = 0;
             if (auth.loggedIn) {
                 uid = auth.uid;
@@ -38,15 +49,17 @@ export class ReviewList extends React.Component {
         var reviewItem = this.state.reviews[index];
         var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
                               deleteReview={this.refs.deleteReview}
-                              updateReview={this.refs.updateReview}/>;
+                              updateReview={this.refs.updateReview}
+                              showCompanyTitle={true}/>;
         return <div key={key}>{row}</div>;
     }
 
     render() {
+        var {reviewItems} = this.props;
         return (
-            <div className="container">
+            <div className="columns container">
                 <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
-                <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '10px', marginRight: '10px'}}>
+                <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '2px', marginRight: '10px'}}>
                     <ReactList
                         itemRenderer={this.renderReviewItem}
                         length={this.state.reviews.length}
