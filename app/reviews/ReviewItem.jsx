@@ -13,8 +13,8 @@ export class ReviewItem extends React.Component {
     }
 
 
-    renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle) => {
-        return (<RatingItem rating={rating} review={review} companyItemId={companyItemId} companyTitle={companyTitle} showCompanyTitle={showCompanyTitle}/>);
+    renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId) => {
+        return (<RatingItem rating={rating} review={review} companyItemId={companyItemId} companyTitle={companyTitle} showCompanyTitle={showCompanyTitle} reviewId={reviewId}/>);
     }
 
     render() {
@@ -55,7 +55,7 @@ export class ReviewItem extends React.Component {
                                 <div className="review-block-date">{reviewDate}<br/>1 year ago</div>
                             </div>
                             <div className="col-sm-8">
-                                {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle)}
+                                {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId)}
                             </div>
                         </div>
                     </div>

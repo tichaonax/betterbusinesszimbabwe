@@ -52,18 +52,18 @@ export class CompanyReviews extends React.Component {
     render() {
         var {reviewItems, showApprovalPending, searchText, auth} = this.props;
 
-        var companyTitle = "";
-
-        if (reviewItems.length > 0) {
-            companyTitle = reviewItems[0].companyTitle;
-        }
-
         var uid = 0;
         if (auth.isLoggedIn) {
             uid = auth.uid;
         }
 
         var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+
+        var companyTitle = "";
+
+        if (filteredReviewItems.length > 0) {
+            companyTitle = filteredReviewItems[0].companyTitle;
+        }
 
         var rating = this.getRatingsAverage(filteredReviewItems).toFixed(1);
 
@@ -91,7 +91,7 @@ export class CompanyReviews extends React.Component {
                         </div>
                     </div>
                     <div>
-                        <ReviewList reviewItems={filteredReviewItems}/>
+                        <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
                     </div>
 
                 </div>

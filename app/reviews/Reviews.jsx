@@ -44,7 +44,7 @@ export class Reviews extends React.Component {
                             <AddReview/>
                         </div>)}
                     <div>
-                        <ReviewList/>
+                        <ReviewList showCompanyTitle={true}/>
                     </div>
                 </div>
             </div>

@@ -9,39 +9,39 @@ export class ReviewList extends React.Component {
         super(props);
 
         this.state = {
-            reviews: []
+            reviews: [],
+            showCompanyTitle: true
         }
         this.renderReviewItem = this.renderReviewItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
+        var filteredReviewItems;
+        var bCompanyTitle;
+        var uid = 0;
 
         if (this.props.reviewItems != newProps.reviewItems) {
-
-            console.debug("props", this.props.reviewItems);
-            var {reviewItems, showApprovalPending, searchText, auth} = newProps;
-
-            var uid = 0;
+            var {reviewItems, showApprovalPending, searchText, auth, showCompanyTitle} = newProps;
+            bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-
-            var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
-
-            this.setState({rowCount: filteredReviewItems.length, reviews: filteredReviewItems}, () => {});
+            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
         } else {
-            var {reviewItems, showApprovalPending, searchText, auth} = this.props;
-            var uid = 0;
+            var {reviewItems, showApprovalPending, searchText, auth, showCompanyTitle} = this.props;
+            bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-
-            var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
-
-            this.setState({rowCount: filteredReviewItems.length, reviews: filteredReviewItems}, () => {});
+            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
         }
-    }
 
+        this.setState({
+            rowCount: filteredReviewItems.length,
+            reviews: filteredReviewItems,
+            showCompanyTitle: bCompanyTitle
+        });
+    }
 
     renderReviewItem = (index, key) => {
         //the idea is you want to construct the row data on the fly from the reviews
@@ -50,12 +50,11 @@ export class ReviewList extends React.Component {
         var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
                               deleteReview={this.refs.deleteReview}
                               updateReview={this.refs.updateReview}
-                              showCompanyTitle={true}/>;
+                              showCompanyTitle={this.state.showCompanyTitle}/>;
         return <div key={key}>{row}</div>;
     }
 
     render() {
-        var {reviewItems} = this.props;
         return (
             <div className="columns container">
                 <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>

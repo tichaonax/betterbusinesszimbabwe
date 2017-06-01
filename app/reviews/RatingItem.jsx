@@ -13,9 +13,13 @@ export class RatingItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-    renderRatingItem = (rating, review, companyItemId, companyTitle, showCompanyTitle) => {
+    getWords = (str) => {
+        return str.split(/\s+/).slice(0, 5).join(" ") + " ...";
+    }
 
-        const reviewHeader = review.slice(0, 15);
+    renderRatingItem = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId) => {
+
+        const reviewHeader = this.getWords(review);
 
         return (
             <div>
@@ -26,6 +30,11 @@ export class RatingItem extends React.Component {
                               activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                     </div>)}
                 <div className="review-block-title">{reviewHeader}</div>
+                <div className="column">
+                    <span className="bbz-review-span">ID:</span>
+                    <span>&nbsp;</span>
+                    {reviewId}
+                </div>
                 <div className="review-block-description">
                     <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
                         {review}
@@ -36,7 +45,7 @@ export class RatingItem extends React.Component {
     }
 
     render() {
-        var {showCompanyTitle, displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
+        var {showCompanyTitle, displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview, reviewId} = this.props;
 
         var reviewer = displayName;
 
@@ -52,13 +61,11 @@ export class RatingItem extends React.Component {
             approveMessage ="Approved";
         }
 
-        const reviewId = createAt;
-
         const reviewDate = moment.unix(createAt).format('MMM Do, YYYY');
 
         return (
             <div>
-                {this.renderRatingItem(rating, review, companyItemId, companyTitle, showCompanyTitle)}
+                {this.renderRatingItem(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId)}
             </div>
 
         );
