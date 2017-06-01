@@ -5,6 +5,7 @@ var BbzAPI = require('BbzAPI');
 import CompanyRatingItem from 'CompanyRatingItem';
 import StarRatingItem from 'StarRatingItem';
 import ReviewList from 'ReviewList';
+import AddReview from 'AddReview';
 var searchActions = require('searchActions');
 
 export class CompanyReviews extends React.Component {
@@ -53,7 +54,7 @@ export class CompanyReviews extends React.Component {
         var {reviewItems, showApprovalPending, searchText, auth} = this.props;
 
         var uid = 0;
-        if (auth.isLoggedIn) {
+        if (auth.loggedIn) {
             uid = auth.uid;
         }
 
@@ -93,7 +94,10 @@ export class CompanyReviews extends React.Component {
                     <div>
                         <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
                     </div>
-
+                    {auth.loggedIn && (
+                        <div className="bbz-general">
+                            <AddReview/>
+                        </div>)}
                 </div>
             </div>
         );
@@ -102,6 +106,7 @@ export class CompanyReviews extends React.Component {
 
 export default connect((state) => {
     return {
+        isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
         auth: state.auth,
         reviewItems: state.reviewItems,

@@ -17,19 +17,18 @@ export class AddReview extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.onReviewFocus = this.onReviewFocus.bind(this);
 
         this.state = {
             operation: 'ADD',
             companyItemId: null,
-            review: null,
+            review: '',
             reviewItemId: null,
             rating: 0,
-            companyItems: null,
+            companyItems: [],
             companyItemId: null,
             selectedCompanyItemId: null,
-            selectedCompanyTitle: null,
-            uid: null,
+            selectedCompanyTitle: '',
+            uid: 0,
             calledFromOutside: false,
             isShowingModal: false,
             cancelOperation: false,
@@ -98,13 +97,20 @@ export class AddReview extends React.Component {
         this.setState({reviewItems: nextProps.reviewItems});
 
         if (nextProps.reviewOperation.data) {
+            const newProps = nextProps.reviewOperation.data;
             this.setState({
-                reviewItemId: nextProps.reviewOperation.data.reviewItemId,
-                review: nextProps.reviewOperation.data.review,
-                companyItemId: nextProps.reviewOperation.data.companyItemId,
-                uid: nextProps.reviewOperation.data.uid,
-                rating: nextProps.reviewOperation.data.rating
+                reviewItemId: newProps.reviewItemId,
+                review: newProps.review,
+                companyItemId: newProps.companyItemId,
+                uid: newProps.uid,
+                rating: newProps.rating
             });
+
+            if (newProps.review && newProps.review.length > 0) {
+                this.setState({
+                    remainingCharacters: ((this.state.maxReviewCharacters - newProps.review.length) + ' remaining')
+                });
+            }
         }
     }
 
@@ -269,12 +275,6 @@ export class AddReview extends React.Component {
         this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
-    onReviewFocus = (e) => {
-        if (this.state.review) {
-            this.setState({remainingCharacters: (this.state.maxReviewCharacters - this.state.review.length) + ' remaining'});
-        }
-    }
-
     onCompanyItemIdChange = (val) => {
         let companyItemId = get(val, 'value');
         let companyTitle = get(val, 'label');
@@ -310,36 +310,39 @@ export class AddReview extends React.Component {
         }
     }
 
-
     render() {
         var {redirectUrl} = this.props;
         return (
-            <div className="form-group">
-                <Error/>
-                <form onSubmit={this.handleSubmit}>
-                    {this.renderModalFeedback(redirectUrl)}
-                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
-                    {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
-                    {this.state.operation === 'ADD' && this.renderCompanySelect()}
-                    <label htmlFor="sreview">Review Comment</label>
-                    <textarea acceptCharset="UTF-8" maxlength="250" className="form-control col-sm-4 well" rows="3"
-                              type="text" name="review" ref="review" value={this.state.review}
-                              placeholder="Review Comment" onChange={this.onChangeReviewComment} onFocus={this.onReviewFocus} />
-                    <h6 className="pull-right">{this.state.remainingCharacters}</h6>
-                    <label htmlFor="rating">Rating</label>
-                    <Rate
-                        defaultValue={this.state.rating}
-                        onChange={(index) => {
-                            this.setState({rating: index});
-                        }}
-                        style={{fontSize: 30}}
-                        allowHalf
-                        value={this.state.rating}
-                    />
-                    {this.state.operation === 'ADD' && this.renderAddView()}
-                    {this.state.operation === 'UPDATE' && this.renderUpdateView()}
-                </form>
+            <div className="review-block">
+                <div className="form-group">
+                    <Error/>
+                    <form onSubmit={this.handleSubmit}>
+                        {this.renderModalFeedback(redirectUrl)}
+                        {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
+                        {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
+                        {this.state.operation === 'ADD' && this.renderCompanySelect()}
+                        <label htmlFor="sreview">Review Comment</label>
+                        <textarea acceptCharset="UTF-8" maxLength={this.state.maxReviewCharacters}
+                                  className="form-control col-sm-4 well" rows="3"
+                                  type="text" name="review" ref="review" value={this.state.review}
+                                  placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
+                        <h6 className="pull-right">{this.state.remainingCharacters}</h6>
+                        <label htmlFor="rating">Rating</label>
+                        <Rate
+                            defaultValue={this.state.rating}
+                            onChange={(index) => {
+                                this.setState({rating: index});
+                            }}
+                            style={{fontSize: 30}}
+                            allowHalf
+                            value={this.state.rating}
+                        />
+                        {this.state.operation === 'ADD' && this.renderAddView()}
+                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                    </form>
+                </div>
             </div>
+
         );
     }
 }

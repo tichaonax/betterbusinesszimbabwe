@@ -22,8 +22,8 @@ export class LoginControl extends React.Component {
 
         if (isLoggedIn) {
             return (
-               <li className="upper-links"><a className="links" href="#" onClick={this.onLogout}>Logout</a>
-               </li>
+               <div className="upper-links"><a className="links" href="#" onClick={this.onLogout}>Logout</a>
+               </div>
             );
         } else {
             return (
