@@ -207,7 +207,8 @@ export class AddReview extends React.Component {
             reviewItemId: '',
             review: '',
             rating: 0,
-            remainingCharacters: null
+            remainingCharacters: null,
+            selectedCompanyItemId: null
         });
     }
 
