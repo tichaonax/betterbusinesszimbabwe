@@ -36,7 +36,7 @@ export class Companies extends React.Component {
         this.loadData(this.props);
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
     }
 
@@ -46,14 +46,12 @@ export class Companies extends React.Component {
 
         return (
             <div className="row">
-                <div className="columns medium-centered">
-                    <div className="container">
-                        <div className="bbz-general">
-                            {isLoggedIn && (<AddCompanyItem/>)}
-                        </div>
-                        <div className="bbz-general">
-                            <CompanyList/>
-                        </div>
+                <div className="columns container">
+                    <div className="bbz-general">
+                        {isLoggedIn && (<AddCompanyItem/>)}
+                    </div>
+                    <div>
+                        <CompanyList/>
                     </div>
                 </div>
             </div>

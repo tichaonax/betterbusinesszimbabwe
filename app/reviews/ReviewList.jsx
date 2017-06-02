@@ -51,6 +51,7 @@ export class ReviewList extends React.Component {
                               deleteReview={this.refs.deleteReview}
                               updateReview={this.refs.updateReview}
                               showCompanyTitle={this.state.showCompanyTitle}/>;
+
         return <div key={key}>{row}</div>;
     }
 

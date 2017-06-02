@@ -32,149 +32,162 @@ export class CompanyItem extends React.Component {
         }
 
         var approveImageSource = "images/like-64.png";
-        var approveMessage ="Approval Pending";
+        var approveMessage = "Approval Pending";
 
         if (isApproved) {
             approveImageSource = "images/check-blue-64.png";
-            approveMessage ="Approved";
+            approveMessage = "Approved";
         }
 
         const companyId = createAt;
 
+        var loginClass = "col-sm-9";
+        if (auth.loggedIn) {
+            loginClass = "col-sm-6";
+        }
+
         return (
-            <div className="row align-top" style={{height: divHeight}}>
-                <div className="column">
-                    <span className="bbz-review-span">Company:</span>
-                    <span>&nbsp;</span>
-                    {companyTitle}
-                </div>
-                <div className="column">
-                    <span className="bbz-review-span">Reviews:</span>
-                    <span>&nbsp;</span>
-                    <Link to={`/reviews?company=${companyItemId}`} activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
-                </div>
-                <div className="column">
-                    <span className="label bbz-review-span">Rating:</span>
-                    <span>&nbsp;</span>
-                    <Rate
-                        defaultValue={rating}
-                        style={{fontSize: 15}}
-                        allowHalf
-                        value={rating}
-                    />
-                </div>
-                <div className="column">
-                    <span className="bbz-review-span">ID:</span>
-                    <span>&nbsp;</span>{companyId}</div>
-                {auth.loggedIn && (
-                    <form>
-                        <div className="column">
+
+            <div className="col-sm-12">
+                <form>
+                    <div className="review-block">
+                        <div className="row">
                             {auth.loggedIn && (
-                                <div className="column">
-                                    <span className="bbz-review-span">Delete:</span>
-                                    <span>&nbsp;</span>
-                                    <img className="bbz-general-pointer" type="image" value="submit" height="30"
-                                         width="30" src="images/delete-blue-64.png"
-                                         alt="Delete Company"
-                                         onMouseOver={() => {
-                                             ReactTooltip.show(findDOMNode(deleteCompany));
-                                         }}
-                                         onMouseOut={() => {
-                                             ReactTooltip.hide(findDOMNode(deleteCompany));
-                                         }}
-                                         onClick={() => {
-                                             this.dispatch(errorActions.bbzClearError());
-                                             if (userProfile.isAdmin) {
-                                                 this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
-                                             } else {
-                                                 var error = {};
-                                                 error.errorMessage = "You must be admin to delete this company information";
-                                                 this.dispatch(errorActions.bbzReportError(error));
-                                             }
-                                         }}/>
-                                </div>)}
-                            {auth.loggedIn && (
-                                <div className="column">
-                                    <span className="bbz-review-span">Update:</span>
-                                    <span>&nbsp;</span>
-                                    <img className="bbz-general-pointer" type="image" value="submit" height="30"
-                                         width="30" src="images/update-blue-64.png"
-                                         alt="Update Company"
-                                         onMouseOver={() => {
-                                             ReactTooltip.show(findDOMNode(updateCompany));
-                                         }}
-                                         onMouseOut={() => {
-                                             ReactTooltip.hide(findDOMNode(updateCompany));
-                                         }}
-                                         onClick={() => {
-                                             this.dispatch(errorActions.bbzClearError());
-                                             if (auth.uid === uid || userProfile.isAdmin) {
-                                                 var data = {
-                                                     uid,
-                                                     companyItemId,
-                                                     companyTitle,
-                                                     companyDesc,
-                                                     rating,
-                                                     selectedServiceItemId: serviceItemId,
-                                                     serviceCategory
+                            <div className="col-sm-3">
+                                            <div>
+                                                <span className="bbz-review-span">Delete:</span>
+                                                <span>&nbsp;</span>
+                                                <img className="bbz-general-pointer" type="image" value="submit"
+                                                     height="15"
+                                                     width="15" src="images/delete-blue-x-64.png"
+                                                     alt="Delete Company"
+                                                     onMouseOver={() => {
+                                                         ReactTooltip.show(findDOMNode(deleteCompany));
+                                                     }}
+                                                     onMouseOut={() => {
+                                                         ReactTooltip.hide(findDOMNode(deleteCompany));
+                                                     }}
+                                                     onClick={() => {
+                                                         this.dispatch(errorActions.bbzClearError());
+                                                         if (userProfile.isAdmin) {
+                                                             this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+                                                         } else {
+                                                             var error = {};
+                                                             error.errorMessage = "You must be admin to delete this company information";
+                                                             this.dispatch(errorActions.bbzReportError(error));
+                                                             window.scrollTo(0, 0);
+                                                         }
+                                                     }}/>
+                                            </div>
+                                            <div>
+                                                <span className="bbz-review-span">Update:</span>
+                                                <span>&nbsp;</span>
+                                                <img className="bbz-general-pointer" type="image" value="submit"
+                                                     height="20"
+                                                     width="20" src="images/update-blue-64.png"
+                                                     alt="Update Company"
+                                                     onMouseOver={() => {
+                                                         ReactTooltip.show(findDOMNode(updateCompany));
+                                                     }}
+                                                     onMouseOut={() => {
+                                                         ReactTooltip.hide(findDOMNode(updateCompany));
+                                                     }}
+                                                     onClick={() => {
+                                                         this.dispatch(errorActions.bbzClearError());
+                                                         if (auth.uid === uid || userProfile.isAdmin) {
+                                                             var data = {
+                                                                 uid,
+                                                                 companyItemId,
+                                                                 companyTitle,
+                                                                 companyDesc,
+                                                                 rating,
+                                                                 selectedServiceItemId: serviceItemId,
+                                                                 serviceCategory
+                                                             }
+
+                                                             // console.debug("CompanyItems Data:", data);
+
+                                                             this.dispatch(companiesActions.setUpdateCompanyOperation(data));
+                                                         }
+                                                         else {
+                                                             var error = {};
+                                                             error.errorMessage = "You must be the owner or admin to update this company information";
+                                                             this.dispatch(errorActions.bbzReportError(error));
+                                                             window.scrollTo(0, 0);
+                                                         }
+                                                     }}/>
+                                            </div>
+                                {userProfile && userProfile.isAdmin && (
+                                    <div>
+                                        <span className="bbz-review-span">{approveMessage}:</span>
+                                        <span>&nbsp;</span>
+                                        <img className="bbz-general-pointer" type="image" value="submit" height="20"
+                                             width="20"
+                                             src={approveImageSource}
+                                             onClick={() => {
+                                                 this.dispatch(errorActions.bbzClearError());
+                                                 if (userProfile.isAdmin) {
+                                                     this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyItemId, !isApproved));
+                                                 } else {
+                                                     var error = {};
+                                                     error.errorMessage = "You must be admin to approve";
+                                                     this.dispatch(errorActions.bbzReportError(error));
+                                                     window.scrollTo(0, 0);
                                                  }
+                                             }}/>
+                                    </div>
+                                )}
+                            </div>)}
+                            <div className="col-sm-3">
+                                <div>
+                                    <Rate
+                                        defaultValue={rating}
+                                        style={{fontSize: 15}}
+                                        allowHalf
+                                        value={rating}
+                                    />
+                                </div>
+                                <div>
+                                    <span className="label bbz-review-span">Reviews:</span>
+                                    <span>&nbsp;</span>
+                                    <Link to={`/reviews?company=${companyItemId}`} activeClassName="active bbz-review-span"
+                                          activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
+                                </div>
+                                <div>
+                                    <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                                          activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                                </div>
+                            </div>
 
-                                                // console.debug("CompanyItems Data:", data);
-
-                                                 this.dispatch(companiesActions.setUpdateCompanyOperation(data));
-                                             }
-                                             else {
-                                                 var error = {};
-                                                 error.errorMessage = "You must be the owner or admin to update this company information";
-                                                 this.dispatch(errorActions.bbzReportError(error));
-                                             }
-                                         }}/>
-                                </div>)}
+                            <div className={loginClass}>
+                                <div className="review-block-title">
+                                    {companyTitle}
+                                </div>
+                                <div>
+                                    <span className="label bbz-review-span">ID:</span>
+                                    <span>&nbsp;</span>{companyId}
+                                </div>
+                                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                                    <div>
+                                        <Link to={`/users?uid=${uid}`} activeClassName="active"
+                                              activeStyle={{fontWeight: 'bold'}}>Reviewer</Link>
+                                    </div>)}
+                                <div>
+                                    <span className="bbz-review-span">Servcie:</span>
+                                    <span>&nbsp;</span>
+                                    {serviceCategory}
+                                </div>
+                                <div>
+                                    <span className="bbz-review-span">Description:</span>
+                                    <span>&nbsp;</span>
+                                    <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
+                                        {companyDesc}
+                                    </Linkify>
+                                </div>
+                            </div>
                         </div>
-                    </form>)}
-                {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                    <div className="column">
-                        <span className="bbz-review-span">{approveMessage}:</span>
-                        <span>&nbsp;</span>
-                        <img className="bbz-general-pointer" type="image" value="submit" height="30" width="30"
-                             src={approveImageSource}
-                             onClick={() => {
-                                 this.dispatch(errorActions.bbzClearError());
-                                 if (userProfile.isAdmin) {
-                                     this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyItemId, !isApproved));
-                                 } else {
-                                     var error = {};
-                                     error.errorMessage = "You must be admin to approve";
-                                     this.dispatch(errorActions.bbzReportError(error));
-                                 }
-                             }}/>
                     </div>
-                )}
-                {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                    <div className="column">
-                        <Link to={`/users?uid=${uid}`} activeClassName="active"
-                              activeStyle={{fontWeight: 'bold'}}>Reviewer</Link>
-                    </div>)}
-                <div className="column">
-                    <span className="bbz-review-span">Servcie:</span>
-                    <span>&nbsp;</span>
-                    {serviceCategory}
-                </div>
-                <div className="column">
-                    <span className="bbz-review-span">Description:</span>
-                    <span>&nbsp;</span>
-                    <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
-                        {companyDesc}
-                    </Linkify>
-                </div>
-                <div className="column">
-                    <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
-                          activeStyle={{fontWeight: 'bold'}}>&nbsp;Add Review</Link>
-                </div>
-                <div className="column">
-                    <hr/>
-                </div>
+                </form>
             </div>
         );
     }

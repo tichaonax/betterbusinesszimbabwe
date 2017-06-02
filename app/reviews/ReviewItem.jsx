@@ -76,6 +76,7 @@ export class ReviewItem extends React.Component {
                                                          var error = {};
                                                          error.errorMessage = "You must be admin to delete this review information";
                                                          this.dispatch(errorActions.bbzReportError(error));
+                                                         window.scrollTo(0, 0);
                                                      }
                                                  }}/>
                                         </div>
@@ -109,6 +110,7 @@ export class ReviewItem extends React.Component {
                                                          var error = {};
                                                          error.errorMessage = "You must be the owner or admin to update this review information";
                                                          this.dispatch(errorActions.bbzReportError(error));
+                                                         window.scrollTo(0, 0);
                                                      }
                                                  }}/>
                                         </div>
@@ -127,15 +129,11 @@ export class ReviewItem extends React.Component {
                                                      var error = {};
                                                      error.errorMessage = "You must be admin to approve";
                                                      this.dispatch(errorActions.bbzReportError(error));
+                                                     window.scrollTo(0, 0);
                                                  }
                                              }}/>
                                     </div>
                                 )}
-
-
-
-
-
                             </div>
                             <div className="col-sm-8">
                                 {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId)}
