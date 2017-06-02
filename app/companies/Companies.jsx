@@ -47,9 +47,11 @@ export class Companies extends React.Component {
         return (
             <div className="row">
                 <div className="columns container">
-                    <div className="bbz-general">
-                        {isLoggedIn && (<AddCompanyItem/>)}
-                    </div>
+                    {isLoggedIn && (
+                        <div>
+                            <AddCompanyItem/>
+                        </div>
+                    )}
                     <div>
                         <CompanyList/>
                     </div>

@@ -154,13 +154,20 @@ export class AddReview extends React.Component {
             </div>);
     }
 
-    renderAddView = () => {
+    renderAddAUpdateView = () => {
         return (
             <div>
                 <div className="col-sm-6">
                     <div className="form-group">
                         <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
-                                onClick={this.onGoBack}>
+                                onClick={
+                                    () => {
+                                        if (this.state.calledFromOutside) {
+                                            this.onGoBack(event);
+                                        } else {
+                                            this.handleCancel(event);
+                                        }
+                                    }}>
                             Cancel
                         </button>
                     </div>
@@ -169,36 +176,19 @@ export class AddReview extends React.Component {
                     <div className="form-group">
                         <button ref="add" type="button" className="btn btn-primary btn-lg btn-block"
                                 value="Add New Review"
-                                onClick={this.handleSubmit}>Add New Review
+                                onClick={() => {
+                                    if (this.state.operation === 'ADD') {
+                                        this.handleSubmit(event);
+                                    } else {
+                                        this.handleUpdate(event);
+                                    }
+                                }}>
+                            {this.state.operation === 'ADD' && ('Add New Review')}
+                            {this.state.operation === 'UPDATE' && ('Update Review')}
                         </button>
                     </div>
                 </div>
             </div>
-        )
-    }
-
-    renderUpdateView() {
-        return (
-
-            <div>
-                <div className="col-sm-6">
-                    <div className="form-group">
-                        <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
-                                onClick={this.handleCancel}>
-                            Cancel
-                        </button>
-                    </div>
-                </div>
-                <div className="col-sm-6">
-                    <div className="form-group">
-                        <button ref="add" type="button" className="btn btn-primary btn-lg btn-block"
-                                value="Add New Review"
-                                onClick={this.handleUpdate}>Add New Review
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         )
     }
 
@@ -304,7 +294,7 @@ export class AddReview extends React.Component {
 
     onChangeReviewComment = (e) => {
         this.setState({review: e.target.value});
-        var textRemaining = this.state.maxReviewCharacters - e.target.value.length;
+        const textRemaining = this.state.maxReviewCharacters - e.target.value.length;
         this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
@@ -348,13 +338,13 @@ export class AddReview extends React.Component {
         return (
 
             <div className="col-sm-12">
-                <form onSubmit={this.handleSubmit}>
-                    <div className="review-block">
-                        <div className="row">
-                            <div className="col-sm-12">
-                                <Error/>
-                            </div>
+                <div className="review-block">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <Error/>
                         </div>
+                    </div>
+                    <form onSubmit={this.handleSubmit}>
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="form-group">
@@ -392,15 +382,12 @@ export class AddReview extends React.Component {
                         </div>
                         <div className="row">
                             <div className="col-sm-12">
-                                    {this.state.operation === 'ADD' && this.renderAddView()}
-                                    {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                                {this.renderAddAUpdateView()}
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-
-        );
+                    </form>
+                </div>
+            </div>);
     }
 }
 

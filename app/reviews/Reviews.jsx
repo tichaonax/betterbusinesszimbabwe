@@ -41,7 +41,8 @@ export class Reviews extends React.Component {
                     {isLoggedIn && (
                         <div>
                             <AddReview/>
-                        </div>)}
+                        </div>
+                    )}
                     <div>
                         <ReviewList showCompanyTitle={true}/>
                     </div>

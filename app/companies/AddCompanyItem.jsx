@@ -16,13 +16,15 @@ export class AddCompnayItem extends React.Component {
 
         this.state = {
             operation: 'ADD',
-            companyTitle: null,
-            companyDesc: null,
-            companyItemId: null,
-            serviceItems: null,
-            selectedServiceItemId: null,
-            selectedCategory: null,
-            rating: 0
+            companyTitle: '',
+            companyDesc: '',
+            companyItemId: '',
+            serviceItems: undefined,
+            selectedServiceItemId: '',
+            selectedCategory: '',
+            rating: 0,
+            remainingCharacters: '',
+            maxReviewCharacters: 300
         }
     }
 
@@ -32,7 +34,7 @@ export class AddCompnayItem extends React.Component {
             this.dispatch(errorActions.bbzClearError());
             this.dispatch(companiesActions.setAddCompanyOperation());
         }
-       // this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
+        // this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
     }
 
 
@@ -42,14 +44,22 @@ export class AddCompnayItem extends React.Component {
         //this.setState({serviceItems: nextProps.serviceItems});
 
         if (nextProps.companyOperation.data) {
+            const newProps = nextProps.companyOperation.data;
             this.setState({
-                companyItemId: nextProps.companyOperation.data.companyItemId,
-                companyTitle: nextProps.companyOperation.data.companyTitle,
+                companyItemId: newProps.companyItemId,
+                companyTitle: newProps.companyTitle,
                 rating: nextProps.companyOperation.data.rating,
-                companyDesc: nextProps.companyOperation.data.companyDesc,
-                selectedServiceItemId: nextProps.companyOperation.data.selectedServiceItemId,
-                serviceCategory: nextProps.companyOperation.data.serviceCategory
+                companyDesc: newProps.companyDesc,
+                selectedServiceItemId: newProps.selectedServiceItemId,
+                serviceCategory: newProps.serviceCategory
             });
+
+
+            if (newProps.companyDesc && newProps.companyDesc.length > 0) {
+                this.setState({
+                    remainingCharacters: ((this.state.maxReviewCharacters - newProps.review.length) + ' remaining')
+                });
+            }
         }
     }
 
@@ -66,21 +76,38 @@ export class AddCompnayItem extends React.Component {
         return dupes;
     }
 
-
-    renderAddView = () => {
+    renderAddAUpdateView = () => {
         return (
-            <div className="bbz-general">
-                <input ref="add" type="submit" value="Add New Company"/>
+            <div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
+                                onClick={
+                                    () => {
+                                        this.handleCancel(event);
+                                    }}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="add" type="button" className="btn btn-primary btn-lg btn-block"
+                                value="Add New Review"
+                                onClick={() => {
+                                    if (this.state.operation === 'ADD') {
+                                        this.handleSubmit(event);
+                                    } else {
+                                        this.handleUpdate(event);
+                                    }
+                                }}>
+                            {this.state.operation === 'ADD' && ('Add New Company')}
+                            {this.state.operation === 'UPDATE' && ('Update Review')}
+                        </button>
+                    </div>
+                </div>
             </div>
         )
-    }
-
-    renderUpdateView() {
-        return (
-            <div className="bbz-general">
-                <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
-                <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
-            </div>)
     }
 
 
@@ -172,12 +199,14 @@ export class AddCompnayItem extends React.Component {
         ));
     }
 
-    onChangeCompanyTitle =(e)=>{
+    onChangeCompanyTitle = (e) => {
         this.setState({companyTitle: e.target.value});
     }
 
-    onChangeCompanyDesc =(e)=>{
+    onChangeCompanyDesc = (e) => {
         this.setState({companyDesc: e.target.value});
+        const textRemaining = this.state.maxReviewCharacters - e.target.value.length;
+        this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
     onServiceItemIdChange = (val) => {
@@ -186,8 +215,8 @@ export class AddCompnayItem extends React.Component {
         this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
     }
 
-    renderServiceSelect(){
-        var selectedServiceItemIds =[];
+    renderServiceSelect() {
+        var selectedServiceItemIds = [];
         var serviceItems = this.props.serviceItems;
         if (serviceItems) {
 
@@ -214,24 +243,59 @@ export class AddCompnayItem extends React.Component {
         }
     }
 
-
     render() {
         return (
-            <div className="bbz-general">
-                <div className="form-group">
-                    <Error/>
+            <div className="col-sm-12">
+                <div className="review-block">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <Error/>
+                        </div>
+                    </div>
+                    <div>
                     <form onSubmit={this.handleSubmit}>
-                        <label htmlFor="service-item-id">Service Category</label>
-                        {this.renderServiceSelect()}
-                        <label htmlFor="stitle">Company Title</label>
-                        <input type="text" name="companyTitle" ref="companyTitle" value={this.state.companyTitle}
-                               placeholder="Company Title" onChange={this.onChangeCompanyTitle}/>
-                        <label htmlFor="sdescription">Company Description</label>
-                        <input type="text" name="companyDesc" ref="companyDesc" value={this.state.companyDesc}
-                               placeholder="Company Description" onChange={this.onChangeCompanyDesc}/>
-                        {this.state.operation === 'ADD' && this.renderAddView()}
-                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <div className="form-group">
+                                    <div>
+                                        <label htmlFor="service-item-id">Service Category</label>
+                                    </div>
+                                    <div>
+                                        {this.renderServiceSelect()}
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <div>
+                                        <label htmlFor="stitle">Company Title</label>
+                                    </div>
+                                    <div><input type="text" name="companyTitle" ref="companyTitle" className="form-control" maxLength={100}
+                                                value={this.state.companyTitle}
+                                                placeholder="Company Name" onChange={this.onChangeCompanyTitle}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="form-group">
+                                    <label htmlFor="sdescription">Company Description</label>
+                                    <textarea type="text" name="companyDesc" ref="companyDesc" acceptCharset="UTF-8"
+                                              className="form-control col-sm-4 well" rows="3"
+                                              maxLength={this.state.maxReviewCharacters}
+                                              value={this.state.companyDesc}
+                                              placeholder="Company Description" onChange={this.onChangeCompanyDesc}/>
+                                    <h6 className="pull-right">{this.state.remainingCharacters}</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="form-group">
+                                    {this.renderAddAUpdateView()}
+                                </div>
+                            </div>
+                        </div>
                     </form>
+                    </div>
                 </div>
             </div>
         );
