@@ -39,7 +39,7 @@ export class Reviews extends React.Component {
             <div className="row">
                 <div className="columns container">
                     {isLoggedIn && (
-                        <div className="bbz-general">
+                        <div>
                             <AddReview/>
                         </div>)}
                     <div>

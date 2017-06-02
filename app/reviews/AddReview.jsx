@@ -39,7 +39,11 @@ export class AddReview extends React.Component {
 
     onGoBack = (evt) => {
         this.dispatch(errorActions.bbzClearError());
-        browserHistory.goBack();
+        if (this.state.calledFromOutside == true) {
+            browserHistory.goBack();
+        } else {
+            this.resetInputs();
+        }
     }
 
     validateAddNewReviewParameters(companyItemId) {
@@ -152,29 +156,57 @@ export class AddReview extends React.Component {
 
     renderAddView = () => {
         return (
-            <div className="bbz-general">
-                <button ref="add" type="button" className="btn btn-primary btn-lg btn-block" value="Add New Review"
-                        onClick={this.handleSubmit}>Add New Review
-                </button>
-                {this.state.calledFromOutside && (
-                    <input ref="cancel" type="submit" value="Cancel" onClick={this.onGoBack}/>)}
+            <div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
+                                onClick={this.onGoBack}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="add" type="button" className="btn btn-primary btn-lg btn-block"
+                                value="Add New Review"
+                                onClick={this.handleSubmit}>Add New Review
+                        </button>
+                    </div>
+                </div>
             </div>
         )
     }
 
     renderUpdateView() {
         return (
-            <div className="bbz-general">
-                <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
-                <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
-            </div>)
+
+            <div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
+                                onClick={this.handleCancel}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="add" type="button" className="btn btn-primary btn-lg btn-block"
+                                value="Add New Review"
+                                onClick={this.handleUpdate}>Add New Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        )
     }
 
     resetInputs = () => {
         this.setState({
             reviewItemId: '',
             review: '',
-            ration: 0,
+            rating: 0,
             remainingCharacters: null
         });
     }
@@ -313,34 +345,58 @@ export class AddReview extends React.Component {
     render() {
         var {redirectUrl} = this.props;
         return (
-            <div className="review-block">
-                <div className="form-group">
-                    <Error/>
-                    <form onSubmit={this.handleSubmit}>
-                        {this.renderModalFeedback(redirectUrl)}
-                        {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
-                        {this.state.operation === 'ADD' && (<label htmlFor="company-item-id">Company</label>)}
-                        {this.state.operation === 'ADD' && this.renderCompanySelect()}
-                        <label htmlFor="sreview">Review Comment</label>
-                        <textarea acceptCharset="UTF-8" maxLength={this.state.maxReviewCharacters}
-                                  className="form-control col-sm-4 well" rows="3"
-                                  type="text" name="review" ref="review" value={this.state.review}
-                                  placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
-                        <h6 className="pull-right">{this.state.remainingCharacters}</h6>
-                        <label htmlFor="rating">Rating</label>
-                        <Rate
-                            defaultValue={this.state.rating}
-                            onChange={(index) => {
-                                this.setState({rating: index});
-                            }}
-                            style={{fontSize: 30}}
-                            allowHalf
-                            value={this.state.rating}
-                        />
-                        {this.state.operation === 'ADD' && this.renderAddView()}
-                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
-                    </form>
-                </div>
+
+            <div className="col-sm-12">
+                <form onSubmit={this.handleSubmit}>
+                    <div className="review-block">
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <Error/>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-6">
+                                <div className="form-group">
+                                    {this.renderModalFeedback(redirectUrl)}
+                                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
+                                    {this.state.operation === 'ADD' && (
+                                        <label htmlFor="company-item-id">Company</label>)}
+                                    {this.state.operation === 'ADD' && this.renderCompanySelect()}
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="rating">Rating &nbsp;</label>
+                                    <div>
+                                        <Rate
+                                            defaultValue={this.state.rating}
+                                            onChange={(index) => {
+                                                this.setState({rating: index});
+                                            }}
+                                            style={{fontSize: 20}}
+                                            allowHalf
+                                            value={this.state.rating}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-sm-6">
+                                <div className="form-group">
+                                    <label htmlFor="sreview">Review Comment</label>
+                                    <textarea acceptCharset="UTF-8" maxLength={this.state.maxReviewCharacters}
+                                              className="form-control col-sm-4 well" rows="3"
+                                              type="text" name="review" ref="review" value={this.state.review}
+                                              placeholder="Review Comment" onChange={this.onChangeReviewComment}/>
+                                    <h6 className="pull-right">{this.state.remainingCharacters}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-sm-12">
+                                    {this.state.operation === 'ADD' && this.renderAddView()}
+                                    {this.state.operation === 'UPDATE' && this.renderUpdateView()}
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
 
         );
