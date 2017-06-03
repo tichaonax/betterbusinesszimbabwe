@@ -2,6 +2,8 @@ var React = require('react');
 var {connect} = require('react-redux');
 import Select from 'react-select';
 import get from 'lodash.get';
+import {Link, browserHistory, hashHistory} from 'react-router';
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
@@ -24,19 +26,42 @@ export class AddCompnayItem extends React.Component {
             selectedCategory: '',
             rating: 0,
             remainingCharacters: '',
-            maxReviewCharacters: 300
+            maxReviewCharacters: 300,
+            cancelOperation: false,
+            isShowingModal: false,
         }
     }
 
     componentDidMount() {
-        const {error} = this.props;
-        if (error) {
-            this.dispatch(errorActions.bbzClearError());
-            this.dispatch(companiesActions.setAddCompanyOperation());
-        }
-        // this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
+        this.loadData(this.props);
     }
 
+    onGoBack = (evt) => {
+        this.dispatch(errorActions.bbzClearError());
+        if (this.state.calledFromOutside == true) {
+            browserHistory.goBack();
+        } else {
+            this.resetInputs();
+        }
+    }
+
+    loadData(props) {
+        const {error, location} = props;
+        if (error) {
+            this.dispatch(errorActions.bbzClearError());
+        }
+        // this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
+
+        if (location && location.query) {
+            if (location.query.addnew == 'true') {
+                this.state = {
+                    calledFromOutside: true
+                }
+            } else {
+                this.dispatch(companiesActions.setAddCompanyOperation());
+            }
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
 
@@ -84,7 +109,11 @@ export class AddCompnayItem extends React.Component {
                         <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
                                 onClick={
                                     () => {
-                                        this.handleCancel(event);
+                                        if (this.state.calledFromOutside) {
+                                            this.onGoBack(event);
+                                        } else {
+                                            this.handleCancel(event);
+                                        }
                                     }}>
                             Cancel
                         </button>
@@ -110,7 +139,6 @@ export class AddCompnayItem extends React.Component {
         )
     }
 
-
     resetInputs = () => {
         this.setState({
             companyItemId: '',
@@ -123,16 +151,21 @@ export class AddCompnayItem extends React.Component {
 
     handleCancel = (e) => {
         e.preventDefault();
-        this.dispatch(companiesActions.setAddCompanyOperation());
         this.resetInputs();
+        this.setState({
+            cancelOperation: true,
+        });
+        this.dispatch(companiesActions.setAddCompanyOperation());
         this.dispatch(errorActions.bbzClearError());
     }
 
     handleUpdate = (e) => {
         e.preventDefault();
+        if (this.state.cancelOperation) {
+            return;
+        }
 
         //*********to do validate inputs
-
         this.dispatch(companiesActions.startUpdateCompanyItem(
             this.state.companyItemId,
             this.state.companyTitle,
@@ -149,7 +182,7 @@ export class AddCompnayItem extends React.Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {auth, companyItems} = this.props;
+        var {auth, companyItems, redirectUrl} = this.props;
 
         var error = {}
 
@@ -197,6 +230,13 @@ export class AddCompnayItem extends React.Component {
             this.state.selectedServiceItemId,
             this.state.selectedCategory
         ));
+
+        if (this.state.calledFromOutside) {
+            console.debug("redirectUrl calledFromOutside",redirectUrl);
+            this.state = {
+                isShowingModal: true
+            }
+        }
     }
 
     onChangeCompanyTitle = (e) => {
@@ -243,7 +283,32 @@ export class AddCompnayItem extends React.Component {
         }
     }
 
+    onModalClick = () => this.setState({isShowingModal: true});
+
+    renderModalFeedback(redirectUrl) {
+        return (
+            <div onClick={this.onModalClick}>
+                {
+                    this.state.isShowingModal &&
+                    <ModalContainer onClose={() => {
+                        this.setState({isShowingModal: false});
+                        hashHistory.push(redirectUrl);
+                    }}>
+                        <ModalDialog onClose={() => {
+                            this.setState({isShowingModal: false});
+                            hashHistory.push(redirectUrl);
+                        }}>
+                            <h1>Thank you, Company Added!</h1>
+                            <p>After review by Admin it will be made available to the public.</p>
+                            <p>However in the meantime you can add a review immedediatley to the new company</p>
+                        </ModalDialog>
+                    </ModalContainer>}
+
+            </div>);
+    }
+
     render() {
+        var {redirectUrl} = this.props;
         return (
             <div className="col-sm-12">
                 <div className="review-block">
@@ -254,6 +319,7 @@ export class AddCompnayItem extends React.Component {
                     </div>
                     <div>
                     <form onSubmit={this.handleSubmit}>
+                        {this.renderModalFeedback(redirectUrl)}
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="form-group">
@@ -265,6 +331,7 @@ export class AddCompnayItem extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
+                                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back &nbsp;</Link>)}
                                     <div>
                                         <label htmlFor="stitle">Company Title</label>
                                     </div>
@@ -309,7 +376,8 @@ export default connect(
             auth: state.auth,
             companyItems: state.companyItems,
             companyOperation: state.companyOperation,
-            serviceItems: state.serviceItems
+            serviceItems: state.serviceItems,
+            redirectUrl: state.redirectUrl
         }
     }
 )(AddCompnayItem);

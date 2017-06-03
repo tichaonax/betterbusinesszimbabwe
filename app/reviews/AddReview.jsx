@@ -7,6 +7,7 @@ var Rate = require('rc-rate');
 import Select from 'react-select';
 var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
+var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
 
@@ -17,7 +18,6 @@ export class AddReview extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.addNewCompany = this.addNewCompany.bind(this);
 
         this.state = {
             operation: 'ADD',
@@ -74,15 +74,14 @@ export class AddReview extends React.Component {
     }
 
     loadData(props) {
-        //this.dispatch(companiesActions.startAddCompanyItems());
         const {error, location} = props;
         if (error) {
             this.dispatch(errorActions.bbzClearError());
             this.dispatch(reviewsActions.setAddReviewOperation());
         }
 
-
         if (location && location.query) {
+            console.debug("location:",location);
             this.validateAddNewReviewParameters(location.query.company);
         } else {
             this.dispatch(companiesActions.startAddCompanyItems());
@@ -201,13 +200,13 @@ export class AddReview extends React.Component {
     }
 
     handleCancel = (e) => {
+        e.preventDefault();
+        this.resetInputs();
         this.setState({
             cancelOperation: true,
         });
         this.dispatch(errorActions.bbzClearError());
-        e.preventDefault();
         this.dispatch(reviewsActions.setAddReviewOperation());
-        this.resetInputs();
     }
 
     handleUpdate = (e) => {
@@ -280,7 +279,7 @@ export class AddReview extends React.Component {
         ));
 
         if (this.state.calledFromOutside) {
-            //console.debug("redirectUrl calledFromOutside",redirectUrl);
+            console.debug("redirectUrl calledFromOutside",redirectUrl);
             this.state = {
                 isShowingModal: true
             }
@@ -300,11 +299,6 @@ export class AddReview extends React.Component {
         let companyItemId = get(val, 'value');
         let companyTitle = get(val, 'label');
         this.setState({selectedCompanyItemId: companyItemId, selectedCompanyTitle: companyTitle});
-    }
-
-    addNewCompany = (e) => {
-        e.preventDefault();
-
     }
 
     renderCompanySelect() {
@@ -336,12 +330,13 @@ export class AddReview extends React.Component {
                         </div>
                         <div className="col-sm-1">
                             <div className="form-group">
-
-                                <Link to={`/addcompany`} activeClassName="active"
+                                <Link to={`/addcompany?addnew=true`} activeClassName="active"
                                       activeStyle={{fontWeight: 'bold'}}>
                                     <span className="glyphicon glyphicon-plus button" data-toggle="tooltip"
-                                          title="Add New Company!"
-                                          ></span>
+                                          title="Add New Company!" onClick={() => {
+                                        this.dispatch(servicesActions.startAddServiceItems());
+                                    }}
+                                    ></span>
                                 </Link>
                             </div>
                         </div>
@@ -355,7 +350,6 @@ export class AddReview extends React.Component {
     render() {
         var {redirectUrl} = this.props;
         return (
-
             <div className="col-sm-12">
                 <div className="review-block">
                     <div className="row">
@@ -368,7 +362,7 @@ export class AddReview extends React.Component {
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     {this.renderModalFeedback(redirectUrl)}
-                                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back</Link>)}
+                                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back &nbsp;</Link>)}
                                     {this.state.operation === 'ADD' && (
                                         <label htmlFor="company-item-id">Company</label>)}
                                     {this.state.operation === 'ADD' && this.renderCompanySelect()}

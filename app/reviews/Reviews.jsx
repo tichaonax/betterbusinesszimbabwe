@@ -5,6 +5,7 @@ import ReviewList from 'ReviewList'
 import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
+var urlActions = require('urlActions');
 
 export class Reviews extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ export class Reviews extends React.Component {
         if (company && company.length > 0) {
             this.dispatch(searchActions.setSearchText(company));
         }
+        this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
 
     componentDidMount() {
