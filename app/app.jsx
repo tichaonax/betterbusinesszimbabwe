@@ -49,8 +49,6 @@ firebase.auth().onAuthStateChanged((user) => {
     }
 });
 
-// Load foundation
-//$(document).foundation();
 //load bootstrap
 require("modules/bootstrap-sass/assets/javascripts/bootstrap.js");
 

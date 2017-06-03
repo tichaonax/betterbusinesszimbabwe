@@ -17,6 +17,7 @@ export class AddReview extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.addNewCompany = this.addNewCompany.bind(this);
 
         this.state = {
             operation: 'ADD',
@@ -73,15 +74,13 @@ export class AddReview extends React.Component {
     }
 
     loadData(props) {
-        this.dispatch(companiesActions.startAddCompanyItems());
-
-        const {error} = this.props;
+        //this.dispatch(companiesActions.startAddCompanyItems());
+        const {error, location} = props;
         if (error) {
             this.dispatch(errorActions.bbzClearError());
             this.dispatch(reviewsActions.setAddReviewOperation());
         }
 
-        var {location} = this.props;
 
         if (location && location.query) {
             this.validateAddNewReviewParameters(location.query.company);
@@ -124,8 +123,7 @@ export class AddReview extends React.Component {
             reviewItems.map((reviewItem) => {
                 if (reviewItem.companyItemId == companyItemId && reviewItem.uid == uid) {
                     dupes.push(reviewItem);
-                }
-                ;
+                };
             });
         }
         return dupes;
@@ -304,6 +302,11 @@ export class AddReview extends React.Component {
         this.setState({selectedCompanyItemId: companyItemId, selectedCompanyTitle: companyTitle});
     }
 
+    addNewCompany = (e) => {
+        e.preventDefault();
+
+    }
+
     renderCompanySelect() {
         var selectedCompanyItemIds = [];
         var companyItems = this.state.companyItems;
@@ -314,20 +317,36 @@ export class AddReview extends React.Component {
             });
 
             return (
-                <div>
-                    <Select
-                        ref="companySelect"
-                        name="company-select"
-                        value={this.state.selectedCompanyItemId}
-                        options={selectedCompanyItemIds}
-                        onChange={this.onCompanyItemIdChange}
-                        matchPos="start"
-                        ignoreCase={true}
-                        clearable={false}
-                        disabled={this.state.calledFromOutside}
-                    />
-                </div>
-            );
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-sm-10">
+                            <div className="form-group">
+                                <Select
+                                    ref="companySelect"
+                                    name="company-select"
+                                    value={this.state.selectedCompanyItemId}
+                                    options={selectedCompanyItemIds}
+                                    onChange={this.onCompanyItemIdChange}
+                                    matchPos="start"
+                                    ignoreCase={true}
+                                    clearable={false}
+                                    disabled={this.state.calledFromOutside}
+                                />
+                            </div>
+                        </div>
+                        <div className="col-sm-1">
+                            <div className="form-group">
+
+                                <Link to={`/addcompany`} activeClassName="active"
+                                      activeStyle={{fontWeight: 'bold'}}>
+                                    <span className="glyphicon glyphicon-plus button" data-toggle="tooltip"
+                                          title="Add New Company!"
+                                          ></span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
+                </div>);
         } else {
             return null
         }

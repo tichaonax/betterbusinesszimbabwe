@@ -33,11 +33,19 @@ export class Companies extends React.Component {
 
     componentDidMount() {
         this.dispatch(searchActions.setSearchButton(false));
+        this.dispatch(searchActions.setApprovalPendingItem(false));
         this.loadData(this.props);
     }
 
     componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
+    }
+
+    componentWillReceiveProps(newProps) {
+        var {isLoggedIn, userProfile} = newProps;
+        if(isLoggedIn && userProfile && userProfile.isAdmin){
+            this.dispatch(searchActions.setApprovalPendingItem(true));
+        }
     }
 
     render() {

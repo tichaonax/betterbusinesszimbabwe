@@ -23,6 +23,7 @@ export class CompanyReviews extends React.Component {
 
     componentDidMount() {
         this.dispatch(searchActions.setSearchButton(false));
+        this.dispatch(searchActions.setApprovalPendingItem(false));
         this.loadData(this.props);
     }
 
@@ -31,7 +32,10 @@ export class CompanyReviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.loadData(newProps);
+        var {isLoggedIn, userProfile} = newProps;
+        if(isLoggedIn && userProfile && userProfile.isAdmin){
+            this.dispatch(searchActions.setApprovalPendingItem(true));
+        }
     }
 
     getRatingsAverage(reviewItems) {
@@ -94,10 +98,6 @@ export class CompanyReviews extends React.Component {
                     <div>
                         <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
                     </div>
-                    {auth.loggedIn && (
-                        <div className="bbz-general">
-                            <AddReview/>
-                        </div>)}
                 </div>
             </div>
         );

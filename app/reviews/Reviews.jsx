@@ -21,6 +21,7 @@ export class Reviews extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(searchActions.setApprovalPendingItem(false));
         this.dispatch(searchActions.setSearchButton(false));
         this.loadData(this.props);
     }
@@ -30,7 +31,11 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        this.loadData(newProps);
+       // this.loadData(newProps);
+        var {isLoggedIn, userProfile} = newProps;
+        if(isLoggedIn && userProfile && userProfile.isAdmin){
+            this.dispatch(searchActions.setApprovalPendingItem(true));
+        }
     }
 
     render() {

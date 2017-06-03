@@ -268,7 +268,8 @@ export class AddCompnayItem extends React.Component {
                                     <div>
                                         <label htmlFor="stitle">Company Title</label>
                                     </div>
-                                    <div><input type="text" name="companyTitle" ref="companyTitle" className="form-control" maxLength={100}
+                                    <div>
+                                        <input type="text" name="companyTitle" ref="companyTitle" className="form-control" maxLength={100}
                                                 value={this.state.companyTitle}
                                                 placeholder="Company Name" onChange={this.onChangeCompanyTitle}/>
                                     </div>
