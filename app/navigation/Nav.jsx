@@ -30,7 +30,6 @@ class Nav extends React.Component {
     }
 
     openNav() {
-        console.debug("openNav")
         this.setState({
             sideNav: {
                 width: '70%',
@@ -40,7 +39,6 @@ class Nav extends React.Component {
     }
 
     closeNav() {
-        console.debug("closeNav")
         this.setState({
             sideNav: {
                 width: '0px',

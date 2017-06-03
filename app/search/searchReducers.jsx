@@ -20,7 +20,6 @@ export var searchOptionsReducer = (state = {pending: false, showButton: false}, 
                 pending: action.pending
             });
         case 'SET_SEARCH_BUTTON':
-            console.debug("showButton", action.showButton);
             return ({
                 ...state,
                 showButton: action.showButton
