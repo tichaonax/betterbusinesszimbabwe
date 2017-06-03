@@ -25,10 +25,10 @@ export class AddCompnayItem extends React.Component {
             selectedServiceItemId: '',
             selectedCategory: '',
             rating: 0,
-            remainingCharacters: '',
-            maxReviewCharacters: 300,
+            remainingCharacters: null,
             cancelOperation: false,
             isShowingModal: false,
+            maxCompanyCharacters: 300
         }
     }
 
@@ -39,6 +39,7 @@ export class AddCompnayItem extends React.Component {
     onGoBack = (evt) => {
         this.dispatch(errorActions.bbzClearError());
         if (this.state.calledFromOutside == true) {
+            //console.debug("addCompany onGoBack",this.props.redirectUrl);
             browserHistory.goBack();
         } else {
             this.resetInputs();
@@ -65,8 +66,10 @@ export class AddCompnayItem extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        this.setState({operation: nextProps.companyOperation.operation});
-        //this.setState({serviceItems: nextProps.serviceItems});
+        this.setState({
+            operation: nextProps.companyOperation.operation,
+            maxCompanyCharacters: 300
+        });
 
         if (nextProps.companyOperation.data) {
             const newProps = nextProps.companyOperation.data;
@@ -79,10 +82,9 @@ export class AddCompnayItem extends React.Component {
                 serviceCategory: newProps.serviceCategory
             });
 
-
             if (newProps.companyDesc && newProps.companyDesc.length > 0) {
                 this.setState({
-                    remainingCharacters: ((this.state.maxReviewCharacters - newProps.review.length) + ' remaining')
+                    remainingCharacters: ((this.state.maxCompanyCharacters - newProps.companyDesc.length) + ' remaining')
                 });
             }
         }
@@ -232,7 +234,7 @@ export class AddCompnayItem extends React.Component {
         ));
 
         if (this.state.calledFromOutside) {
-            console.debug("redirectUrl calledFromOutside",redirectUrl);
+            //console.debug("redirectUrl calledFromOutside",redirectUrl);
             this.state = {
                 isShowingModal: true
             }
@@ -245,7 +247,7 @@ export class AddCompnayItem extends React.Component {
 
     onChangeCompanyDesc = (e) => {
         this.setState({companyDesc: e.target.value});
-        const textRemaining = this.state.maxReviewCharacters - e.target.value.length;
+        const textRemaining = this.state.maxCompanyCharacters - e.target.value.length;
         this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
@@ -347,7 +349,7 @@ export class AddCompnayItem extends React.Component {
                                     <label htmlFor="sdescription">Company Description</label>
                                     <textarea type="text" name="companyDesc" ref="companyDesc" acceptCharset="UTF-8"
                                               className="form-control col-sm-4 well" rows="3"
-                                              maxLength={this.state.maxReviewCharacters}
+                                              maxLength={this.state.maxCompanyCharacters}
                                               value={this.state.companyDesc}
                                               placeholder="Company Description" onChange={this.onChangeCompanyDesc}/>
                                     <h6 className="pull-right">{this.state.remainingCharacters}</h6>

@@ -33,6 +33,10 @@ export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyT
                 ...reviewItem,
                 reviewItemId: reviewItemRef.key
             }));
+
+            //clear recently addedCompany so the review select is deselected
+            dispatch(companiesActions.clearRecentlyAddedCompany());
+
         }, (error) => {
             console.log("Unable to add new review", error);
             var errorObj = {

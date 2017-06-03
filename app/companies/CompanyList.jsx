@@ -34,7 +34,7 @@ export class CompanyList extends React.Component {
             filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
         }
 
-        console.debug("filteredCompanyItems", filteredCompanyItems);
+        //console.debug("filteredCompanyItems", filteredCompanyItems);
         this.setState({
             rowCount: filteredCompanyItems.length,
             companies: filteredCompanyItems

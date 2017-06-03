@@ -7,7 +7,7 @@ import {bbzErrorReducer} from 'errorReducers';
 import {searchTextReducer, searchOptionsReducer} from 'searchReducers';
 import {todoItemsReducer} from 'reducers';
 import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer';
-import {companyItemsReducer, companyOperationReducer} from 'companiesItemsReducer';
+import {companyItemsReducer, companyOperationReducer, recentlyAddedCompanyReducer} from 'companiesItemsReducer';
 import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 
 export var configure = (initialState = {}) => {
@@ -25,7 +25,8 @@ export var configure = (initialState = {}) => {
         companyItems: companyItemsReducer,
         companyOperation: companyOperationReducer,
         reviewItems: reviewItemsReducer,
-        reviewOperation: reviewOperationReducer
+        reviewOperation: reviewOperationReducer,
+        recentlyAddedCompany: recentlyAddedCompanyReducer
     });
 
     const rootReducer = ( state, action ) => {

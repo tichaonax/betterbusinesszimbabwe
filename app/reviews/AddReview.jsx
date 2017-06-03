@@ -81,7 +81,7 @@ export class AddReview extends React.Component {
         }
 
         if (location && location.query) {
-            console.debug("location:",location);
+            console.debug("location:", location);
             this.validateAddNewReviewParameters(location.query.company);
         } else {
             this.dispatch(companiesActions.startAddCompanyItems());
@@ -90,6 +90,9 @@ export class AddReview extends React.Component {
 
     componentDidMount() {
         this.loadData(this.props);
+        if (this.props.recentlyAddedCompany != '') {
+            this.setState({selectedCompanyItemId: this.props.recentlyAddedCompany});
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -97,6 +100,11 @@ export class AddReview extends React.Component {
         this.setState({operation: nextProps.reviewOperation.operation});
         this.setState({companyItems: nextProps.companyItems});
         this.setState({reviewItems: nextProps.reviewItems});
+
+        /*if (this.props.recentlyAddedCompany != nextProps.recentlyAddedCompany) {
+            //console.debug("nextProps.recentlyAddedCompany", nextProps.recentlyAddedCompany);
+            this.setState({selectedCompanyItemId: nextProps.recentlyAddedCompany});
+        }*/
 
         if (nextProps.reviewOperation.data) {
             const newProps = nextProps.reviewOperation.data;
@@ -122,7 +130,8 @@ export class AddReview extends React.Component {
             reviewItems.map((reviewItem) => {
                 if (reviewItem.companyItemId == companyItemId && reviewItem.uid == uid) {
                     dupes.push(reviewItem);
-                };
+                }
+                ;
             });
         }
         return dupes;
@@ -195,7 +204,7 @@ export class AddReview extends React.Component {
             review: '',
             rating: 0,
             remainingCharacters: null,
-            selectedCompanyItemId: null
+            selectedCompanyItemId: ''
         });
     }
 
@@ -278,14 +287,15 @@ export class AddReview extends React.Component {
             userProfile.email
         ));
 
+        this.resetInputs();
+
         if (this.state.calledFromOutside) {
-            console.debug("redirectUrl calledFromOutside",redirectUrl);
+            //console.debug("redirectUrl calledFromOutside",redirectUrl);
             this.state = {
                 isShowingModal: true
             }
         }
 
-        this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
     }
 
@@ -412,7 +422,8 @@ export default connect(
             companyItems: state.companyItems,
             reviewItems: state.reviewItems,
             userProfile: state.userProfile,
-            redirectUrl: state.redirectUrl
+            redirectUrl: state.redirectUrl,
+            recentlyAddedCompany: state.recentlyAddedCompany
         }
     }
 )(AddReview);
