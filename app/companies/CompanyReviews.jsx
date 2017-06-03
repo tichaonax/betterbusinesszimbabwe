@@ -2,10 +2,10 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 var BbzAPI = require('BbzAPI');
-import CompanyRatingItem from 'CompanyRatingItem';
-import StarRatingItem from 'StarRatingItem';
-import ReviewList from 'ReviewList';
-import AddReview from 'AddReview';
+import CompanyRatingItem from 'app/companies/CompanyRatingItem';
+import StarRatingItem from 'app/reviews/StarRatingItem';
+import ReviewList from 'app/reviews/ReviewList';
+import {Link, IndexLink} from 'react-router';
 var searchActions = require('searchActions');
 
 export class CompanyReviews extends React.Component {
@@ -64,10 +64,12 @@ export class CompanyReviews extends React.Component {
 
         var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
 
-        var companyTitle = "";
+        var companyTitle = '';
+        var companyItemId ='';
 
         if (filteredReviewItems.length > 0) {
             companyTitle = filteredReviewItems[0].companyTitle;
+            companyItemId = filteredReviewItems[0].companyItemId;
         }
 
         var rating = this.getRatingsAverage(filteredReviewItems).toFixed(1);
@@ -77,6 +79,10 @@ export class CompanyReviews extends React.Component {
                 <div className="columns container">
                     <div className="rating-block">
                         <h3>{companyTitle}</h3>
+                        <div>
+                            <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                                  activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                        </div>
                     </div>
                 </div>
                 <div><br/></div>
