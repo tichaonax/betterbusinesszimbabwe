@@ -30,19 +30,17 @@ export class ServiceList extends React.Component {
         return (
             <div className=" container">
                 <div className="row">
-                    <div className="common-table">
-                        <table className="table table-striped table-bordered">
-                            <tbody>
-                            <tr>
-                                <th>Delete</th>
-                                <th>ServiceItemID</th>
-                                <th>Service Title</th>
-                                <th>Description</th>
-                            </tr>
-                            {this.renderServiceItems()}
-                            </tbody>
-                        </table>
-                    </div>
+                    <table className="table table-striped table-bordered table-condensed">
+                        <tbody>
+                        <tr>
+                            <th>Delete</th>
+                            <th>ServiceItemID</th>
+                            <th>Service Title</th>
+                            <th>Description</th>
+                        </tr>
+                        {this.renderServiceItems()}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );

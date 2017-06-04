@@ -15,7 +15,7 @@ export class ServiceItem extends React.Component {
             <tr>
                 <td>
                     <div className="form-group">
-                        <input type="submit" value="&times;" data-toggle="Delete Service" onClick={() => {
+                        <input type="submit" value="&times;" onClick={() => {
                             if (userProfile.isAdmin) {
                                 this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
                             } else {
@@ -28,7 +28,7 @@ export class ServiceItem extends React.Component {
                 </td>
                 <td>
                     <div className="form-group">
-                        <input type="submit" data-toggle="Update Service" value={serviceItemId} onClick={() => {
+                        <input type="submit" value={serviceItemId} onClick={() => {
                             if (userProfile.isAdmin) {
                                 var data = {
                                     serviceItemId,
@@ -44,6 +44,8 @@ export class ServiceItem extends React.Component {
                                 error.errorMessage = "You must be admin to update this service information";
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
+
+                            window.scrollTo(0,0);
                         }}/>
                     </div>
                 </td>
