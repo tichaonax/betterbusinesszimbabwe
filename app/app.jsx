@@ -8,6 +8,7 @@ var errorActions = require('errorActions');
 var profileActions = require('profileActions');
 var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
+var reviewsActions = require('reviewsActions');
 var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
@@ -45,6 +46,7 @@ firebase.auth().onAuthStateChanged((user) => {
         console.debug("user session invlaid:", user);
         store.dispatch(loginActions.bbzLogout());
         store.dispatch(profileActions.resetUserProfile());
+        store.dispatch(reviewsActions.startAddReviewItems());
         hashHistory.push('/reviews');
     }
 });

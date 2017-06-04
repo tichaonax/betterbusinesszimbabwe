@@ -1,7 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
-import ReviewList from 'ReviewList'
+import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
@@ -14,18 +14,20 @@ export class Reviews extends React.Component {
     }
 
     loadData(props) {
-        this.dispatch(reviewsActions.startAddReviewItems());
         var company = props.location.query.company;
         if (company && company.length > 0) {
             this.dispatch(searchActions.setSearchText(company));
+        }else{
+            this.dispatch(reviewsActions.startAddReviewItems());
         }
+
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
 
     componentDidMount() {
+        this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.dispatch(searchActions.setSearchButton(false));
-        this.loadData(this.props);
     }
 
     componentWillUnmount() {
@@ -33,9 +35,9 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-       // this.loadData(newProps);
+        // this.loadData(newProps);
         var {isLoggedIn, userProfile} = newProps;
-        if(isLoggedIn && userProfile && userProfile.isAdmin){
+        if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
     }
@@ -51,7 +53,7 @@ export class Reviews extends React.Component {
                         </div>
                     )}
                     <div>
-                        <ReviewList showCompanyTitle={true}/>
+                        <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems} auth={this.props.auth}/>
                     </div>
                 </div>
             </div>
@@ -63,6 +65,8 @@ export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
-        searchText: state.searchText
+        searchText: state.searchText,
+        auth: state.auth,
+        reviewItems: state.reviewItems,
     }
 })(Reviews);

@@ -72,7 +72,6 @@ class Nav extends React.Component {
                 <li className="upper-links">
                     {this.renderLoginControl()}
                 </li>
-
                 <li className="upper-links dropdown"><a className="links" href="/" onClick={()=>this.closeNav()}>Dropdown</a>
                     <div className="dropdown-menu">
                         <div className="profile-div">
@@ -80,7 +79,7 @@ class Nav extends React.Component {
                                   activeStyle={{fontWeight: 'bold'}}>Weather</Link>
                         </div>
                     </div>
-                </li>
+                </li>>
             </ul>
         )
     }
@@ -169,11 +168,14 @@ class Nav extends React.Component {
                                 <h2 style={{margin:'0px'}}><span className="smallnav menu" onClick={()=>{
                                     this.openNav()
                                 }}>☰ Better Business Zimbabwe</span></h2>
-                                <h1 style={{margin:'0px'}}><span className="largenav">Better Business Zimbabwe</span></h1>
+                                <h2 style={{margin:'0px'}}><span className="largenav">Better Business Zimbabwe</span></h2>
                             </div>
                             <div>
                                <div className="row">
                                     <BbzSearch/>
+                                </div>
+                                <div className="small-12 large-expand columns">
+                                    {this.renderLoginStats()}
                                 </div>
                             </div>
                         </div>
