@@ -1,13 +1,12 @@
 import React from 'react';
 var {connect} = require('react-redux');
-import {getRatingsAverage} from 'app/common/reviewUtils';
+import {getRatingsAverage, getRatingRoundedToHalf} from 'app/common/reviewUtils';
 
 var BbzAPI = require('BbzAPI');
 import CompanyRatingItem from 'app/companies/CompanyRatingItem';
-import StarRatingItem from 'app/reviews/StarRatingItem';
 var Rate = require('rc-rate');
 import ReviewList from 'app/reviews/ReviewList';
-import {Link, IndexLink} from 'react-router';
+import {Link} from 'react-router';
 var searchActions = require('searchActions');
 
 export class CompanyReviews extends React.Component {
@@ -58,8 +57,7 @@ export class CompanyReviews extends React.Component {
             companyItemId = filteredReviewItems[0].companyItemId;
         }
 
-        var rating = getRatingsAverage(filteredReviewItems);
-        console.debug("rounded rating",rating);
+        var rating = getRatingRoundedToHalf(getRatingsAverage(filteredReviewItems));
 
         return (
             <div className="row">
@@ -82,9 +80,10 @@ export class CompanyReviews extends React.Component {
                                     <small>/ 5</small>
                                 </h2>
                                 <Rate
-                                    defaultValue={0}
+                                    defaultValue={rating}
                                     style={{fontSize: 20}}
-                                    allowHalf={true}
+                                    onChange={()=>{}}
+                                    allowHalf
                                     value={rating}
                                 />
                             </div>

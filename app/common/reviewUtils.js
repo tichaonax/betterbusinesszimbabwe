@@ -12,5 +12,9 @@ export const getRatingsAverage = (reviewItems) => {
         rating = ratingSum / ratingCount;
     }
 
-    return (Math.round(rating * 10) / 10).toFixed(1);
+    return rating;
+}
+
+export const getRatingRoundedToHalf = (rating) => {
+    return (Math.floor(rating) + ( Math.round((rating - Math.floor(rating))) ? 0.5 : 0.0 ));
 }
