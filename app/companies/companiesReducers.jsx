@@ -51,7 +51,10 @@ export var companyOperationReducer = (state = {operation: 'ADD'}, action) => {
 export var recentlyAddedCompanyReducer = (state = '', action) => {
     switch (action.type) {
         case 'SET_RECENT_ADD_COMPANY_ITEM':
-            return action.companyItemId;
+            return {
+                companyItemId: action.companyItemId,
+                companyTitle: action.companyTitle
+            }
         case 'CLEAR_RECENT_ADD_COMPANY_ITEM':
             return '';
         default:

@@ -10,10 +10,11 @@ export var addCompanyItem = (companyItem) => {
     };
 };
 
-export var setRecentlyAddedCompany=(companyItemId)=>{
+export var setRecentlyAddedCompany=(companyItemId, companyTitle)=>{
     return {
         type: 'SET_RECENT_ADD_COMPANY_ITEM',
-        companyItemId
+        companyItemId,
+        companyTitle
     };
 }
 
@@ -47,7 +48,7 @@ export var startAddNewCompanyItem = (uid, title, description, serviceId, categor
             }));
 
             //dispatch recently added so you can select it from reviews
-            dispatch(setRecentlyAddedCompany(companyItemRef.key));
+            dispatch(setRecentlyAddedCompany(companyItemRef.key, title));
 
         }, (error) => {
             console.debug("Unable to add new company", error);
