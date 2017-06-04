@@ -16,7 +16,7 @@ export class Services extends React.Component {
         this.dispatch(servicesActions.startAddServiceItems());
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
     }
 
@@ -24,17 +24,23 @@ export class Services extends React.Component {
 
         var {isLoggedIn, userProfile} = this.props;
 
-        if(isLoggedIn && userProfile && userProfile.isAdmin){
+        if (isLoggedIn && userProfile && userProfile.isAdmin) {
             return (
-                <div className="container">
-                    <AddServiceItem/>
-                    <ServiceList/>
+                <div className="columns container">
+                    <div>
+                        <AddServiceItem/>
+                    </div>
+                    <div>
+                        <ServiceList/>
+                    </div>
                 </div>
             );
-        }else{
+        } else {
             return (
-                <div className="container">
-                    You must be admin to update services
+                <div className="columns container">
+                    <div>
+                        <label>You must be admin to update services</label>
+                    </div>
                 </div>
             );
         }

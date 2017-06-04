@@ -81,7 +81,7 @@ export class AddReview extends React.Component {
         }
 
         if (location && location.query) {
-            console.debug("location:", location);
+            //console.debug("location:", location);
             this.validateAddNewReviewParameters(location.query.company);
         } else {
             this.dispatch(companiesActions.startAddCompanyItems());
@@ -96,15 +96,9 @@ export class AddReview extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-
         this.setState({operation: nextProps.reviewOperation.operation});
         this.setState({companyItems: nextProps.companyItems});
         this.setState({reviewItems: nextProps.reviewItems});
-
-        /*if (this.props.recentlyAddedCompany != nextProps.recentlyAddedCompany) {
-            //console.debug("nextProps.recentlyAddedCompany", nextProps.recentlyAddedCompany);
-            this.setState({selectedCompanyItemId: nextProps.recentlyAddedCompany});
-        }*/
 
         if (nextProps.reviewOperation.data) {
             const newProps = nextProps.reviewOperation.data;
@@ -315,7 +309,6 @@ export class AddReview extends React.Component {
         var selectedCompanyItemIds = [];
         var companyItems = this.state.companyItems;
         if (companyItems) {
-
             companyItems.map((companyItem) => {
                 selectedCompanyItemIds.push({value: companyItem.companyItemId, label: companyItem.companyTitle});
             });

@@ -13,8 +13,8 @@ export class ServiceList extends React.Component {
         if (serviceItems.length === 0) {
             return (
                 <tr>
-                    <td colSpan={3}>
-                    No Services Defined
+                    <td colSpan={4}>
+                        No Services Defined
                     </td>
                 </tr>
             )
@@ -28,18 +28,22 @@ export class ServiceList extends React.Component {
 
     render() {
         return (
-            <div>
-                <table className="common-table">
-                    <tbody>
-                    <tr>
-                        <th>ServiceItemID</th>
-                        <th>Service Title</th>
-                        <th>Description</th>
-                    </tr>
-
-                    {this.renderServiceItems()}
-                    </tbody>
-                </table>
+            <div className=" container">
+                <div className="row">
+                    <div className="common-table">
+                        <table className="table table-striped table-bordered">
+                            <tbody>
+                            <tr>
+                                <th>Delete</th>
+                                <th>ServiceItemID</th>
+                                <th>Service Title</th>
+                                <th>Description</th>
+                            </tr>
+                            {this.renderServiceItems()}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         );
     }

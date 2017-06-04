@@ -43,30 +43,49 @@ export class AddServiceItem extends React.Component {
     }
 
     findDupeServices(serviceTitle, serviceItems) {
-        var dupes =[];
+        var dupes = [];
         serviceItems.map((serviceItem) => {
-            if(serviceItem.serviceTitle.toLowerCase() === serviceTitle.toLowerCase()){
+            if (serviceItem.serviceTitle.toLowerCase() === serviceTitle.toLowerCase()) {
                 dupes.push(serviceItem);
-            };
+            }
+            ;
         });
         return dupes;
     }
 
-
-    renderAddView = () => {
-        return (
-            <input ref="add" type="submit" value="Add New Service"/>
-        )
-    }
-
-    renderUpdateView() {
+    renderAddAUpdateView = () => {
         return (
             <div>
-                <input ref="update" type="submit" value="Update" onClick={this.handleUpdate}/>
-                <input ref="cancel" type="submit" value="Cancel" onClick={this.handleCancel}/>
-            </div>)
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
+                                onClick={
+                                    () => {
+                                        this.handleCancel(event);
+                                    }}>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div className="col-sm-6">
+                    <div className="form-group">
+                        <button ref="add" type="button" className="btn btn-primary btn-lg btn-block"
+                                value="Add New Review"
+                                onClick={() => {
+                                    if (this.state.operation === 'ADD') {
+                                        this.handleSubmit(event);
+                                    } else {
+                                        this.handleUpdate(event);
+                                    }
+                                }}>
+                            {this.state.operation === 'ADD' && ('Add New Service')}
+                            {this.state.operation === 'UPDATE' && ('Update Service')}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )
     }
-
 
     resetInputs = () => {
         this.setState({
@@ -134,11 +153,11 @@ export class AddServiceItem extends React.Component {
         dispatch(servicesActions.startAddNewServiceItem(serviceTitle, serviceDesc));
     }
 
-    onChangeServiceTitle =(e)=>{
+    onChangeServiceTitle = (e) => {
         this.setState({serviceTitle: e.target.value});
     }
 
-    onChangeServiceDesc =(e)=>{
+    onChangeServiceDesc = (e) => {
         this.setState({serviceDesc: e.target.value});
     }
 
@@ -146,21 +165,37 @@ export class AddServiceItem extends React.Component {
     //startUpdateCompaniesCategory
 
     render() {
-
         return (
-            <div className="bbz-general">
-                <div className="form-group">
-                    <Error/>
-                    <form onSubmit={this.handleSubmit}>
-                        <label htmlFor="stitle">Service Title</label>
-                        <input type="text" name="serviceTitle" ref="serviceTitle" value={this.state.serviceTitle}
-                               placeholder="Service Title" onChange={this.onChangeServiceTitle}/>
-                        <label htmlFor="sdescription">Service Description</label>
-                        <input type="text" name="serviceDesc" ref="serviceDesc" value={this.state.serviceDesc}
-                               placeholder="Service Description" onChange={this.onChangeServiceDesc}/>
-                        {this.state.operation === 'ADD' && this.renderAddView()}
-                        {this.state.operation === 'UPDATE' && this.renderUpdateView()}
-                    </form>
+            <div className="col-sm-12">
+                <div className="review-block">
+                    <div className="row">
+                        <div className="col-sm-12">
+                            <Error/>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <form onSubmit={this.handleSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="stitle">Service Title</label>
+                                <input className="form-control" type="text" name="serviceTitle" ref="serviceTitle"
+                                       value={this.state.serviceTitle} maxLength={50}
+                                       placeholder="Service Title" onChange={this.onChangeServiceTitle}/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="sdescription">Service Description</label>
+                                <input className="form-control" type="text" name="serviceDesc" ref="serviceDesc"
+                                       value={this.state.serviceDesc} maxLength={100}
+                                       placeholder="Service Description" onChange={this.onChangeServiceDesc}/>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <div className="form-group">
+                                        {this.renderAddAUpdateView()}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         );

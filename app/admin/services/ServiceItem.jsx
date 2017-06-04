@@ -14,8 +14,8 @@ export class ServiceItem extends React.Component {
         return (
             <tr>
                 <td>
-                    <form>
-                        <input type="submit" value="&times;" onClick={() => {
+                    <div className="form-group">
+                        <input type="submit" value="&times;" data-toggle="Delete Service" onClick={() => {
                             if (userProfile.isAdmin) {
                                 this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
                             } else {
@@ -24,7 +24,11 @@ export class ServiceItem extends React.Component {
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
                         }}/>
-                        <input type="submit" value={serviceItemId} onClick={() => {
+                    </div>
+                </td>
+                <td>
+                    <div className="form-group">
+                        <input type="submit" data-toggle="Update Service" value={serviceItemId} onClick={() => {
                             if (userProfile.isAdmin) {
                                 var data = {
                                     serviceItemId,
@@ -41,11 +45,11 @@ export class ServiceItem extends React.Component {
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
                         }}/>
-                    </form>
+                    </div>
                 </td>
+
                 <td>{serviceTitle}</td>
-                <td>{serviceDesc}
-                </td>
+                <td>{serviceDesc}</td>
             </tr>
         );
     }
