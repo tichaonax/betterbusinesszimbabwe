@@ -79,7 +79,7 @@ class Nav extends React.Component {
                                   activeStyle={{fontWeight: 'bold'}}>Weather</Link>
                         </div>
                     </div>
-                </li>>
+                </li>
             </ul>
         )
     }
