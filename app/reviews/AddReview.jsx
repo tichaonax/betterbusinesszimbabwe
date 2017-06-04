@@ -90,7 +90,7 @@ export class AddReview extends React.Component {
     componentDidMount() {
         this.loadData(this.props);
         if (this.props.recentlyAddedCompany.companyItemId != '') {
-            console.debug("this.props.recentlyAddedCompany", this.props.recentlyAddedCompany);
+            //console.debug("this.props.recentlyAddedCompany", this.props.recentlyAddedCompany);
             this.setState({
                 selectedCompanyItemId: this.props.recentlyAddedCompany.companyItemId,
                 selectedCompanyTitle: this.props.recentlyAddedCompany.companyTitle
