@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import moment from 'moment';
+var Rate = require('rc-rate');
 import {Link} from 'react-router';
 import StarRatingItem from 'StarRatingItem';
 import Linkify from 'react-linkify';
@@ -23,7 +24,18 @@ export class RatingItem extends React.Component {
 
         return (
             <div>
-                <StarRatingItem rating={rating}/>
+               {/* <StarRatingItem rating={rating}/>*/}
+
+                <Rate
+                    defaultValue={rating}
+                   /* onChange={(index) => {
+                        //this.setState({rating: index});
+                    }}*/
+                    style={{fontSize: 20}}
+                    allowHalf
+                    value={rating}
+                />
+
                 {showCompanyTitle == true && (
                     <div className="review-block-title">
                         <Link to={`/companyreviews?company=${companyItemId}`} activeClassName="active"

@@ -64,7 +64,8 @@ module.exports = {
             './app/userprofile',
             './app/search',
             './app/error',
-            './app/url'
+            './app/url',
+            '.app/common'
         ],
         alias: {
             app: 'app',

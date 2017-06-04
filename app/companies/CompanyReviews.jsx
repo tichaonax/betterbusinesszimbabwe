@@ -1,9 +1,11 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import {getRatingsAverage} from 'app/common/reviewUtils';
 
 var BbzAPI = require('BbzAPI');
 import CompanyRatingItem from 'app/companies/CompanyRatingItem';
 import StarRatingItem from 'app/reviews/StarRatingItem';
+var Rate = require('rc-rate');
 import ReviewList from 'app/reviews/ReviewList';
 import {Link, IndexLink} from 'react-router';
 var searchActions = require('searchActions');
@@ -38,22 +40,6 @@ export class CompanyReviews extends React.Component {
         }
     }
 
-    getRatingsAverage(reviewItems) {
-
-        var ratingCount = reviewItems.length;
-        var ratingSum = 0;
-
-        reviewItems.map((reviewItem) => {
-            ratingSum = ratingSum + reviewItem.rating;
-        });
-
-        if (ratingSum > 0) {
-            return (ratingSum / ratingCount)
-        }
-
-        return (ratingCount);
-    }
-
     render() {
         var {reviewItems, showApprovalPending, searchText, auth} = this.props;
 
@@ -72,7 +58,8 @@ export class CompanyReviews extends React.Component {
             companyItemId = filteredReviewItems[0].companyItemId;
         }
 
-        var rating = this.getRatingsAverage(filteredReviewItems).toFixed(1);
+        var rating = getRatingsAverage(filteredReviewItems);
+        console.debug("rounded rating",rating);
 
         return (
             <div className="row">
@@ -94,7 +81,12 @@ export class CompanyReviews extends React.Component {
                                 <h2 className="bold padding-bottom-7">{rating}
                                     <small>/ 5</small>
                                 </h2>
-                                <StarRatingItem rating={rating}/>
+                                <Rate
+                                    defaultValue={0}
+                                    style={{fontSize: 20}}
+                                    allowHalf={true}
+                                    value={rating}
+                                />
                             </div>
                         </div>
                         <div>
