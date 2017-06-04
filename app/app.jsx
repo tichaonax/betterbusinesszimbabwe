@@ -19,7 +19,8 @@ store.dispatch(searchActions.setSearchText(""));
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         console.debug("subscribed user:", user);
-
+        //console.debug("getState",store.getState());
+        //console.debug("getState.redirectUrl", store.getState().redirectUrl);
         var displayName = user.email;
 
         if (user.displayName) {
@@ -39,8 +40,7 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(profileActions.startSetUserProfile());
         store.dispatch(companiesActions.startAddCompanyItems());
         store.dispatch(searchActions.setSearchText(""));
-       // hashHistory.push('/reviews');
-        //hashHistory.push(redirectUrl);
+        hashHistory.push(store.getState().redirectUrl);
     } else {
         console.debug("user session invlaid:", user);
         store.dispatch(loginActions.bbzLogout());

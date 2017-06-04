@@ -48,7 +48,7 @@ export class AddReview extends React.Component {
     }
 
     validateAddNewReviewParameters(companyItemId) {
-        console.debug("validateAddNewReviewParameters", companyItemId);
+        //console.debug("validateAddNewReviewParameters", companyItemId);
         var {companyItems} = this.props;
 
         var isMatch = false;
@@ -56,7 +56,7 @@ export class AddReview extends React.Component {
         companyItems.map((companyItem) => {
             if (companyItem.companyItemId == companyItemId) {
 
-                console.debug("Match", companyItem);
+               // console.debug("Match", companyItem);
 
                 this.state = {
                     selectedCompanyItemId: companyItem.companyItemId,
@@ -81,7 +81,6 @@ export class AddReview extends React.Component {
         }
 
         if (location && location.query) {
-            //console.debug("location:", location);
             this.validateAddNewReviewParameters(location.query.company);
         } else {
             this.dispatch(companiesActions.startAddCompanyItems());
@@ -99,6 +98,12 @@ export class AddReview extends React.Component {
         this.setState({operation: nextProps.reviewOperation.operation});
         this.setState({companyItems: nextProps.companyItems});
         this.setState({reviewItems: nextProps.reviewItems});
+
+        var {location} = nextProps;
+        if (location && location.query) {
+            //console.debug("location:- componentWillReceiveProps", location);
+            this.validateAddNewReviewParameters(location.query.company);
+        }
 
         if (nextProps.reviewOperation.data) {
             const newProps = nextProps.reviewOperation.data;

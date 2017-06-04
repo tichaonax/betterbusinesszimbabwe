@@ -10,7 +10,6 @@ export class ServiceItem extends React.Component {
 
     render() {
         var {userProfile, serviceItemId, serviceTitle, serviceDesc, createAt, updateAt} = this.props;
-
         return (
             <tr>
                 <td>
@@ -49,7 +48,6 @@ export class ServiceItem extends React.Component {
                         }}/>
                     </div>
                 </td>
-
                 <td>{serviceTitle}</td>
                 <td>{serviceDesc}</td>
             </tr>

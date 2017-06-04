@@ -5,10 +5,11 @@ var urlActions = require('urlActions');
 export class BbzLoggedInContainer extends React.Component {
     componentDidMount() {
         const {dispatch, currentURL, isLoggedIn, router} = this.props
-        console.debug("currentURL", currentURL);
+        const redirectUrl = currentURL.pathname + currentURL.search;
+        //console.debug("BbzLoggedInContainer redirectUrl", redirectUrl);
         if (!isLoggedIn) {
             // set the current url/path for future redirection (we use a Redux action)
-            dispatch(urlActions.setRedirectUrl(currentURL));
+            dispatch(urlActions.setRedirectUrl(redirectUrl));
             // then redirect to login page
             router.push("/login");
         }
@@ -30,7 +31,7 @@ export class BbzLoggedInContainer extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         isLoggedIn: state.auth.loggedIn,
-        currentURL: ownProps.location.pathname,
+        currentURL: ownProps.location,
         error: state.error
     }
 }

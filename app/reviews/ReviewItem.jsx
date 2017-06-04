@@ -101,17 +101,15 @@ export class ReviewItem extends React.Component {
                                                              rating,
                                                              review
                                                          }
-
-                                                          console.debug("ReviewItems Data:", data);
-
+                                                          //console.debug("ReviewItems Data:", data);
                                                          this.dispatch(reviewsActions.setUpdateReviewOperation(data));
                                                      }
                                                      else {
                                                          var error = {};
                                                          error.errorMessage = "You must be the owner or admin to update this review information";
                                                          this.dispatch(errorActions.bbzReportError(error));
-                                                         window.scrollTo(0, 0);
                                                      }
+                                                     window.scrollTo(0, 0);
                                                  }}/>
                                         </div>
                                     </form>)}
