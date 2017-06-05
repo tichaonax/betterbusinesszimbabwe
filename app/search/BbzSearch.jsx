@@ -25,7 +25,7 @@ export class BbzSearch extends React.Component {
         var {isLoggedIn, userProfile, searchOptions, searchText} = this.props;
 
         return (
-            <div className="navbar-search smallsearch col-sm-6 col-xs-6">
+            <div>
                 <div>
                     <input id="searchItemText" className="navbar-input col-xs-10" type="text"  value={searchText} placeholder="Enter text to search?"
                            onChange={() => {
@@ -43,14 +43,16 @@ export class BbzSearch extends React.Component {
                         </button>
                     )}
                 </div>
-                {isLoggedIn && userProfile && userProfile.isAdmin && (<div>
-                    <label>
-                        <input type="checkbox" ref="showApproved" checked={searchOptions.pending} onChange={() => {
-                            this.dispatch(searchActions.togggleshowApprovalPendingItem());
-                        }}/>
-                        <small>&nbsp;Show Approval Pending</small>
-                    </label>
-                </div>)}
+                {isLoggedIn && userProfile && userProfile.isAdmin && (
+                    <div>
+                        <label>
+                            <input type="checkbox" ref="showApproved" checked={searchOptions.pending} onChange={() => {
+                                this.dispatch(searchActions.togggleshowApprovalPendingItem());
+                            }}/>
+                            <small>&nbsp;Show Approval Pending</small>
+                        </label>
+                    </div>
+                )}
             </div>
         );
     }

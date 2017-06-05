@@ -1,10 +1,11 @@
 import React from 'react';
+import moment from 'moment';
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from '../login/LoginControl';
-import LoginStatus from '../login/LoginStatus';
 import AdminNavigation from 'app/admin/AdminNavigation';
 import BbzSearch from "BbzSearch";
+import Avatar from 'Avatar';
 
 class Nav extends React.Component {
     constructor(props) {
@@ -85,80 +86,47 @@ class Nav extends React.Component {
     }
 
     render() {
-        var {auth} = this.props;
-        function renderAvator() {
-            if (auth.loggedIn) {
-                if (auth.photoURL) {
-                    return (
-                        <div>
-                            <img src={auth.photoURL} alt="Smiley face" height="35" width="35"/>
-                            <p className="nav-profile__subtext">
-                            </p>
-                        </div>
-                    );
-                } else {
-                    return (
-                        <div>
-                            <p className="nav-profile__subtext">
-                            </p>
-                        </div>
-                    );
-                }
-            } else {
-                return (
-                    <div>
-                    </div>
-                )
-            }
+        var {
+            isLoggedIn,
+            displayName,
+            userProfile,
+            lastLogin,
+        } = this.props;
+
+        var lastLoginAt = "";
+
+        if (userProfile && lastLogin) {
+            lastLoginAt = moment.unix(lastLogin.loginAt).format('MMM Do, YYYY @ h:mm a');
+        }
+
+        var joinedAt = "";
+
+        if (userProfile && userProfile.createDate) {
+            joinedAt = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
+        }
+
+        var admin = "";
+
+        if(userProfile && userProfile.isAdmin){
+            admin = "Admin";
         }
 
         return (
-
             <div>
-               {/* <div className="columns medium-centered">
-                    <div className="callout callout-auth">
-                        <div className="column">
-                            <div className="row">
-                                <div className="menu-text">Better Business Zimbabwe</div>
-                                <div className="small-12 large-expand columns">
-                                    <Link to="/reviews" activeClassName="active"
-                                          activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
-                                </div>
-                                <div className="small-12 large-expand columns">
-                                    <IndexLink to="/companies" activeClassName="active"
-                                               activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
-                                </div>
-                                <div className="small-12 large-expand columns">
-                                    <Link to="/weather" activeClassName="active"
-                                          activeStyle={{fontWeight: 'bold'}}>Weather</Link>
-                                </div>
-                                <div className="small-12 large-expand columns">
-                                    <Link to="/about" activeClassName="active"
-                                          activeStyle={{fontWeight: 'bold'}}>About</Link>
-                                </div>
-                                <div className="small-12 large-expand columns">
-                                    {this.renderAdminNavigation()}
-                                </div>
-                                <div className="small-12 large-expand columns">
-                                    {this.renderLoginControl()}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="column">
-                            <div className="row">
-                                <div className="small-12 large-expand columns">
-                                    {renderAvator()}
-                                </div>
-                                <div className="small-12 large-expand columns">
-                                    {this.renderLoginStats()}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>*/}
                 <div className="navbar">
-                    <div className="container">
+                    <div className="container-fluid">
                         <div className="row row1">
+                            {isLoggedIn && (
+                                <div className="pull-left">
+                                    <label className="nav-small-font">Welcome!&nbsp;</label>
+                                    <label className="nav-small-font nav-color-gray">{displayName}&nbsp;</label>
+                                    <label className="nav-small-font nav-color-yellow">({admin})&nbsp;</label>
+                                    <label className="nav-small-font">Member Since:&nbsp;</label>
+                                    <label className="nav-small-font nav-color-gray">{joinedAt}&nbsp;</label>
+                                    <label className="nav-small-font">Last Login:&nbsp;</label>
+                                    <label className="nav-small-font nav-color-gray">{lastLoginAt} </label>
+                                </div>
+                                )}
                             <div className="largenav pull-right">
                                 {this.renderMenu()}
                             </div>
@@ -170,12 +138,13 @@ class Nav extends React.Component {
                                 }}>☰ Better Business Zimbabwe</span></h2>
                                 <h2 style={{margin:'0px'}}><span className="largenav">Better Business Zimbabwe</span></h2>
                             </div>
-                            <div>
-                               <div className="row">
-                                    <BbzSearch/>
+
+                            <div className="col-sm-6">
+                                <div className="col-xs-1">
+                                    <Avatar/>
                                 </div>
-                                <div className="small-12 large-expand columns">
-                                    {this.renderLoginStats()}
+                                <div className="col-xs-10">
+                                    <BbzSearch/>
                                 </div>
                             </div>
                         </div>
@@ -199,7 +168,8 @@ function mapStateToProps(state, ownProps) {
         avator: state.auth.photoURL,
         isLoggedIn: state.auth.loggedIn,
         displayName: state.auth.displayName,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
+        lastLogin: state.lastLogin,
     }
 }
 export default connect(mapStateToProps)(Nav);

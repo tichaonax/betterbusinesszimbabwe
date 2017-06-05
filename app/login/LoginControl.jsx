@@ -12,9 +12,7 @@ export class LoginControl extends React.Component {
 
     onLogout = (e) => {
         e.preventDefault();
-        console.debug("start log out");
         this.props.dispatch(loginActions.startBbzLogout());
-        //this.props.closeNav;
     }
 
     render() {
