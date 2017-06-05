@@ -118,12 +118,12 @@ class Nav extends React.Component {
                         <div className="row row1">
                             {isLoggedIn && (
                                 <div className="pull-left">
-                                    <label className="nav-small-font">Welcome!&nbsp;</label>
+                                    {displayName && (<label className="nav-small-font">&nbsp;&nbsp;Welcome!&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{displayName}&nbsp;</label>
-                                    <label className="nav-small-font nav-color-yellow">({admin})&nbsp;</label>
-                                    <label className="nav-small-font">Member Since:&nbsp;</label>
+                                    {admin && (<label className="nav-small-font nav-color-yellow">({admin})&nbsp;</label>)}
+                                    {joinedAt && (<label className="nav-small-font">Member Since:&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{joinedAt}&nbsp;</label>
-                                    <label className="nav-small-font">Last Login:&nbsp;</label>
+                                    {lastLoginAt && (<label className="nav-small-font">Last Login:&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{lastLoginAt} </label>
                                 </div>
                                 )}
