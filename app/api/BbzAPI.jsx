@@ -3,7 +3,7 @@ var $ = require('jquery');
 
 module.exports = {
 
-    getFilteredUsers: function (userItems, searchText, uid = 0) {
+    getFilteredUsers: function (userItems, searchText) {
         //console.debug("searchText", searchText);
         //console.debug("userItems", userItems);
         var filteredUserItems = userItems;
@@ -12,23 +12,38 @@ module.exports = {
 
         if (searchText.length > 0) {
             filteredUserItems = filteredUserItems.filter((userItem) => {
-                const userProfile = userItem.userProfile;
+                var userProfile = userItem.userProfile;
+                console.debug("email", userProfile.email);
                 const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
                 const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
-               // const isAdmin = (userProfile.isAdmin) ? userProfile.isAdmin : false;
 
                 if (displayName.indexOf(searchText.toLowerCase()) > -1) {
-                    return userItem.displayName;
+                    return userProfile.displayName;
                 } else if (email.indexOf(searchText.toLowerCase()) > -1) {
-                    return userItem.email;
+                    return userProfile.email;
                 }else if (userItemId.indexOf(searchText) > -1) {
                     return userItem.userItemId;
-                } //else if (isAdmin.indexOf(searchText.toLowerCase()) > -1) {
-                //return userItem.isAdmin;
-               // }
+                }
             });
         }
+
+        //sort by with Admins first
+
+        filteredUserItems.sort((a, b) => {
+            if (!a.userProfile.isAdmin && b.userProfile.isAdmin) {
+                //take a first
+                return -1
+            } else if (a.userProfile.isAdmin && !b.userProfile.isAdmin) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+
 
         return (filteredUserItems);
     },

@@ -54,7 +54,7 @@ export class ReviewItem extends React.Component {
                                         {email}
                                         <span>&nbsp;</span>
                                     </div>)}
-                                <div className="review-block-date">{reviewDate}<br/>1 year ago</div>
+                                <div className="review-block-date">{reviewDate}<br/></div>
 
                                 {auth.loggedIn && (
                                     <form className="form-inline">

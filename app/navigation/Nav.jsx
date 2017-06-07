@@ -49,6 +49,7 @@ class Nav extends React.Component {
     }
 
     renderMenu(){
+        var {isLoggedIn} = this.props;
         return(
             <ul>
                 <li className="upper-links">
@@ -60,6 +61,13 @@ class Nav extends React.Component {
                     <IndexLink to="/companies" activeClassName="active" className="links" onClick={()=>this.closeNav()}
                                activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
                 </li>
+
+                {isLoggedIn && (
+                    <li className="upper-links">
+                        <Link to="/users" activeClassName="active" className="links" onClick={() => this.props.closeNav}
+                              activeStyle={{fontWeight: 'bold'}}>Users</Link>
+                    </li>
+                )}
 
                 <li className="upper-links">
                     <Link to="/about" activeClassName="active" className="links" onClick={()=>this.closeNav()}

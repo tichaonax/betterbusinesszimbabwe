@@ -18,6 +18,12 @@ export class CompanyItem extends React.Component {
     render() {
         var {userItemId, reviewCount, loggedInUser, userProfile, auth} = this.props;
 
+        var displayName = userProfile.displayName;
+
+        if (userProfile.displayName) {
+            displayName = userProfile.displayName.split('@')[0];
+        }
+
         var loginClass = "col-sm-9";
         if (auth.loggedIn) {
             loginClass = "col-sm-6";
@@ -44,7 +50,7 @@ export class CompanyItem extends React.Component {
 
                             <div className={loginClass}>
                                 <div className="review-block-title">
-                                    {userProfile.displayName}
+                                    {displayName}
                                 </div>
                                 {auth.loggedIn && loggedInUser &&  loggedInUser.isAdmin && (
                                 <div>
