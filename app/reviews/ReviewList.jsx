@@ -64,7 +64,7 @@ export class ReviewList extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{overflow: 'auto', maxHeight: 400, marginLeft: '2px', marginRight: '20px'}}>
+                    <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '2px', marginRight: '20px'}}>
                         <ReactList
                             itemRenderer={this.renderReviewItem}
                             length={this.state.reviews.length}
