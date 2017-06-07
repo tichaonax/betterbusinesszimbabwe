@@ -45,7 +45,7 @@ export class ReviewItem extends React.Component {
                     <div className="review-block">
                         <div className="row">
                             <div className="col-sm-4">
-                                <img src="http://dummyimage.com/60x60/666/ffffff&text=No+Image" className="img-rounded"/>
+                                <img src="images/no-image.png" className="img-rounded"/>
                                 <div className="review-block-name">{reviewer}</div>
                                 {auth.loggedIn && userProfile && userProfile.isAdmin && (
                                     <div className="review-block-name">

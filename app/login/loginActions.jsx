@@ -57,7 +57,9 @@ export var startBbzLogin = (provider) => {
             () => {
                 return dispatch(startLastLogin());
             }
-        )
+        ).catch((error)=>{
+            console.debug("firebase-login-error", error);
+        })
     };
 };
 

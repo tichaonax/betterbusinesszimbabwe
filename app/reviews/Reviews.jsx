@@ -14,13 +14,23 @@ export class Reviews extends React.Component {
     }
 
     loadData(props) {
+        var uid = props.location.query.user;
         var company = props.location.query.company;
-        if (company && company.length > 0) {
-            this.dispatch(searchActions.setSearchText(company));
-        }else{
-            this.dispatch(reviewsActions.startAddReviewItems());
-        }
 
+        console.debug("uid--", uid);
+        console.debug("company--", company);
+
+        if (company && company.length > 0) {
+            console.debug("searchActions.setSearchText(company)", company);
+            this.dispatch(searchActions.setSearchText(company));
+        } else if (uid && uid.length > 0) {
+            console.debug("searchActions.setSearchText(uid)", uid);
+            this.dispatch(searchActions.setSearchText(uid));
+        }
+        //else {
+        //    this.dispatch(reviewsActions.startAddReviewItems());
+        //}
+        this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
 
@@ -35,7 +45,7 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        // this.loadData(newProps);
+        //this.loadData(newProps);
         var {isLoggedIn, userProfile} = newProps;
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));

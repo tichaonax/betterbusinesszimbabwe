@@ -13,7 +13,8 @@ import Companies from 'Companies';
 import CompanyReviews from 'CompanyReviews';
 import Reviews from 'Reviews';
 import AddCompanyItem from 'AddCompanyItem';
-import Services from 'app/admin/services/Services';
+import Services from 'Services';
+import Users from 'Users';
 
 export default (
     <Router history={hashHistory}>
@@ -32,6 +33,7 @@ export default (
                 <Route path="services" component={Services}/>
                 <Route path="addreview" component={AddReview}/>
                 <Route path="addcompany" component={AddCompanyItem}/>
+                <Route path="users" component={Users}/>
             </Route>
         </Route>
     </Router>

@@ -2,6 +2,37 @@ var React = require('react');
 var $ = require('jquery');
 
 module.exports = {
+
+    getFilteredUsers: function (userItems, searchText, uid = 0) {
+        //console.debug("searchText", searchText);
+        //console.debug("userItems", userItems);
+        var filteredUserItems = userItems;
+
+        //filter by searchText
+
+        if (searchText.length > 0) {
+            filteredUserItems = filteredUserItems.filter((userItem) => {
+                const userProfile = userItem.userProfile;
+                const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
+                const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
+                const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
+               // const isAdmin = (userProfile.isAdmin) ? userProfile.isAdmin : false;
+
+                if (displayName.indexOf(searchText.toLowerCase()) > -1) {
+                    return userItem.displayName;
+                } else if (email.indexOf(searchText.toLowerCase()) > -1) {
+                    return userItem.email;
+                }else if (userItemId.indexOf(searchText) > -1) {
+                    return userItem.userItemId;
+                } //else if (isAdmin.indexOf(searchText.toLowerCase()) > -1) {
+                //return userItem.isAdmin;
+               // }
+            });
+        }
+
+        return (filteredUserItems);
+    },
+
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0) {
         //console.debug("searchText", searchText);
         //console.debug("showApprovalPending", showApprovalPending);
@@ -12,8 +43,6 @@ module.exports = {
         filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
             return companyItem.isApproved || showApprovalPending || companyItem.uid == uid
         });
-
-       // console.debug("1st-filteredCompanyItems", filteredCompanyItems);
 
         //filter by searchText
         //we want to also search by company description and others
@@ -79,6 +108,7 @@ module.exports = {
                 var review = reviewItem.review.toLowerCase();
                 var reviewId = reviewItem.createAt.toString();
                 var companyItemId = reviewItem.companyItemId;
+                var user = reviewItem.uid;
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.companyTitle;
@@ -88,6 +118,8 @@ module.exports = {
                     return reviewItem.createAt;
                 } else if (companyItemId.indexOf(searchText) > -1) {
                     return reviewItem.companyItemId;
+                }else if (user.indexOf(searchText) > -1) {
+                    return reviewItem.uid;
                 }
             });
         }

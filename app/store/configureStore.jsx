@@ -9,6 +9,7 @@ import {todoItemsReducer} from 'reducers';
 import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer';
 import {companyItemsReducer, companyOperationReducer, recentlyAddedCompanyReducer} from 'companiesItemsReducer';
 import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
+import {userItemsReducer} from 'usersItemsReducer';
 
 export var configure = (initialState = {}) => {
     var reducers = redux.combineReducers({
@@ -26,7 +27,8 @@ export var configure = (initialState = {}) => {
         companyOperation: companyOperationReducer,
         reviewItems: reviewItemsReducer,
         reviewOperation: reviewOperationReducer,
-        recentlyAddedCompany: recentlyAddedCompanyReducer
+        recentlyAddedCompany: recentlyAddedCompanyReducer,
+        userItems: userItemsReducer
     });
 
     const rootReducer = ( state, action ) => {

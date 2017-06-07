@@ -15,21 +15,8 @@ export class CompanyItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-    itemSizeGetter = (companyDesc) => {
-        var divHeight = 30;
-        if (companyDesc.length > 50) {
-            divHeight = 10 + Math.round((companyDesc.length / 60)) * 30
-        }
-        return divHeight;
-    }
-
     render() {
         var {serviceItemId, serviceCategory, uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
-
-        var divHeight = "50px";
-        if (companyDesc) {
-            divHeight = this.itemSizeGetter(companyDesc) + 'px';
-        }
 
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";

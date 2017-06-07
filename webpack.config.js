@@ -13,7 +13,7 @@ try {
 module.exports = {
     entry: [
         'script!jquery/dist/jquery.min.js',
-       /* '!style!css!bootstrap/dist/css/bootstrap.min.css',*/
+        /* '!style!css!bootstrap/dist/css/bootstrap.min.css',*/
         './app/app.jsx'
     ],
     externals: {
@@ -65,11 +65,12 @@ module.exports = {
             './app/search',
             './app/error',
             './app/url',
-            '.app/common'
+            '.app/common',
+            './app/users'
         ],
         alias: {
             app: 'app',
-            modules     : path.join(__dirname, "node_modules"),
+            modules: path.join(__dirname, "node_modules"),
             applicationStyles: 'app/styles/app.scss',
             loginActions: 'app/login/loginActions.jsx',
             loginReducers: 'app/login/LoginReducers.jsx',
@@ -87,6 +88,7 @@ module.exports = {
             companiesItemsReducer: 'app/companies/companiesReducers.jsx',
             reviewsActions: 'app/reviews/reviewsActions.jsx',
             reviewsItemsReducer: 'app/reviews/reviewsReducers.jsx',
+            usersItemsReducer: 'app/users/usersReducers.jsx',
             accountActions: 'app/account/accountActions.jsx',
             actions: 'app/actions/actions.jsx',
             reducers: 'app/reducers/reducers.jsx',
@@ -140,7 +142,7 @@ module.exports = {
     },
     sassLoader: {
         includePaths: [
-           /* path.resolve(__dirname, './node_modules/foundation-sites/scss')*/
+            /* path.resolve(__dirname, './node_modules/foundation-sites/scss')*/
         ]
     },
     devtool: process.env.NODE_ENV === 'production' ? undefined : 'cheap-module-eval-source-map'
