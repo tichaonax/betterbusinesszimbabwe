@@ -31,10 +31,10 @@ module.exports = {
         //sort by with Admins first
 
         filteredUserItems.sort((a, b) => {
-            if (!a.userProfile.isAdmin && b.userProfile.isAdmin) {
+            if (a.userProfile.isAdmin && !b.userProfile.isAdmin) {
                 //take a first
                 return -1
-            } else if (a.userProfile.isAdmin && !b.userProfile.isAdmin) {
+            } else if (!a.userProfile.isAdmin && b.userProfile.isAdmin) {
                 // take b first
                 return 1;
             } else {

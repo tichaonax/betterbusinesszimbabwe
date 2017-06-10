@@ -115,7 +115,9 @@ class Nav extends React.Component {
 
         var admin = "";
 
-        if(userProfile && userProfile.isAdmin){
+        if (userProfile && userProfile.isSuperUser) {
+            admin = "SuperUser";
+        } else if (userProfile && userProfile.isAdmin) {
             admin = "Admin";
         }
 

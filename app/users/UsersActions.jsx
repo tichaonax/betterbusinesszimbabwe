@@ -42,3 +42,39 @@ export var startAddUserItems = () => {
         });
     };
 };
+
+export var updateUserItem = (userItemId, updates) => {
+    return {
+        type: 'UPDATE_USER_ITEM',
+        userItemId,
+        updates
+    };
+};
+
+export var startToggleAdminUserItem = (userItemId, isAdmin) => {
+    return (dispatch, getState) => {
+        var userItemRef = firebaseRef.child(`users/${userItemId}/userProfile`);
+        var userProfile={};
+        return userItemRef.once('value').then((snapshot) => {
+            userProfile = snapshot.val() || {}; //return available data or empty object
+        }).then(()=>{
+            var updates = {isAdmin: isAdmin};
+            userProfile["isAdmin"] = isAdmin;
+            return userItemRef.update(updates).then(()=>{
+                return dispatch(updateUserItem(userItemId, {userProfile: userProfile}));
+            })
+        }).catch(
+            (error) => {
+                console.debug("Unable to update user admin status", error);
+                var errorObj = {
+                    errorCode: error.code,
+                    errorMessage: error.message
+                };
+                return dispatch(errorActions.bbzReportError(errorObj));
+            }
+        );
+    };
+};
+
+
+

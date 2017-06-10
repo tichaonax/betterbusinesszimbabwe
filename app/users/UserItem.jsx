@@ -29,8 +29,16 @@ export class CompanyItem extends React.Component {
             loginClass = "col-sm-6";
         }
 
-        return (
+        var approveImageSource = "images/like-64.png";
+        var approveMessage ="Make Admin";
 
+        if (userProfile.isAdmin) {
+            approveImageSource = "images/bbz_admin.png";
+            approveMessage ="Admin";
+        }
+
+
+        return (
             <div className="col-sm-12">
                 <form>
                     <div className="review-block">
@@ -46,6 +54,24 @@ export class CompanyItem extends React.Component {
                                     <Link to={`/reviews?user=${userItemId}`} activeClassName="active bbz-review-span"
                                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                                 </div>
+                                {auth.loggedIn && loggedInUser.isSuperUser && (
+                                    <div className="column">
+                                        <span className="bbz-review-span">{approveMessage}:</span>
+                                        <span>&nbsp;</span>
+                                        <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src={approveImageSource}
+                                             onClick={() => {
+                                                 this.dispatch(errorActions.bbzClearError());
+                                                 if (loggedInUser.isSuperUser) {
+                                                     this.dispatch(usersActions.startToggleAdminUserItem(userItemId,!userProfile.isAdmin));
+                                                 } else {
+                                                     var error = {};
+                                                     error.errorMessage = "You must be Super User to approve";
+                                                     this.dispatch(errorActions.bbzReportError(error));
+                                                     window.scrollTo(0, 0);
+                                                 }
+                                             }}/>
+                                    </div>
+                                )}
                             </div>
 
                             <div className={loginClass}>
