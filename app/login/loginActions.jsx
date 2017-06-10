@@ -177,9 +177,7 @@ export var startLastLogin = () => {
                     (snapshot) => {
                         var lastLogins = snapshot.val() || {};
 
-                        console.debug("lastLogins,", lastLogins);
                         const lastLoginsSize = Object.keys(lastLogins).length;
-                        console.debug("lastLoginsSize:", lastLoginsSize);
 
                         var parsedLastLogins = [];
 
@@ -202,12 +200,9 @@ export var startLastLogin = () => {
                         //we need to keep only two logins history
 
                         if (lastLoginsSize > 1) {
-                            //console.debug("We need to delete some lastLogins", lastLoginsSize);
                             for (var i = 0; i < (lastLoginsSize - 1); i++) {
                                 var deletItem = parsedLastLogins[i].id;
-                                //console.debug(`parsedLastLogins[${i}]`, deletItem);
                                 lastLoginRef.child(`${deletItem}`).remove().then(() => {
-                                   // console.debug("lastLogin removed:", deletItem);
                                 });
                             }
                         }
@@ -223,9 +218,6 @@ export var startLastLogin = () => {
                         const oldLogin = values[1];
                         console.debug("Promise.all-1", newLogin);
                         console.debug("Promise.all-2", oldLogin);
-                        //we must delete previous logins first
-
-
 
                         return lastLoginRef.push(newLogin).then(() => {
                             if (oldLogin.city) {
