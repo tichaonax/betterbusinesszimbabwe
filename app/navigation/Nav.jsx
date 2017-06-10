@@ -101,6 +101,10 @@ class Nav extends React.Component {
             lastLogin,
         } = this.props;
 
+        if (displayName) {
+            displayName = displayName.split('@')[0];
+        }
+
         var lastLoginAt = "";
 
         if (userProfile && lastLogin) {
