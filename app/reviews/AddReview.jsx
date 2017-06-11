@@ -15,10 +15,8 @@ export class AddReview extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
 
+        this.maxReviewCharacters = 300;
         this.state = {
             operation: 'ADD',
             companyItemId: null,
@@ -34,7 +32,6 @@ export class AddReview extends React.Component {
             isShowingModal: false,
             cancelOperation: false,
             remainingCharacters: null,
-            maxReviewCharacters: 300
         }
     }
 
@@ -121,7 +118,7 @@ export class AddReview extends React.Component {
 
             if (newProps.review && newProps.review.length > 0) {
                 this.setState({
-                    remainingCharacters: ((this.state.maxReviewCharacters - newProps.review.length) + ' remaining')
+                    remainingCharacters: ((this.maxReviewCharacters - newProps.review.length) + ' remaining')
                 });
             }
         }
@@ -254,8 +251,8 @@ export class AddReview extends React.Component {
         }
 
         if (review.length > 0) {
-            if (review.length > this.state.maxReviewCharacters) {
-                error.errorMessage = `Review comment exceeds maximum ${this.state.maxReviewCharacters} characters`;
+            if (review.length > this.maxReviewCharacters) {
+                error.errorMessage = `Review comment exceeds maximum ${this.maxReviewCharacters} characters`;
                 this.dispatch(errorActions.bbzReportError(error));
                 this.refs.review.focus();
                 return;
@@ -304,7 +301,7 @@ export class AddReview extends React.Component {
 
     onChangeReviewComment = (e) => {
         this.setState({review: e.target.value});
-        const textRemaining = this.state.maxReviewCharacters - e.target.value.length;
+        const textRemaining = this.maxReviewCharacters - e.target.value.length;
         this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
@@ -397,7 +394,7 @@ export class AddReview extends React.Component {
                             <div className="col-sm-6">
                                 <div className="form-group">
                                     <label htmlFor="sreview">Review Comment</label>
-                                    <textarea acceptCharset="UTF-8" maxLength={this.state.maxReviewCharacters}
+                                    <textarea acceptCharset="UTF-8" maxLength={this.maxReviewCharacters}
                                               className="form-control col-sm-4 well" rows="3"
                                               type="text" name="review" ref="review" value={this.state.review}
                                               placeholder="Review Comment" onChange={this.onChangeReviewComment}/>

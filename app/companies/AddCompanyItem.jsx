@@ -12,9 +12,8 @@ export class AddCompnayItem extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
+
+        this.maxCompanyCharacters = 300;
 
         this.state = {
             operation: 'ADD',
@@ -27,8 +26,7 @@ export class AddCompnayItem extends React.Component {
             rating: 0,
             remainingCharacters: null,
             cancelOperation: false,
-            isShowingModal: false,
-            maxCompanyCharacters: 300
+            isShowingModal: false
         }
     }
 
@@ -67,8 +65,7 @@ export class AddCompnayItem extends React.Component {
     componentWillReceiveProps(nextProps) {
 
         this.setState({
-            operation: nextProps.companyOperation.operation,
-            maxCompanyCharacters: 300
+            operation: nextProps.companyOperation.operation
         });
 
         if (nextProps.companyOperation.data) {
@@ -84,7 +81,7 @@ export class AddCompnayItem extends React.Component {
 
             if (newProps.companyDesc && newProps.companyDesc.length > 0) {
                 this.setState({
-                    remainingCharacters: ((this.state.maxCompanyCharacters - newProps.companyDesc.length) + ' remaining')
+                    remainingCharacters: ((this.maxCompanyCharacters - newProps.companyDesc.length) + ' remaining')
                 });
             }
         }
@@ -247,7 +244,7 @@ export class AddCompnayItem extends React.Component {
 
     onChangeCompanyDesc = (e) => {
         this.setState({companyDesc: e.target.value});
-        const textRemaining = this.state.maxCompanyCharacters - e.target.value.length;
+        const textRemaining = this.maxCompanyCharacters - e.target.value.length;
         this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
@@ -349,7 +346,7 @@ export class AddCompnayItem extends React.Component {
                                     <label htmlFor="sdescription">Company Description</label>
                                     <textarea type="text" name="companyDesc" ref="companyDesc" acceptCharset="UTF-8"
                                               className="form-control col-sm-4 well" rows="3"
-                                              maxLength={this.state.maxCompanyCharacters}
+                                              maxLength={this.maxCompanyCharacters}
                                               value={this.state.companyDesc}
                                               placeholder="Company Description" onChange={this.onChangeCompanyDesc}/>
                                     <h6 className="pull-right">{this.state.remainingCharacters}</h6>
