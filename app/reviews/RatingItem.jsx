@@ -35,6 +35,8 @@ export class RatingItem extends React.Component {
                     allowHalf
                     value={rating}
                 />
+                    <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                          activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
 
                 {showCompanyTitle == true && (
                     <div className="review-block-title">
