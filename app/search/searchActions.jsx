@@ -27,4 +27,11 @@ export var setSearchButton = (showButton) => {
         showButton
     };
 };
+
+export var setMyReviews = (showMyReviews) => {
+    return {
+        type: 'SET_MY_REVIEWS',
+        showMyReviews
+    };
+};
 //</editor-fold>

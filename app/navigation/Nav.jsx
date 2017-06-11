@@ -49,9 +49,14 @@ class Nav extends React.Component {
     }
 
     renderMenu(){
-        var {isLoggedIn} = this.props;
+        var {isLoggedIn, userProfile, auth} = this.props;
         return(
             <ul>
+                {isLoggedIn &&(
+                <li className="upper-links">
+                    <Link to={`/myreviews?user=${auth.uid}&myreviews=true`} activeClassName="active" className="links" onClick={()=>this.closeNav()}
+                          activeStyle={{fontWeight: 'bold'}}>My Reviews</Link>
+                </li>)}
                 <li className="upper-links">
                     <Link to="/reviews" activeClassName="active" className="links" onClick={()=>this.closeNav()}
                           activeStyle={{fontWeight: 'bold'}}>Reviews</Link>

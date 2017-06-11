@@ -16,6 +16,7 @@ export class Reviews extends React.Component {
     loadData(props) {
         var uid = props.location.query.user;
         var company = props.location.query.company;
+        var myreviews = props.location.query.myreviews;
 
         //console.debug("uid--", uid);
         //console.debug("company--", company);
@@ -24,7 +25,10 @@ export class Reviews extends React.Component {
             console.debug("searchActions.setSearchText(company)", company);
             this.dispatch(searchActions.setSearchText(company));
         } else if (uid && uid.length > 0) {
-            console.debug("searchActions.setSearchText(uid)", uid);
+            if (myreviews == 'true') {
+                this.dispatch(searchActions.setMyReviews(true));
+            }
+            //console.debug("searchActions.setSearchText(uid)", uid);
             this.dispatch(searchActions.setSearchText(uid));
         }
         //else {
@@ -35,6 +39,7 @@ export class Reviews extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(searchActions.setMyReviews(false));
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.dispatch(searchActions.setSearchButton(false));

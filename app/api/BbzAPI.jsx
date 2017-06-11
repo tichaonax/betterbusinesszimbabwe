@@ -103,7 +103,7 @@ module.exports = {
         return (filteredCompanyItems);
     },
 
-    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, uid=0) {
+    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, uid = 0, showMyReviews = false) {
         //console.debug("reviewItems", reviewItems);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredreviewItems = reviewItems;
@@ -113,6 +113,14 @@ module.exports = {
         filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
             return reviewItem.isApproved || showApprovalPending || reviewItem.uid == uid
         });
+
+        if(showMyReviews){
+            //just get the reviews of the logged user
+            filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
+                return reviewItem.uid == uid
+            });
+        }
+
 
         //filter by searchText
         //we want to also search by review description

@@ -34,6 +34,7 @@ export default (
                 <Route path="addreview" component={AddReview}/>
                 <Route path="addcompany" component={AddCompanyItem}/>
                 <Route path="users" component={Users}/>
+                <Route path="myreviews" component={Reviews}/>
             </Route>
         </Route>
     </Router>

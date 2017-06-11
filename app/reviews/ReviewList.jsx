@@ -26,14 +26,14 @@ export class ReviewList extends React.Component {
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid);
+            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
         } else {
             var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = this.props;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid);
+            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
         }
 
         this.setState({
