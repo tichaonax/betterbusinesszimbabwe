@@ -8,9 +8,6 @@ export class AddServiceItem extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
 
         this.state = {
             operation: 'ADD',
@@ -27,7 +24,6 @@ export class AddServiceItem extends React.Component {
             dispatch(servicesActions.setAddServiceOperation());
         }
     }
-
 
     componentWillReceiveProps(nextProps) {
 
