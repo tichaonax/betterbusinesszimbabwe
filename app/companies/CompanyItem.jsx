@@ -16,7 +16,7 @@ export class CompanyItem extends React.Component {
     }
 
     render() {
-        var {serviceItemId, serviceCategory, uid, userProfile, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
+        var {serviceItemId, serviceCategory, uid, loggedInUser, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
 
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";
@@ -56,7 +56,7 @@ export class CompanyItem extends React.Component {
                                                      }}
                                                      onClick={() => {
                                                          this.dispatch(errorActions.bbzClearError());
-                                                         if (userProfile.isAdmin) {
+                                                         if (loggedInUser.isAdmin) {
                                                              this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
                                                          } else {
                                                              var error = {};
@@ -81,7 +81,7 @@ export class CompanyItem extends React.Component {
                                                      }}
                                                      onClick={() => {
                                                          this.dispatch(errorActions.bbzClearError());
-                                                         if (auth.uid === uid || userProfile.isAdmin) {
+                                                         if (auth.uid === uid || loggedInUser.isAdmin) {
                                                              var data = {
                                                                  uid,
                                                                  companyItemId,
@@ -104,7 +104,7 @@ export class CompanyItem extends React.Component {
                                                          }
                                                      }}/>
                                             </div>
-                                {userProfile && userProfile.isAdmin && (
+                                {loggedInUser && loggedInUser.isAdmin && (
                                     <div>
                                         <span className="bbz-review-span">{approveMessage}:</span>
                                         <span>&nbsp;</span>
@@ -113,7 +113,7 @@ export class CompanyItem extends React.Component {
                                              src={approveImageSource}
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
-                                                 if (userProfile.isAdmin) {
+                                                 if (loggedInUser.isAdmin) {
                                                      this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyItemId, !isApproved));
                                                  } else {
                                                      var error = {};
@@ -154,7 +154,13 @@ export class CompanyItem extends React.Component {
                                     <span className="label bbz-review-span">ID:</span>
                                     <span>&nbsp;</span>{companyId}
                                 </div>
-                                {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
+                                    <div>
+                                        <span className="label bbz-review-span">Company ID:</span>
+                                        <span>&nbsp;</span>
+                                        {companyItemId}
+                                    </div>)}
+                                {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
                                     <div>
                                         <Link to={`/users?uid=${uid}`} activeClassName="active"
                                               activeStyle={{fontWeight: 'bold'}}>Reviewer</Link>
@@ -183,7 +189,7 @@ export class CompanyItem extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         auth: state.auth,
-        userProfile: state.userProfile,
+        loggedInUser: state.userProfile,
     }
 }
 export default  connect(mapStateToProps)(CompanyItem);

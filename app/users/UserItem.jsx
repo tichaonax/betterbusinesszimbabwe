@@ -78,9 +78,9 @@ export class CompanyItem extends React.Component {
                                 <div className="review-block-title">
                                     {displayName}
                                 </div>
-                                {auth.loggedIn && loggedInUser &&  loggedInUser.isAdmin && (
+                                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
                                 <div>
-                                    <span className="label bbz-review-span">ID:</span>
+                                    <span className="label bbz-review-span">UserID:</span>
                                     <span>&nbsp;</span>
                                     {userItemId}
                                 </div>)}

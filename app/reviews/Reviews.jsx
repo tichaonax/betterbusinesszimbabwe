@@ -17,8 +17,8 @@ export class Reviews extends React.Component {
         var uid = props.location.query.user;
         var company = props.location.query.company;
 
-        console.debug("uid--", uid);
-        console.debug("company--", company);
+        //console.debug("uid--", uid);
+        //console.debug("company--", company);
 
         if (company && company.length > 0) {
             console.debug("searchActions.setSearchText(company)", company);

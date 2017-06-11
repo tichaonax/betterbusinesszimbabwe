@@ -15,8 +15,14 @@ export class ReviewItem extends React.Component {
     }
 
 
-    renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId) => {
-        return (<RatingItem rating={rating} review={review} companyItemId={companyItemId} companyTitle={companyTitle} showCompanyTitle={showCompanyTitle} reviewId={reviewId}/>);
+    renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId) => {
+        return (<RatingItem rating={rating}
+                            review={review}
+                            companyItemId={companyItemId}
+                            companyTitle={companyTitle}
+                            showCompanyTitle={showCompanyTitle}
+                            reviewId={reviewId}
+                            reviewItemId={reviewItemId}/>);
     }
 
     render() {
@@ -133,7 +139,7 @@ export class ReviewItem extends React.Component {
                                 )}
                             </div>
                             <div className="col-sm-8">
-                                {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId)}
+                                {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId)}
                             </div>
                         </div>
                     </div>

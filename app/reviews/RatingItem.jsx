@@ -18,7 +18,7 @@ export class RatingItem extends React.Component {
         return str.split(/\s+/).slice(0, 5).join(" ") + " ...";
     }
 
-    renderRatingItem = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId) => {
+    renderRatingItem = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth, reviewItemId) => {
 
         const reviewHeader = this.getWords(review);
 
@@ -47,6 +47,12 @@ export class RatingItem extends React.Component {
                     <span>&nbsp;</span>
                     {reviewId}
                 </div>
+                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
+                    <div>
+                        <span className="label bbz-review-span">Review ID:</span>
+                        <span>&nbsp;</span>
+                        {reviewItemId}
+                    </div>)}
                 <div className="review-block-description">
                     <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
                         {review}
@@ -57,27 +63,21 @@ export class RatingItem extends React.Component {
     }
 
     render() {
-        var {showCompanyTitle, displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview, reviewId} = this.props;
-
-        var reviewer = displayName;
-
-        if (displayName) {
-            reviewer = displayName.split('@')[0];
-        }
-
-        var approveImageSource = "images/like-64.png";
-        var approveMessage ="Approval Pending";
-
-        if (isApproved) {
-            approveImageSource = "images/check-blue-64.png";
-            approveMessage ="Approved";
-        }
-
-        const reviewDate = moment.unix(createAt).format('MMM Do, YYYY');
+        var {showCompanyTitle,
+            displayName,
+            email, uid,
+            companyTitle,
+            companyItemId,
+            loggedInUser,
+            reviewItemId,
+            review, rating,
+            isApproved, createAt,
+            updateAt, auth, deleteReview,
+            updateReview, reviewId} = this.props;
 
         return (
             <div>
-                {this.renderRatingItem(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId)}
+                {this.renderRatingItem(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth, reviewItemId)}
             </div>
 
         );
@@ -87,7 +87,7 @@ export class RatingItem extends React.Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        userProfile: state.userProfile
+        loggedInUser: state.userProfile
     }
 }
 export default  connect(mapStateToProps)(RatingItem);
