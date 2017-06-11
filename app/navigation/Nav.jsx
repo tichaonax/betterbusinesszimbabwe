@@ -26,10 +26,6 @@ class Nav extends React.Component {
         return (<LoginControl closeNav={this.closeNav.bind(this)}/>);
     }
 
-    renderLoginStats() {
-        return (<LoginStatus closeNav={this.closeNav.bind(this)}/>);
-    }
-
     openNav() {
         this.setState({
             sideNav: {
@@ -49,7 +45,7 @@ class Nav extends React.Component {
     }
 
     renderMenu(){
-        var {isLoggedIn, userProfile, auth} = this.props;
+        var {isLoggedIn, auth} = this.props;
         return(
             <ul>
                 {isLoggedIn &&(
