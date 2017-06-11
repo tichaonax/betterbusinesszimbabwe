@@ -1,6 +1,7 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
+var usersActions = require('usersActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -54,6 +55,10 @@ export var addReviewItems = (reviewItems) => {
         reviewItems
     };
 };
+
+export var startAddReviewItem = (reviewItemId) => {
+
+}
 
 export var startAddReviewItems = () => {
     return (dispatch, getState) => {
@@ -144,8 +149,7 @@ export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId)
     };
 };
 
-
-export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItemId) => {
+export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItemId, uid) => {
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`);
 
@@ -159,7 +163,9 @@ export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItem
             () => {
                 return dispatch(recalculateCompanyReview(companyItemId));
             }
-        ).catch(
+        ).then(()=>{
+            return dispatch(recalculateUserReviewCount(uid, isApproved))
+        }).catch(
             (error) => {
 
                 console.debug("Unable to update review", error);
@@ -188,6 +194,45 @@ export var setUpdateReviewOperation = (data, operation = 'UPDATE') => {
         operation
     };
 };
+export var recalculateUserReviewCount = (userItemId, isApproved) => {
+    return (dispatch, getState) => {
+        var userItemRef = firebaseRef.child(`users/${userItemId}`);
+        return userItemRef.once('value').then((snapshot) => {
+            var user = snapshot.val() || {};
+            //console.debug("user", user);
+            return (user);
+        }).then(
+            (user) => {
+                if (user) {
+                    //we want to update review count based on the isApproved flag
+                    var newReviewCount = 0;
+
+                    if (user.reviewCount) {
+                        newReviewCount = user.reviewCount;
+                    }
+
+                    if (isApproved) {
+                        newReviewCount = newReviewCount + 1;
+                    } else {
+                        newReviewCount = newReviewCount - 1;
+                    }
+
+                    if (newReviewCount < 0) {
+                        newReviewCount = 0;
+                    }
+
+                    var updates = {
+                        reviewCount: newReviewCount
+                    };
+
+                    return userItemRef.update(updates).then(() => {
+                        dispatch(usersActions.updateUserItem(userItemId, updates))
+                    })
+                }
+            }
+        );
+    }
+}
 
 export var recalculateCompanyReview = (companyItemId) => {
     return (dispatch, getState) => {
@@ -208,8 +253,8 @@ export var recalculateCompanyReview = (companyItemId) => {
             (reviews) => {
 
                 //we want to update the company affected based on currently approved reviews
-                console.debug("Need to sumu all reviews of companyItemId", companyItemId);
-                console.debug("Company reviews:", reviews);
+                //console.debug("Need to sum up all reviews of companyItemId", companyItemId);
+                //console.debug("Company reviews:", reviews);
 
                 var ratingsTotal = 0;
                 var newReviewCount = 0;
@@ -228,9 +273,8 @@ export var recalculateCompanyReview = (companyItemId) => {
                     newRating = Math.round(ratingsTotal / newReviewCount * 2) / 2;
                 }
 
-                console.debug("Company reviews found:", newReviewCount);
-                console.debug("Company new rating:", newRating);
-
+                //console.debug("Company reviews found:", newReviewCount);
+                //console.debug("Company new rating:", newRating);
 
                 var updates = {
                     rating: newRating,
