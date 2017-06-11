@@ -56,10 +56,6 @@ export var addReviewItems = (reviewItems) => {
     };
 };
 
-export var startAddReviewItem = (reviewItemId) => {
-
-}
-
 export var startAddReviewItems = () => {
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews`);
@@ -194,6 +190,7 @@ export var setUpdateReviewOperation = (data, operation = 'UPDATE') => {
         operation
     };
 };
+
 export var recalculateUserReviewCount = (userItemId, isApproved) => {
     return (dispatch, getState) => {
         var userItemRef = firebaseRef.child(`users/${userItemId}`);
