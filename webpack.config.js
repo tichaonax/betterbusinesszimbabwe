@@ -73,7 +73,7 @@ module.exports = {
             modules: path.join(__dirname, "node_modules"),
             applicationStyles: 'app/styles/app.scss',
             loginActions: 'app/login/loginActions.jsx',
-            loginReducers: 'app/login/LoginReducers.jsx',
+            loginReducers: 'app/login/loginReducers.jsx',
             errorActions: 'app/error/errorActions.jsx',
             errorReducers: 'app/error/errorReducers.jsx',
             searchActions: 'app/search/searchActions.jsx',
