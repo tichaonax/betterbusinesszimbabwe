@@ -88,7 +88,7 @@ module.exports = {
             companiesItemsReducer: 'app/companies/companiesReducers.jsx',
             reviewsActions: 'app/reviews/reviewsActions.jsx',
             reviewsItemsReducer: 'app/reviews/reviewsReducers.jsx',
-            usersActions: 'app/users/users/UsersActions',
+            usersActions: 'app/users/UsersActions',
             usersItemsReducer: 'app/users/usersReducers.jsx',
             accountActions: 'app/account/accountActions.jsx',
             actions: 'app/actions/actions.jsx',
