@@ -17,13 +17,19 @@ module.exports = {
                 const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
                 const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
+                const providerId = (userProfile.providerId) ? userProfile.providerId.toLowerCase() : "";
+                const userId = (userProfile.userId) ? userProfile.userId.toLowerCase() : "";
 
                 if (displayName.indexOf(searchText.toLowerCase()) > -1) {
                     return userProfile.displayName;
                 } else if (email.indexOf(searchText.toLowerCase()) > -1) {
                     return userProfile.email;
-                }else if (userItemId.indexOf(searchText) > -1) {
+                } else if (userItemId.indexOf(searchText) > -1) {
                     return userItem.userItemId;
+                }else if (providerId.indexOf(searchText) > -1) {
+                    return userProfile.providerId;
+                } else if (userId.indexOf(searchText) > -1) {
+                    return userProfile.userId;
                 }
             });
         }
