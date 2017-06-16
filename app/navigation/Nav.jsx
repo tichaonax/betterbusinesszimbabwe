@@ -45,7 +45,7 @@ class Nav extends React.Component {
     }
 
     renderMenu(){
-        var {isLoggedIn, auth} = this.props;
+        var {isLoggedIn, userProfile, auth} = this.props;
         return(
             <ul>
                 {isLoggedIn &&(
@@ -70,23 +70,37 @@ class Nav extends React.Component {
                     </li>
                 )}
 
-                <li className="upper-links">
-                    <Link to="/about" activeClassName="active" className="links" onClick={()=>this.closeNav()}
-                          activeStyle={{fontWeight: 'bold'}}>About</Link>
-                </li>
-
-                <li className="upper-links">
+               {/* <li className="upper-links">
                     {this.renderAdminNavigation()}
-                </li>
+                </li>*/}
 
                 <li className="upper-links">
                     {this.renderLoginControl()}
                 </li>
-                <li className="upper-links dropdown"><a className="links" href="/" onClick={()=>this.closeNav()}>Dropdown</a>
+                {isLoggedIn && userProfile && userProfile.isSuperUser && (
+                    <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>SuperUser</a>
+                        <div className="dropdown-menu">
+                            <div className="profile-div">
+                                <Link to="/adminusers" activeClassName="active" className="profile-links" onClick={() => this.closeNav()}
+                                      activeStyle={{fontWeight: 'bold'}}>Admin Users</Link>
+                            </div>
+                        </div>
+                    </li>)}
+                {isLoggedIn && userProfile && userProfile.isAdmin && (
+                <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Admin</a>
                     <div className="dropdown-menu">
+                        {this.renderAdminNavigation()}
+                    </div>
+                </li>)}
+                <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Dropdown</a>
+                    <div className="dropdown-menu">
+                        {/*<div className="profile-div">
+                         <Link to="/weather" activeClassName="active" className="profile-links" onClick={()=>this.closeNav()}
+                         activeStyle={{fontWeight: 'bold'}}>Weather</Link>
+                         </div>*/}
                         <div className="profile-div">
-                            <Link to="/weather" activeClassName="active" className="profile-links" onClick={()=>this.closeNav()}
-                                  activeStyle={{fontWeight: 'bold'}}>Weather</Link>
+                            <Link to="/about" activeClassName="active" className="profile-links" onClick={() => this.closeNav()}
+                                  activeStyle={{fontWeight: 'bold'}}>About</Link>
                         </div>
                     </div>
                 </li>

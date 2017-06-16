@@ -20,6 +20,9 @@ store.dispatch(searchActions.setSearchText(""));
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         console.debug("subscribed user:", user);
+        console.debug("providerId:", user.providerData[0].providerId);
+        console.debug("email:", user.providerData[0].email);
+        console.debug("userId:", user.providerData[0].uid);
         //console.debug("getState",store.getState());
         //console.debug("getState.redirectUrl", store.getState().redirectUrl);
         var displayName = user.email;

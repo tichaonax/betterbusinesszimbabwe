@@ -18,19 +18,36 @@ export var bbzLogin = (auth) => {
 
 //<editor-fold desc="Provider Login">
 
+function isUserProfileUpdateNeeded(getState, gAuth) {
+    if (gAuth.email != getState().userProfile.email ||
+        gAuth.providerId != getState().userProfile.providerId ||
+        gAuth.userId != getState().userProfile.userId ||
+        gAuth.displayName != getState().userProfile.displayName) {
+        return (true);
+    } else {
+        return (false);
+    }
+}
+
+
 export var startBbzLogin = (provider) => {
     var gAuth;
     return (dispatch, getState) => {
         return firebase.auth().signInWithPopup(provider).then((result) => {
             console.debug("Auth worked!", result);
 
+            let user = result.user;
+
             gAuth = {
-                uid: result.user.uid,
-                displayName: result.user.displayName,
-                email: result.user.email,
-                photoURL: result.user.photoURL,
-                loggedIn: true
+                uid: user.uid,
+                displayName: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+                loggedIn: true,
+                providerId: user.providerData[0].providerId,
+                userId: user.providerData[0].uid
             };
+
             console.debug("Auth data!", gAuth);
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
@@ -48,7 +65,11 @@ export var startBbzLogin = (provider) => {
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
+                        }
+
+                        if (isUserProfileUpdateNeeded(getState, gAuth)) {
+                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
                         }
                     }
                 )
@@ -72,13 +93,16 @@ export var startBbzEmailLogin = (email, password) => {
     return (dispatch, getState) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
+            let user = result.user;
 
             gAuth = {
-                uid: result.uid,
+                uid: user.uid,
                 displayName: email,
-                email: result.email,
+                email: user.email,
                 photoURL: null,
                 loggedIn: true,
+                providerId: user.providerData[0].providerId,
+                userId: user.providerData[0].uid
             };
 
             console.debug("Auth data!", gAuth);
@@ -99,7 +123,11 @@ export var startBbzEmailLogin = (email, password) => {
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
+                        }
+
+                        if (isUserProfileUpdateNeeded(getState, gAuth)) {
+                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
                         }
                     }
                 )

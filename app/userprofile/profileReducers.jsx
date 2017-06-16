@@ -13,6 +13,11 @@ export var userProfileReducer = (state = null, action) => {
                     ...action.lastLoginInfo
                 }
             }
+        case 'UPDATE_USER_PROFILE':
+            return {
+                ...state,
+                ...action.updates
+            }
         default:
             return state;
     };

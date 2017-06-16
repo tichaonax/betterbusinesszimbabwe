@@ -31,12 +31,21 @@ class About extends React.Component {
                                                target="_blank">GitHub</a> - This codebase is
                                             stored in GitHub.
                                         </li>
-                                        <li>
+                                        {/*<li>
                                             <a href="http://www.openweathermap.org/" target="_blank">Open Weather
                                                 Map</a> - I used Open Weather
                                             Map to search
                                             for weather by city name.
+                                        </li>*/}
+
+                                        <li>
+                                            <a href="https://firebase.google.com/" target="_blank">Firebase</a> - Firebase helps you build better mobile apps and grow your business.
                                         </li>
+                                        <li>
+                                            <a href="https://certbot.eff.org/"
+                                               target="_blank">Certbot</a> - Automatically enable HTTPS on your website with EFF's Certbot.
+                                        </li>
+
                                     </ol>
                                 </div>
                             </div>

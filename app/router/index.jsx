@@ -21,7 +21,6 @@ export default (
         <Route path="/" component={Main}>
             <Route path="about" component={About}/>
             <Route path="login" component={BbzLogin}/>
-            <Route path="weather" component={Weather}/>
             <Route path="companies" component={Companies}/>
             <Route path="reviews" component={Reviews}/>
             <Route path="emaillogin" component={BbzPasswordLogin}/>

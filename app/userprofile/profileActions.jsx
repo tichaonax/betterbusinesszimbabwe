@@ -16,6 +16,13 @@ export var resetUserProfile = () => {
     };
 };
 
+export var updateUserProfile = (profileUpdates) => {
+    return {
+        type: 'UPDATE_USER_PROFILE',
+        profileUpdates
+    };
+};
+
 export var startSetUserProfile = () => {
     return (dispatch, getState) => {
         var uid = getState().auth.uid;
@@ -36,14 +43,16 @@ export var addUserProfile = (profile) => {
 };
 
 
-export var startAddUserProfile = (email, displayName) => {
+export var startAddUserProfile = (email, displayName, providerId, userId) => {
     console.log("Start Add User Profile!");
     return (dispatch, getState) => {
         var profile = {
-            displayName: displayName,
-            email: email,
+            displayName,
+            email,
             createDate: moment().unix(),
-            isAdmin: false
+            isAdmin: false,
+            providerId,
+            userId
         }
 
         var uid = getState().auth.uid;
@@ -54,4 +63,36 @@ export var startAddUserProfile = (email, displayName) => {
         )
     };
 };
+
+export var startUpdateUserProfile = (userItemId, email, displayName, providerId, userId) => {
+    return (dispatch, getState) => {
+        var userItemRef = firebaseRef.child(`users/${userItemId}/userProfile`);
+        var userProfile={};
+        return userItemRef.once('value').then((snapshot) => {
+            userProfile = snapshot.val() || {}; //return available data or empty object
+        }).then(()=>{
+            var updates = {
+                email,
+                providerId,
+                userId
+            };
+            userProfile["email"] = email;
+            userProfile["providerId"] = providerId;
+            userProfile["userId"] = userId;
+
+            return userItemRef.update(updates).then(()=>{
+                return dispatch(updateUserProfile({userProfile: userProfile}));
+            })
+        }).catch(
+            (error) => {
+                console.debug("Unable to update user admin status", error);
+                var errorObj = {
+                    errorCode: error.code,
+                    errorMessage: error.message
+                };
+                return dispatch(errorActions.bbzReportError(errorObj));
+            }
+        );
+    };
+}
 //</editor-fold>

@@ -13,10 +13,9 @@ export class AdminNavigation extends React.Component {
             return (
                 <div>
                     {isLoggedIn && userProfile && userProfile.isAdmin && (
-                        <Link to="/services" activeClassName="active" className="links"
+                        <Link to="/services" activeClassName="active" className="profile-links"
                               onClick={() => this.props.closeNav}
                               activeStyle={{fontWeight: 'bold'}}>Services</Link>)}
-
                 </div>
             );
 
