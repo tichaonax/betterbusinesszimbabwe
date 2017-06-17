@@ -22,7 +22,7 @@ export class Services extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        console.debug("newProps", newProps.searchOptions);
+        //console.debug("newProps", newProps.searchOptions);
         this.setState({
             loaded: !newProps.searchOptions.loading
         });
