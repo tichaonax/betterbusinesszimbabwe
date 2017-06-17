@@ -26,6 +26,7 @@ export class Avator extends React.Component {
                 } else {
                     return (
                         <div>
+                            <img src="images/no-image.png" alt="Smiley face" height="43" width="43" className="img-rounded"/>
                             <p className="nav-profile__subtext">
                             </p>
                         </div>

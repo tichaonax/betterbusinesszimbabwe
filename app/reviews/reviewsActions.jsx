@@ -12,7 +12,7 @@ export var addReviewItem = (reviewItem) => {
     };
 };
 
-export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyTitle, displayName, email) => {
+export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyTitle, displayName, email, photoURL) => {
     return (dispatch, getState) => {
         var reviewItem = {
             uid: uid,
@@ -24,7 +24,8 @@ export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyT
             updateAt: null,
             isApproved: false,
             displayName: displayName,
-            email: email
+            email: email,
+            photoURL: photoURL
         }
 
         //This will add a mew review item to firebase and dispatch the newly created
@@ -115,7 +116,7 @@ export var updateReviewItem = (reviewItemId, updates) => {
     };
 };
 
-export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId) => {
+export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId, photoURL) => {
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`); //ES6 syntax
 
@@ -123,7 +124,8 @@ export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId)
             updateAt: moment().unix(),
             review: review,
             rating: rating,
-            isApproved: false
+            isApproved: false,
+            photoURL: photoURL
         };
 
         return reviewItemRef.update(updates).then(() => {

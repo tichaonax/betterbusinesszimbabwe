@@ -208,6 +208,17 @@ export class AddReview extends React.Component {
         });
     }
 
+    getReviewerAvatar = () => {
+        var {auth} = this.props;
+        let photoURL = "images/no-image.png";
+
+        if (auth.photoURL && auth.uid == this.state.uid) {
+            //console.debug("We have a photoUrl Match");
+            photoURL = auth.photoURL;
+        }
+        return (photoURL);
+    }
+
     handleCancel = (e) => {
         e.preventDefault();
         this.resetInputs();
@@ -228,7 +239,8 @@ export class AddReview extends React.Component {
             this.state.reviewItemId,
             this.state.review,
             this.state.rating,
-            this.state.companyItemId
+            this.state.companyItemId,
+            this.getReviewerAvatar()
         ));
 
         this.resetInputs();
@@ -284,7 +296,8 @@ export class AddReview extends React.Component {
             this.state.rating,
             this.state.selectedCompanyTitle,
             userProfile.displayName,
-            userProfile.email
+            userProfile.email,
+            this.getReviewerAvatar()
         ));
 
         this.resetInputs();

@@ -26,7 +26,13 @@ export class ReviewItem extends React.Component {
     }
 
     render() {
-        var {showCompanyTitle, displayName, email, uid, companyTitle, companyItemId, userProfile, reviewItemId, review, rating, isApproved, createAt, updateAt, auth, deleteReview, updateReview} = this.props;
+        var {
+            showCompanyTitle,
+            displayName, email, uid,
+            companyTitle, companyItemId,
+            userProfile, reviewItemId, review,
+            rating, isApproved, createAt, updateAt,
+            auth, deleteReview, updateReview, photoURL} = this.props;
 
         var reviewer = displayName;
 
@@ -35,11 +41,11 @@ export class ReviewItem extends React.Component {
         }
 
         var approveImageSource = "images/like-64.png";
-        var approveMessage ="Approval Pending";
+        var approveMessage = "Approval Pending";
 
         if (isApproved) {
             approveImageSource = "images/check-blue-64.png";
-            approveMessage ="Approved";
+            approveMessage = "Approved";
         }
 
         const reviewId = createAt;
@@ -47,49 +53,50 @@ export class ReviewItem extends React.Component {
         const reviewDate = moment.unix(createAt).format('MMM Do, YYYY');
 
         return (
-                <div className="col-sm-12">
-                    <div className="review-block">
-                        <div className="row">
-                            <div className="col-sm-4">
-                                <img src="images/no-image.png" className="img-rounded"/>
-                                <div className="review-block-name">{reviewer}</div>
-                                {auth.loggedIn && userProfile && userProfile.isAdmin && (
-                                    <div className="review-block-name">
-                                        <span className="bbz-review-span">Email:</span>
-                                        <span>&nbsp;</span>
-                                        {email}
-                                        <span>&nbsp;</span>
-                                    </div>)}
-                                <div className="review-block-date">{reviewDate}<br/></div>
+            <div className="col-sm-12">
+                <div className="review-block">
+                    <div className="row">
+                        <div className="col-sm-4">
+                            <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
+                            <div className="review-block-name">{reviewer}</div>
+                            {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                                <div className="review-block-name">
+                                    <span className="bbz-review-span">Email:</span>
+                                    <span>&nbsp;</span>
+                                    {email}
+                                    <span>&nbsp;</span>
+                                </div>)}
+                            <div className="review-block-date">{reviewDate}<br/></div>
 
-                                {((auth.loggedIn && userProfile && userProfile.isAdmin) || (auth.uid === uid)) && (
-                                    <form className="form-inline">
-                                        {(auth.loggedIn && userProfile && userProfile.isAdmin) && (
-                                            <div className="form-group">
-                                                <span className="bbz-review-span">Delete:</span>
-                                                <span>&nbsp;</span>
-                                                <img className="bbz-general-pointer" type="image" value="submit"
-                                                     height="15"
-                                                     width="15" src="images/delete-blue-x-64.png"
-                                                     alt="Delete Review"
-                                                     onMouseOver={() => {
-                                                         ReactTooltip.show(findDOMNode(deleteReview));
-                                                     }}
-                                                     onMouseOut={() => {
-                                                         ReactTooltip.hide(findDOMNode(deleteReview));
-                                                     }}
-                                                     onClick={() => {
-                                                         if (userProfile && userProfile.isAdmin) {
-                                                             this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
-                                                         } else {
-                                                             var error = {};
-                                                             error.errorMessage = "You must be admin to delete this review information";
-                                                             this.dispatch(errorActions.bbzReportError(error));
-                                                             window.scrollTo(0, 0);
-                                                         }
-                                                     }}/>
-                                            </div>
-                                        )}
+                            {((auth.loggedIn && userProfile && userProfile.isAdmin) || (auth.uid === uid)) && (
+                                <form className="form-inline">
+                                    {(auth.loggedIn && userProfile && userProfile.isAdmin) && (
+                                        <div className="form-group">
+                                            <span className="bbz-review-span">Delete:</span>
+                                            <span>&nbsp;</span>
+                                            <img className="bbz-general-pointer" type="image" value="submit"
+                                                 height="15"
+                                                 width="15" src="images/delete-blue-x-64.png"
+                                                 alt="Delete Review"
+                                                 onMouseOver={() => {
+                                                     ReactTooltip.show(findDOMNode(deleteReview));
+                                                 }}
+                                                 onMouseOut={() => {
+                                                     ReactTooltip.hide(findDOMNode(deleteReview));
+                                                 }}
+                                                 onClick={() => {
+                                                     if (userProfile && userProfile.isAdmin) {
+                                                         this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
+                                                     } else {
+                                                         var error = {};
+                                                         error.errorMessage = "You must be admin to delete this review information";
+                                                         this.dispatch(errorActions.bbzReportError(error));
+                                                         window.scrollTo(0, 0);
+                                                     }
+                                                 }}/>
+                                        </div>
+                                    )}
+                                    {auth.uid === uid && (
                                         <div className="form-group">
                                             <span className="bbz-review-span">Update:</span>
                                             <span>&nbsp;</span>
@@ -103,8 +110,8 @@ export class ReviewItem extends React.Component {
                                                      ReactTooltip.hide(findDOMNode(updateReview));
                                                  }}
                                                  onClick={() => {
-                                                     console.debug("auth.uid", auth.uid);
-                                                     console.debug("rating uid", uid);
+                                                     //console.debug("auth.uid", auth.uid);
+                                                     //console.debug("rating uid", uid);
                                                      if ((auth.loggedIn && auth.uid === uid) || (userProfile && userProfile.isAdmin)) {
                                                          var data = {
                                                              uid,
@@ -124,32 +131,34 @@ export class ReviewItem extends React.Component {
                                                      window.scrollTo(0, 0);
                                                  }}/>
                                         </div>
-                                    </form>)}
-                                {((auth.loggedIn && userProfile && userProfile.isAdmin) || (auth.uid === uid)) && (
-                                    <div className="column">
-                                        <span className="bbz-review-span">{approveMessage}:</span>
-                                        <span>&nbsp;</span>
-                                        <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src={approveImageSource}
-                                             onClick={() => {
-                                                 this.dispatch(errorActions.bbzClearError());
-                                                 if (userProfile.isAdmin) {
-                                                     this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId, !isApproved, companyItemId, uid));
-                                                 } else {
-                                                     var error = {};
-                                                     error.errorMessage = "You must be admin to change approval";
-                                                     this.dispatch(errorActions.bbzReportError(error));
-                                                     window.scrollTo(0, 0);
-                                                 }
-                                             }}/>
-                                    </div>
-                                )}
-                            </div>
-                            <div className="col-sm-8">
-                                {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId)}
-                            </div>
+                                    )}
+                                </form>)}
+                            {((auth.loggedIn && userProfile && userProfile.isAdmin) || (auth.uid === uid)) && (
+                                <div className="column">
+                                    <span className="bbz-review-span">{approveMessage}:</span>
+                                    <span>&nbsp;</span>
+                                    <img className="bbz-general-pointer" type="image" value="submit" height="20"
+                                         width="20" src={approveImageSource}
+                                         onClick={() => {
+                                             this.dispatch(errorActions.bbzClearError());
+                                             if (userProfile.isAdmin) {
+                                                 this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId, !isApproved, companyItemId, uid));
+                                             } else {
+                                                 var error = {};
+                                                 error.errorMessage = "You must be admin to change approval";
+                                                 this.dispatch(errorActions.bbzReportError(error));
+                                                 window.scrollTo(0, 0);
+                                             }
+                                         }}/>
+                                </div>
+                            )}
+                        </div>
+                        <div className="col-sm-8">
+                            {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId)}
                         </div>
                     </div>
                 </div>
+            </div>
 
         );
     }
