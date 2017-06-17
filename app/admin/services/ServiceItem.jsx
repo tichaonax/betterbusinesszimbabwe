@@ -43,7 +43,7 @@ export class ServiceItem extends React.Component {
                                                 serviceTitle
                                             }
 
-                                            console.debug("ServiceItems Data:", data);
+                                           // console.debug("ServiceItems Data:", data);
 
                                             this.dispatch(servicesActions.setUpdateServiceOperation(data));
                                         } else {
