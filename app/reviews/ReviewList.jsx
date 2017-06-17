@@ -12,7 +12,7 @@ export class ReviewList extends React.Component {
             reviews: [],
             showCompanyTitle: true
         }
-        this.renderReviewItem = this.renderReviewItem.bind(this);
+        //this.renderReviewItem = this.renderReviewItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {

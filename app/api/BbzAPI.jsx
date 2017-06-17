@@ -187,4 +187,30 @@ module.exports = {
         return filteredreviewItems;
     },
 
+    getFilteredServices: function (serviceItems, searchText) {
+        //console.debug("searchText", searchText);
+        //console.debug("serviceItems", serviceItems);
+        var filteredServiceItems = serviceItems;
+
+        //filter by searchText
+
+        if (searchText.length > 0) {
+            filteredServiceItems = filteredServiceItems.filter((serviceItem) => {
+               // console.debug("serviceItem", serviceItem);
+                const serviceId = (serviceItem.serviceId) ? serviceItem.serviceId.toString().toLowerCase() : "";
+                const serviceTitle = (serviceItem.serviceTitle) ? serviceItem.serviceTitle.toLowerCase() : "";
+
+                if (serviceId.indexOf(searchText.toLowerCase()) > -1) {
+                    return serviceItem.serviceId;
+                } else if (serviceTitle.indexOf(searchText.toLowerCase()) > -1) {
+                    return serviceItem.serviceTitle;
+                }
+            });
+        }
+        //console.debug("filteredServiceItems",filteredServiceItems);
+
+        return (filteredServiceItems);
+    },
+
+
 };

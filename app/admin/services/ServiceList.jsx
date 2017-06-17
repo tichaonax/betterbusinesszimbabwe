@@ -1,46 +1,53 @@
 import React from 'react';
+import ReactList from 'react-list';
 var {connect} = require('react-redux');
 import ServiceItem from 'ServiceItem';
+var BbzAPI = require('BbzAPI');
 
 
 export class ServiceList extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            services: []
+        }
     }
 
-    renderServiceItems = () => {
-        var {serviceItems} = this.props;
-        if (serviceItems.length === 0) {
-            return (
-                <tr>
-                    <td colSpan={4}>
-                        No Services Defined
-                    </td>
-                </tr>
-            )
-        } else {
-            return serviceItems.map((serviceItem) => {
-                return (
-                    <ServiceItem key={serviceItem.serviceItemId} {...serviceItem} />);
-            });
-        }
+    componentWillReceiveProps(newProps) {
+        var filteredServiceItems = BbzAPI.getFilteredServices(newProps.serviceItems, newProps.searchText);
+
+        this.setState({
+            rowCount: filteredServiceItems.length,
+            services: filteredServiceItems
+        });
+    }
+
+
+    renderServiceItem = (index, key) => {
+        //the idea is you want to construct the row data on the fly from the services
+        //this will result is less memory used if you were to store all that rendering data with the services
+        var serviceItem = this.state.services[index];
+        var row = <ServiceItem key={serviceItem.serviceItemId} {...serviceItem}/>;
+
+        return <div key={key}>{row}</div>;
     }
 
     render() {
         return (
-            <div className=" container">
+            <div className="columns container">
                 <div className="row">
-                    <table className="table table-striped table-bordered table-condensed">
-                        <tbody>
-                        <tr>
-                            <th>Delete</th>
-                            <th>ServiceItemID</th>
-                            <th>ServiceId</th>
-                            <th>Service Title</th>
-                        </tr>
-                        {this.renderServiceItems()}
-                        </tbody>
-                    </table>
+                    <div className="col-sm-12">
+                        <h4 className="text-center">{this.state.services.length} Services...</h4>
+                    </div>
+                </div>
+                <div className="row">
+                    <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '2px', marginRight: '20px'}}>
+                        <ReactList
+                            itemRenderer={this.renderServiceItem}
+                            length={this.state.services.length}
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -50,7 +57,8 @@ export class ServiceList extends React.Component {
 export default connect(
     (state) => {
         return {
-            serviceItems: state.serviceItems
+            serviceItems: state.serviceItems,
+            searchText: state.searchText,
         }
     }
 )(ServiceList);
