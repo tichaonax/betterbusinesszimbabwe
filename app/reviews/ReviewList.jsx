@@ -47,12 +47,17 @@ export class ReviewList extends React.Component {
         //the idea is you want to construct the row data on the fly from the reviews
         //this will result is less memory used if you were to store all that rendering data with the reviews
         var reviewItem = this.state.reviews[index];
-        var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
-                              deleteReview={this.refs.deleteReview}
-                              updateReview={this.refs.updateReview}
-                              showCompanyTitle={this.state.showCompanyTitle}/>;
+        if (reviewItem) {
+            var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
+                                  deleteReview={this.refs.deleteReview}
+                                  updateReview={this.refs.updateReview}
+                                  showCompanyTitle={this.state.showCompanyTitle}/>;
 
-        return <div key={key}>{row}</div>;
+            return <div key={key}>{row}</div>;
+        }
+        else {
+            return null
+        }
     }
 
     render() {

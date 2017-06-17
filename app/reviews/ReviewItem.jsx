@@ -4,6 +4,7 @@ import moment from 'moment';
 import {findDOMNode} from 'react-dom'
 import ReactTooltip from 'react-tooltip'
 import RatingItem from 'RatingItem';
+import {Link} from 'react-router';
 var reviewsActions = require('reviewsActions');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
@@ -32,7 +33,9 @@ export class ReviewItem extends React.Component {
             companyTitle, companyItemId,
             userProfile, reviewItemId, review,
             rating, isApproved, createAt, updateAt,
-            auth, deleteReview, updateReview, photoURL} = this.props;
+            auth, deleteReview, updateReview, photoURL,
+            adminUid
+        } = this.props;
 
         var reviewer = displayName;
 
@@ -142,7 +145,7 @@ export class ReviewItem extends React.Component {
                                          onClick={() => {
                                              this.dispatch(errorActions.bbzClearError());
                                              if (userProfile.isAdmin) {
-                                                 this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId, !isApproved, companyItemId, uid));
+                                                 this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId, !isApproved, companyItemId, uid, auth.uid));
                                              } else {
                                                  var error = {};
                                                  error.errorMessage = "You must be admin to change approval";
@@ -152,6 +155,13 @@ export class ReviewItem extends React.Component {
                                          }}/>
                                 </div>
                             )}
+                            <div>
+                                {auth.loggedIn && userProfile && userProfile.isAdmin && adminUid && (
+                                    <div>
+                                        <Link to={`/users?uid=${adminUid}`} activeClassName="active"
+                                              activeStyle={{fontWeight: 'bold'}}>Status By</Link>
+                                    </div>)}
+                            </div>
                         </div>
                         <div className="col-sm-8">
                             {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId)}
