@@ -8,3 +8,4 @@ config/
 *.svg
 *.ttf
 *.woff
+playground

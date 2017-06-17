@@ -11,8 +11,8 @@ export class AddServiceItem extends React.Component {
 
         this.state = {
             operation: 'ADD',
+            serviceId: 0,
             serviceTitle: null,
-            serviceDesc: null,
             serviceItemId: null
         }
     }
@@ -33,7 +33,7 @@ export class AddServiceItem extends React.Component {
             this.setState({
                 serviceItemId: nextProps.serviceOperation.data.serviceItemId,
                 serviceTitle: nextProps.serviceOperation.data.serviceTitle,
-                serviceDesc: nextProps.serviceOperation.data.serviceDesc
+                serviceId: nextProps.serviceOperation.data.serviceId
             });
         }
     }
@@ -87,7 +87,7 @@ export class AddServiceItem extends React.Component {
         this.setState({
             serviceItemId: '',
             serviceTitle: '',
-            serviceDesc: ''
+            serviceId: 0
         });
     }
 
@@ -134,27 +134,27 @@ export class AddServiceItem extends React.Component {
             return;
         }
 
-        var serviceDesc = this.refs.serviceDesc.value;
-        if (serviceDesc.length > 0) {
+       /* var serviceDesc = this.refs.serviceId.value;
+        if (serviceId.length > 0) {
 
         } else {
             error.errorMessage = "Service description required";
             dispatch(errorActions.bbzReportError(error));
             this.refs.serviceDesc.focus();
             return;
-        }
+        }*/
 
         this.resetInputs();
         dispatch(errorActions.bbzClearError());
-        dispatch(servicesActions.startAddNewServiceItem(serviceTitle, serviceDesc));
+        dispatch(servicesActions.startAddNewServiceItem(serviceTitle));
     }
 
     onChangeServiceTitle = (e) => {
         this.setState({serviceTitle: e.target.value});
     }
 
-    onChangeServiceDesc = (e) => {
-        this.setState({serviceDesc: e.target.value});
+    onChangeServiceId = (e) => {
+        this.setState({serviceId: e.target.value});
     }
 
     //****TODO call this method when a serviceCategory changes
@@ -171,17 +171,17 @@ export class AddServiceItem extends React.Component {
                     </div>
                     <div className="form-group">
                         <form onSubmit={this.handleSubmit}>
+                          {/*  <div className="form-group">
+                                <label htmlFor="sdescription">Service ID</label>
+                                <input className="form-control" type="text" name="serviceId" ref="serviceId"
+                                       value={this.state.serviceId} maxLength={20}
+                                       placeholder="Service ID" onChange={this.onChangeServiceId}/>
+                            </div>*/}
                             <div className="form-group">
                                 <label htmlFor="stitle">Service Title</label>
                                 <input className="form-control" type="text" name="serviceTitle" ref="serviceTitle"
                                        value={this.state.serviceTitle} maxLength={50}
                                        placeholder="Service Title" onChange={this.onChangeServiceTitle}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="sdescription">Service Description</label>
-                                <input className="form-control" type="text" name="serviceDesc" ref="serviceDesc"
-                                       value={this.state.serviceDesc} maxLength={100}
-                                       placeholder="Service Description" onChange={this.onChangeServiceDesc}/>
                             </div>
                             <div className="row">
                                 <div className="col-sm-12">

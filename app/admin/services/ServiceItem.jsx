@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 var servicesActions = require('servicesActions');
+var errorActions = require('errorActions');
 
 export class ServiceItem extends React.Component {
     constructor(props) {
@@ -9,17 +10,17 @@ export class ServiceItem extends React.Component {
     }
 
     render() {
-        var {userProfile, serviceItemId, serviceTitle, serviceDesc, createAt, updateAt} = this.props;
+        var {userProfile, serviceItemId, serviceId, serviceTitle, createAt, updateAt} = this.props;
         return (
             <tr>
                 <td>
                     <div className="form-group">
                         <input type="submit" value="&times;" onClick={() => {
-                            if (userProfile.isAdmin) {
+                            if (userProfile.isSuperUser) {
                                 this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
                             } else {
                                 var error = {};
-                                error.errorMessage = "You must be admin to delete this service information";
+                                error.errorMessage = "You must be Super User to delete this service information";
                                 this.dispatch(errorActions.bbzReportError(error));
                             }
                         }}/>
@@ -31,8 +32,8 @@ export class ServiceItem extends React.Component {
                             if (userProfile.isAdmin) {
                                 var data = {
                                     serviceItemId,
-                                    serviceTitle,
-                                    serviceDesc
+                                    serviceId,
+                                    serviceTitle
                                 }
 
                                 console.debug("ServiceItems Data:", data);
@@ -48,8 +49,8 @@ export class ServiceItem extends React.Component {
                         }}/>
                     </div>
                 </td>
+                <td>{serviceId}</td>
                 <td>{serviceTitle}</td>
-                <td>{serviceDesc}</td>
             </tr>
         );
     }

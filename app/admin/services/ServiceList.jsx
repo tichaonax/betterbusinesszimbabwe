@@ -35,8 +35,8 @@ export class ServiceList extends React.Component {
                         <tr>
                             <th>Delete</th>
                             <th>ServiceItemID</th>
+                            <th>ServiceId</th>
                             <th>Service Title</th>
-                            <th>Description</th>
                         </tr>
                         {this.renderServiceItems()}
                         </tbody>

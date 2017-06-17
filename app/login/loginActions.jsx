@@ -4,6 +4,7 @@ import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
 var errorActions = require('errorActions');
 var profileActions = require('profileActions');
+var servicesActions = require('servicesActions');
 
 //<editor-fold desc="Login">
 

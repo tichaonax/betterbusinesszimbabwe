@@ -11,11 +11,10 @@ export var addServiceItem = (serviceItem) => {
     };
 };
 
-export var startAddNewServiceItem = (title, description) => {
+export var startAddNewServiceItem = (title) => {
     return (dispatch, getState) => {
         var serviceItem = {
             serviceTitle: title,
-            serviceDesc: description,
             createAt: moment().unix(),
             updateAt: null
         }
@@ -79,7 +78,6 @@ export var deleteServiceItem = (serviceItemId) => {
     };
 };
 
-
 export var startDeleteServiceItem = (serviceItemId) => {
     return (dispatch, getState) => {
         var serviceItemRef = firebaseRef.child(`services/${serviceItemId}`); //ES6 syntax
@@ -105,14 +103,13 @@ export var updateServiceItem = (serviceItemId, updates) => {
     };
 };
 
-export var startUpdateServiceItem = (serviceItemId, title, description) => {
+export var startUpdateServiceItem = (serviceItemId, title) => {
     return (dispatch, getState) => {
         var serviceItemRef = firebaseRef.child(`services/${serviceItemId}`); //ES6 syntax
 
         var updates = {
             updateAt: moment().unix(),
-            serviceTitle: title,
-            serviceDesc: description
+            serviceTitle: title
         };
 
         return serviceItemRef.update(updates).then(() => {
