@@ -14,6 +14,7 @@ export var addServiceItem = (serviceItem) => {
 export var startAddNewServiceItem = (title) => {
     return (dispatch, getState) => {
         var serviceItem = {
+            serviceId: 0,
             serviceTitle: title,
             createAt: moment().unix(),
             updateAt: null

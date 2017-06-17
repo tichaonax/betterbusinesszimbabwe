@@ -209,6 +209,22 @@ module.exports = {
         }
         //console.debug("filteredServiceItems",filteredServiceItems);
 
+        //sort by with serviceId first
+
+        filteredServiceItems.sort((a, b) => {
+            if (a.serviceId < b.serviceId) {
+                //take a first
+                return -1
+            } else if (a.serviceId > b.serviceId) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+
         return (filteredServiceItems);
     },
 
