@@ -45,7 +45,7 @@ export class CompanyItem extends React.Component {
                         <div className="row">
                             {auth.loggedIn && (
                             <div className="col-sm-3">
-                                <img src="images/no-image.png" className="img-rounded"/>
+                                <img src={userProfile.photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
                             </div>)}
                             <div className="col-sm-3">
                                 <div>

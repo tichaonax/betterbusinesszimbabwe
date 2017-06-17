@@ -23,7 +23,8 @@ function isUserProfileUpdateNeeded(getState, gAuth) {
     if (gAuth.email != getState().userProfile.email ||
         gAuth.providerId != getState().userProfile.providerId ||
         gAuth.userId != getState().userProfile.userId ||
-        gAuth.displayName != getState().userProfile.displayName) {
+        gAuth.displayName != getState().userProfile.displayName ||
+        gAuth.photoURL != getState().userProfile.photoURL) {
         //console.debug("isUserProfileUpdateNeeded", true);
         return (true);
     } else {
@@ -32,6 +33,14 @@ function isUserProfileUpdateNeeded(getState, gAuth) {
     }
 }
 
+
+function getUserAvatar(avatar) {
+    let photoURL = "images/no-image.png";
+    if (avatar) {
+        photoURL = avatar;
+    }
+    return (photoURL);
+}
 
 export var startBbzLogin = (provider) => {
     var gAuth;
@@ -68,11 +77,13 @@ export var startBbzLogin = (provider) => {
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
+                                gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
                         }
 
                         if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
+                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid,
+                                gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
                         }
                     }
                 )
@@ -103,7 +114,7 @@ export var startBbzEmailLogin = (email, password) => {
                 uid: user.uid,
                 displayName: email,
                 email: user.email,
-                photoURL: null,
+                photoURL: user.photoURL,
                 loggedIn: true,
                 providerId: user.providerData[0].providerId,
                 userId: user.providerData[0].uid
@@ -127,11 +138,12 @@ export var startBbzEmailLogin = (email, password) => {
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
+                                gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
                         }
-
                         if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId));
+                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
+                                gAuth.displayName, gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
                         }
                     }
                 )

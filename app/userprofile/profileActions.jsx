@@ -43,7 +43,7 @@ export var addUserProfile = (profile) => {
 };
 
 
-export var startAddUserProfile = (email, displayName, providerId, userId) => {
+export var startAddUserProfile = (email, displayName, providerId, userId, photoURL) => {
     console.log("Start Add User Profile!");
     return (dispatch, getState) => {
         var profile = {
@@ -52,7 +52,8 @@ export var startAddUserProfile = (email, displayName, providerId, userId) => {
             createDate: moment().unix(),
             isAdmin: false,
             providerId,
-            userId
+            userId,
+            photoURL
         }
 
         var uid = getState().auth.uid;
@@ -64,7 +65,7 @@ export var startAddUserProfile = (email, displayName, providerId, userId) => {
     };
 };
 
-export var startUpdateUserProfile = (userItemId, email, displayName, providerId, userId) => {
+export var startUpdateUserProfile = (userItemId, email, displayName, providerId, userId, photoURL) => {
     return (dispatch, getState) => {
         var userItemRef = firebaseRef.child(`users/${userItemId}/userProfile`);
         var userProfile={};
@@ -74,7 +75,8 @@ export var startUpdateUserProfile = (userItemId, email, displayName, providerId,
             var updates = {
                 email,
                 providerId,
-                userId
+                userId,
+                photoURL
             };
             userProfile["email"] = email;
             userProfile["providerId"] = providerId;

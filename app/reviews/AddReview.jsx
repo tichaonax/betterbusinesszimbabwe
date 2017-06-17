@@ -213,7 +213,6 @@ export class AddReview extends React.Component {
         let photoURL = "images/no-image.png";
 
         if (auth.photoURL && auth.uid == this.state.uid) {
-            //console.debug("We have a photoUrl Match");
             photoURL = auth.photoURL;
         }
         return (photoURL);
