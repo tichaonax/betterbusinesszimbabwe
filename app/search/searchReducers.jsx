@@ -7,7 +7,12 @@ export var searchTextReducer = (state = '', action) => {
     };
 };
 
-export var searchOptionsReducer = (state = {pending: false, showButton: false, showMyReviews: false}, action) => {
+export var searchOptionsReducer = (state = {
+    pending: false,
+    showButton: false,
+    showMyReviews: false,
+    loading: false
+}, action) => {
     switch (action.type) {
         case 'TOGGLE_SHOW_APPROVAL_PENDING':
             return ({
@@ -29,6 +34,13 @@ export var searchOptionsReducer = (state = {pending: false, showButton: false, s
                 ...state,
                 showMyReviews: action.showMyReviews
             });
+
+        case 'SET_LOADING_STATUS':
+            return ({
+                ...state,
+                loading: action.loading
+            });
+
         default:
             return state;
     };

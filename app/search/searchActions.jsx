@@ -34,4 +34,11 @@ export var setMyReviews = (showMyReviews) => {
         showMyReviews
     };
 };
+
+export var setLoadingStatus = (loading) => {
+    return {
+        type: 'SET_LOADING_STATUS',
+        loading
+    };
+};
 //</editor-fold>

@@ -5,16 +5,29 @@ import ServiceList from 'ServiceList'
 import AddServiceItem from 'AddServiceItem';
 var servicesActions = require('servicesActions');
 var searchActions = require('searchActions');
+var Loader = require('react-loader');
 
 export class Services extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            loaded: false
+        }
     }
 
     componentDidMount() {
         this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(searchActions.setLoadingStatus(true));
     }
+
+    componentWillReceiveProps(newProps) {
+        console.debug("newProps", newProps.searchOptions);
+        this.setState({
+            loaded: !newProps.searchOptions.loading
+        });
+    }
+
 
     componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
@@ -23,6 +36,7 @@ export class Services extends React.Component {
     render() {
 
         var {isLoggedIn, userProfile} = this.props;
+
 
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             return (
@@ -33,6 +47,8 @@ export class Services extends React.Component {
                     <div>
                         <ServiceList/>
                     </div>
+                    <Loader loaded={this.state.loaded}>
+                    </Loader>
                 </div>
             );
         } else {
@@ -50,6 +66,7 @@ export class Services extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
+        searchOptions: state.searchOptions,
     }
 })(Services);

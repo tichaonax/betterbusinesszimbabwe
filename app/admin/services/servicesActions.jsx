@@ -1,6 +1,7 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
+var searchActions = require('searchActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -61,6 +62,8 @@ export var startAddServiceItems = () => {
             });
 
             dispatch(addServiceItems(parsedServiceItems));
+            dispatch(searchActions.setLoadingStatus(false));
+
         }, (error) => {
             console.log("Unable to fetch services", error);
             var errorObj = {
