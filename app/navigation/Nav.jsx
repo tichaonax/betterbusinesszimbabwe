@@ -70,10 +70,6 @@ class Nav extends React.Component {
                     </li>
                 )}
 
-               {/* <li className="upper-links">
-                    {this.renderAdminNavigation()}
-                </li>*/}
-
                 <li className="upper-links">
                     {this.renderLoginControl()}
                 </li>
@@ -94,10 +90,6 @@ class Nav extends React.Component {
                 </li>)}
                 <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Dropdown</a>
                     <div className="dropdown-menu">
-                        {/*<div className="profile-div">
-                         <Link to="/weather" activeClassName="active" className="profile-links" onClick={()=>this.closeNav()}
-                         activeStyle={{fontWeight: 'bold'}}>Weather</Link>
-                         </div>*/}
                         <div className="profile-div">
                             <Link to="/about" activeClassName="active" className="profile-links" onClick={() => this.closeNav()}
                                   activeStyle={{fontWeight: 'bold'}}>About</Link>
@@ -132,14 +124,6 @@ class Nav extends React.Component {
             joinedAt = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
         }
 
-        var admin = "";
-
-        if (userProfile && userProfile.isSuperUser) {
-            admin = "SuperUser";
-        } else if (userProfile && userProfile.isAdmin) {
-            admin = "Admin";
-        }
-
         return (
             <div>
                 <div className="navbar">
@@ -149,7 +133,6 @@ class Nav extends React.Component {
                                 <div className="pull-left">
                                     {displayName && (<label className="nav-small-font">&nbsp;&nbsp;Welcome!&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray text-capitalize">{displayName}&nbsp;</label>
-                                    {admin && (<label className="nav-small-font nav-color-yellow">({admin})&nbsp;</label>)}
                                     {joinedAt && (<label className="nav-small-font">Member Since:&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{joinedAt}&nbsp;</label>
                                     {lastLoginAt && (<label className="nav-small-font">Last Login:&nbsp;</label>)}

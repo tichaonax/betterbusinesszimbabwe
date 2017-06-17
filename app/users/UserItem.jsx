@@ -72,6 +72,12 @@ export class CompanyItem extends React.Component {
                                              }}/>
                                     </div>
                                 )}
+                                {auth.loggedIn && loggedInUser.isSuperUser && (
+                                    <div>
+                                        <span className="label bbz-review-span">Provider:</span>
+                                        <span>&nbsp;</span>{userProfile.providerId}
+                                    </div>
+                                )}
                             </div>
 
                             <div className={loginClass}>
@@ -80,10 +86,16 @@ export class CompanyItem extends React.Component {
                                 </div>
                                 {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
                                 <div>
-                                    <span className="label bbz-review-span">UserID:</span>
+                                    <span className="label bbz-review-span">ID:</span>
                                     <span>&nbsp;</span>
                                     {userItemId}
                                 </div>)}
+                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                    <div>
+                                        <span className="label bbz-review-span">UserID:</span>
+                                        <span>&nbsp;</span>
+                                        {userProfile.userId}
+                                    </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
                                 <div>
                                     <span className="bbz-review-span">Email:</span>

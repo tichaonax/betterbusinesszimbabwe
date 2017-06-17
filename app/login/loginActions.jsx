@@ -23,8 +23,10 @@ function isUserProfileUpdateNeeded(getState, gAuth) {
         gAuth.providerId != getState().userProfile.providerId ||
         gAuth.userId != getState().userProfile.userId ||
         gAuth.displayName != getState().userProfile.displayName) {
+        //console.debug("isUserProfileUpdateNeeded", true);
         return (true);
     } else {
+        //console.debug("isUserProfileUpdateNeeded", false);
         return (false);
     }
 }
@@ -48,7 +50,7 @@ export var startBbzLogin = (provider) => {
                 userId: user.providerData[0].uid
             };
 
-            console.debug("Auth data!", gAuth);
+            //console.debug("Auth data!", gAuth);
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
             console.debug("Unable to auth", error);
@@ -93,8 +95,9 @@ export var startBbzEmailLogin = (email, password) => {
     return (dispatch, getState) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
-            let user = result.user;
-
+            let user = result;
+            //console.debug("Email user:", user);
+            //console.debug("userId: user.providerData[0]",user.providerData[0]);
             gAuth = {
                 uid: user.uid,
                 displayName: email,
@@ -105,7 +108,7 @@ export var startBbzEmailLogin = (email, password) => {
                 userId: user.providerData[0].uid
             };
 
-            console.debug("Auth data!", gAuth);
+            //console.debug("Auth data!", gAuth);
 
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
@@ -186,7 +189,7 @@ export var startLastLogin = () => {
             (clientIp) => {
                 gClientIp = clientIp.trim();
 
-                console.debug("Cleint IP: ", gClientIp);
+                //console.debug("Cleint IP: ", gClientIp);
 
                 let ipInfoPromise = requestip.getClientLocationByIpAddress(gClientIp).then((response) => {
                     var newLoginInfo = {};
@@ -303,4 +306,3 @@ export var startGetLastLogin = () => {
 };
 
 //</editor-fold>
-

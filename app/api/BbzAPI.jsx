@@ -13,7 +13,7 @@ module.exports = {
         if (searchText.length > 0) {
             filteredUserItems = filteredUserItems.filter((userItem) => {
                 var userProfile = userItem.userProfile;
-                console.debug("email", userProfile.email);
+                //console.debug("email", userProfile.email);
                 const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
                 const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
