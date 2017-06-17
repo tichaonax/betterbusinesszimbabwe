@@ -71,6 +71,8 @@ export var startAddReviewItems = () => {
                 });
             });
 
+            console.debug("startAddReviewItems",parsedReviewItems);
+
             dispatch(addReviewItems(parsedReviewItems));
         }, (error) => {
             console.debug("Unable to fetch reviews", error);

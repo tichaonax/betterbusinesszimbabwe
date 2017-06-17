@@ -112,6 +112,8 @@ module.exports = {
     getFilteredReviews: function (reviewItems, showApprovalPending, searchText, uid = 0, showMyReviews = false) {
         //console.debug("reviewItems", reviewItems);
         //console.debug("showApprovalPending", showApprovalPending);
+        //console.debug("showMyReviews", showMyReviews);
+        //console.debug("uid", uid);
         var filteredreviewItems = reviewItems;
 
         //filter by showApprovalPending
@@ -227,6 +229,4 @@ module.exports = {
 
         return (filteredServiceItems);
     },
-
-
 };
