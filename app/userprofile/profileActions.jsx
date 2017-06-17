@@ -45,17 +45,19 @@ export var addUserProfile = (profile) => {
 
 export var startAddUserProfile = (email, displayName, providerId, userId, photoURL) => {
     console.log("Start Add User Profile!");
+    console.log("photoURL!", photoURL);
     return (dispatch, getState) => {
         var profile = {
-            displayName,
-            email,
+            displayName: displayName,
+            email: email,
             createDate: moment().unix(),
             isAdmin: false,
-            providerId,
-            userId,
-            photoURL
+            providerId: providerId,
+            userId: userId,
+            photoURL: photoURL
         }
 
+        console.debug("profile",profile);
         var uid = getState().auth.uid;
         var profileRef = firebaseRef.child(`users/${uid}`);
         return profileRef.update({userProfile: profile}).then(() => {
@@ -73,14 +75,16 @@ export var startUpdateUserProfile = (userItemId, email, displayName, providerId,
             userProfile = snapshot.val() || {}; //return available data or empty object
         }).then(()=>{
             var updates = {
-                email,
-                providerId,
-                userId,
-                photoURL
+                email: email,
+                providerId: providerId,
+                userId: userId,
+                photoURL: photoURL
             };
+
             userProfile["email"] = email;
             userProfile["providerId"] = providerId;
             userProfile["userId"] = userId;
+            userProfile["photoURL"] = photoURL;
 
             return userItemRef.update(updates).then(()=>{
                 return dispatch(updateUserProfile({userProfile: userProfile}));

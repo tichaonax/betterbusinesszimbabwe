@@ -4,7 +4,8 @@ var accountActions = require('accountActions');
 var loginActions = require('loginActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
-import Error from '../error/Error';
+import Error from 'Error';
+import {hashHistory} from 'react-router';
 
 export class CreateNewAccount extends React.Component {
     constructor(props) {
@@ -36,6 +37,13 @@ export class CreateNewAccount extends React.Component {
         dispatch(accountActions.startBbzCreateAccount(this.state.email, this.state.password));
     };
 
+    componentWillReceiveProps(nextProps) {
+        var {isLoggedIn} = nextProps;
+        if (isLoggedIn) {
+            hashHistory.push('/reviews');
+        }
+    }
+
     onChangePassword = (e) => {
         this.setState({password: e.target.value});
     }
@@ -53,26 +61,35 @@ export class CreateNewAccount extends React.Component {
 
     render() {
         return (
-            <div>
-                <h3 className="page-title">Create New Account</h3>
-                <div className="row">
-                    <div className="columns small-centered small-10 medium-6 large-4">
-                        <div className="callout callout-auth">
+            <div className="container">
+                <div className="review-block">
+                    <div className="row">
+                        <div className="col-sm-12">
                             <Error/>
-                            <p/>
-                            <div className="callout callout-auth">
+                        </div>
+                    </div>
+                    <div className="col-sm-10">
+                        <h3 className="page-title">Create New Account</h3>
+                        <form>
+                            <div className="form-group">
                                 <label htmlFor="email">Email:</label>
-                                <input id="email" placeholder="Enter email address" type="text" value={this.state.email}
+                                <input id="email" placeholder="Enter email address" type="text" className="form-control"
+                                       maxLength={100}
+                                       value={this.state.email}
                                        onChange={this.onChangeEmail} onFocus={this.onInputFocus}/>
+
+                            </div>
+                            <div className="form-group">
                                 <label htmlFor="password">Password:</label>
                                 <input id="password" placeholder="Enter password" type="password"
+                                       className="form-control" maxLength={100}
                                        value={this.state.password} onChange={this.onChangePassword}
                                        onFocus={this.onInputFocus}/>
-                                <button id="email" className="button" onClick={this.onCreateNewAccount}>Create New
-                                    Account
-                                </button>
                             </div>
-                        </div>
+                            <button id="email" className="btn btn-primary btn-lg btn-block"
+                                    onClick={this.onCreateNewAccount}>Submit
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

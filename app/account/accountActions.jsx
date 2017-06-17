@@ -7,18 +7,28 @@ var loginActions = require('loginActions');
 
 //<editor-fold desc="Create Account">
 
+function getUserAvatar(avatar) {
+    let photoURL = "images/no-image.png";
+    if (avatar) {
+        photoURL = avatar;
+    }
+    return (photoURL);
+}
+
 export var startBbzCreateAccount = (email, password) => {
     var gAuth;
     return (dispatch, getState) => {
         return firebase.auth().createUserWithEmailAndPassword(email, password).then((result) => {
-            console.log("Auth with Email and Password worked!", result);
-
+            console.log("createUserWithEmailAndPassword Email and Password worked!", result);
+            let user = result;
             gAuth = {
-                uid: result.uid,
-                displayName: result.email,
-                email: result.email,
-                photoURL: result.photoURL,
-                loggedIn: true
+                uid: user.uid,
+                displayName: user.email,
+                email: user.email,
+                photoURL: getUserAvatar(result.photoURL),
+                loggedIn: true,
+                providerId: (user.providerData[0].providerId) ? user.providerData[0].providerId : 'password',
+                userId: (user.providerData[0].uid) ? user.providerData[0].uid : email
             };
             console.log("Auth data!", gAuth);
             return dispatch(loginActions.bbzLogin(gAuth));
@@ -37,7 +47,8 @@ export var startBbzCreateAccount = (email, password) => {
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName));
+                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
+                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
                         }
                     }
                 )

@@ -20,15 +20,16 @@ export var bbzLogin = (auth) => {
 //<editor-fold desc="Provider Login">
 
 function isUserProfileUpdateNeeded(getState, gAuth) {
+    console.debug("isUserProfileUpdateNeeded->gAuth", gAuth);
     if (gAuth.email != getState().userProfile.email ||
         gAuth.providerId != getState().userProfile.providerId ||
         gAuth.userId != getState().userProfile.userId ||
         gAuth.displayName != getState().userProfile.displayName ||
         gAuth.photoURL != getState().userProfile.photoURL) {
-        //console.debug("isUserProfileUpdateNeeded", true);
+        console.debug("isUserProfileUpdateNeeded", true);
         return (true);
     } else {
-        //console.debug("isUserProfileUpdateNeeded", false);
+        console.debug("isUserProfileUpdateNeeded", false);
         return (false);
     }
 }
@@ -54,7 +55,7 @@ export var startBbzLogin = (provider) => {
                 uid: user.uid,
                 displayName: user.displayName,
                 email: user.email,
-                photoURL: user.photoURL,
+                photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: user.providerData[0].providerId,
                 userId: user.providerData[0].uid
@@ -76,14 +77,13 @@ export var startBbzLogin = (provider) => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                            if (isUserProfileUpdateNeeded(getState, gAuth)) {
+                                return dispatch(profileActions.startUpdateUserProfile(gAuth.uid,
+                                    gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
+                            }
                         } else {
                             return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
-                                gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
-                        }
-
-                        if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid,
-                                gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
+                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
                         }
                     }
                 )
@@ -108,19 +108,19 @@ export var startBbzEmailLogin = (email, password) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
             let user = result;
-            //console.debug("Email user:", user);
-            //console.debug("userId: user.providerData[0]",user.providerData[0]);
+            console.debug("Email user:", user);
+            console.debug("userId: user.providerData[0]",user.providerData[0]);
             gAuth = {
                 uid: user.uid,
                 displayName: email,
                 email: user.email,
-                photoURL: user.photoURL,
+                photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
-                providerId: user.providerData[0].providerId,
-                userId: user.providerData[0].uid
-            };
+                providerId: (user.providerData[0].providerId) ? user.providerData[0].providerId : 'password',
+                userId: (user.providerData[0].uid) ? user.providerData[0].uid : email
+            }
 
-            //console.debug("Auth data!", gAuth);
+            console.debug("Auth data!", gAuth);
 
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
@@ -137,13 +137,13 @@ export var startBbzEmailLogin = (email, password) => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
                             console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                            if (isUserProfileUpdateNeeded(getState, gAuth)) {
+                                return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
+                                    gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
+                            }
                         } else {
                             return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
-                                gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
-                        }
-                        if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                            return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
-                                gAuth.displayName, gAuth.providerId, gAuth.userId, getUserAvatar(gAuth.photoURL)));
+                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
                         }
                     }
                 )
