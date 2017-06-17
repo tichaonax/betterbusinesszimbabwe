@@ -70,9 +70,6 @@ class Nav extends React.Component {
                     </li>
                 )}
 
-                <li className="upper-links">
-                    {this.renderLoginControl()}
-                </li>
                 {isLoggedIn && userProfile && userProfile.isSuperUser && (
                     <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>SuperUser</a>
                         <div className="dropdown-menu">
@@ -95,6 +92,9 @@ class Nav extends React.Component {
                                   activeStyle={{fontWeight: 'bold'}}>About</Link>
                         </div>
                     </div>
+                </li>
+                <li className="upper-links">
+                    {this.renderLoginControl()}
                 </li>
             </ul>
         )
