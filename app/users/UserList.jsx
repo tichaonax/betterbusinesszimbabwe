@@ -17,6 +17,7 @@ export class UserList extends React.Component {
     componentWillReceiveProps(newProps) {
         var filteredUserItems = BbzAPI.getFilteredUsers(newProps.userItems, newProps.searchText);
 
+        //console.debug("filteredUserItems",filteredUserItems);
         this.setState({
             rowCount: filteredUserItems.length,
             users: filteredUserItems

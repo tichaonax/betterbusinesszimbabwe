@@ -17,10 +17,12 @@ export class CompanyItem extends React.Component {
 
     render() {
         var {userItemId, reviewCount, loggedInUser, userProfile, auth} = this.props;
+        let displayName;
+        if(userProfile){
+            displayName = userProfile.displayName;
+        }
 
-        var displayName = userProfile.displayName;
-
-        if (userProfile.displayName) {
+        if (displayName) {
             displayName = userProfile.displayName.split('@')[0];
         }
 

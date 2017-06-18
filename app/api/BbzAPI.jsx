@@ -10,10 +10,10 @@ module.exports = {
 
         //filter by searchText
 
-        if (searchText.length > 0) {
+        if (searchText.length > 0 && userItems.length >0) {
             filteredUserItems = filteredUserItems.filter((userItem) => {
                 var userProfile = userItem.userProfile;
-                //console.debug("email", userProfile.email);
+                //console.debug("userProfile", userProfile);
                 const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
                 const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
@@ -26,31 +26,30 @@ module.exports = {
                     return userProfile.email;
                 } else if (userItemId.indexOf(searchText) > -1) {
                     return userItem.userItemId;
-                }else if (providerId.indexOf(searchText) > -1) {
+                } else if (providerId.indexOf(searchText) > -1) {
                     return userProfile.providerId;
                 } else if (userId.indexOf(searchText) > -1) {
                     return userProfile.userId;
                 }
             });
+
+
+            //sort by with Admins first
+
+            filteredUserItems.sort((a, b) => {
+                if (a.userProfile.isAdmin && !b.userProfile.isAdmin) {
+                    //take a first
+                    return -1
+                } else if (!a.userProfile.isAdmin && b.userProfile.isAdmin) {
+                    // take b first
+                    return 1;
+                } else {
+                    //a === b
+                    //no change
+                    return 0;
+                }
+            });
         }
-
-        //sort by with Admins first
-
-        filteredUserItems.sort((a, b) => {
-            if (a.userProfile.isAdmin && !b.userProfile.isAdmin) {
-                //take a first
-                return -1
-            } else if (!a.userProfile.isAdmin && b.userProfile.isAdmin) {
-                // take b first
-                return 1;
-            } else {
-                //a === b
-                //no change
-                return 0;
-            }
-        });
-
-
         return (filteredUserItems);
     },
 
@@ -68,7 +67,7 @@ module.exports = {
         //filter by searchText
         //we want to also search by company description and others
         //and company id which is stored as unix createAt date time
-        if (searchText.length > 0) {
+        if (searchText.length > 0 ) {
             filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
                 const serviceCategory = (companyItem.serviceCategory) ? companyItem.serviceCategory.toLowerCase() : "";
                 const companyTitle = (companyItem.companyTitle) ? companyItem.companyTitle.toLowerCase() : "";
