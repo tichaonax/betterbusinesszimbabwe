@@ -7,6 +7,7 @@ import CompanyRatingItem from 'app/companies/CompanyRatingItem';
 var Rate = require('rc-rate');
 import ReviewList from 'app/reviews/ReviewList';
 import {Link} from 'react-router';
+import Linkify from 'react-linkify';
 var searchActions = require('searchActions');
 
 export class CompanyReviews extends React.Component {
@@ -39,8 +40,19 @@ export class CompanyReviews extends React.Component {
         }
     }
 
+
     render() {
-        var {reviewItems, showApprovalPending, searchText, auth} = this.props;
+
+        var {reviewItems, showApprovalPending, searchText, auth, companyItems} = this.props;
+
+        function getCompanyDescription(companyItemId) {
+            if (companyItemId == undefined) return {};
+            function getText(companyItem) {
+                return companyItem.companyItemId == companyItemId;
+            }
+
+            return companyItems.find(getText);
+        }
 
         var uid = 0;
         if (auth.loggedIn) {
@@ -49,12 +61,14 @@ export class CompanyReviews extends React.Component {
 
         var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
 
-        var companyTitle = '';
-        var companyItemId ='';
+        let companyTitle = '';
+        let companyItemId ='';
+        let companyDesc = '';
 
         if (filteredReviewItems.length > 0) {
             companyTitle = filteredReviewItems[0].companyTitle;
             companyItemId = filteredReviewItems[0].companyItemId;
+            companyDesc = getCompanyDescription(companyItemId).companyDesc;
         }
 
         var rating = getRatingRoundedToHalf(getRatingsAverage(filteredReviewItems));
@@ -62,11 +76,20 @@ export class CompanyReviews extends React.Component {
         return (
             <div className="row">
                 <div className="columns container">
-                    <div className="rating-block">
+                    <div className="row">
+                    <div className="rating-block col-sm-5">
                         <h3>{companyTitle}</h3>
                         <div>
                             <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
                                   activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                        </div>
+                    </div>
+                        <div className="col-sm-7">
+                            <div>
+                                <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
+                                    {companyDesc}
+                                </Linkify>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,6 +131,7 @@ export default connect((state) => {
         auth: state.auth,
         reviewItems: state.reviewItems,
         showApprovalPending: state.showApprovalPending,
-        searchText: state.searchText
+        searchText: state.searchText,
+        companyItems: state.companyItems,
     }
 })(CompanyReviews);
