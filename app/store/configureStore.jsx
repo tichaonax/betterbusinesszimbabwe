@@ -10,6 +10,7 @@ import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer
 import {companyItemsReducer, companyOperationReducer, recentlyAddedCompanyReducer} from 'companiesItemsReducer';
 import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 import {userItemsReducer} from 'usersItemsReducer';
+import {loadingReducer} from 'loadingReducers';
 
 export var configure = (initialState = {}) => {
     var reducers = redux.combineReducers({
@@ -28,7 +29,8 @@ export var configure = (initialState = {}) => {
         reviewItems: reviewItemsReducer,
         reviewOperation: reviewOperationReducer,
         recentlyAddedCompany: recentlyAddedCompanyReducer,
-        userItems: userItemsReducer
+        userItems: userItemsReducer,
+        loading: loadingReducer
     });
 
     const rootReducer = ( state, action ) => {

@@ -2,6 +2,7 @@ import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
 var usersActions = require('usersActions');
+var loadingActions = require('loadingActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -59,6 +60,7 @@ export var addReviewItems = (reviewItems) => {
 
 export var startAddReviewItems = () => {
     return (dispatch, getState) => {
+        dispatch(loadingActions.setLoadingStatus(true));
         var reviewItemRef = firebaseRef.child(`reviews`);
         return reviewItemRef.once('value').then((snapshot) => {
             var reviewItems = snapshot.val() || {}; //return available data or empty object
@@ -73,12 +75,14 @@ export var startAddReviewItems = () => {
             });
 
             dispatch(addReviewItems(parsedReviewItems));
+            dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to fetch reviews", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         });
     };

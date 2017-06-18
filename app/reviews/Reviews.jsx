@@ -6,11 +6,16 @@ import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var urlActions = require('urlActions');
+var Loader = require('react-loader');
+var loadingActions = require('loadingActions');
 
 export class Reviews extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            loaded: false
+        }
     }
 
     loadData(props) {
@@ -43,6 +48,7 @@ export class Reviews extends React.Component {
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.dispatch(searchActions.setSearchButton(false));
+        //this.dispatch(searchActions.setLoadingStatus(true));
     }
 
     componentWillUnmount() {
@@ -55,6 +61,9 @@ export class Reviews extends React.Component {
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
+        this.setState({
+            loaded: !newProps.loading.loaded
+        });
     }
 
     render() {
@@ -70,6 +79,8 @@ export class Reviews extends React.Component {
                     <div>
                         <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems} auth={this.props.auth}/>
                     </div>
+                    <Loader loaded={this.state.loaded}>
+                    </Loader>
                 </div>
             </div>
         );
@@ -83,5 +94,6 @@ export default connect((state) => {
         searchText: state.searchText,
         auth: state.auth,
         reviewItems: state.reviewItems,
+        loading: state.loading
     }
 })(Reviews);

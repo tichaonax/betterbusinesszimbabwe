@@ -95,6 +95,8 @@ module.exports = {
             reducers: 'app/reducers/reducers.jsx',
             configureStore: 'app/store/configureStore.jsx',
             Error: 'app/error/Error.jsx',
+            loadingActions: 'app/common/loadingActions.jsx',
+            loadingReducers: 'app/common/loadingReducers.jsx',
 
         },
         extensions: ['', '.js', '.jsx']
