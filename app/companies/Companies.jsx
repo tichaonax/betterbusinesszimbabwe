@@ -9,7 +9,7 @@ var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
 var urlActions = require('urlActions');
-var errorActions = require('errorActions'););
+var errorActions = require('errorActions');
 var Loader = require('react-loader');
 
 export class Companies extends React.Component {

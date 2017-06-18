@@ -24,6 +24,14 @@ export class UserList extends React.Component {
         });
     }
 
+    itemSizeGetter = (index) => {
+        var userItem = this.state.users[index];
+        var divHeight = 30;
+        if (userItem.displayName.length > 50) {
+            divHeight = 10 + Math.round((userItem.displayName.length / 60)) * 30
+        }
+        return divHeight;
+    }
 
     renderUserItem = (index, key) => {
         var userItem = this.state.users[index];

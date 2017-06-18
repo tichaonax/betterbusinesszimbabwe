@@ -73,7 +73,7 @@ export class Reviews extends React.Component {
                         </div>
                     )}
                     <div>
-                        <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems} auth={this.props.auth}/>
+                        <ReviewList showCompanyTitle={true}  reviewItems={this.props.reviewItems} auth={this.props.auth}/>
                     </div>
                     <Loader loaded={this.state.loaded}>
                     </Loader>

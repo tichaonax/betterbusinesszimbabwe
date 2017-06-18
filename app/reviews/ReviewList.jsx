@@ -11,7 +11,6 @@ export class ReviewList extends React.Component {
             reviews: [],
             showCompanyTitle: true
         }
-        //this.renderReviewItem = this.renderReviewItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -39,6 +38,15 @@ export class ReviewList extends React.Component {
             reviews: filteredReviewItems,
             showCompanyTitle: bCompanyTitle
         });
+    }
+
+    itemSizeGetter = (index) => {
+        var reviewItem = this.state.reviews[index];
+        var divHeight = 30;
+        if (reviewItem.review.length > 50) {
+            divHeight = 10 + Math.round((reviewItem.review.length / 60)) * 30
+        }
+        return divHeight;
     }
 
     renderReviewItem = (index, key) => {

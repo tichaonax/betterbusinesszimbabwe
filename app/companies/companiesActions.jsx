@@ -1,5 +1,6 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
+var searchActions = require('searchActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
