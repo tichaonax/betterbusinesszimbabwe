@@ -45,8 +45,9 @@ export class CompanyReviews extends React.Component {
 
         var {reviewItems, showApprovalPending, searchText, auth, companyItems} = this.props;
 
+        //console.debug("companyItems",companyItems);
         function getCompanyDescription(companyItemId) {
-            if (companyItemId == undefined) return {};
+            if (companyItemId == undefined) return {companyDesc: ''};
             function getText(companyItem) {
                 return companyItem.companyItemId == companyItemId;
             }
