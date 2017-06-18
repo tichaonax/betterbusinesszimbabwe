@@ -12,7 +12,7 @@ module.exports = {
 
         if (searchText.length > 0 && userItems.length >0) {
             filteredUserItems = filteredUserItems.filter((userItem) => {
-                var userProfile = userItem.userProfile;
+                var userProfile = (userItem.userProfile) ? userItem.userProfile : {};
                 //console.debug("userProfile", userProfile);
                 const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";

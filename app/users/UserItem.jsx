@@ -18,27 +18,36 @@ export class CompanyItem extends React.Component {
     render() {
         var {userItemId, reviewCount, loggedInUser, userProfile, auth} = this.props;
         let displayName;
-        if(userProfile){
-            displayName = userProfile.displayName;
-        }
+        let photoURL;
+        let approveImageSource = "images/like-64.png";
+        let approveMessage = "Make Admin";
+        let providerId;
+        let email;
+        let userId;
+        let isAdmin = false;
 
-        if (displayName) {
-            displayName = userProfile.displayName.split('@')[0];
+        if (userProfile) {
+            displayName = userProfile.displayName;
+            photoURL = userProfile.photoURL;
+            providerId = userProfile.providerId;
+            email = userProfile.email;
+            userId = userProfile.userId;
+            isAdmin = userProfile.isAdmin;
+
+            if (userProfile.isAdmin) {
+                approveImageSource = "images/bbz_admin.png";
+                approveMessage = "Admin";
+            }
+
+            if (displayName) {
+                displayName = userProfile.displayName.split('@')[0];
+            }
         }
 
         var loginClass = "col-sm-9";
         if (auth.loggedIn) {
             loginClass = "col-sm-6";
         }
-
-        var approveImageSource = "images/like-64.png";
-        var approveMessage ="Make Admin";
-
-        if (userProfile.isAdmin) {
-            approveImageSource = "images/bbz_admin.png";
-            approveMessage ="Admin";
-        }
-
 
         return (
             <div className="col-sm-12">
@@ -47,7 +56,7 @@ export class CompanyItem extends React.Component {
                         <div className="row">
                             {auth.loggedIn && (
                             <div className="col-sm-3">
-                                <img src={userProfile.photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
+                                <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
                             </div>)}
                             <div className="col-sm-3">
                                 <div>
@@ -64,7 +73,7 @@ export class CompanyItem extends React.Component {
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
                                                  if (loggedInUser.isSuperUser) {
-                                                     this.dispatch(usersActions.startToggleAdminUserItem(userItemId,!userProfile.isAdmin));
+                                                     this.dispatch(usersActions.startToggleAdminUserItem(userItemId,!isAdmin));
                                                  } else {
                                                      var error = {};
                                                      error.errorMessage = "You must be Super User to approve";
@@ -77,7 +86,7 @@ export class CompanyItem extends React.Component {
                                 {auth.loggedIn && loggedInUser.isSuperUser && (
                                     <div>
                                         <span className="label bbz-review-span">Provider:</span>
-                                        <span>&nbsp;</span>{userProfile.providerId}
+                                        <span>&nbsp;</span>{providerId}
                                     </div>
                                 )}
                             </div>
@@ -96,13 +105,13 @@ export class CompanyItem extends React.Component {
                                     <div>
                                         <span className="label bbz-review-span">UserID:</span>
                                         <span>&nbsp;</span>
-                                        {userProfile.userId}
+                                        {userId}
                                     </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
                                 <div>
                                     <span className="bbz-review-span">Email:</span>
                                     <span>&nbsp;</span>
-                                    {userProfile.email}
+                                    {email}
                                 </div>)}
                             </div>
                         </div>

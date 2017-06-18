@@ -116,7 +116,8 @@ export var updateReviewItem = (reviewItemId, updates) => {
     };
 };
 
-export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId, photoURL) => {
+export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId, photoURL, uid, isApproved) => {
+    //console.debug(" photoURL, uid, isApproved", photoURL, uid, isApproved);
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`); //ES6 syntax
 
@@ -134,12 +135,16 @@ export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId,
         return reviewItemRef.update(updates).then(() => {
                 return dispatch(updateReviewItem(reviewItemId, updates));
             }
-        ).then(
-            () => {
+        ).then(()=>{
+            if (isApproved) {
+                return dispatch(recalculateUserReviewCount(uid, !isApproved))
+            } else {
+                return (null);
+            }
+        }).then(() => {
                 return dispatch(recalculateCompanyReview(companyItemId));
             }
-        ).catch(
-            (error) => {
+        ).catch((error) => {
                 console.debug("Unable to update review", error);
                 var errorObj = {
                     errorCode: error.code,
@@ -151,6 +156,7 @@ export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId,
 };
 
 export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItemId, uid, adminUid) => {
+    console.debug("startApproveUpdateReviewItem",reviewItemId, isApproved, companyItemId);
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`);
 
@@ -165,7 +171,7 @@ export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItem
             () => {
                 return dispatch(recalculateCompanyReview(companyItemId));
             }
-        ).then(()=>{
+        ).then(() => {
             return dispatch(recalculateUserReviewCount(uid, isApproved))
         }).catch(
             (error) => {

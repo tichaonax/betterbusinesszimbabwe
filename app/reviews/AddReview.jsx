@@ -23,6 +23,7 @@ export class AddReview extends React.Component {
             review: '',
             reviewItemId: null,
             rating: 0,
+            isApproved: false,
             companyItems: [],
             companyItemId: null,
             selectedCompanyItemId: null,
@@ -113,7 +114,8 @@ export class AddReview extends React.Component {
                 review: newProps.review,
                 companyItemId: newProps.companyItemId,
                 uid: newProps.uid,
-                rating: newProps.rating
+                rating: newProps.rating,
+                isApproved: newProps.isApproved
             });
 
             if (newProps.review && newProps.review.length > 0) {
@@ -241,7 +243,9 @@ export class AddReview extends React.Component {
             this.state.review,
             this.state.rating,
             this.state.companyItemId,
-            this.getReviewerAvatar()
+            this.getReviewerAvatar(),
+            this.state.uid,
+            this.state.isApproved
         ));
 
         this.resetInputs();

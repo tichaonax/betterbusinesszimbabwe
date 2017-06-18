@@ -89,7 +89,7 @@ export class ReviewItem extends React.Component {
                                                  }}
                                                  onClick={() => {
                                                      if (userProfile && userProfile.isAdmin) {
-                                                         this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId));
+                                                         this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId, isApproved));
                                                      } else {
                                                          var error = {};
                                                          error.errorMessage = "You must be admin to delete this review information";
@@ -115,20 +115,21 @@ export class ReviewItem extends React.Component {
                                                  onClick={() => {
                                                      //console.debug("auth.uid", auth.uid);
                                                      //console.debug("rating uid", uid);
-                                                     if ((auth.loggedIn && auth.uid === uid) || (userProfile && userProfile.isAdmin)) {
+                                                     if (auth.loggedIn && auth.uid === uid) {
                                                          var data = {
                                                              uid,
                                                              reviewItemId,
                                                              companyItemId,
                                                              rating,
-                                                             review
+                                                             review,
+                                                             isApproved
                                                          }
                                                          //console.debug("ReviewItems Data:", data);
                                                          this.dispatch(reviewsActions.setUpdateReviewOperation(data));
                                                      }
                                                      else {
                                                          var error = {};
-                                                         error.errorMessage = "You must be the owner or admin to update this review information";
+                                                         error.errorMessage = "You must be the owner to update this review information";
                                                          this.dispatch(errorActions.bbzReportError(error));
                                                      }
                                                      window.scrollTo(0, 0);
