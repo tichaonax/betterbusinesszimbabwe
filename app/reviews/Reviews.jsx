@@ -6,11 +6,15 @@ import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var urlActions = require('urlActions');
+var Loader = require('react-loader');
 
 export class Reviews extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            loaded: false
+        }
     }
 
     loadData(props) {
@@ -31,9 +35,7 @@ export class Reviews extends React.Component {
             //console.debug("searchActions.setSearchText(uid)", uid);
             this.dispatch(searchActions.setSearchText(uid));
         }
-        //else {
-        //    this.dispatch(reviewsActions.startAddReviewItems());
-        //}
+
         this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
@@ -50,11 +52,14 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        //this.loadData(newProps);
         var {isLoggedIn, userProfile} = newProps;
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
+
+        this.setState({
+            loaded: !newProps.searchOptions.loading
+        });
     }
 
     render() {
@@ -70,6 +75,8 @@ export class Reviews extends React.Component {
                     <div>
                         <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems} auth={this.props.auth}/>
                     </div>
+                    <Loader loaded={this.state.loaded}>
+                    </Loader>
                 </div>
             </div>
         );
@@ -83,5 +90,6 @@ export default connect((state) => {
         searchText: state.searchText,
         auth: state.auth,
         reviewItems: state.reviewItems,
+        searchOptions: state.searchOptions,
     }
 })(Reviews);

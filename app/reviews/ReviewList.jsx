@@ -7,7 +7,6 @@ var BbzAPI = require('BbzAPI');
 export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             reviews: [],
             showCompanyTitle: true
@@ -19,7 +18,6 @@ export class ReviewList extends React.Component {
         var filteredReviewItems;
         var bCompanyTitle;
         var uid = 0;
-
         if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions) {
             var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;

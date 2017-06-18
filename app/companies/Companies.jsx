@@ -9,12 +9,16 @@ var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
 var urlActions = require('urlActions');
-var errorActions = require('errorActions');
+var errorActions = require('errorActions'););
+var Loader = require('react-loader');
 
 export class Companies extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            loaded: false
+        }
     }
 
     loadData(props) {
@@ -46,6 +50,10 @@ export class Companies extends React.Component {
         if(isLoggedIn && userProfile && userProfile.isAdmin){
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
+
+        this.setState({
+            loaded: !newProps.searchOptions.loading
+        });
     }
 
     render() {
@@ -63,6 +71,8 @@ export class Companies extends React.Component {
                     <div>
                         <CompanyList/>
                     </div>
+                    <Loader loaded={this.state.loaded}>
+                    </Loader>
                 </div>
             </div>
         );
@@ -72,6 +82,7 @@ export class Companies extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
+        searchOptions: state.searchOptions,
     }
 })(Companies);

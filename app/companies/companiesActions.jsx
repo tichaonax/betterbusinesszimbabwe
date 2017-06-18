@@ -70,6 +70,7 @@ export var addCompanyItems = (companyItems) => {
 
 export var startAddCompanyItems = () => {
     return (dispatch, getState) => {
+        dispatch(searchActions.setLoadingStatus(true));
         var companyItemRef = firebaseRef.child(`companies`);
         return companyItemRef.once('value').then((snapshot) => {
             var companyItems = snapshot.val() || {}; //return available data or empty object
@@ -84,12 +85,14 @@ export var startAddCompanyItems = () => {
             });
             //console.debug("startAddCompanyItems:",parsedCompanyItems);
             dispatch(addCompanyItems(parsedCompanyItems));
+            dispatch(searchActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to fetch companies", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(searchActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         });
     };
