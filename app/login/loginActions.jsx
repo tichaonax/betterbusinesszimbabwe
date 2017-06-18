@@ -274,7 +274,9 @@ export var startLastLogin = () => {
                         });
                     }
                 );
-            });
+            }).catch((error)=>{
+            console.debug("Error getClientIpAddress", error);
+        });
     }
 };
 
