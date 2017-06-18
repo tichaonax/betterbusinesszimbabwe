@@ -2,7 +2,6 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 import ReviewList from 'ReviewList'
-import AddReviewItem from 'AddReviewItem';
 var reviewsActions = require('reviewsActions');
 
 export class MainReviews extends React.Component {

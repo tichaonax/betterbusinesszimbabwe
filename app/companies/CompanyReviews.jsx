@@ -44,15 +44,15 @@ export class CompanyReviews extends React.Component {
     render() {
 
         var {reviewItems, showApprovalPending, searchText, auth, companyItems} = this.props;
-
-        //console.debug("companyItems",companyItems);
         function getCompanyDescription(companyItemId) {
             if (companyItemId == undefined) return {companyDesc: ''};
             function getText(companyItem) {
                 return companyItem.companyItemId == companyItemId;
             }
 
-            return companyItems.find(getText);
+            let match = companyItems.find(getText);
+
+            return (match) ? match : {companyDesc: ''};
         }
 
         var uid = 0;

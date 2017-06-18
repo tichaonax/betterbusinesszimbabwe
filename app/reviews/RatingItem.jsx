@@ -36,7 +36,9 @@ export class RatingItem extends React.Component {
 
                 {showCompanyTitle == true && (
                     <div className="review-block-title">
-                        <Link to={`/companyreviews?company=${companyItemId}`} activeClassName="active"
+                        <Link to={`/companyreviews?company=${companyItemId}`} activeClassName="active" onClick={()=>{
+                            this.dispatch(companiesActions.startAddCompanyItems());
+                        }}
                               activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                     </div>)}
                 <div className="review-block-title">{reviewHeader}</div>
