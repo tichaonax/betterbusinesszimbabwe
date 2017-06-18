@@ -47,19 +47,23 @@ export class BbzResetPassword extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <h3 className="page-title">Password Reset</h3>
-                <div className="row">
-                    <div className="columns small-centered small-10 medium-6 large-4">
-                        <div className="callout callout-auth">
+                <div className="review-block">
+                    <div className="row">
+                        <div className="col-sm-12">
                             <Error/>
                             <p/>
-                            <div className="callout callout-auth">
+                            <div className="form-group">
                                 <label htmlFor="email">Email:</label>
-                                <input id="email" placeholder="Enter email address" type="text" value={this.state.email}
+                                <input id="email" placeholder="Enter email address" type="text"
+                                       value={this.state.email}
+                                       className="form-control"
+                                       maxLength={100}
                                        onChange={this.onChangeEmail} onFocus={this.onInputFocus}/>
                                 <p/>
-                                <button id="email" className="button" onClick={this.onBbzResetPassword}>Reset Password
+                                <button id="email" className="btn btn-primary btn-lg btn-block"
+                                        onClick={this.onBbzResetPassword}>Reset Password
                                 </button>
                             </div>
                         </div>

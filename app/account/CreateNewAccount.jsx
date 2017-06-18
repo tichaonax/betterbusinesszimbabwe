@@ -62,34 +62,34 @@ export class CreateNewAccount extends React.Component {
     render() {
         return (
             <div className="container">
+                <h3 className="page-title">Create New Account</h3>
                 <div className="review-block">
                     <div className="row">
                         <div className="col-sm-12">
                             <Error/>
-                        </div>
-                    </div>
-                    <div className="col-sm-10">
-                        <h3 className="page-title">Create New Account</h3>
-                        <form>
-                            <div className="form-group">
-                                <label htmlFor="email">Email:</label>
-                                <input id="email" placeholder="Enter email address" type="text" className="form-control"
-                                       maxLength={100}
-                                       value={this.state.email}
-                                       onChange={this.onChangeEmail} onFocus={this.onInputFocus}/>
+                            <p/>
+                            <form>
+                                <div className="form-group">
+                                    <label htmlFor="email">Email:</label>
+                                    <input id="email" placeholder="Enter email address" type="text"
+                                           className="form-control"
+                                           maxLength={100}
+                                           value={this.state.email}
+                                           onChange={this.onChangeEmail} onFocus={this.onInputFocus}/>
 
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password:</label>
-                                <input id="password" placeholder="Enter password" type="password"
-                                       className="form-control" maxLength={100}
-                                       value={this.state.password} onChange={this.onChangePassword}
-                                       onFocus={this.onInputFocus}/>
-                            </div>
-                            <button id="email" className="btn btn-primary btn-lg btn-block"
-                                    onClick={this.onCreateNewAccount}>Submit
-                            </button>
-                        </form>
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Password:</label>
+                                    <input id="password" placeholder="Enter password" type="password"
+                                           className="form-control" maxLength={100}
+                                           value={this.state.password} onChange={this.onChangePassword}
+                                           onFocus={this.onInputFocus}/>
+                                </div>
+                                <button id="email" className="btn btn-primary btn-lg btn-block"
+                                        onClick={this.onCreateNewAccount}>Submit
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
