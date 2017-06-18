@@ -214,8 +214,10 @@ export class AddReview extends React.Component {
 
         if (auth.photoURL && auth.uid == this.state.uid) {
             photoURL = auth.photoURL;
+        } else {
+            photoURL = null;
         }
-        return (photoURL);
+        return photoURL;
     }
 
     handleCancel = (e) => {

@@ -124,9 +124,12 @@ export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId,
             updateAt: moment().unix(),
             review: review,
             rating: rating,
-            isApproved: false,
-            photoURL: photoURL
+            isApproved: false
         };
+
+        if (photoURL) {
+            updates["photoURL"] = photoURL;
+        }
 
         return reviewItemRef.update(updates).then(() => {
                 return dispatch(updateReviewItem(reviewItemId, updates));
