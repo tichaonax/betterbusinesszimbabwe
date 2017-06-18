@@ -57,7 +57,7 @@ export class Companies extends React.Component {
                 <div className="columns container">
                     {isLoggedIn && (
                         <div>
-                            <AddCompanyItem/>
+                           <AddCompanyItem/>
                         </div>
                     )}
                     <div>

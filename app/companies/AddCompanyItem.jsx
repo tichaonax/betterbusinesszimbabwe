@@ -286,7 +286,9 @@ export class AddCompnayItem extends React.Component {
 
     renderModalFeedback(redirectUrl) {
         return (
-            <div onClick={this.onModalClick}>
+            <div onClick={() => {
+                this.onModalClick(event);
+            }}>
                 {
                     this.state.isShowingModal &&
                     <ModalContainer onClose={() => {
@@ -330,7 +332,11 @@ export class AddCompnayItem extends React.Component {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back &nbsp;</Link>)}
+                                    {this.state.calledFromOutside && (<Link onClick={
+                                        () => {
+                                            this.onGoBack(event);
+                                        }
+                                    }>Back &nbsp;</Link>)}
                                     <div>
                                         <label htmlFor="stitle">Company Title</label>
                                     </div>
