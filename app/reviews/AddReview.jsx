@@ -336,11 +336,14 @@ export class AddReview extends React.Component {
     }
 
     renderCompanySelect() {
+        var {auth} = this.props;
         var selectedCompanyItemIds = [];
         var companyItems = this.state.companyItems;
         if (companyItems) {
             companyItems.map((companyItem) => {
-                selectedCompanyItemIds.push({value: companyItem.companyItemId, label: companyItem.companyTitle});
+                if (companyItem.isApproved || companyItem.uid == auth.uid) {
+                    selectedCompanyItemIds.push({value: companyItem.companyItemId, label: companyItem.companyTitle});
+                }
             });
 
             return (
