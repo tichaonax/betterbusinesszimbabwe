@@ -156,7 +156,7 @@ export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId,
 };
 
 export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItemId, uid, adminUid) => {
-    console.debug("startApproveUpdateReviewItem",reviewItemId, isApproved, companyItemId);
+    //console.debug("startApproveUpdateReviewItem",reviewItemId, isApproved, companyItemId);
     return (dispatch, getState) => {
         var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`);
 

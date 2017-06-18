@@ -210,15 +210,21 @@ export class AddReview extends React.Component {
         });
     }
 
-    getReviewerAvatar = () => {
+    getReviewerAvatar = (owner = false) => {
         var {auth} = this.props;
         let photoURL = "images/no-image.png";
 
-        if (auth.photoURL && auth.uid == this.state.uid) {
-            photoURL = auth.photoURL;
+        if (auth.uid == this.state.uid || owner) {
+            if (auth.photoURL) {
+                photoURL = auth.photoURL;
+                console.debug("Photo Owner", auth.photoURL);
+            }
         } else {
+            console.debug("Not Owner", auth.photoURL);
             photoURL = null;
         }
+
+        console.debug("Saved Photo", photoURL);
         return photoURL;
     }
 
@@ -302,7 +308,7 @@ export class AddReview extends React.Component {
             this.state.selectedCompanyTitle,
             userProfile.displayName,
             userProfile.email,
-            this.getReviewerAvatar()
+            this.getReviewerAvatar(true)
         ));
 
         this.resetInputs();
