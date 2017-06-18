@@ -19,10 +19,10 @@ store.dispatch(searchActions.setSearchText(""));
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-        console.debug("subscribed user:", user);
-        console.debug("providerId:", user.providerData[0].providerId);
-        console.debug("email:", user.providerData[0].email);
-        console.debug("userId:", user.providerData[0].uid);
+        //console.debug("subscribed user:", user);
+        //console.debug("providerId:", user.providerData[0].providerId);
+        //console.debug("email:", user.providerData[0].email);
+        //console.debug("userId:", user.providerData[0].uid);
         //console.debug("getState",store.getState());
         //console.debug("getState.redirectUrl", store.getState().redirectUrl);
         var displayName = user.email;
@@ -46,7 +46,7 @@ firebase.auth().onAuthStateChanged((user) => {
         store.dispatch(searchActions.setSearchText(""));
         hashHistory.push(store.getState().redirectUrl);
     } else {
-        console.debug("user session invlaid:", user);
+        //console.debug("user session invlaid:", user);
         store.dispatch(loginActions.bbzLogout());
         store.dispatch(profileActions.resetUserProfile());
         store.dispatch(reviewsActions.startAddReviewItems());
