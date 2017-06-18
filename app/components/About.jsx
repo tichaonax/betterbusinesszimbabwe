@@ -14,30 +14,22 @@ class About extends React.Component {
                        {/* <div>  */}
                             <div className="columns small-centered small-10 medium-6 large-4">
                                 <div className="callout callout-auth">
-                                    <p>Better Business Zimbabwe is dedicated to promote good business practices in
+                                    <p>Better Business Zimbabwe is dedicated to promoting good business practices in
                                         Zimbabwe.
-                                        This is achieved by both reporting good and bad experiences consumers get when
-                                        conducting business.
-                                        The end result is a win-win sitution for good businesses and their consumers.
-                                        Checkout out these resources</p>
+                                        This is achieved by reporting of both good and bad experiences consumers encounter when
+                                        conducting their business.
+                                        The end result is a win-win situation for good businesses and their consumers.
+                                        Checkout out these resources that I have used to create this website!</p>
                                     <ol>
                                         <li>
                                             <a href="https://facebook.github.io/react" target="_blank">React</a> - React
                                             JavaScript framework
-                                            that I used.
                                         </li>
                                         <li>
                                             <a href="https://github.com/tichaonax/betterbusinesszimbabwe"
                                                target="_blank">GitHub</a> - This codebase is
                                             stored in GitHub.
                                         </li>
-                                        {/*<li>
-                                            <a href="http://www.openweathermap.org/" target="_blank">Open Weather
-                                                Map</a> - I used Open Weather
-                                            Map to search
-                                            for weather by city name.
-                                        </li>*/}
-
                                         <li>
                                             <a href="https://firebase.google.com/" target="_blank">Firebase</a> - Firebase helps you build better mobile apps and grow your business.
                                         </li>
@@ -45,7 +37,6 @@ class About extends React.Component {
                                             <a href="https://certbot.eff.org/"
                                                target="_blank">Certbot</a> - Automatically enable HTTPS on your website with EFF's Certbot.
                                         </li>
-
                                     </ol>
                                 </div>
                             </div>
