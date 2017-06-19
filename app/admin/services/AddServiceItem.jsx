@@ -12,8 +12,8 @@ export class AddServiceItem extends React.Component {
         this.state = {
             operation: 'ADD',
             serviceId: 0,
-            serviceTitle: null,
-            serviceItemId: null
+            serviceTitle: '',
+            serviceItemId: ''
         }
     }
 
@@ -134,16 +134,6 @@ export class AddServiceItem extends React.Component {
             return;
         }
 
-       /* var serviceDesc = this.refs.serviceId.value;
-        if (serviceId.length > 0) {
-
-        } else {
-            error.errorMessage = "Service description required";
-            dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceDesc.focus();
-            return;
-        }*/
-
         this.resetInputs();
         dispatch(errorActions.bbzClearError());
         dispatch(servicesActions.startAddNewServiceItem(serviceTitle));
@@ -151,10 +141,6 @@ export class AddServiceItem extends React.Component {
 
     onChangeServiceTitle = (e) => {
         this.setState({serviceTitle: e.target.value});
-    }
-
-    onChangeServiceId = (e) => {
-        this.setState({serviceId: e.target.value});
     }
 
     //****TODO call this method when a serviceCategory changes
@@ -171,12 +157,6 @@ export class AddServiceItem extends React.Component {
                     </div>
                     <div className="form-group">
                         <form onSubmit={this.handleSubmit}>
-                          {/*  <div className="form-group">
-                                <label htmlFor="sdescription">Service ID</label>
-                                <input className="form-control" type="text" name="serviceId" ref="serviceId"
-                                       value={this.state.serviceId} maxLength={20}
-                                       placeholder="Service ID" onChange={this.onChangeServiceId}/>
-                            </div>*/}
                             <div className="form-group">
                                 <label htmlFor="stitle">Service Title</label>
                                 <input className="form-control" type="text" name="serviceTitle" ref="serviceTitle"
