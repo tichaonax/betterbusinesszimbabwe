@@ -2,8 +2,8 @@ import React from 'react';
 var {connect} = require('react-redux');
 import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
-var BbzAPI = require('BbzAPI');
 import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+var BbzAPI = require('BbzAPI');
 
 export class ReviewList extends React.Component {
     constructor(props) {

@@ -1,5 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import ReactList from 'react-list';
 import UserItem from 'UserItem';
 var BbzAPI = require('BbzAPI');
@@ -57,7 +58,7 @@ export class UserList extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{overflow: 'auto', maxHeight: 600, marginLeft: '10px', marginRight: '10px'}}>
+                    <div style={{overflow: 'auto', maxHeight: 1000, marginLeft: '10px', marginRight: '10px'}}>
                         <ReactList
                             itemRenderer={this.renderUserItem}
                             length={this.state.users.length}

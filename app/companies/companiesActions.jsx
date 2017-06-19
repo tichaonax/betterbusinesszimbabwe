@@ -85,8 +85,8 @@ export var startAddCompanyItems = () => {
                 });
             });
             //console.debug("startAddCompanyItems:",parsedCompanyItems);
-            dispatch(addCompanyItems(parsedCompanyItems));
             dispatch(loadingActions.setLoadingStatus(false));
+            dispatch(addCompanyItems(parsedCompanyItems));
         }, (error) => {
             console.debug("Unable to fetch companies", error);
             var errorObj = {

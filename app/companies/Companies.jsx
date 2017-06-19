@@ -31,11 +31,11 @@ export class Companies extends React.Component {
             this.dispatch(searchActions.setSearchText(company));
         }
 
-        //this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(companiesActions.startAddCompanyItems());
-        //this.dispatch(servicesActions.startAddServiceItems());
 
-        this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+        if (props.isLoggedIn) {
+            this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+        }
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 

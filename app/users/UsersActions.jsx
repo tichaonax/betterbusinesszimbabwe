@@ -33,8 +33,8 @@ export var startAddUserItems = () => {
                 });
             });
             //console.debug("startAddUserItems:",parsedUserItems);
-            dispatch(addUserItems(parsedUserItems));
             dispatch(loadingActions.setLoadingStatus(false));
+            dispatch(addUserItems(parsedUserItems));
         }, (error) => {
             console.debug("Unable to fetch users", error);
             var errorObj = {
