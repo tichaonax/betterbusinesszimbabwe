@@ -1,7 +1,7 @@
 import React from 'react';
 import {Route, Router, IndexRoute, hashHistory} from 'react-router';
 import Main from 'Main';
-import Weather from 'Weather';
+import Help from 'Help';
 import About from 'About';
 import BbzLogin from 'BbzLogin';
 import BbzPasswordLogin from 'BbzPasswordLogin';
@@ -19,6 +19,7 @@ import Users from 'Users';
 export default (
     <Router history={hashHistory}>
         <Route path="/" component={Main}>
+            <Route path="help" component={Help}/>
             <Route path="about" component={About}/>
             <Route path="login" component={BbzLogin}/>
             <Route path="companies" component={Companies}/>

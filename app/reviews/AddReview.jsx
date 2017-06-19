@@ -11,7 +11,7 @@ var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 import Error from 'Error';
-import Categories from 'serviceCategories';
+
 
 export class AddReview extends React.Component {
     constructor(props) {

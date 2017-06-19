@@ -1,5 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
+import {Link} from 'react-router';
 import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
 import {getMediaContainerClass, getMedia} from 'app/common/Utils';
@@ -80,8 +81,15 @@ export class ReviewList extends React.Component {
         return (
             <div className= {"columns " && this.state.container}>
                 <div className="row">
-                    <div className="col-sm-12">
-                        <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
+                    <div className="row">
+                        <div>
+                            <h4 className="text-center">
+                                <Link to="/help" activeClassName="active"
+                                      activeStyle={{fontWeight: 'bold'}}>
+                                    <span className="glyphicon glyphicon-info-sign button" data-toggle="tooltip"
+                                          title="Need Help??"></span>
+                                </Link>
+                                &nbsp;&nbsp;{this.state.reviews.length} Reviews...</h4></div>
                     </div>
                 </div>
                 <div className="row">
