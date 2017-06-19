@@ -49,7 +49,7 @@ export class UserList extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{overflow: 'auto', maxHeight: 400, marginLeft: '10px', marginRight: '10px'}}>
+                    <div style={{overflow: 'auto', maxHeight: 600, marginLeft: '10px', marginRight: '10px'}}>
                         <ReactList
                             itemRenderer={this.renderUserItem}
                             length={this.state.users.length}

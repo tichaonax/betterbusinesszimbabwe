@@ -50,7 +50,7 @@ export class ServiceList extends React.Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{overflow: 'auto', maxHeight: 500, marginLeft: '2px', marginRight: '20px'}}>
+                    <div style={{overflow: 'auto', maxHeight: 600, marginLeft: '2px', marginRight: '20px'}}>
                         <ReactList
                             itemRenderer={this.renderServiceItem}
                             length={this.state.services.length}
