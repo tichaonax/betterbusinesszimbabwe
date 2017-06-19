@@ -21,7 +21,7 @@ export class RatingItem extends React.Component {
         const reviewHeader = this.getWords(review);
 
         return (
-            <div>
+            <div >
                 <Rate
                     defaultValue={rating}
                    /* onChange={(index) => {

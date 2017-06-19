@@ -1,5 +1,6 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
+var loadingActions = require('loadingActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -70,6 +71,7 @@ export var addCompanyItems = (companyItems) => {
 
 export var startAddCompanyItems = () => {
     return (dispatch, getState) => {
+        dispatch(loadingActions.setLoadingStatus(true));
         var companyItemRef = firebaseRef.child(`companies`);
         return companyItemRef.once('value').then((snapshot) => {
             var companyItems = snapshot.val() || {}; //return available data or empty object
@@ -84,12 +86,14 @@ export var startAddCompanyItems = () => {
             });
             //console.debug("startAddCompanyItems:",parsedCompanyItems);
             dispatch(addCompanyItems(parsedCompanyItems));
+            dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to fetch companies", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         });
     };

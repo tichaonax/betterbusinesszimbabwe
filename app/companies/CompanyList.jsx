@@ -40,6 +40,14 @@ export class CompanyList extends React.Component {
         });
     }
 
+    itemSizeGetter = (index) => {
+        var companyItem = this.state.companies[index];
+        var divHeight = 30;
+        if (companyItem.companyDesc.length > 50) {
+            divHeight = 10 + Math.round((companyItem.companyDesc.length / 60)) * 30
+        }
+        return divHeight;
+    }
 
     renderCompanyItem = (index, key) => {
         //the idea is you want to construct the row data on the fly from the companies list

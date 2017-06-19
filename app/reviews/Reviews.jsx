@@ -7,7 +7,6 @@ var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var urlActions = require('urlActions');
 var Loader = require('react-loader');
-var loadingActions = require('loadingActions');
 
 export class Reviews extends React.Component {
     constructor(props) {
@@ -36,9 +35,7 @@ export class Reviews extends React.Component {
             //console.debug("searchActions.setSearchText(uid)", uid);
             this.dispatch(searchActions.setSearchText(uid));
         }
-        //else {
-        //    this.dispatch(reviewsActions.startAddReviewItems());
-        //}
+
         this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
@@ -56,7 +53,6 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        //this.loadData(newProps);
         var {isLoggedIn, userProfile} = newProps;
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
@@ -77,7 +73,7 @@ export class Reviews extends React.Component {
                         </div>
                     )}
                     <div>
-                        <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems} auth={this.props.auth}/>
+                        <ReviewList showCompanyTitle={true}  reviewItems={this.props.reviewItems} auth={this.props.auth}/>
                     </div>
                     <Loader loaded={this.state.loaded}>
                     </Loader>

@@ -18,13 +18,12 @@ export class Services extends React.Component {
 
     componentDidMount() {
         this.dispatch(servicesActions.startAddServiceItems());
-        this.dispatch(searchActions.setLoadingStatus(true));
     }
 
     componentWillReceiveProps(newProps) {
         //console.debug("newProps", newProps.searchOptions);
         this.setState({
-            loaded: !newProps.searchOptions.loading
+            loaded: !newProps.loading.loaded
         });
     }
 
@@ -67,6 +66,6 @@ export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
-        searchOptions: state.searchOptions,
+        loading: state.loading,
     }
 })(Services);

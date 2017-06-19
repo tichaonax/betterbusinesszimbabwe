@@ -35,12 +35,6 @@ export var searchOptionsReducer = (state = {
                 showMyReviews: action.showMyReviews
             });
 
-        case 'SET_LOADING_STATUS':
-            return ({
-                ...state,
-                loading: action.loading
-            });
-
         default:
             return state;
     };

@@ -15,7 +15,6 @@ export class ReviewItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-
     renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId) => {
         return (<RatingItem rating={rating}
                             review={review}

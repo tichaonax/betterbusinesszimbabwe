@@ -6,11 +6,15 @@ var searchActions = require('searchActions');
 var usersActions = require('usersActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
+var Loader = require('react-loader');
 
 export class Users extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            loaded: false
+        }
     }
 
     loadData(props) {
@@ -40,6 +44,9 @@ export class Users extends React.Component {
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
+        this.setState({
+            loaded: !newProps.loading.loaded
+        });
     }
 
     render() {
@@ -49,6 +56,8 @@ export class Users extends React.Component {
                     <div>
                         <UserList/>
                     </div>
+                    <Loader loaded={this.state.loaded}>
+                    </Loader>
                 </div>
             </div>
         );
@@ -58,6 +67,7 @@ export class Users extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile
+        userProfile: state.userProfile,
+        loading: state.loading
     }
 })(Users);

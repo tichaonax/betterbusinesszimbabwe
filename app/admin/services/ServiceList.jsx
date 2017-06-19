@@ -23,6 +23,14 @@ export class ServiceList extends React.Component {
         });
     }
 
+    itemSizeGetter = (index) => {
+        var serviceItem = this.state.reviews[index];
+        var divHeight = 30;
+        if (serviceItem.serviceTitle.length > 50) {
+            divHeight = 10 + Math.round((serviceItem.serviceTitle.length / 60)) * 30
+        }
+        return divHeight;
+    }
 
     renderServiceItem = (index, key) => {
         //the idea is you want to construct the row data on the fly from the services

@@ -213,6 +213,8 @@ export var startLastLogin = () => {
                     newLoginInfo.city = response.city;
                     Promise.resolve();
                     return (newLoginInfo);
+                }).catch((error) => {
+                    console.log("ipInfoPromise", error);
                 });
 
                 var lastLoginRef = firebaseRef.child(`users/${gUid}/userProfile/lastLogins`);
@@ -255,7 +257,9 @@ export var startLastLogin = () => {
                         console.debug("dispatch lastLoginInfo:", lastLoginInfo);
                         Promise.resolve();
                         return (lastLoginInfo);
-                    });
+                    }).catch((error) => {
+                    console.log("firebasePromise", error);
+                });
 
                 Promise.all([ipInfoPromise, firebasePromise]).then((values) => {
                         const newLogin = values[0];

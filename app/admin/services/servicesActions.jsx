@@ -1,7 +1,7 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
-var searchActions = require('searchActions');
+var loadingActions = require('loadingActions');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -48,6 +48,7 @@ export var addServiceItems = (serviceItems) => {
 
 export var startAddServiceItems = () => {
     return (dispatch, getState) => {
+        dispatch(loadingActions.setLoadingStatus(true));
         var serviceItemRef = firebaseRef.child(`services`);
         return serviceItemRef.once('value').then((snapshot) => {
             var serviceItems = snapshot.val() || {}; //return available data or empty object
@@ -62,7 +63,7 @@ export var startAddServiceItems = () => {
             });
 
             dispatch(addServiceItems(parsedServiceItems));
-            dispatch(searchActions.setLoadingStatus(false));
+            dispatch(loadingActions.setLoadingStatus(false));
 
         }, (error) => {
             console.log("Unable to fetch services", error);
@@ -70,6 +71,7 @@ export var startAddServiceItems = () => {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         });
     };

@@ -7,19 +7,16 @@ var BbzAPI = require('BbzAPI');
 export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             reviews: [],
             showCompanyTitle: true
         }
-        //this.renderReviewItem = this.renderReviewItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
         var filteredReviewItems;
         var bCompanyTitle;
         var uid = 0;
-
         if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions) {
             var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;
@@ -41,6 +38,15 @@ export class ReviewList extends React.Component {
             reviews: filteredReviewItems,
             showCompanyTitle: bCompanyTitle
         });
+    }
+
+    itemSizeGetter = (index) => {
+        var reviewItem = this.state.reviews[index];
+        var divHeight = 30;
+        if (reviewItem.review.length > 50) {
+            divHeight = 10 + Math.round((reviewItem.review.length / 60)) * 30
+        }
+        return divHeight;
     }
 
     renderReviewItem = (index, key) => {
