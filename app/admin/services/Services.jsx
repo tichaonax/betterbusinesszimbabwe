@@ -5,6 +5,7 @@ import ServiceList from 'ServiceList'
 import AddServiceItem from 'AddServiceItem';
 var servicesActions = require('servicesActions');
 var searchActions = require('searchActions');
+var loadingActions = require('loadingActions');
 var Loader = require('react-loader');
 
 export class Services extends React.Component {
@@ -12,18 +13,18 @@ export class Services extends React.Component {
         super(props);
         this.dispatch = props.dispatch;
         this.state = {
-            loaded: false
+            loaded: false,
+            serviceItems: []
         }
     }
 
     componentDidMount() {
-        this.dispatch(servicesActions.startAddServiceItems());
     }
 
     componentWillReceiveProps(newProps) {
-        //console.debug("newProps", newProps.searchOptions);
         this.setState({
-            loaded: !newProps.loading.loaded
+            loaded: !newProps.loading.loaded,
+            serviceItems: newProps.serviceItems
         });
     }
 
@@ -44,7 +45,7 @@ export class Services extends React.Component {
                         <AddServiceItem/>
                     </div>
                     <div>
-                        <ServiceList/>
+                        <ServiceList serviceItems={this.state.serviceItems}/>
                     </div>
                     <Loader loaded={this.state.loaded}>
                     </Loader>
@@ -67,5 +68,6 @@ export default connect((state) => {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
         loading: state.loading,
+        serviceItems: state.serviceItems
     }
 })(Services);

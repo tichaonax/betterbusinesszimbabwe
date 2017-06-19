@@ -11,6 +11,7 @@ var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 import Error from 'Error';
+import Categories from 'serviceCategories';
 
 export class AddReview extends React.Component {
     constructor(props) {
@@ -375,7 +376,7 @@ export class AddReview extends React.Component {
                                       activeStyle={{fontWeight: 'bold'}}>
                                     <span className="glyphicon glyphicon-plus button" data-toggle="tooltip"
                                           title="Add New Company!" onClick={() => {
-                                        this.dispatch(servicesActions.startAddServiceItems());
+                                        this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
                                     }}
                                     ></span>
                                 </Link>

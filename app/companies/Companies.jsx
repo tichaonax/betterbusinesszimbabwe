@@ -11,6 +11,7 @@ var servicesActions = require('servicesActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 var Loader = require('react-loader');
+import Categories from 'serviceCategories';
 
 export class Companies extends React.Component {
     constructor(props) {
@@ -31,7 +32,9 @@ export class Companies extends React.Component {
 
         //this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(companiesActions.startAddCompanyItems());
-        this.dispatch(servicesActions.startAddServiceItems());
+        //this.dispatch(servicesActions.startAddServiceItems());
+
+        this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 

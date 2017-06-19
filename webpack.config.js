@@ -66,6 +66,7 @@ module.exports = {
             './app/error',
             './app/url',
             '.app/common',
+            '.app/constants',
             './app/users'
         ],
         alias: {
@@ -97,6 +98,7 @@ module.exports = {
             Error: 'app/error/Error.jsx',
             loadingActions: 'app/common/loadingActions.jsx',
             loadingReducers: 'app/common/loadingReducers.jsx',
+            serviceCategories: 'app/constants/Categories.js'
 
         },
         extensions: ['', '.js', '.jsx']

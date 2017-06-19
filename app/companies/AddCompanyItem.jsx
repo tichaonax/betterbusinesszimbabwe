@@ -24,7 +24,7 @@ export class AddCompnayItem extends React.Component {
             selectedServiceItemId: '',
             selectedCategory: '',
             rating: 0,
-            remainingCharacters: null,
+            remainingCharacters: '',
             cancelOperation: false,
             isShowingModal: false
         }

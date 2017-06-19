@@ -52,7 +52,7 @@ export var startAddServiceItems = () => {
         var serviceItemRef = firebaseRef.child(`services`);
         return serviceItemRef.once('value').then((snapshot) => {
             var serviceItems = snapshot.val() || {}; //return available data or empty object
-
+            console.debug("serviceItems",serviceItems);
             var parsedServiceItems = [];
 
             Object.keys(serviceItems).forEach((serviceItemId) => {
@@ -61,6 +61,8 @@ export var startAddServiceItems = () => {
                     ...serviceItems[serviceItemId]
                 });
             });
+
+            console.debug("parsedServiceItems",parsedServiceItems);
 
             dispatch(addServiceItems(parsedServiceItems));
             dispatch(loadingActions.setLoadingStatus(false));
