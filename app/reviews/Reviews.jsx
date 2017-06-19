@@ -1,13 +1,13 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var urlActions = require('urlActions');
 var Loader = require('react-loader');
-import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 
 export class Reviews extends React.Component {
     constructor(props) {

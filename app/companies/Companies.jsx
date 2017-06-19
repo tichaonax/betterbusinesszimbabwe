@@ -1,9 +1,9 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
-import BbzSearch from "BbzSearch";
 var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
@@ -18,7 +18,8 @@ export class Companies extends React.Component {
         super(props);
         this.dispatch = props.dispatch;
         this.state = {
-            loaded: false
+            loaded: false,
+            container: "container"
         }
     }
 
@@ -57,6 +58,14 @@ export class Companies extends React.Component {
         this.setState({
             loaded: !newProps.loading.loaded
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     render() {
@@ -65,7 +74,7 @@ export class Companies extends React.Component {
 
         return (
             <div className="row">
-                <div className="columns container">
+                <div className={"columns " && this.state.container}>
                     {isLoggedIn && (
                         <div>
                            <AddCompanyItem/>
@@ -87,5 +96,6 @@ export default connect((state) => {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
         loading: state.loading,
+        breakpoint: state.breakpoint
     }
 })(Companies);

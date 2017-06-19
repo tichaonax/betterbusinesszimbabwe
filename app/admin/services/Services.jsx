@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import ServiceList from 'ServiceList'
 import AddServiceItem from 'AddServiceItem';
 var servicesActions = require('servicesActions');
@@ -8,13 +9,15 @@ var searchActions = require('searchActions');
 var loadingActions = require('loadingActions');
 var Loader = require('react-loader');
 
+
 export class Services extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
         this.state = {
             loaded: false,
-            serviceItems: []
+            serviceItems: [],
+            container: "container"
         }
     }
 
@@ -26,6 +29,14 @@ export class Services extends React.Component {
             loaded: !newProps.loading.loaded,
             serviceItems: newProps.serviceItems
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
 
@@ -40,7 +51,7 @@ export class Services extends React.Component {
 
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             return (
-                <div className="columns container">
+                <div className={"columns " && this.state.container}>
                     <div>
                         <AddServiceItem/>
                     </div>
@@ -68,6 +79,7 @@ export default connect((state) => {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
         loading: state.loading,
-        serviceItems: state.serviceItems
+        serviceItems: state.serviceItems,
+        breakpoint: state.breakpoint
     }
 })(Services);

@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import UserList from 'UserList'
 var searchActions = require('searchActions');
 var usersActions = require('usersActions');
@@ -13,7 +14,8 @@ export class Users extends React.Component {
         super(props);
         this.dispatch = props.dispatch;
         this.state = {
-            loaded: false
+            loaded: false,
+            container: "container"
         }
     }
 
@@ -47,12 +49,20 @@ export class Users extends React.Component {
         this.setState({
             loaded: !newProps.loading.loaded
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     render() {
         return (
             <div className="row">
-                <div className="columns container">
+                <div className={"columns " && this.state.container}>
                     <div>
                         <UserList/>
                     </div>
@@ -68,6 +78,7 @@ export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
-        loading: state.loading
+        loading: state.loading,
+        breakpoint: state.breakpoint
     }
 })(Users);
