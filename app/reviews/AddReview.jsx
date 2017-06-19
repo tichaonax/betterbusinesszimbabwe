@@ -315,38 +315,15 @@ export class AddReview extends React.Component {
 
         this.resetInputs();
 
-        /*this.state = {
-            isShowingModal: true
-        }*/
-
-
         this.setState({isShowingModal: true},
             ()=>{
                 if (!this.state.calledFromOutside) {
-                    //console.debug("redirectUrl calledFromOutside",redirectUrl);
-                    /*this.state = {
-                     isShowingModal: true
-                     }
-                     }else{*/
                     this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
                 } else {
-                    console.debug("redirectUrl calledFromOutside", redirectUrl);
-                    console.debug("isShowingModal", this.state.isShowingModal);
+                    hashHistory.push(redirectUrl);
                 }
             }
         );
-
-
-      /*  this.setState(
-            {
-                originId: input.originId,
-                destinationId: input.destinationId,
-                radius: input.radius,
-                search: input.search
-            },
-            this.findRoutes         // here is where you put the callback
-        );*/
-
 
         this.dispatch(errorActions.bbzClearError());
     }

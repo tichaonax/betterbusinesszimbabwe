@@ -7,7 +7,7 @@ module.exports = {
         const URL = "https://ifcfg.me/ip";
 
         return axios.get(URL).then(function (resp) {
-            console.log(resp);
+            //console.log(resp);
             if (resp.status == 200) {
                 return resp.data;
             } else {
@@ -24,7 +24,7 @@ module.exports = {
         const URL = `https://ipinfo.io/${ipAddress}/json`;
 
         return axios.get(URL).then(function (resp) {
-            console.log(resp);
+            //console.log(resp);
             if (resp.status == 200) {
                 return resp.data;
             } else {

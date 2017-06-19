@@ -20,16 +20,16 @@ export var bbzLogin = (auth) => {
 //<editor-fold desc="Provider Login">
 
 function isUserProfileUpdateNeeded(getState, gAuth) {
-    console.debug("isUserProfileUpdateNeeded->gAuth", gAuth);
+    //console.debug("isUserProfileUpdateNeeded->gAuth", gAuth);
     if (gAuth.email != getState().userProfile.email ||
         gAuth.providerId != getState().userProfile.providerId ||
         gAuth.userId != getState().userProfile.userId ||
         gAuth.displayName != getState().userProfile.displayName ||
         gAuth.photoURL != getState().userProfile.photoURL) {
-        console.debug("isUserProfileUpdateNeeded", true);
+        //console.debug("isUserProfileUpdateNeeded", true);
         return (true);
     } else {
-        console.debug("isUserProfileUpdateNeeded", false);
+        //console.debug("isUserProfileUpdateNeeded", false);
         return (false);
     }
 }
@@ -77,7 +77,7 @@ export var startBbzLogin = (provider) => {
                     () => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
-                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                           // console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                             if (isUserProfileUpdateNeeded(getState, gAuth)) {
                                 return dispatch(profileActions.startUpdateUserProfile(gAuth.uid,
                                     gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
@@ -209,7 +209,7 @@ export var startLastLogin = () => {
                     var newLoginInfo = {};
                     newLoginInfo.ipAddress = gClientIp;
                     newLoginInfo.loginAt = moment().unix();
-                    console.debug("ipInfoPromise", response);
+                    //console.debug("ipInfoPromise", response);
                     newLoginInfo.country = response.country;
                     newLoginInfo.city = response.city;
                     Promise.resolve();
