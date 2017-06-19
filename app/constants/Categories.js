@@ -1639,7 +1639,7 @@ const services ={
 export const SERVICE_CATEGORIES = services;
 
 export const getServices = () => {
-    console.debug("load getServices");
+    //console.debug("load getServices");
     var loadingActions = require('loadingActions');
     loadingActions.setLoadingStatus(true);
     var parsedServiceItems = [];
