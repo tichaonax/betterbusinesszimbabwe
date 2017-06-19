@@ -11,6 +11,7 @@ import {companyItemsReducer, companyOperationReducer, recentlyAddedCompanyReduce
 import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 import {userItemsReducer} from 'usersItemsReducer';
 import {loadingReducer} from 'loadingReducers';
+import syncBreakpointWithStore, {breakpointReducer} from 'redux-breakpoint'
 
 export var configure = (initialState = {}) => {
     var reducers = redux.combineReducers({
@@ -30,7 +31,8 @@ export var configure = (initialState = {}) => {
         reviewOperation: reviewOperationReducer,
         recentlyAddedCompany: recentlyAddedCompanyReducer,
         userItems: userItemsReducer,
-        loading: loadingReducer
+        loading: loadingReducer,
+        breakpoint: breakpointReducer
     });
 
     const rootReducer = ( state, action ) => {
@@ -51,5 +53,7 @@ export var configure = (initialState = {}) => {
             }
     ));
 
+    // make your store sync with device width change.
+    syncBreakpointWithStore(store);
     return store;
 };

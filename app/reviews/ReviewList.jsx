@@ -3,13 +3,15 @@ var {connect} = require('react-redux');
 import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
 var BbzAPI = require('BbzAPI');
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 
 export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             reviews: [],
-            showCompanyTitle: true
+            showCompanyTitle: true,
+            container: "container"
         }
     }
 
@@ -38,6 +40,14 @@ export class ReviewList extends React.Component {
             reviews: filteredReviewItems,
             showCompanyTitle: bCompanyTitle
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     itemSizeGetter = (index) => {
@@ -68,14 +78,14 @@ export class ReviewList extends React.Component {
 
     render() {
         return (
-            <div className="columns container">
+            <div className= {"columns " && this.state.container}>
                 <div className="row">
                     <div className="col-sm-12">
                         <h4 className="text-center">{this.state.reviews.length} Reviews...</h4>
                     </div>
                 </div>
                 <div className="row">
-                    <div style={{overflow: 'auto', maxHeight: 600, marginLeft: '2px', marginRight: '20px'}}>
+                    <div style={{overflow: 'auto', maxHeight: 1000, marginLeft: '2px', marginRight: '20px'}}>
                         <ReactList
                             itemRenderer={this.renderReviewItem}
                             length={this.state.reviews.length}
@@ -96,6 +106,7 @@ export default connect(
             showApprovalPending: state.showApprovalPending,
             searchText: state.searchText,
             searchOptions: state.searchOptions,
+            breakpoint: state.breakpoint
         }
     }
 )(ReviewList);

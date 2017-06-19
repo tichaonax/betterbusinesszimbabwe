@@ -7,13 +7,15 @@ var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var urlActions = require('urlActions');
 var Loader = require('react-loader');
+import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 
 export class Reviews extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
         this.state = {
-            loaded: false
+            loaded: false,
+            container: "container"
         }
     }
 
@@ -41,6 +43,8 @@ export class Reviews extends React.Component {
     }
 
     componentDidMount() {
+
+
         this.dispatch(searchActions.setMyReviews(false));
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
@@ -60,13 +64,21 @@ export class Reviews extends React.Component {
         this.setState({
             loaded: !newProps.loading.loaded
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     render() {
         var {isLoggedIn} = this.props;
         return (
             <div className="row">
-                <div className="columns container">
+                <div className= {"columns " && this.state.container}>
                     {isLoggedIn && (
                         <div>
                             <AddReview/>
@@ -90,6 +102,7 @@ export default connect((state) => {
         searchText: state.searchText,
         auth: state.auth,
         reviewItems: state.reviewItems,
-        loading: state.loading
+        loading: state.loading,
+        breakpoint: state.breakpoint
     }
 })(Reviews);

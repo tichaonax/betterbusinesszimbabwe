@@ -1,6 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
-import {getRatingsAverage, getRatingRoundedToHalf} from 'app/common/reviewUtils';
+import {getRatingsAverage, getRatingRoundedToHalf} from 'app/common/Utils';
 
 var BbzAPI = require('BbzAPI');
 import CompanyRatingItem from 'app/companies/CompanyRatingItem';
