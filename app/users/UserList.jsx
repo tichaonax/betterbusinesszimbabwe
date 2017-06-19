@@ -9,9 +9,9 @@ export class UserList extends React.Component {
         super(props);
 
         this.state = {
-            users: []
+            users: [],
+            container: "container"
         }
-        this.renderUserItem = this.renderUserItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -22,6 +22,14 @@ export class UserList extends React.Component {
             rowCount: filteredUserItems.length,
             users: filteredUserItems
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     itemSizeGetter = (index) => {
@@ -42,7 +50,7 @@ export class UserList extends React.Component {
 
     render() {
         return (
-            <div className="columns container">
+            <div className={"columns " && this.state.container}>
                 <div className="row">
                     <div className="col-sm-12">
                         <h4 className="text-center">{this.state.users.length} Users...</h4>
@@ -66,7 +74,8 @@ export default connect(
         return {
             auth: state.auth,
             userItems: state.userItems,
-            searchText: state.searchText
+            searchText: state.searchText,
+            breakpoint: state.breakpoint
         }
     }
 )(UserList);

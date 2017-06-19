@@ -9,9 +9,9 @@ export class CompanyList extends React.Component {
         super(props);
 
         this.state = {
-            companies: []
+            companies: [],
+            container: "container"
         }
-        this.renderCompanyItem = this.renderCompanyItem.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
@@ -38,6 +38,14 @@ export class CompanyList extends React.Component {
             rowCount: filteredCompanyItems.length,
             companies: filteredCompanyItems
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     itemSizeGetter = (index) => {
@@ -62,8 +70,9 @@ export class CompanyList extends React.Component {
     }
 
     render() {
+        console.debug("this.state.container",this.state.container);
         return (
-            <div className="columns container">
+            <div className={"columns " && this.state.container}>
                 <div className="row">
                     <div className="col-sm-12">
                         <h4 className="text-center">{this.state.companies.length} Companies...</h4>
@@ -90,7 +99,8 @@ export default connect(
             companyItems: state.companyItems,
             searchOptions: state.searchOptions,
             searchText: state.searchText,
-            serviceItems: state.serviceItems
+            serviceItems: state.serviceItems,
+            breakpoint: state.breakpoint
         }
     }
 )(CompanyList);

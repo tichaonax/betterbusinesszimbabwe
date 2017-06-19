@@ -10,7 +10,8 @@ export class ServiceList extends React.Component {
         super(props);
 
         this.state = {
-            services: []
+            services: [],
+            container: "container"
         }
     }
 
@@ -21,6 +22,14 @@ export class ServiceList extends React.Component {
             rowCount: filteredServiceItems.length,
             services: filteredServiceItems
         });
+
+        let {breakpoint} = this.props;
+
+        if (breakpoint) {
+            this.setState({
+                container: getMediaContainerClass(breakpoint)
+            });
+        }
     }
 
     itemSizeGetter = (index) => {
@@ -43,7 +52,7 @@ export class ServiceList extends React.Component {
 
     render() {
         return (
-            <div className="columns container">
+            <div className={"columns " && this.state.container}>
                 <div className="row">
                     <div className="col-sm-12">
                         <h4 className="text-center">{this.state.services.length} Services...</h4>
@@ -67,6 +76,7 @@ export default connect(
         return {
             serviceItems: state.serviceItems,
             searchText: state.searchText,
+            breakpoint: state.breakpoint
         }
     }
 )(ServiceList);
