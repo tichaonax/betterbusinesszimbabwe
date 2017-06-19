@@ -5,6 +5,7 @@ import {Link} from 'react-router';
 import Linkify from 'react-linkify';
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
+var urlActions = require('urlActions');
 
 export class RatingItem extends React.Component {
     constructor(props) {
@@ -31,7 +32,9 @@ export class RatingItem extends React.Component {
                     allowHalf
                     value={rating}
                 />
-                <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                <Link to={`/addreview?company=${companyItemId}`} activeClassName="active" onClick={()=>{
+                    this.dispatch(urlActions.setRedirectUrl("reviews"));
+                }}
                       activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
 
                 {showCompanyTitle == true && (

@@ -62,6 +62,7 @@ export var startBbzLogin = (provider) => {
             };
 
             //console.debug("Auth data!", gAuth);
+            dispatch(errorActions.bbzClearError());
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
             console.debug("Unable to auth", error);
@@ -108,8 +109,8 @@ export var startBbzEmailLogin = (email, password) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
             let user = result;
-            console.debug("Email user:", user);
-            console.debug("userId: user.providerData[0]",user.providerData[0]);
+            //console.debug("Email user:", user);
+            //console.debug("userId: user.providerData[0]",user.providerData[0]);
             gAuth = {
                 uid: user.uid,
                 displayName: email,
@@ -121,7 +122,7 @@ export var startBbzEmailLogin = (email, password) => {
             }
 
             console.debug("Auth data!", gAuth);
-
+            dispatch(errorActions.bbzClearError());
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
             console.debug("Unable to auth", error);
@@ -136,7 +137,7 @@ export var startBbzEmailLogin = (email, password) => {
                     () => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
-                            console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                            //console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                             if (isUserProfileUpdateNeeded(getState, gAuth)) {
                                 return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
                                     gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
@@ -170,7 +171,7 @@ export var bbzLogout = () => {
 export var startBbzLogout = () => {
     return (dispatch, getState) => {
         return firebase.auth().signOut().then(() => {
-            console.debug("Logggedout!");
+            //console.debug("Logggedout!");
             return dispatch(bbzLogout());
         }).then(
             () => {
@@ -184,7 +185,7 @@ export var startBbzLogout = () => {
 
 //<editor-fold desc="lastLogins">
 export var lastLogin = (lastLogin) => {
-    console.debug("lastLogin", lastLogin);
+    //console.debug("lastLogin", lastLogin);
     return {
         type: 'ADD_LAST_LOGIN',
         lastLogin
@@ -254,7 +255,7 @@ export var startLastLogin = () => {
                         }
 
                         parsedLastLogins = null;
-                        console.debug("dispatch lastLoginInfo:", lastLoginInfo);
+                        //console.debug("dispatch lastLoginInfo:", lastLoginInfo);
                         Promise.resolve();
                         return (lastLoginInfo);
                     }).catch((error) => {
@@ -264,8 +265,8 @@ export var startLastLogin = () => {
                 Promise.all([ipInfoPromise, firebasePromise]).then((values) => {
                         const newLogin = values[0];
                         const oldLogin = values[1];
-                        console.debug("Promise.all-1", newLogin);
-                        console.debug("Promise.all-2", oldLogin);
+                        //console.debug("Promise.all-1", newLogin);
+                        //console.debug("Promise.all-2", oldLogin);
 
                         return lastLoginRef.push(newLogin).then(() => {
                             if (oldLogin.city) {

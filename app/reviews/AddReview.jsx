@@ -9,6 +9,7 @@ var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
+var urlActions = require('urlActions');
 import Error from 'Error';
 
 export class AddReview extends React.Component {
@@ -54,7 +55,7 @@ export class AddReview extends React.Component {
         companyItems.map((companyItem) => {
             if (companyItem.companyItemId == companyItemId) {
 
-               // console.debug("Match", companyItem);
+                //console.debug("Match", companyItem);
 
                 this.state = {
                     selectedCompanyItemId: companyItem.companyItemId,
@@ -141,7 +142,8 @@ export class AddReview extends React.Component {
 
     onModalClick = () => this.setState({isShowingModal: true});
 
-    renderModalFeedback(redirectUrl) {
+    renderModalFeedback() {
+        var {redirectUrl} = this.props;
         return (
             <div onClick={this.onModalClick}>
                 {
@@ -313,12 +315,38 @@ export class AddReview extends React.Component {
 
         this.resetInputs();
 
-        if (this.state.calledFromOutside) {
-            //console.debug("redirectUrl calledFromOutside",redirectUrl);
-            this.state = {
-                isShowingModal: true
+        /*this.state = {
+            isShowingModal: true
+        }*/
+
+
+        this.setState({isShowingModal: true},
+            ()=>{
+                if (!this.state.calledFromOutside) {
+                    //console.debug("redirectUrl calledFromOutside",redirectUrl);
+                    /*this.state = {
+                     isShowingModal: true
+                     }
+                     }else{*/
+                    this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
+                } else {
+                    console.debug("redirectUrl calledFromOutside", redirectUrl);
+                    console.debug("isShowingModal", this.state.isShowingModal);
+                }
             }
-        }
+        );
+
+
+      /*  this.setState(
+            {
+                originId: input.originId,
+                destinationId: input.destinationId,
+                radius: input.radius,
+                search: input.search
+            },
+            this.findRoutes         // here is where you put the callback
+        );*/
+
 
         this.dispatch(errorActions.bbzClearError());
     }
@@ -384,7 +412,6 @@ export class AddReview extends React.Component {
     }
 
     render() {
-        var {redirectUrl} = this.props;
         return (
             <div className="col-sm-12">
                 <div className="review-block">
@@ -397,7 +424,7 @@ export class AddReview extends React.Component {
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="form-group">
-                                    {this.renderModalFeedback(redirectUrl)}
+                                    {this.renderModalFeedback()}
                                     {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back &nbsp;</Link>)}
                                     {this.state.operation === 'ADD' && (
                                         <label htmlFor="company-item-id">Company</label>)}
