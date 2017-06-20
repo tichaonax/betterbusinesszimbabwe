@@ -18,12 +18,12 @@ class Nav extends React.Component {
         }
     }
 
-    renderAdminNavigation(){
-        return (<AdminNavigation closeNav={this.closeNav.bind(this)}/>);
+    renderAdminNavigation() {
+        return (<AdminNavigation ideNav={this.state.sideNav} closeNav={this.closeNavigation.bind(this)}/>);
     }
 
     renderLoginControl() {
-        return (<LoginControl closeNav={this.closeNav.bind(this)}/>);
+        return (<LoginControl sideNav={this.state.sideNav} closeNav={this.closeNavigation.bind(this)}/>);
     }
 
     openNav() {
@@ -42,6 +42,13 @@ class Nav extends React.Component {
                 backgroundColor: 'rgba(0,0,0,0)'
             }
         })
+    }
+
+    closeNavigation(value) {
+        //console.debug("closeNavigation called from child", value);
+        this.setState({
+            sideNav: value
+        });
     }
 
     renderMenu(){

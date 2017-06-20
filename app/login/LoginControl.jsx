@@ -6,9 +6,19 @@ var {Link} = require('react-router');
 export class LoginControl extends React.Component {
     constructor(props) {
         super(props);
-        this.onLogout = this.onLogout.bind(this);
+        this.state = {
+            sideNav: {
+                width: '0px',
+                backgroundColor: 'rgba(0,0,0,0)'
+            }
+        }
     }
 
+
+    closeNavigation() {
+        //console.debug("this.state.sideNav",this.state.sideNav);
+        this.props.closeNav(this.state.sideNav)
+    }
 
     onLogout = (e) => {
         e.preventDefault();
@@ -20,12 +30,17 @@ export class LoginControl extends React.Component {
 
         if (isLoggedIn) {
             return (
-               <div className="upper-links"><a className="links" href="#" onClick={this.onLogout}>Logout</a>
-               </div>
+                <div className="upper-links"><a className="links" href="#" onClick={() => {
+                    this.onLogout;
+                    this.closeNavigation;
+                }}>Logout</a>
+                </div>
             );
         } else {
             return (
-                <Link to="/login" activeClassName="active" className="links" onClick={()=>this.props.closeNav}
+                <Link to="/login" activeClassName="active" className="links" onClick={()=>{
+                    //console.debug("props",this.props.closeNav);
+                    this.closeNavigation()}}
                       activeStyle={{fontWeight: 'bold'}}>Login</Link>
             );
         }
