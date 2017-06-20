@@ -5,6 +5,7 @@ import get from 'lodash.get';
 import {Link, browserHistory, hashHistory} from 'react-router';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 var companiesActions = require('companiesActions');
+var searchActions = require('searchActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
 
@@ -41,6 +42,10 @@ export class AddCompnayItem extends React.Component {
         } else {
             this.resetInputs();
         }
+    }
+
+    componentWillUnmount() {
+        this.dispatch(searchActions.setSearchText(""));
     }
 
     loadData(props) {
@@ -144,6 +149,7 @@ export class AddCompnayItem extends React.Component {
             selectedServiceItemId: null,
             serviceCategory: null
         });
+        this.dispatch(searchActions.setSearchText(""));
     }
 
     handleCancel = (e) => {

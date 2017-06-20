@@ -106,7 +106,6 @@ export class AddReview extends React.Component {
 
         var {location} = nextProps;
         if (location && location.query) {
-            //console.debug("location:- componentWillReceiveProps", location);
             this.validateAddNewReviewParameters(location.query.company);
         }
 
