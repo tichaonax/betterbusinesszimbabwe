@@ -19,11 +19,11 @@ class Nav extends React.Component {
     }
 
     renderAdminNavigation() {
-        return (<AdminNavigation ideNav={this.state.sideNav} closeNav={this.closeNavigation.bind(this)}/>);
+        return (<AdminNavigation closeNav={this.closeNavigation.bind(this)}/>);
     }
 
     renderLoginControl() {
-        return (<LoginControl sideNav={this.state.sideNav} closeNav={this.closeNavigation.bind(this)}/>);
+        return (<LoginControl closeNav={this.closeNavigation.bind(this)}/>);
     }
 
     openNav() {
@@ -45,7 +45,6 @@ class Nav extends React.Component {
     }
 
     closeNavigation(value) {
-        //console.debug("closeNavigation called from child", value);
         this.setState({
             sideNav: value
         });
@@ -152,9 +151,9 @@ class Nav extends React.Component {
                         </div>
                         <div className="row row2">
                             <div className="col-sm-6">
-                                <h2 style={{margin:'0px'}}><span className="smallnav menu" onClick={()=>{
+                                <h3 style={{margin:'0px'}}><span className="smallnav menu" onClick={()=>{
                                     this.openNav()
-                                }}>☰ Better Business Zimbabwe</span></h2>
+                                }}>☰ Better Business Zimbabwe</span></h3>
                                 <h2 style={{margin:'0px'}}><span className="largenav">Better Business Zimbabwe</span></h2>
                             </div>
 
@@ -171,7 +170,7 @@ class Nav extends React.Component {
                 </div>
                 <div id="sidenav" className="sidenav" style={this.state.sideNav}>
                     <div className="container" style={{backgroundColor: '#2874f0', paddingTop: '10px'}}>
-                        <span className="sidenav-heading">Better Business Zimbabwe</span>
+                        <span className="sidenav-heading"><h2>BBZ</h2></span>
                         <a href="javascript:void(0)" className="closebtn" onClick={()=>{this.closeNav()}}>×</a>
                     </div>
                     {this.renderMenu()}

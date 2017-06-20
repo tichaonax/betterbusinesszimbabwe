@@ -8,6 +8,16 @@ export class AdminNavigation extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            sideNav: {
+                width: '0px',
+                backgroundColor: 'rgba(0,0,0,0)'
+            }
+        }
+    }
+
+    closeNavigation() {
+        this.props.closeNav(this.state.sideNav);
     }
 
     render() {
@@ -17,9 +27,9 @@ export class AdminNavigation extends React.Component {
                 <div>
                     {isLoggedIn && userProfile && userProfile.isAdmin && (
                         <Link to="/services" activeClassName="active" className="profile-links"
-                              onClick={() => {
-                                  this.props.closeNav;
+                              onClick={()=> {
                                   this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+                                  this.closeNavigation();
                               }}
                               activeStyle={{fontWeight: 'bold'}}>Services</Link>)}
                 </div>
