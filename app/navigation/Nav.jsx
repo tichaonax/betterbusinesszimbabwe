@@ -71,7 +71,7 @@ class Nav extends React.Component {
 
                 {isLoggedIn && (
                     <li className="upper-links">
-                        <Link to="/users" activeClassName="active" className="links" onClick={() => this.props.closeNav}
+                        <Link to="/users" activeClassName="active" className="links" onClick={() => this.closeNav()}
                               activeStyle={{fontWeight: 'bold'}}>Users</Link>
                     </li>
                 )}
