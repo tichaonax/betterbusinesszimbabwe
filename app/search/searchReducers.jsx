@@ -1,6 +1,7 @@
 export var searchTextReducer = (state = '', action) => {
     switch (action.type) {
         case 'SET_SEARCH_TEXT':
+            console.debug("searchTextReducer",action.searchText);
             return action.searchText;
         default:
             return state;

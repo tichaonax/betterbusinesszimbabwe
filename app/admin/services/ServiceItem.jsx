@@ -21,7 +21,7 @@ export class ServiceItem extends React.Component {
                                 <div className="col-sm-3">
                                     <input type="submit" value="&times;" onClick={() => {
                                         if (userProfile.isSuperUser) {
-                                            this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
+                                            //this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
                                         } else {
                                             var error = {};
                                             error.errorMessage = "You must be Super User to delete this service information";
