@@ -4,36 +4,43 @@ import {Link} from 'react-router';
 var loginActions = require('loginActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
+var Loader = require('react-loader');
 import Error from 'Error';
 
 export class BbzPasswordLogin extends React.Component {
     constructor(props) {
         super(props);
-        this.onBbzPasswordLogin = this.onBbzPasswordLogin.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onInputFocus = this.onInputFocus.bind(this);
-        this.state = {email: "", password: ""};
+        this.dispatch = props.dispatch;
+        this.state = {
+            email: "",
+            password: "",
+            loaded: false
+        };
     }
 
     componentDidMount() {
-        const {dispatch, currentURL, isLoggedIn, error} = this.props;
+        const {currentURL, isLoggedIn, error} = this.props;
         if (!isLoggedIn) {
             // set the current url/path for future redirection if login fails
-            dispatch(urlActions.setRedirectUrl(currentURL));
+            this.dispatch(urlActions.setRedirectUrl(currentURL));
         }else{
-            dispatch(loginActions.startBbzLogout());
+            this.dispatch(loginActions.startBbzLogout());
         }
 
         if (error) {
-            dispatch(errorActions.bbzClearError());
+            this.dispatch(errorActions.bbzClearError());
         }
+    }
+
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            loaded: !newProps.loading.loaded
+        });
     }
 
     onBbzPasswordLogin = (e) => {
         e.preventDefault();
-        var {dispatch} = this.props;
-        dispatch(loginActions.startBbzEmailLogin(this.state.email, this.state.password));
+        this.dispatch(loginActions.startBbzEmailLogin(this.state.email, this.state.password));
     };
 
     onChangePassword = (e) => {
@@ -45,9 +52,9 @@ export class BbzPasswordLogin extends React.Component {
     }
 
     onInputFocus = (e) => {
-        const {dispatch, error} = this.props;
+        const {error} = this.props;
         if (error) {
-            dispatch(errorActions.bbzClearError());
+            this.dispatch(errorActions.bbzClearError());
         }
     }
 
@@ -89,6 +96,8 @@ export class BbzPasswordLogin extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Loader loaded={this.state.loaded}>
+                </Loader>
             </div>
         );
     }
@@ -98,7 +107,8 @@ function mapStateToProps(state, ownProps) {
     return {
         isLoggedIn: state.auth.loggedIn,
         currentURL: ownProps.location.pathname,
-        error: state.error
+        error: state.error,
+        loading: state.loading
     }
 }
 export default connect(mapStateToProps)(BbzPasswordLogin);

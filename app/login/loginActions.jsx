@@ -5,6 +5,7 @@ import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 var errorActions = require('errorActions');
 var profileActions = require('profileActions');
 var servicesActions = require('servicesActions');
+var loadingActions = require('loadingActions');
 
 //<editor-fold desc="Login">
 
@@ -46,6 +47,7 @@ function getUserAvatar(avatar) {
 export var startBbzLogin = (provider) => {
     var gAuth;
     return (dispatch, getState) => {
+        dispatch(loadingActions.setLoadingStatus(true));
         return firebase.auth().signInWithPopup(provider).then((result) => {
             console.debug("Auth worked!", result);
 
@@ -63,6 +65,7 @@ export var startBbzLogin = (provider) => {
 
             //console.debug("Auth data!", gAuth);
             dispatch(errorActions.bbzClearError());
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
             console.debug("Unable to auth", error);
@@ -70,6 +73,7 @@ export var startBbzLogin = (provider) => {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
@@ -91,9 +95,11 @@ export var startBbzLogin = (provider) => {
             }
         ).then(
             () => {
+                dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(startLastLogin());
             }
         ).catch((error)=>{
+            dispatch(loadingActions.setLoadingStatus(false));
             console.debug("firebase-login-error", error);
         })
     };
@@ -106,6 +112,7 @@ export var startBbzLogin = (provider) => {
 export var startBbzEmailLogin = (email, password) => {
     var gAuth;
     return (dispatch, getState) => {
+        dispatch(loadingActions.setLoadingStatus(true));
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
             let user = result;
@@ -122,6 +129,7 @@ export var startBbzEmailLogin = (email, password) => {
             }
 
             console.debug("Auth data!", gAuth);
+            dispatch(loadingActions.setLoadingStatus(false));
             dispatch(errorActions.bbzClearError());
             return dispatch(bbzLogin(gAuth));
         }, (error) => {
@@ -130,6 +138,7 @@ export var startBbzEmailLogin = (email, password) => {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
@@ -151,9 +160,13 @@ export var startBbzEmailLogin = (email, password) => {
             }
         ).then(
             () => {
+                dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(startLastLogin());
             }
-        )
+        ).catch((error)=>{
+            dispatch(loadingActions.setLoadingStatus(false));
+            console.debug("firebase-email-login-error", error);
+        })
     };
 };
 

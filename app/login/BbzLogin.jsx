@@ -2,19 +2,21 @@ import React from 'react';
 import {connect} from 'react-redux';
 var loginActions = require('loginActions');
 var urlActions = require('urlActions');
+var Loader = require('react-loader');
 import {githubProvider, facebookProvider, googleProvider}  from 'app/firebase/';
 import {Link} from 'react-router';
+
 
 export class BbzLogin extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
+        this.state = {
+            email: "",
+            password: "",
+            loaded: false
+        };
 
-        this.onBbzLogin = this.onBbzLogin.bind(this);
-        this.onBbzPasswordLogin = this.onBbzPasswordLogin.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
-        this.onInputFocus = this.onInputFocus.bind(this);
-        this.state = {email: "", password: ""};
     }
 
     componentDidMount() {
@@ -32,27 +34,28 @@ export class BbzLogin extends React.Component {
         }
     }
 
-
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            loaded: !newProps.loading.loaded
+        });
+    }
 
     onBbzPasswordLogin = (e) => {
         e.preventDefault();
-        var {dispatch} = this.props;
-        dispatch(loginActions.startBbzEmailLogin(this.state.email, this.state.password));
+        this.dispatch(loginActions.startBbzEmailLogin(this.state.email, this.state.password));
     };
 
     onBbzLogin = (e) => {
         e.preventDefault();
-        var {dispatch} = this.props;
-
         switch ($(e.target).attr('id')) {
             case 'google':
-                dispatch(loginActions.startBbzLogin(googleProvider));
+                this.dispatch(loginActions.startBbzLogin(googleProvider));
                 break;
             case 'facebook':
-                dispatch(loginActions.startBbzLogin(facebookProvider));
+                this.dispatch(loginActions.startBbzLogin(facebookProvider));
                 break;
             case 'github':
-                dispatch(loginActions.startBbzLogin(githubProvider));
+                this.dispatch(loginActions.startBbzLogin(githubProvider));
                 break;
             default:
                 break;
@@ -68,9 +71,9 @@ export class BbzLogin extends React.Component {
     }
 
     onInputFocus = (e) => {
-        const {dispatch, error} = this.props;
+        const {error} = this.props;
         if (error) {
-            dispatch(errorActions.bbzClearError());
+            this.dispatch(errorActions.bbzClearError());
         }
     }
 
@@ -154,6 +157,8 @@ export class BbzLogin extends React.Component {
                         </div>
                     </div>
                 </div>
+                <Loader loaded={this.state.loaded}>
+                </Loader>
             </div>
         );
     }
@@ -163,7 +168,8 @@ function mapStateToProps(state, ownProps) {
     return {
         isLoggedIn: state.auth.loggedIn,
         currentURL: ownProps.location.pathname,
-        error: state.error
+        error: state.error,
+        loading: state.loading
     }
 }
 
