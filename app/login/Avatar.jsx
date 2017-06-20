@@ -18,17 +18,13 @@ export class Avator extends React.Component {
                 if (auth.photoURL) {
                     return (
                         <div>
-                            <img src={auth.photoURL} alt="Smiley face" height="43" width="43" className="avatar"/>
-                            <p className="nav-profile__subtext">
-                            </p>
+                            <img src={auth.photoURL} alt="Smiley face" height="44" width="44" className="avatar"/>
                         </div>
                     );
                 } else {
                     return (
                         <div>
-                            <img src="images/no-image.png" alt="Smiley face" height="43" width="43" className="img-rounded"/>
-                            <p className="nav-profile__subtext">
-                            </p>
+                            <img src="images/no-image.png" alt="Smiley face" height="44" width="44" className="img-rounded"/>
                         </div>
                     );
                 }

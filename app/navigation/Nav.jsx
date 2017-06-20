@@ -141,8 +141,10 @@ class Nav extends React.Component {
                                     <label className="nav-small-font nav-color-gray text-capitalize">{displayName}&nbsp;</label>
                                     {joinedAt && (<label className="nav-small-font">Member Since:&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{joinedAt}&nbsp;</label>
-                                    {lastLoginAt && (<label className="nav-small-font">Last Login:&nbsp;</label>)}
+                                    <label>
+                                    {lastLoginAt && (<label className="nav-small-font">&nbsp;&nbsp;Last Login:&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{lastLoginAt} </label>
+                                    </label>
                                 </div>
                                 )}
                             <div className="largenav pull-right">
@@ -160,6 +162,8 @@ class Nav extends React.Component {
                             <div className="col-sm-6">
                                 <div className="col-xs-1">
                                     <Avatar/>
+                                </div>
+                                <div className="col-xs-1">
                                 </div>
                                 <div className="col-xs-10">
                                     <BbzSearch/>
@@ -183,7 +187,6 @@ class Nav extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         auth: state.auth,
-        avator: state.auth.photoURL,
         isLoggedIn: state.auth.loggedIn,
         displayName: state.auth.displayName,
         userProfile: state.userProfile,
