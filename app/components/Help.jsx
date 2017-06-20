@@ -104,6 +104,10 @@ class Help extends React.Component {
                                             Searching is powerful and can be any text, Company name, review text, reviewer name etc. </p>
                                         <p>You can also type in the drop downs to look faster for the company or service category you are looking for.</p>
                                     </li>
+                                    <li>
+                                        <h3>User Feedback</h3>
+                                        <p>The system will provide reasonable error messages to help the user enter required information. This
+                                            user feedback is displayed at the top</p></li>
                                 </ol>
                             </div>
                         </div>
