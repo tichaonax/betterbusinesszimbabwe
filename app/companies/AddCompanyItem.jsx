@@ -338,7 +338,7 @@ export class AddCompnayItem extends React.Component {
                                         }
                                     }>Back &nbsp;</Link>)}
                                     <div>
-                                        <label htmlFor="stitle">Company Title</label>
+                                        <label htmlFor="stitle">Company Name</label>
                                     </div>
                                     <div>
                                         <input type="text" name="companyTitle" ref="companyTitle" className="form-control" maxLength={100}
