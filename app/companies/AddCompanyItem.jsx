@@ -37,7 +37,6 @@ export class AddCompnayItem extends React.Component {
     onGoBack = (evt) => {
         this.dispatch(errorActions.bbzClearError());
         if (this.state.calledFromOutside == true) {
-            //console.debug("addCompany onGoBack",this.props.redirectUrl);
             browserHistory.goBack();
         } else {
             this.resetInputs();
@@ -49,7 +48,6 @@ export class AddCompnayItem extends React.Component {
         if (error) {
             this.dispatch(errorActions.bbzClearError());
         }
-        // this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
 
         if (location && location.query) {
             if (location.query.addnew == 'true') {

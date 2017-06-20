@@ -1,15 +1,28 @@
 var React = require('react');
+import {Link, browserHistory, hashHistory} from 'react-router';
 
-class About extends React.Component {
+class Help extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    onGoBack = (evt) => {
+        browserHistory.goBack();
+    }
     render() {
         return (
             <div className="row">
                 <div className="columns medium-centered">
                     <div className="container">
+                        <div className="form-group">
+                            <button ref="cancel" type="button" className="btn btn-primary btn-sm btn-block" value="Cancel"
+                                    onClick={
+                                        () => {
+                                            this.onGoBack(event);
+                                        }}>
+                                Back
+                            </button>
+                        </div>
                         <h1 className="text-center page-title">Help</h1>
                         <div className="columns small-centered small-10 medium-6 large-4">
                             <div className="callout callout-auth">
@@ -101,4 +114,4 @@ class About extends React.Component {
     }
 }
 
-module.exports = About;
+module.exports = Help;

@@ -81,15 +81,17 @@ export class ReviewList extends React.Component {
         return (
             <div className= {"columns " && this.state.container}>
                 <div className="row">
-                    <div className="row">
-                        <div>
-                            <h4 className="text-center">
-                                <Link to="/help" activeClassName="active"
-                                      activeStyle={{fontWeight: 'bold'}}>
+                    <div className="row col-sm-12">
+                        <div className="col-sm-5 center-block">
+                            <Link to="/help" activeClassName="active"
+                                  activeStyle={{fontWeight: 'bold'}}>
                                     <span className="glyphicon glyphicon-info-sign button" data-toggle="tooltip"
                                           title="Need Help??"></span>
-                                </Link>
-                                &nbsp;&nbsp;{this.state.reviews.length} Reviews...</h4></div>
+                            </Link>
+                        </div>
+                        <div className="col-sm-7">
+                            <h4>&nbsp;&nbsp;{this.state.reviews.length} Reviews...</h4>
+                        </div>
                     </div>
                 </div>
                 <div className="row">
