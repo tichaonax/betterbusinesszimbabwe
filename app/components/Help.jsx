@@ -52,7 +52,7 @@ class Help extends React.Component {
                                             for each company in the system.</p>
                                         <p>To create a review you simply select the <b>Company</b> from the dropdown
                                             list. If the company is not listed you can create one on the fly by clicking the
-                                            <span className="glyphicon glyphicon-plus button"></span> sign next to
+                                            &nbsp;<span className="glyphicon glyphicon-plus button"></span> sign next to
                                             the <b>Company</b> dropdown, entering the required information, see below section on Companies.
                                             The newly created company will remain in your private view with an <b>Approval Pending</b>
                                             status until approved by the administrator.</p>
