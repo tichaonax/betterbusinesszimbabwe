@@ -98,8 +98,9 @@ module.exports = {
             Error: 'app/error/Error.jsx',
             loadingActions: 'app/common/loadingActions.jsx',
             loadingReducers: 'app/common/loadingReducers.jsx',
-            serviceCategories: 'app/constants/Categories.js'
-
+            serviceCategories: 'app/constants/Categories.js',
+            navActions: 'app/navigation/navActions.jsx',
+            navReducers: 'app/navigation/navReducers.jsx'
         },
         extensions: ['', '.js', '.jsx']
     },

@@ -22,7 +22,7 @@ export class BbzSearch extends React.Component {
     }
 
     render() {
-        var {isLoggedIn, userProfile, searchOptions, searchText} = this.props;
+        var {isLoggedIn, userProfile, searchOptions, searchText, navigation} = this.props;
 
         return (
             <div>
@@ -46,16 +46,19 @@ export class BbzSearch extends React.Component {
                         <img src="images/bbz_admin.png" alt="Admin!" height="44" width="44"/>
                     )}
                 </div>
-                {isLoggedIn && userProfile && userProfile.isAdmin && (
-                    <div>
+
+                <div>
+                    {isLoggedIn && userProfile && userProfile.isAdmin && (
                         <label>
-                            <input type="checkbox" ref="showApproved" checked={searchOptions.pending} onChange={() => {
-                                this.dispatch(searchActions.togggleshowApprovalPendingItem());
-                            }}/>
+                            <input type="checkbox" ref="showApproved" checked={searchOptions.pending}
+                                   onChange={() => {
+                                       this.dispatch(searchActions.togggleshowApprovalPendingItem());
+                                   }}/>
                             <small>&nbsp;Show Approval Pending</small>
-                        </label>
-                    </div>
-                )}
+                            <label>60 NEW</label>
+                        </label>)}
+                    <label className="visible-xs-block">60 {navigation}</label>
+                </div>
             </div>
         );
     }
@@ -67,6 +70,7 @@ export default connect(
             isLoggedIn: state.auth.loggedIn,
             userProfile: state.userProfile,
             searchOptions: state.searchOptions,
+            navigation: state.navigation
         }
     }
 )(BbzSearch);

@@ -8,6 +8,7 @@ var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
+var navActions = require('navActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 var Loader = require('react-loader');
@@ -40,6 +41,7 @@ export class Companies extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(navActions.setNavPage("Companies"));
         this.dispatch(searchActions.setSearchButton(false));
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.loadData(this.props);

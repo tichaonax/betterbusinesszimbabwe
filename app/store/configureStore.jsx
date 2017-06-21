@@ -11,7 +11,8 @@ import {companyItemsReducer, companyOperationReducer, recentlyAddedCompanyReduce
 import {reviewItemsReducer, reviewOperationReducer} from 'reviewsItemsReducer';
 import {userItemsReducer} from 'usersItemsReducer';
 import {loadingReducer} from 'loadingReducers';
-import syncBreakpointWithStore, {breakpointReducer} from 'redux-breakpoint'
+import syncBreakpointWithStore, {breakpointReducer} from 'redux-breakpoint';
+import {navigationReducer} from 'navReducers';
 
 export var configure = (initialState = {}) => {
     var reducers = redux.combineReducers({
@@ -32,7 +33,8 @@ export var configure = (initialState = {}) => {
         recentlyAddedCompany: recentlyAddedCompanyReducer,
         userItems: userItemsReducer,
         loading: loadingReducer,
-        breakpoint: breakpointReducer
+        breakpoint: breakpointReducer,
+        navigation: navigationReducer
     });
 
     const rootReducer = ( state, action ) => {

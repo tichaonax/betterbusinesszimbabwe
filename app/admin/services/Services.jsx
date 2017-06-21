@@ -7,6 +7,7 @@ import AddServiceItem from 'AddServiceItem';
 var servicesActions = require('servicesActions');
 var searchActions = require('searchActions');
 var loadingActions = require('loadingActions');
+var navActions = require('navActions');
 var Loader = require('react-loader');
 
 
@@ -22,6 +23,7 @@ export class Services extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(navActions.setNavPage("Services"));
     }
 
     componentWillReceiveProps(newProps) {

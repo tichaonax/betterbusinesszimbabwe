@@ -6,10 +6,12 @@ import LoginControl from '../login/LoginControl';
 import AdminNavigation from 'app/admin/AdminNavigation';
 import BbzSearch from "BbzSearch";
 import Avatar from 'Avatar';
+var navActions = require('navActions');
 
 class Nav extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
         this.state = {
             sideNav: {
                 width: '0px',
@@ -52,27 +54,52 @@ class Nav extends React.Component {
 
     renderMenu(){
         var {isLoggedIn, userProfile, auth} = this.props;
+
+        let myReviewsTitle = "My Reviews";
+        let reviewsTitle = "Reviews";
+        let companiesTitle = "Companies";
+        let usersTitle = "Users";
+        let adminUsersTitle = "Admin Users";
+        let aboutTitle ="About";
+
         return(
             <ul>
-                {isLoggedIn &&(
+                {isLoggedIn && (
+                    <li className="upper-links">
+                        <Link to={`/myreviews?user=${auth.uid}&myreviews=true`} activeClassName="active"
+                              className="links"
+                              onClick={() => {
+                                  this.dispatch(navActions.setNavPage(myReviewsTitle));
+                                  this.closeNav();
+                              }}
+                              activeStyle={{fontWeight: 'bold'}}>{myReviewsTitle}</Link>
+                    </li>)}
                 <li className="upper-links">
-                    <Link to={`/myreviews?user=${auth.uid}&myreviews=true`} activeClassName="active" className="links" onClick={()=>this.closeNav()}
-                          activeStyle={{fontWeight: 'bold'}}>My Reviews</Link>
-                </li>)}
-                <li className="upper-links">
-                    <Link to="/reviews" activeClassName="active" className="links" onClick={()=>this.closeNav()}
-                          activeStyle={{fontWeight: 'bold'}}>Reviews</Link>
+                    <Link to="/reviews" activeClassName="active" className="links"
+                          onClick={() => {
+                              this.dispatch(navActions.setNavPage(reviewsTitle));
+                              this.closeNav();
+                          }}
+                          activeStyle={{fontWeight: 'bold'}}>{reviewsTitle}</Link>
                 </li>
 
                 <li className="upper-links">
-                    <IndexLink to="/companies" activeClassName="active" className="links" onClick={()=>this.closeNav()}
-                               activeStyle={{fontWeight: 'bold'}}>Companies</IndexLink>
+                    <IndexLink to="/companies" activeClassName="active" className="links"
+                               onClick={() => {
+                                   this.dispatch(navActions.setNavPage(companiesTitle));
+                                   this.closeNav();
+                               }}
+                               activeStyle={{fontWeight: 'bold'}}>{companiesTitle}</IndexLink>
                 </li>
 
                 {isLoggedIn && (
                     <li className="upper-links">
-                        <Link to="/users" activeClassName="active" className="links" onClick={() => this.closeNav()}
-                              activeStyle={{fontWeight: 'bold'}}>Users</Link>
+                        <Link to="/users" activeClassName="active" className="links"
+                              onClick={() => {
+                                  this.dispatch(navActions.setNavPage(usersTitle));
+                                  this.closeNav();
+                              }}
+                              activeStyle={{fontWeight: 'bold'}}>{usersTitle}</Link>
                     </li>
                 )}
 
@@ -80,8 +107,12 @@ class Nav extends React.Component {
                     <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>SuperUser</a>
                         <div className="dropdown-menu">
                             <div className="profile-div">
-                                <Link to="/adminusers" activeClassName="active" className="profile-links" onClick={() => this.closeNav()}
-                                      activeStyle={{fontWeight: 'bold'}}>Admin Users</Link>
+                                <Link to="/adminusers" activeClassName="active" className="profile-links"
+                                      onClick={() => {
+                                          this.dispatch(navActions.setNavPage(adminUsersTitle));
+                                          this.closeNav();
+                                      }}
+                                      activeStyle={{fontWeight: 'bold'}}>{adminUsersTitle}</Link>
                             </div>
                         </div>
                     </li>)}
@@ -94,8 +125,12 @@ class Nav extends React.Component {
                 <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Dropdown</a>
                     <div className="dropdown-menu">
                         <div className="profile-div">
-                            <Link to="/about" activeClassName="active" className="profile-links" onClick={() => this.closeNav()}
-                                  activeStyle={{fontWeight: 'bold'}}>About</Link>
+                            <Link to="/about" activeClassName="active" className="profile-links"
+                                  onClick={() => {
+                                      this.dispatch(navActions.setNavPage(aboutTitle));
+                                      this.closeNav();
+                                  }}
+                                  activeStyle={{fontWeight: 'bold'}}>{aboutTitle}</Link>
                         </div>
                     </div>
                 </li>
@@ -194,7 +229,7 @@ function mapStateToProps(state, ownProps) {
         isLoggedIn: state.auth.loggedIn,
         displayName: state.auth.displayName,
         userProfile: state.userProfile,
-        lastLogin: state.lastLogin,
+        lastLogin: state.lastLogin
     }
 }
 export default connect(mapStateToProps)(Nav);

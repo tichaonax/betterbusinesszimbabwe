@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 var {Link} = require('react-router');
 var servicesActions = require('servicesActions');
+var navActions = require('navActions');
 import Categories from 'serviceCategories';
 
 export class AdminNavigation extends React.Component {
@@ -23,15 +24,18 @@ export class AdminNavigation extends React.Component {
     render() {
         var {isLoggedIn, userProfile} = this.props;
 
+        let servicesTitle = "Services";
+
             return (
                 <div>
                     {isLoggedIn && userProfile && userProfile.isAdmin && (
                         <Link to="/services" activeClassName="active" className="profile-links"
                               onClick={()=> {
+                                  this.dispatch(navActions.setNavPage(servicesTitle));
                                   this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
                                   this.closeNavigation();
                               }}
-                              activeStyle={{fontWeight: 'bold'}}>Services</Link>)}
+                              activeStyle={{fontWeight: 'bold'}}>{servicesTitle}</Link>)}
                 </div>
             );
 

@@ -1,14 +1,21 @@
 var React = require('react');
 import {Link, browserHistory, hashHistory} from 'react-router';
+var navActions = require('navActions');
 
 class Help extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
+    }
+
+    componentDidMount() {
+        this.dispatch(navActions.setNavPage("Help"));
     }
 
     onGoBack = (evt) => {
         browserHistory.goBack();
     }
+
     render() {
         return (
             <div className="row">

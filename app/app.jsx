@@ -9,6 +9,7 @@ var profileActions = require('profileActions');
 var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
+var navActions = require('navActions');
 var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
@@ -16,6 +17,7 @@ import router from 'app/router/';
 store.dispatch(errorActions.bbzClearError());
 store.dispatch(profileActions.resetUserProfile());
 store.dispatch(searchActions.setSearchText(""));
+store.dispatch(navActions.setNavPage("Reviews"));
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {

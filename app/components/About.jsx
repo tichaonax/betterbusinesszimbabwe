@@ -1,8 +1,14 @@
 var React = require('react');
+var navActions = require('navActions');
 
 class About extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
+    }
+
+    componentDidMount() {
+        this.dispatch(navActions.setNavPage("About"));
     }
 
     render() {

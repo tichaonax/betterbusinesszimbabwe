@@ -6,6 +6,7 @@ import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
+var navActions = require('navActions');
 var urlActions = require('urlActions');
 var Loader = require('react-loader');
 
@@ -43,8 +44,7 @@ export class Reviews extends React.Component {
     }
 
     componentDidMount() {
-
-
+        this.dispatch(navActions.setNavPage("Reviews"));
         this.dispatch(searchActions.setMyReviews(false));
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
