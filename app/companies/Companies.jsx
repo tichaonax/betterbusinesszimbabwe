@@ -2,6 +2,7 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import {COMPANIES_TITLE} from 'pageTitles';
 import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
 var searchActions = require('searchActions');
@@ -41,7 +42,7 @@ export class Companies extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(navActions.setNavPage("Companies"));
+        this.dispatch(navActions.setNavPage(COMPANIES_TITLE));
         this.dispatch(searchActions.setSearchButton(false));
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.loadData(this.props);

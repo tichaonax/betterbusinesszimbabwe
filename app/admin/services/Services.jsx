@@ -2,6 +2,7 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import {SERVICES_TITLE} from 'pageTitles';
 import ServiceList from 'ServiceList'
 import AddServiceItem from 'AddServiceItem';
 var servicesActions = require('servicesActions');
@@ -23,7 +24,7 @@ export class Services extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(navActions.setNavPage("Services"));
+        this.dispatch(navActions.setNavPage(SERVICES_TITLE));
     }
 
     componentWillReceiveProps(newProps) {

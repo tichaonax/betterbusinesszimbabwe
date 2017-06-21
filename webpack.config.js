@@ -99,6 +99,7 @@ module.exports = {
             loadingActions: 'app/common/loadingActions.jsx',
             loadingReducers: 'app/common/loadingReducers.jsx',
             serviceCategories: 'app/constants/Categories.js',
+            pageTitles: 'app/constants/PageTitles.js',
             navActions: 'app/navigation/navActions.jsx',
             navReducers: 'app/navigation/navReducers.jsx'
         },

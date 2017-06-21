@@ -3,10 +3,17 @@ var $ = require('jquery');
 
 module.exports = {
 
-    getFilteredUsers: function (userItems, searchText) {
+    getFilteredUsers: function (userItems, showApprovalPending, searchText, uid = 0) {
         //console.debug("searchText", searchText);
         //console.debug("userItems", userItems);
         var filteredUserItems = userItems;
+
+        //filter by showApprovalPending
+
+        filteredUserItems = filteredUserItems.filter((userItem) => {
+            var userProfile = (userItem.userProfile) ? userItem.userProfile : {};
+            return userProfile.isApproved || showApprovalPending || userProfile.uid == uid
+        });
 
         //filter by searchText
 

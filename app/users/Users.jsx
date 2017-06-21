@@ -2,10 +2,12 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import {USERS_TITLE} from 'pageTitles';
 import UserList from 'UserList'
 var searchActions = require('searchActions');
 var usersActions = require('usersActions');
 var urlActions = require('urlActions');
+var navActions = require('navActions');
 var errorActions = require('errorActions');
 var Loader = require('react-loader');
 
@@ -32,6 +34,7 @@ export class Users extends React.Component {
     }
 
     componentDidMount() {
+        this.dispatch(navActions.setNavPage(USERS_TITLE));
         this.dispatch(searchActions.setSearchButton(false));
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.loadData(this.props);

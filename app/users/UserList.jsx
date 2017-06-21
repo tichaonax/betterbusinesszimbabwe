@@ -17,9 +17,14 @@ export class UserList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        var filteredUserItems = BbzAPI.getFilteredUsers(newProps.userItems, newProps.searchText);
+        var {userItems, searchOptions, searchText, auth} = newProps;
+        var uid = 0;
 
-        //console.debug("filteredUserItems",filteredUserItems);
+        if (auth.loggedIn) {
+            uid = auth.uid;
+        }
+        var filteredUserItems = BbzAPI.getFilteredUsers(userItems, searchOptions.pending, searchText, uid);
+
         this.setState({
                 rowCount: filteredUserItems.length,
                 users: filteredUserItems
@@ -80,6 +85,7 @@ export default connect(
             auth: state.auth,
             userItems: state.userItems,
             searchText: state.searchText,
+            searchOptions: state.searchOptions,
             breakpoint: state.breakpoint
         }
     }

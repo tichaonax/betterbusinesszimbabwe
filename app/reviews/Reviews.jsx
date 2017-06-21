@@ -2,6 +2,7 @@ import React from 'react';
 var {connect} = require('react-redux');
 
 import {getMediaContainerClass} from 'app/common/Utils';
+import {REVIEWS_TITLE} from 'pageTitles';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
@@ -35,7 +36,6 @@ export class Reviews extends React.Component {
             if (myreviews == 'true') {
                 this.dispatch(searchActions.setMyReviews(true));
             }
-            //console.debug("searchActions.setSearchText(uid)", uid);
             this.dispatch(searchActions.setSearchText(uid));
         }
 
@@ -44,7 +44,7 @@ export class Reviews extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(navActions.setNavPage("Reviews"));
+        this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
         this.dispatch(searchActions.setMyReviews(false));
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));

@@ -22,21 +22,21 @@ export class ReviewList extends React.Component {
         var filteredReviewItems;
         var bCompanyTitle;
         var uid = 0;
-        if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions) {
+        /*if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions) {
             var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
             filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
-        } else {
-            var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = this.props;
+        } else {*/
+            var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
             filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
-        }
+        //}
 
         this.setState({
                 rowCount: filteredReviewItems.length,

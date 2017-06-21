@@ -1,6 +1,8 @@
 var React = require('react');
 var {connect} = require('react-redux');
 var navActions = require('navActions');
+import {ABOUT_TITLE} from 'pageTitles';
+import {resetListCounts} from 'app/common/Utils';
 
 class About extends React.Component {
     constructor(props) {
@@ -9,7 +11,8 @@ class About extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(navActions.setNavPage("About"));
+        this.dispatch(navActions.setNavPage(ABOUT_TITLE));
+        resetListCounts(this.dispatch);
     }
 
     render() {

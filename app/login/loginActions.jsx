@@ -60,7 +60,8 @@ export var startBbzLogin = (provider) => {
                 photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: user.providerData[0].providerId,
-                userId: user.providerData[0].uid
+                userId: user.providerData[0].uid,
+                isApproved: true
             };
 
             //console.debug("Auth data!", gAuth);
@@ -125,7 +126,8 @@ export var startBbzEmailLogin = (email, password) => {
                 photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: (user.providerData[0].providerId) ? user.providerData[0].providerId : 'password',
-                userId: (user.providerData[0].uid) ? user.providerData[0].uid : email
+                userId: (user.providerData[0].uid) ? user.providerData[0].uid : email,
+                isApproved: true
             }
 
             console.debug("Auth data!", gAuth);

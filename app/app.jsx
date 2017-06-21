@@ -17,7 +17,6 @@ import router from 'app/router/';
 store.dispatch(errorActions.bbzClearError());
 store.dispatch(profileActions.resetUserProfile());
 store.dispatch(searchActions.setSearchText(""));
-store.dispatch(navActions.setNavPage("Reviews"));
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {

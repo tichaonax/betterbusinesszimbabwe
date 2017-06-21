@@ -1,7 +1,9 @@
 var React = require('react');
 var {connect} = require('react-redux');
 import {Link, browserHistory, hashHistory} from 'react-router';
+import {HELP_TITLE} from 'pageTitles';
 var navActions = require('navActions');
+import {resetListCounts} from 'app/common/Utils';
 
 class Help extends React.Component {
     constructor(props) {
@@ -10,7 +12,8 @@ class Help extends React.Component {
     }
 
     componentDidMount() {
-        this.dispatch(navActions.setNavPage("Help"));
+        this.dispatch(navActions.setNavPage(HELP_TITLE));
+        resetListCounts(this.dispatch);
     }
 
     onGoBack = (evt) => {

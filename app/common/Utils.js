@@ -55,7 +55,6 @@ export const getPendingCount = (items) => {
         }
     });
 
-    console.debug("pendingCount", pendingCount);
     return (pendingCount);
 }
 
@@ -63,4 +62,10 @@ export const setListCounts = (dispatch, items) => {
     var searchActions = require('searchActions');
     dispatch(searchActions.setListCount(items.length));
     dispatch(searchActions.setPendingCount(getPendingCount(items)));
+}
+
+export const resetListCounts = (dispatch) => {
+    var searchActions = require('searchActions');
+    dispatch(searchActions.setListCount(null));
+    dispatch(searchActions.setPendingCount(null));
 }
