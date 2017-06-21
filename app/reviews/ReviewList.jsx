@@ -4,6 +4,7 @@ import {Link} from 'react-router';
 import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
 import {getMediaContainerClass, getMedia, setListCounts} from 'app/common/Utils';
+import {REVIEWS_TITLE} from 'pageTitles';
 var BbzAPI = require('BbzAPI');
 
 export class ReviewList extends React.Component {
@@ -95,7 +96,7 @@ export class ReviewList extends React.Component {
                             </Link>
                         </div>
                         <div className="col-sm-7">
-                            <h4>&nbsp;&nbsp;{this.state.reviews.length} Reviews...</h4>
+                            <h4 className="text-center hidden-xs">&nbsp;&nbsp;{this.state.reviews.length} {REVIEWS_TITLE}...</h4>
                         </div>
                     </div>
                 </div>

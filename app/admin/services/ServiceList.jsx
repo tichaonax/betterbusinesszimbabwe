@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactList from 'react-list';
 import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
+import {SERVICES_TITLE} from 'pageTitles';
 var {connect} = require('react-redux');
 import ServiceItem from 'ServiceItem';
 var BbzAPI = require('BbzAPI');
@@ -59,7 +60,7 @@ export class ServiceList extends React.Component {
             <div className={"columns " && this.state.container}>
                 <div className="row">
                     <div className="col-sm-12">
-                        <h4 className="text-center">{this.state.services.length} Services...</h4>
+                        <h4 className="text-center hidden-xs">{this.state.services.length} {SERVICES_TITLE}...</h4>
                     </div>
                 </div>
                 <div className="row">

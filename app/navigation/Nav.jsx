@@ -6,6 +6,17 @@ import LoginControl from '../login/LoginControl';
 import AdminNavigation from 'app/admin/AdminNavigation';
 import BbzSearch from "BbzSearch";
 import Avatar from 'Avatar';
+import {
+    SERVICES_TITLE,
+    REVIEWS_TITLE,
+    MY_REVIEWS_TITLE,
+    COMPANIES_TITLE,
+    USERS_TITLE,
+    ABOUT_TITLE,
+    HELP_TITLE,
+    ADMIN_USERS_TITLE
+} from 'pageTitles';
+
 var navActions = require('navActions');
 
 class Nav extends React.Component {
@@ -55,13 +66,6 @@ class Nav extends React.Component {
     renderMenu(){
         var {isLoggedIn, userProfile, auth} = this.props;
 
-        let myReviewsTitle = "My Reviews";
-        let reviewsTitle = "Reviews";
-        let companiesTitle = "Companies";
-        let usersTitle = "Users";
-        let adminUsersTitle = "Admin Users";
-        let aboutTitle ="About";
-
         return(
             <ul>
                 {isLoggedIn && (
@@ -69,37 +73,37 @@ class Nav extends React.Component {
                         <Link to={`/myreviews?user=${auth.uid}&myreviews=true`} activeClassName="active"
                               className="links"
                               onClick={() => {
-                                  this.dispatch(navActions.setNavPage(myReviewsTitle));
+                                  this.dispatch(navActions.setNavPage(MY_REVIEWS_TITLE));
                                   this.closeNav();
                               }}
-                              activeStyle={{fontWeight: 'bold'}}>{myReviewsTitle}</Link>
+                              activeStyle={{fontWeight: 'bold'}}>{MY_REVIEWS_TITLE}</Link>
                     </li>)}
                 <li className="upper-links">
                     <Link to="/reviews" activeClassName="active" className="links"
                           onClick={() => {
-                              this.dispatch(navActions.setNavPage(reviewsTitle));
+                              this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
                               this.closeNav();
                           }}
-                          activeStyle={{fontWeight: 'bold'}}>{reviewsTitle}</Link>
+                          activeStyle={{fontWeight: 'bold'}}>{REVIEWS_TITLE}</Link>
                 </li>
 
                 <li className="upper-links">
                     <IndexLink to="/companies" activeClassName="active" className="links"
                                onClick={() => {
-                                   this.dispatch(navActions.setNavPage(companiesTitle));
+                                   this.dispatch(navActions.setNavPage(COMPANIES_TITLE));
                                    this.closeNav();
                                }}
-                               activeStyle={{fontWeight: 'bold'}}>{companiesTitle}</IndexLink>
+                               activeStyle={{fontWeight: 'bold'}}>{COMPANIES_TITLE}</IndexLink>
                 </li>
 
                 {isLoggedIn && (
                     <li className="upper-links">
                         <Link to="/users" activeClassName="active" className="links"
                               onClick={() => {
-                                  this.dispatch(navActions.setNavPage(usersTitle));
+                                  this.dispatch(navActions.setNavPage(USERS_TITLE));
                                   this.closeNav();
                               }}
-                              activeStyle={{fontWeight: 'bold'}}>{usersTitle}</Link>
+                              activeStyle={{fontWeight: 'bold'}}>{USERS_TITLE}</Link>
                     </li>
                 )}
 
@@ -109,10 +113,10 @@ class Nav extends React.Component {
                             <div className="profile-div">
                                 <Link to="/adminusers" activeClassName="active" className="profile-links"
                                       onClick={() => {
-                                          this.dispatch(navActions.setNavPage(adminUsersTitle));
+                                          this.dispatch(navActions.setNavPage(ADMIN_USERS_TITLE));
                                           this.closeNav();
                                       }}
-                                      activeStyle={{fontWeight: 'bold'}}>{adminUsersTitle}</Link>
+                                      activeStyle={{fontWeight: 'bold'}}>{ADMIN_USERS_TITLE}</Link>
                             </div>
                         </div>
                     </li>)}
@@ -125,12 +129,18 @@ class Nav extends React.Component {
                 <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Dropdown</a>
                     <div className="dropdown-menu">
                         <div className="profile-div">
-                            <Link to="/about" activeClassName="active" className="profile-links"
+                            <Link to="/help" activeClassName="active" className="profile-links"
                                   onClick={() => {
-                                      this.dispatch(navActions.setNavPage(aboutTitle));
+                                      this.dispatch(navActions.setNavPage(HELP_TITLE));
                                       this.closeNav();
                                   }}
-                                  activeStyle={{fontWeight: 'bold'}}>{aboutTitle}</Link>
+                                  activeStyle={{fontWeight: 'bold'}}>{HELP_TITLE}</Link>
+                            <Link to="/about" activeClassName="active" className="profile-links"
+                                  onClick={() => {
+                                      this.dispatch(navActions.setNavPage(ABOUT_TITLE));
+                                      this.closeNav();
+                                  }}
+                                  activeStyle={{fontWeight: 'bold'}}>{ABOUT_TITLE}</Link>
                         </div>
                     </div>
                 </li>

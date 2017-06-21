@@ -5,6 +5,7 @@ export const COMPANIES_TITLE = "Companies";
 export const USERS_TITLE = "Users";
 export const ABOUT_TITLE = "About";
 export const HELP_TITLE = "Help";
+export const ADMIN_USERS_TITLE = "Admin Users";
 
 module.exports = {
     SERVICES_TITLE,
@@ -13,5 +14,6 @@ module.exports = {
     COMPANIES_TITLE,
     USERS_TITLE,
     ABOUT_TITLE,
-    HELP_TITLE
+    HELP_TITLE,
+    ADMIN_USERS_TITLE
 }

@@ -34,7 +34,7 @@ class Help extends React.Component {
                                 Back
                             </button>
                         </div>
-                        <h1 className="text-center page-title">Help</h1>
+                        <h1 className="text-center page-title hidden-xs">Help</h1>
                         <div className="columns small-centered small-10 medium-6 large-4">
                             <div className="callout callout-auth">
                                 <p>Better Business Zimbabwe is dedicated to promoting good business practices in

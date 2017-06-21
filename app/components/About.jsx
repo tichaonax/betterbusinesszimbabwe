@@ -20,7 +20,7 @@ class About extends React.Component {
             <div className="row">
                 <div className="columns medium-centered">
                     <div className="container">
-                        <h1 className="text-center page-title">About</h1>
+                        <h1 className="text-center page-title hidden-xs">About</h1>
                         <div className="columns small-centered small-10 medium-6 large-4">
                             <div className="callout callout-auth">
                                 <p>Better Business Zimbabwe is dedicated to promoting good business practices in

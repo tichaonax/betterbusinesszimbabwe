@@ -1,6 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
+import {USERS_TITLE} from 'pageTitles';
 import ReactList from 'react-list';
 import UserItem from 'UserItem';
 var BbzAPI = require('BbzAPI');
@@ -63,7 +64,7 @@ export class UserList extends React.Component {
             <div className={"columns " && this.state.container}>
                 <div className="row">
                     <div className="col-sm-12">
-                        <h4 className="text-center">{this.state.users.length} Users...</h4>
+                        <h4 className="text-center hidden-xs">{this.state.users.length} {USERS_TITLE}...</h4>
                     </div>
                 </div>
                 <div className="row">

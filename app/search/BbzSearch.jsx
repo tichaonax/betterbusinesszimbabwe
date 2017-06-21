@@ -64,7 +64,7 @@ export class BbzSearch extends React.Component {
                     )}
                 </div>
                 <div className="col-xs-9">
-                    <label className="visible-xs-block nav-color-gray">{listCount} {navigation}</label>
+                    <label className="text-center visible-xs-block nav-color-gray">{listCount} {navigation}</label>
                 </div>
             </div>
         );
