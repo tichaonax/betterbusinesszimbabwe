@@ -1,15 +1,17 @@
-import React from 'react';
 var {connect} = require('react-redux');
+import React from 'react';
 import {Link} from 'react-router';
 import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
-import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import {getMediaContainerClass, getMedia, setListCounts} from 'app/common/Utils';
 var BbzAPI = require('BbzAPI');
 
 export class ReviewList extends React.Component {
     constructor(props) {
         super(props);
+        this.dispatch = props.dispatch;
         this.state = {
+            rowCount: 0,
             reviews: [],
             showCompanyTitle: true,
             container: "container"
@@ -37,10 +39,13 @@ export class ReviewList extends React.Component {
         }
 
         this.setState({
-            rowCount: filteredReviewItems.length,
-            reviews: filteredReviewItems,
-            showCompanyTitle: bCompanyTitle
-        });
+                rowCount: filteredReviewItems.length,
+                reviews: filteredReviewItems,
+                showCompanyTitle: bCompanyTitle
+            },
+
+            setListCounts(this.dispatch, filteredReviewItems)
+        );
 
         let {breakpoint} = this.props;
 

@@ -4,7 +4,7 @@ import {userProfileReducer} from 'profileReducers';
 import {firebaseAuthReducer, lastLoginReducer} from 'loginReducers';
 import {setRedirectUrlReducer} from 'urlReducers';
 import {bbzErrorReducer} from 'errorReducers';
-import {searchTextReducer, searchOptionsReducer} from 'searchReducers';
+import {searchTextReducer, searchOptionsReducer, countsReducer} from 'searchReducers';
 import {todoItemsReducer} from 'reducers';
 import {serviceItemsReducer, serviceOperationReducer} from 'servicesItemsReducer';
 import {companyItemsReducer, companyOperationReducer, recentlyAddedCompanyReducer} from 'companiesItemsReducer';
@@ -34,7 +34,8 @@ export var configure = (initialState = {}) => {
         userItems: userItemsReducer,
         loading: loadingReducer,
         breakpoint: breakpointReducer,
-        navigation: navigationReducer
+        navigation: navigationReducer,
+        counts: countsReducer
     });
 
     const rootReducer = ( state, action ) => {

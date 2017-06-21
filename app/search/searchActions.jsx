@@ -34,4 +34,18 @@ export var setMyReviews = (showMyReviews) => {
         showMyReviews
     };
 };
+
+export var setPendingCount = (pendingCount) => {
+    return {
+        type: 'SET_PENDING_COUNT',
+        pendingCount
+    };
+};
+
+export var setListCount = (listCount) => {
+    return {
+        type: 'SET_LIST_COUNT',
+        listCount
+    };
+};
 //</editor-fold>

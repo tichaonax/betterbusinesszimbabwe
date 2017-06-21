@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactList from 'react-list';
-import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
 var {connect} = require('react-redux');
 import ServiceItem from 'ServiceItem';
 var BbzAPI = require('BbzAPI');
@@ -9,8 +9,9 @@ var BbzAPI = require('BbzAPI');
 export class ServiceList extends React.Component {
     constructor(props) {
         super(props);
-
+        this.dispatch = props.dispatch;
         this.state = {
+            rowCount: 0,
             services: [],
             container: "container"
         }
@@ -22,7 +23,9 @@ export class ServiceList extends React.Component {
         this.setState({
             rowCount: filteredServiceItems.length,
             services: filteredServiceItems
-        });
+        },
+            setListCounts(this.dispatch, filteredServiceItems)
+        );
 
         let {breakpoint} = this.props;
 

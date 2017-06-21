@@ -46,3 +46,21 @@ export const getMediaContainerClass = (breakpoint) => {
         return ("container")
     } else return ("container")
 }
+
+export const getPendingCount = (items) => {
+    let pendingCount = 0;
+    items.map((item) => {
+        if (!item.isApproved) {
+            pendingCount++;
+        }
+    });
+
+    console.debug("pendingCount", pendingCount);
+    return (pendingCount);
+}
+
+export const setListCounts = (dispatch, items) => {
+    var searchActions = require('searchActions');
+    dispatch(searchActions.setListCount(items.length));
+    dispatch(searchActions.setPendingCount(getPendingCount(items)));
+}

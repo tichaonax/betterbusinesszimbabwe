@@ -1,7 +1,7 @@
 import React from 'react';
 var {connect} = require('react-redux');
 
-import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import {getMediaContainerClass} from 'app/common/Utils';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 var reviewsActions = require('reviewsActions');
@@ -57,6 +57,7 @@ export class Reviews extends React.Component {
 
     componentWillReceiveProps(newProps) {
         var {isLoggedIn, userProfile} = newProps;
+
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }

@@ -8,6 +8,23 @@ export var searchTextReducer = (state = '', action) => {
     };
 };
 
+export var countsReducer = (state = {pendingCount: 0, listCount: 0}, action) => {
+    switch (action.type) {
+        case 'SET_PENDING_COUNT':
+            return {
+                ...state,
+                pendingCount: action.pendingCount
+            }
+        case 'SET_LIST_COUNT':
+            return {
+                ...state,
+                listCount: action.listCount
+            }
+        default:
+            return state;
+    };
+};
+
 export var searchOptionsReducer = (state = {
     pending: false,
     showButton: false,

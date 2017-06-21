@@ -22,12 +22,16 @@ export class BbzSearch extends React.Component {
     }
 
     render() {
-        var {isLoggedIn, userProfile, searchOptions, searchText, navigation} = this.props;
-        let count = null;
-        let newCount = null;
+        var {isLoggedIn, userProfile, searchOptions, searchText, navigation, counts} = this.props;
+        let listCount = counts.listCount;
+        let pendingCount = null;
+
+        if (searchOptions.pending){
+            pendingCount=counts.pendingCount;
+        }
         return (
-            <div>
-                <div>
+            <div className="row">
+                <div className="col-xs-16">
                     <input id="searchItemText" className="navbar-input col-xs-10" type="text"  value={searchText} placeholder="Enter text to search?"
                            onChange={() => {
                                var searchText = $('#searchItemText').val();
@@ -47,8 +51,7 @@ export class BbzSearch extends React.Component {
                         <img src="images/bbz_admin.png" alt="Admin!" height="44" width="44"/>
                     )}
                 </div>
-
-                <div>
+                <div className="col-xs-9">
                     {isLoggedIn && userProfile && userProfile.isAdmin && (
                         <label>
                             <input type="checkbox" ref="showApproved" checked={searchOptions.pending}
@@ -56,9 +59,12 @@ export class BbzSearch extends React.Component {
                                        this.dispatch(searchActions.togggleshowApprovalPendingItem());
                                    }}/>
                             <small>&nbsp;Show Approval Pending</small>
-                            <label>{newCount}</label>
-                        </label>)}
-                    <label className="visible-xs-block">{count} {navigation}</label>
+                            <label className="nav-color-gray">&nbsp; {pendingCount} </label>
+                        </label>
+                    )}
+                </div>
+                <div className="col-xs-9">
+                    <label className="visible-xs-block nav-color-gray">{listCount} {navigation}</label>
                 </div>
             </div>
         );
@@ -71,7 +77,8 @@ export default connect(
             isLoggedIn: state.auth.loggedIn,
             userProfile: state.userProfile,
             searchOptions: state.searchOptions,
-            navigation: state.navigation
+            navigation: state.navigation,
+            counts: state.counts
         }
     }
 )(BbzSearch);

@@ -1,6 +1,6 @@
-import React from 'react';
 var {connect} = require('react-redux');
-import {getMediaContainerClass, getMedia} from 'app/common/Utils';
+import React from 'react';
+import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
 import ReactList from 'react-list';
 import CompanyItem from 'CompanyItem';
 var BbzAPI = require('BbzAPI');
@@ -8,8 +8,9 @@ var BbzAPI = require('BbzAPI');
 export class CompanyList extends React.Component {
     constructor(props) {
         super(props);
-
+        this.dispatch = props.dispatch;
         this.state = {
+            rowCount: 0,
             companies: [],
             container: "container"
         }
@@ -38,7 +39,9 @@ export class CompanyList extends React.Component {
         this.setState({
             rowCount: filteredCompanyItems.length,
             companies: filteredCompanyItems
-        });
+        },
+            setListCounts(this.dispatch, filteredCompanyItems)
+        );
 
         let {breakpoint} = this.props;
 
