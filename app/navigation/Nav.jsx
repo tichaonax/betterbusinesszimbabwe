@@ -124,8 +124,8 @@ class Nav extends React.Component {
 
         if (userProfile && lastLogin) {
             lastLoginAt = moment.unix(lastLogin.loginAt).format('MMM Do, YYYY @ h:mm a');
-            city = lastLogin.city + ", ";
-            country = lastLogin.country;
+            //city = lastLogin.city + ", ";
+            //country = lastLogin.country;
         }
 
         var joinedAt = "";
