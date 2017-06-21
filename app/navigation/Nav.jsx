@@ -119,9 +119,13 @@ class Nav extends React.Component {
         }
 
         var lastLoginAt = "";
+        var city = "";
+        var country = "";
 
         if (userProfile && lastLogin) {
             lastLoginAt = moment.unix(lastLogin.loginAt).format('MMM Do, YYYY @ h:mm a');
+            city = lastLogin.city + ", ";
+            country = lastLogin.country;
         }
 
         var joinedAt = "";
@@ -143,7 +147,7 @@ class Nav extends React.Component {
                                     <label className="nav-small-font nav-color-gray">{joinedAt}&nbsp;</label>
                                     <label>
                                     {lastLoginAt && (<label className="nav-small-font">&nbsp;&nbsp;Last Login:&nbsp;</label>)}
-                                    <label className="nav-small-font nav-color-gray">{lastLoginAt} </label>
+                                    <label className="nav-small-font nav-color-gray">{lastLoginAt} {city} {country}</label>
                                     </label>
                                 </div>
                                 )}
