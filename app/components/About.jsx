@@ -1,4 +1,5 @@
 var React = require('react');
+var {connect} = require('react-redux');
 var navActions = require('navActions');
 
 class About extends React.Component {
@@ -55,4 +56,4 @@ class About extends React.Component {
     }
 }
 
-module.exports = About;
+export default connect()(About);

@@ -49,7 +49,6 @@ export class Reviews extends React.Component {
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.dispatch(searchActions.setSearchButton(false));
-        //this.dispatch(searchActions.setLoadingStatus(true));
     }
 
     componentWillUnmount() {

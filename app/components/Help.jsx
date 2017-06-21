@@ -1,4 +1,5 @@
 var React = require('react');
+var {connect} = require('react-redux');
 import {Link, browserHistory, hashHistory} from 'react-router';
 var navActions = require('navActions');
 
@@ -125,4 +126,4 @@ class Help extends React.Component {
     }
 }
 
-module.exports = Help;
+export default connect()(Help);

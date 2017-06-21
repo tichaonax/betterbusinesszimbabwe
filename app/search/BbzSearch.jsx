@@ -23,7 +23,8 @@ export class BbzSearch extends React.Component {
 
     render() {
         var {isLoggedIn, userProfile, searchOptions, searchText, navigation} = this.props;
-
+        let count = null;
+        let newCount = null;
         return (
             <div>
                 <div>
@@ -55,9 +56,9 @@ export class BbzSearch extends React.Component {
                                        this.dispatch(searchActions.togggleshowApprovalPendingItem());
                                    }}/>
                             <small>&nbsp;Show Approval Pending</small>
-                            <label>60 NEW</label>
+                            <label>{newCount}</label>
                         </label>)}
-                    <label className="visible-xs-block">60 {navigation}</label>
+                    <label className="visible-xs-block">{count} {navigation}</label>
                 </div>
             </div>
         );
