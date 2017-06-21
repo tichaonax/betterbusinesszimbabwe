@@ -42,6 +42,9 @@ export class BbzSearch extends React.Component {
                             </svg>
                         </button>
                     )}
+                    {isLoggedIn && userProfile && userProfile.isAdmin && (
+                        <img src="images/bbz_admin.png" alt="Admin!" height="44" width="44"/>
+                    )}
                 </div>
                 {isLoggedIn && userProfile && userProfile.isAdmin && (
                     <div>
