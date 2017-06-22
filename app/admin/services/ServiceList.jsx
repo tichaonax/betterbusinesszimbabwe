@@ -4,6 +4,7 @@ import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
 import {SERVICES_TITLE} from 'pageTitles';
 var {connect} = require('react-redux');
 import ServiceItem from 'ServiceItem';
+var navActions = require('navActions');
 var BbzAPI = require('BbzAPI');
 
 
@@ -19,6 +20,7 @@ export class ServiceList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        this.dispatch(navActions.setNavPage(SERVICES_TITLE));
         var filteredServiceItems = BbzAPI.getFilteredServices(newProps.serviceItems, newProps.searchText);
 
         this.setState({

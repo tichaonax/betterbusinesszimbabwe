@@ -4,6 +4,7 @@ import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
 import {COMPANIES_TITLE} from 'pageTitles';
 import ReactList from 'react-list';
 import CompanyItem from 'CompanyItem';
+var navActions = require('navActions');
 var BbzAPI = require('BbzAPI');
 
 export class CompanyList extends React.Component {
@@ -18,6 +19,7 @@ export class CompanyList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        this.dispatch(navActions.setNavPage(COMPANIES_TITLE));
         var filteredCompanyItems;
         var uid = 0;
 

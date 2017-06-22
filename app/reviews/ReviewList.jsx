@@ -5,6 +5,7 @@ import ReactList from 'react-list';
 import ReviewItem from 'ReviewItem';
 import {getMediaContainerClass, getMedia, setListCounts} from 'app/common/Utils';
 import {REVIEWS_TITLE} from 'pageTitles';
+var navActions = require('navActions');
 var BbzAPI = require('BbzAPI');
 
 export class ReviewList extends React.Component {
@@ -20,6 +21,7 @@ export class ReviewList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
         var filteredReviewItems;
         var bCompanyTitle;
         var uid = 0;

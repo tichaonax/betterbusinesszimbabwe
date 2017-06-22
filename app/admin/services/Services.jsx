@@ -55,9 +55,17 @@ export class Services extends React.Component {
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
             return (
                 <div className={"columns " && this.state.container}>
+
                     <div>
+                        <button type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                data-target="#addservice">New Service Panel
+                        </button>
+                    </div>
+                    <p/>
+                    <div id="addservice" className="collapse">
                         <AddServiceItem/>
                     </div>
+
                     <div>
                         <ServiceList serviceItems={this.state.serviceItems}/>
                     </div>

@@ -4,6 +4,7 @@ import {getMediaContainerClass, setListCounts} from 'app/common/Utils';
 import {USERS_TITLE} from 'pageTitles';
 import ReactList from 'react-list';
 import UserItem from 'UserItem';
+var navActions = require('navActions');
 var BbzAPI = require('BbzAPI');
 
 export class UserList extends React.Component {
@@ -18,6 +19,7 @@ export class UserList extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        this.dispatch(navActions.setNavPage(USERS_TITLE));
         var {userItems, searchOptions, searchText, auth} = newProps;
         var uid = 0;
 

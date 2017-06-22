@@ -22,21 +22,21 @@ class Help extends React.Component {
 
     render() {
         return (
-            <div className="row">
-                <div className="columns medium-centered">
-                    <div className="container">
-                        <div className="form-group">
-                            <button ref="cancel" type="button" className="btn btn-primary btn-sm btn-block" value="Cancel"
-                                    onClick={
-                                        () => {
-                                            this.onGoBack(event);
-                                        }}>
-                                Back
-                            </button>
-                        </div>
-                        <h1 className="text-center page-title hidden-xs">Help</h1>
-                        <div className="columns small-centered small-10 medium-6 large-4">
-                            <div className="callout callout-auth">
+            <div>
+                <div className="row">
+                    <div className="columns medium-centered col-sm-9">
+                        <div className="container fluid">
+                            <div className="form-group">
+                                <button ref="cancel" type="button" className="btn btn-primary" value="Back"
+                                        onClick={
+                                            () => {
+                                                this.onGoBack(event);
+                                            }}>
+                                    Back
+                                </button>
+                            </div>
+                            <h1 className="text-center page-title hidden-xs">Help</h1>
+                            <div className="columns small-centered small-10 medium-6 large-4">
                                 <p>Better Business Zimbabwe is dedicated to promoting good business practices in
                                     Zimbabwe.
 
@@ -49,7 +49,8 @@ class Help extends React.Component {
                                             (BBZ). To simply browse reviews you do not need to login.</p>
                                         <p>If it is your first time to login to the system, your account will
                                             automatically be created on successful login.
-                                            You can use any of the supported social network login or create email based login
+                                            You can use any of the supported social network login or create email based
+                                            login
                                             credentials</p>
                                         <p>Once logged in additional menus will be enabled depending on whether your
                                             account is
@@ -57,26 +58,36 @@ class Help extends React.Component {
                                     </li>
                                     <li>
                                         <h3>Reviews</h3>
-                                        <p>A review consists of the target <b>Company</b>, a <b>Rating</b> score and the <b>Review Comment</b></p>
+                                        <p>A review consists of the target <b>Company</b>, a <b>Rating</b> score and the
+                                            <b>Review Comment</b></p>
                                         <p>The review comment can contain links to other websites or the company
                                             website. You are allowed to enter a maximum of one review
                                             for each company in the system.</p>
                                         <p>To create a review you simply select the <b>Company</b> from the dropdown
-                                            list. If the company is not listed you can create one on the fly by clicking the
+                                            list. If the company is not listed you can create one on the fly by clicking
+                                            the
                                             &nbsp;<span className="glyphicon glyphicon-plus button"></span> sign next to
-                                            the <b>Company</b> dropdown, entering the required information, see below section on Companies.
-                                            The newly created company will remain in your private view with an <b>Approval Pending</b>
+                                            the <b>Company</b> dropdown, entering the required information, see below
+                                            section on Companies.
+                                            The newly created company will remain in your private view with an <b>Approval
+                                                Pending</b>
                                             status until approved by the administrator.</p>
-                                        <p>After picking the company or adding one, you can add your <b>Review Comment</b> and
-                                            the <b>Rating</b> score and click on <b>Add Review</b>, that's it!. Ratings can be selected in half
+                                        <p>After picking the company or adding one, you can add your <b>Review
+                                            Comment</b> and
+                                            the <b>Rating</b> score and click on <b>Add Review</b>, that's it!. Ratings
+                                            can be selected in half
                                             steps.</p>
                                         <p>Your review will not be visible to the public until reviewed by an
                                             administrator to help maintain acceptable content and standards</p>
                                         <p>If you added a company you can immediately add a review to it. The company
-                                            will also remain private until approved by an administrator. There is a limit to the
-                                            size of the review. A counter will indicate how many more characters available as you type.
-                                            User can update only their reviews and such a user action will result in a previously approved
-                                            review loosing that status and off public view until reviewed again by an administrator.
+                                            will also remain private until approved by an administrator. There is a
+                                            limit to the
+                                            size of the review. A counter will indicate how many more characters
+                                            available as you type.
+                                            User can update only their reviews and such a user action will result in a
+                                            previously approved
+                                            review loosing that status and off public view until reviewed again by an
+                                            administrator.
                                             The system automatically tracks and updates company and user reviews</p>
                                     </li>
                                     <li>
@@ -111,13 +122,17 @@ class Help extends React.Component {
                                     </li>
                                     <li>
                                         <h3>Searching</h3>
-                                        <p>The Search button at the top allows you search as you type to filter data on the list below.
-                                            Searching is powerful and can be any text, Company name, review text, reviewer name etc. </p>
-                                        <p>You can also type in the drop downs to look faster for the company or service category you are looking for.</p>
+                                        <p>The Search button at the top allows you search as you type to filter data on
+                                            the list below.
+                                            Searching is powerful and can be any text, Company name, review text,
+                                            reviewer name etc. </p>
+                                        <p>You can also type in the drop downs to look faster for the company or service
+                                            category you are looking for.</p>
                                     </li>
                                     <li>
                                         <h3>User Feedback</h3>
-                                        <p>The system will provide reasonable error messages to help the user enter required information. This
+                                        <p>The system will provide reasonable error messages to help the user enter
+                                            required information. This
                                             user feedback is displayed at the top</p></li>
                                 </ol>
                             </div>

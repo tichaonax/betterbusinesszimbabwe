@@ -78,14 +78,24 @@ export class Reviews extends React.Component {
         var {isLoggedIn} = this.props;
         return (
             <div className="row">
-                <div className= {"columns " && this.state.container}>
+                <div className={"columns " && this.state.container}>
                     {isLoggedIn && (
                         <div>
-                            <AddReview/>
+                            <div>
+                                <button type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                        data-target="#addreview">New Review Panel
+                                </button>
+                            </div>
+                            <div></div>
+                            <div id="addreview" className="collapse">
+                                <AddReview/>
+                            </div>
                         </div>
                     )}
+                    <p/>
                     <div>
-                        <ReviewList showCompanyTitle={true}  reviewItems={this.props.reviewItems} auth={this.props.auth}/>
+                        <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems}
+                                    auth={this.props.auth}/>
                     </div>
                     <Loader loaded={this.state.loaded}>
                     </Loader>

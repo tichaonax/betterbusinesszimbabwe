@@ -80,9 +80,18 @@ export class Companies extends React.Component {
                 <div className={"columns " && this.state.container}>
                     {isLoggedIn && (
                         <div>
-                           <AddCompanyItem/>
+                            <div>
+                                <button type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                        data-target="#addcompany">New Company Panel
+                                </button>
+                            </div>
+                            <div></div>
+                            <div id="addcompany" className="collapse">
+                                <AddCompanyItem/>
+                            </div>
                         </div>
                     )}
+                    <p/>
                     <div>
                         <CompanyList/>
                     </div>
