@@ -296,8 +296,8 @@ export class AddReview extends React.Component {
             return;
         }
 
-
-        if (this.state.rating == 0) {
+        console.debug("this.state.rating",this.state.rating);
+        if (!this.state.rating || this.state.rating == 0) {
             error.errorMessage = "You must select a review rating before you can save review!";
             this.dispatch(errorActions.bbzReportError(error));
             return;
