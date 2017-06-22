@@ -108,7 +108,7 @@ class Nav extends React.Component {
                 )}
 
                 {isLoggedIn && userProfile && userProfile.isSuperUser && (
-                    <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>SuperUser</a>
+                    <li className="upper-links dropdown"><a className="links">SuperUser</a>
                         <div className="dropdown-menu">
                             <div className="profile-div">
                                 <Link to="/adminusers" activeClassName="active" className="profile-links"
@@ -121,12 +121,12 @@ class Nav extends React.Component {
                         </div>
                     </li>)}
                 {isLoggedIn && userProfile && userProfile.isAdmin && (
-                <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Admin</a>
+                <li className="upper-links dropdown"><a className="links">Admin</a>
                     <div className="dropdown-menu">
                         {this.renderAdminNavigation()}
                     </div>
                 </li>)}
-                <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Extras</a>
+                <li className="upper-links dropdown"><a className="links">Extras</a>
                     <div className="dropdown-menu">
                         <div className="profile-div">
                             <Link to="/help" activeClassName="active" className="profile-links"
