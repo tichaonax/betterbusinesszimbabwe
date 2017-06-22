@@ -126,7 +126,7 @@ class Nav extends React.Component {
                         {this.renderAdminNavigation()}
                     </div>
                 </li>)}
-                <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Dropdown</a>
+                <li className="upper-links dropdown"><a className="links" href="/" onClick={() => this.closeNav()}>Extras</a>
                     <div className="dropdown-menu">
                         <div className="profile-div">
                             <Link to="/help" activeClassName="active" className="profile-links"
