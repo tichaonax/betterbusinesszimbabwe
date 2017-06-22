@@ -35,7 +35,7 @@ export class CompanyReviews extends React.Component {
 
     componentWillReceiveProps(newProps) {
         var {isLoggedIn, userProfile} = newProps;
-        if(isLoggedIn && userProfile && userProfile.isAdmin){
+        if (isLoggedIn && userProfile && userProfile.isAdmin) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
     }
@@ -44,6 +44,7 @@ export class CompanyReviews extends React.Component {
     render() {
 
         var {reviewItems, showApprovalPending, searchText, auth, companyItems} = this.props;
+
         function getCompanyDescription(companyItemId) {
             if (companyItemId == undefined) return {companyDesc: ''};
             function getText(companyItem) {
@@ -63,7 +64,7 @@ export class CompanyReviews extends React.Component {
         var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
 
         let companyTitle = '';
-        let companyItemId ='';
+        let companyItemId = '';
         let companyDesc = '';
 
         if (filteredReviewItems.length > 0) {
@@ -76,48 +77,53 @@ export class CompanyReviews extends React.Component {
 
         return (
             <div className="row">
-                <div className="columns container">
-                    <div className="row">
-                    <div className="rating-block col-sm-5">
-                        <h3>{companyTitle}</h3>
-                        <div>
-                            <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
-                                  activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                <div className="columns medium-centered col-sm-9">
+                    <div className="container">
+                        <div className="columns container">
+                            <div className="row">
+                                <div className="rating-block col-sm-5">
+                                    <h3>{companyTitle}</h3>
+                                    <div>
+                                        <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                                              activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
+                                    </div>
+                                </div>
+                                <div className="col-sm-7">
+                                    <div>
+                                        <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
+                                            {companyDesc}
+                                        </Linkify>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                        <div className="col-sm-7">
+                        <div><br/></div>
+                        <div className="columns container">
+                            <div className="row">
+                                <div className="col-sm-5">
+                                    <div className="rating-block">
+                                        <h4>Average user rating</h4>
+                                        <h2 className="bold padding-bottom-7">{rating}
+                                            <small>/ 5</small>
+                                        </h2>
+                                        <Rate
+                                            defaultValue={rating}
+                                            style={{fontSize: 20}}
+                                            onChange={() => {
+                                            }}
+                                            allowHalf
+                                            value={rating}
+                                        />
+                                    </div>
+                                </div>
+                                <div>
+                                    <CompanyRatingItem reviewItems={filteredReviewItems}/>
+                                </div>
+                            </div>
                             <div>
-                                <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
-                                    {companyDesc}
-                                </Linkify>
+                                <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div><br/></div>
-                <div className="columns container">
-                    <div className="row">
-                        <div className="col-sm-5">
-                            <div className="rating-block">
-                                <h4>Average user rating</h4>
-                                <h2 className="bold padding-bottom-7">{rating}
-                                    <small>/ 5</small>
-                                </h2>
-                                <Rate
-                                    defaultValue={rating}
-                                    style={{fontSize: 20}}
-                                    onChange={()=>{}}
-                                    allowHalf
-                                    value={rating}
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <CompanyRatingItem reviewItems={filteredReviewItems}/>
-                        </div>
-                    </div>
-                    <div>
-                        <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
                     </div>
                 </div>
             </div>
