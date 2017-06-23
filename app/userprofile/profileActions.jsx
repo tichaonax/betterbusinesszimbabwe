@@ -54,7 +54,8 @@ export var startAddUserProfile = (email, displayName, providerId, userId, photoU
             isAdmin: false,
             providerId: providerId,
             userId: userId,
-            photoURL: photoURL
+            photoURL: photoURL,
+            isApproved: true
         }
 
         console.debug("profile",profile);
