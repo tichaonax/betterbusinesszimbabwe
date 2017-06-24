@@ -93,8 +93,8 @@ export class CompanyItem extends React.Component {
                                                              var error = {};
                                                              error.errorMessage = "You must be the owner or admin to update this company information";
                                                              this.dispatch(errorActions.bbzReportError(error));
-                                                             window.scrollTo(0, 0);
                                                          }
+                                                         window.scrollTo(0, 0);
                                                      }}/>
                                             </div>
                                 {loggedInUser && loggedInUser.isAdmin && (
