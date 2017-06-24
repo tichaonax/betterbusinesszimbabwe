@@ -82,7 +82,8 @@ export class ReviewItem extends React.Component {
 
                                                  onClick={() => {
                                                      if (userProfile && userProfile.isAdmin) {
-                                                         this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId, isApproved));
+                                                         //disable delete until confirm dialog is in place
+                                                         //this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId, isApproved));
                                                      } else {
                                                          openUpdatePanel();
                                                          var error = {};
