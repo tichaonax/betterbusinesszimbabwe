@@ -1,13 +1,12 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import moment from 'moment';
-import {findDOMNode} from 'react-dom'
-import ReactTooltip from 'react-tooltip'
 import RatingItem from 'RatingItem';
 import {Link} from 'react-router';
 var reviewsActions = require('reviewsActions');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
+import {openUpdatePanel} from 'app/common/Utils';
 
 export class ReviewItem extends React.Component {
     constructor(props) {
@@ -80,16 +79,12 @@ export class ReviewItem extends React.Component {
                                                  height="15"
                                                  width="15" src="images/delete-blue-x-64.png"
                                                  alt="Delete Review"
-                                                 onMouseOver={() => {
-                                                     ReactTooltip.show(findDOMNode(deleteReview));
-                                                 }}
-                                                 onMouseOut={() => {
-                                                     ReactTooltip.hide(findDOMNode(deleteReview));
-                                                 }}
+
                                                  onClick={() => {
                                                      if (userProfile && userProfile.isAdmin) {
                                                          this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId, isApproved));
                                                      } else {
+                                                         openUpdatePanel();
                                                          var error = {};
                                                          error.errorMessage = "You must be admin to delete this review information";
                                                          this.dispatch(errorActions.bbzReportError(error));
@@ -105,13 +100,9 @@ export class ReviewItem extends React.Component {
                                             <img className="bbz-general-pointer" type="image" value="submit" height="20"
                                                  width="20" src="images/update-blue-64.png"
                                                  alt="Update Review"
-                                                 onMouseOver={() => {
-                                                     ReactTooltip.show(findDOMNode(updateReview));
-                                                 }}
-                                                 onMouseOut={() => {
-                                                     ReactTooltip.hide(findDOMNode(updateReview));
-                                                 }}
+
                                                  onClick={() => {
+                                                     openUpdatePanel();
                                                      //console.debug("auth.uid", auth.uid);
                                                      //console.debug("rating uid", uid);
                                                      if (auth.loggedIn && auth.uid === uid) {
@@ -147,6 +138,7 @@ export class ReviewItem extends React.Component {
                                              if (userProfile.isAdmin) {
                                                  this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId, !isApproved, companyItemId, uid, auth.uid));
                                              } else {
+                                                 openUpdatePanel();
                                                  var error = {};
                                                  error.errorMessage = "You must be admin to change approval";
                                                  this.dispatch(errorActions.bbzReportError(error));

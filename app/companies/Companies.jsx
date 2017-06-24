@@ -36,7 +36,8 @@ export class Companies extends React.Component {
         this.dispatch(companiesActions.startAddCompanyItems());
 
         if (props.isLoggedIn) {
-            this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+           // this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+            this.dispatch(servicesActions.startAddServiceItems());
         }
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
@@ -81,12 +82,13 @@ export class Companies extends React.Component {
                     {isLoggedIn && (
                         <div>
                             <div>
-                                <button type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
-                                        data-target="#addcompany">New Company Panel
+                                <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block"
+                                        data-toggle="collapse"
+                                        data-target="#update-panel-target">Company Panel
                                 </button>
                             </div>
                             <div></div>
-                            <div id="addcompany" className="collapse">
+                            <div id="update-panel-target" className="collapse">
                                 <AddCompanyItem/>
                             </div>
                         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 var {connect} = require('react-redux');
 var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
+import {openUpdatePanel} from 'app/common/Utils';
 
 export class ServiceItem extends React.Component {
     constructor(props) {
@@ -19,10 +20,11 @@ export class ServiceItem extends React.Component {
                         <div className="row">
                             {auth.loggedIn && (
                                 <div className="col-sm-3">
-                                    <input type="submit" value="&times;" onClick={() => {
+                                    <input type="button" value="&times;" onClick={() => {
                                         if (userProfile.isSuperUser) {
-                                            //this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
+                                            this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
                                         } else {
+                                            openUpdatePanel();
                                             var error = {};
                                             error.errorMessage = "You must be Super User to delete this service information";
                                             this.dispatch(errorActions.bbzReportError(error));
@@ -35,7 +37,8 @@ export class ServiceItem extends React.Component {
                                 </div>)}
                             <div className="col-sm-4">
                                 <div>
-                                    <input type="submit" value={serviceItemId} onClick={() => {
+                                    <input type="button" value={serviceItemId} onClick={() => {
+                                        openUpdatePanel();
                                         if (userProfile.isAdmin) {
                                             var data = {
                                                 serviceItemId,
@@ -46,6 +49,7 @@ export class ServiceItem extends React.Component {
                                            // console.debug("ServiceItems Data:", data);
 
                                             this.dispatch(servicesActions.setUpdateServiceOperation(data));
+                                            this.dispatch(errorActions.bbzClearError());
                                         } else {
                                             var error = {};
                                             error.errorMessage = "You must be admin to update this service information";

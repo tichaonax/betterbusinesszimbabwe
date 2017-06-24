@@ -82,12 +82,12 @@ export class Reviews extends React.Component {
                     {isLoggedIn && (
                         <div>
                             <div>
-                                <button type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
-                                        data-target="#addreview">New Review Panel
+                                <button id ="update-panel" type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                        data-target="#update-panel-target">Review Panel
                                 </button>
                             </div>
                             <div></div>
-                            <div id="addreview" className="collapse">
+                            <div id="update-panel-target" className="collapse">
                                 <AddReview/>
                             </div>
                         </div>

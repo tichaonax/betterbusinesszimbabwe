@@ -3,6 +3,7 @@ var {connect} = require('react-redux');
 var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
+import {toggleUpdatePanel} from 'app/common/Utils';
 
 export class AddServiceItem extends React.Component {
     constructor(props) {
@@ -57,6 +58,7 @@ export class AddServiceItem extends React.Component {
                         <button ref="cancel" type="button" className="btn btn-primary btn-lg btn-block" value="Cancel"
                                 onClick={
                                     () => {
+                                        toggleUpdatePanel();
                                         this.handleCancel(event);
                                     }}>
                             Cancel
@@ -71,6 +73,7 @@ export class AddServiceItem extends React.Component {
                                     if (this.state.operation === 'ADD') {
                                         this.handleSubmit(event);
                                     } else {
+                                        toggleUpdatePanel();
                                         this.handleUpdate(event);
                                     }
                                 }}>
@@ -87,8 +90,9 @@ export class AddServiceItem extends React.Component {
         this.setState({
             serviceItemId: '',
             serviceTitle: '',
-            serviceId: 0
+            serviceId: 0,
         });
+        this.dispatch(errorActions.bbzClearError());
     }
 
     handleCancel = (e) => {

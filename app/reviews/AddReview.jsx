@@ -12,6 +12,7 @@ var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 import Error from 'Error';
 import Categories from 'serviceCategories';
+import {toggleUpdatePanel} from 'app/common/Utils';
 
 
 export class AddReview extends React.Component {
@@ -176,6 +177,7 @@ export class AddReview extends React.Component {
                                         if (this.state.calledFromOutside) {
                                             this.onGoBack(event);
                                         } else {
+                                            toggleUpdatePanel();
                                             this.handleCancel(event);
                                         }
                                     }}>
@@ -191,6 +193,7 @@ export class AddReview extends React.Component {
                                     if (this.state.operation === 'ADD') {
                                         this.handleSubmit(event);
                                     } else {
+                                        toggleUpdatePanel();
                                         this.handleUpdate(event);
                                     }
                                 }}>
@@ -220,14 +223,14 @@ export class AddReview extends React.Component {
         if (auth.uid == this.state.uid || owner) {
             if (auth.photoURL) {
                 photoURL = auth.photoURL;
-                console.debug("Photo Owner", auth.photoURL);
+                //console.debug("Photo Owner", auth.photoURL);
             }
         } else {
-            console.debug("Not Owner", auth.photoURL);
+            //console.debug("Not Owner", auth.photoURL);
             photoURL = null;
         }
 
-        console.debug("Saved Photo", photoURL);
+        //console.debug("Saved Photo", photoURL);
         return photoURL;
     }
 
@@ -376,7 +379,8 @@ export class AddReview extends React.Component {
                                       activeStyle={{fontWeight: 'bold'}}>
                                     <span className="glyphicon glyphicon-plus button" data-toggle="tooltip"
                                           title="Add New Company!" onClick={() => {
-                                        this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+                                        //this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
+                                        this.dispatch(servicesActions.startAddServiceItems());
                                     }}
                                     ></span>
                                 </Link>

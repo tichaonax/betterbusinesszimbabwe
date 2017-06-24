@@ -69,3 +69,13 @@ export const resetListCounts = (dispatch) => {
     dispatch(searchActions.setListCount(null));
     dispatch(searchActions.setPendingCount(null));
 }
+
+export const toggleUpdatePanel = () => {
+    $("#update-panel").trigger("click");
+}
+
+export const openUpdatePanel = () => {
+    if (!$("#update-panel-target").hasClass("in")) {
+        $("#update-panel").trigger("click");
+    }
+}

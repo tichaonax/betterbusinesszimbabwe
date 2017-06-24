@@ -1,10 +1,9 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import {Link} from 'react-router';
-import {findDOMNode} from 'react-dom'
-import ReactTooltip from 'react-tooltip'
 var Rate = require('rc-rate');
 import Linkify from 'react-linkify';
+import {openUpdatePanel} from 'app/common/Utils';
 var companiesActions = require('companiesActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
@@ -16,7 +15,11 @@ export class CompanyItem extends React.Component {
     }
 
     render() {
-        var {serviceItemId, serviceCategory, uid, loggedInUser, companyItemId, rating, isApproved, reviewCount, companyTitle, companyDesc, createAt, updateAt, auth, deleteCompany, updateCompany} = this.props;
+        var {serviceItemId, serviceCategory, uid,
+            loggedInUser, companyItemId, rating,
+            isApproved, reviewCount, companyTitle,
+            companyDesc, createAt, updateAt, auth,
+            deleteCompany, updateCompany,} = this.props;
 
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";
@@ -48,17 +51,12 @@ export class CompanyItem extends React.Component {
                                                      height="15"
                                                      width="15" src="images/delete-blue-x-64.png"
                                                      alt="Delete Company"
-                                                     onMouseOver={() => {
-                                                         ReactTooltip.show(findDOMNode(deleteCompany));
-                                                     }}
-                                                     onMouseOut={() => {
-                                                         ReactTooltip.hide(findDOMNode(deleteCompany));
-                                                     }}
                                                      onClick={() => {
                                                          this.dispatch(errorActions.bbzClearError());
                                                          if (loggedInUser.isAdmin) {
                                                              this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
                                                          } else {
+                                                             openUpdatePanel();
                                                              var error = {};
                                                              error.errorMessage = "You must be admin to delete this company information";
                                                              this.dispatch(errorActions.bbzReportError(error));
@@ -73,13 +71,8 @@ export class CompanyItem extends React.Component {
                                                      height="20"
                                                      width="20" src="images/update-blue-64.png"
                                                      alt="Update Company"
-                                                     onMouseOver={() => {
-                                                         ReactTooltip.show(findDOMNode(updateCompany));
-                                                     }}
-                                                     onMouseOut={() => {
-                                                         ReactTooltip.hide(findDOMNode(updateCompany));
-                                                     }}
                                                      onClick={() => {
+                                                         openUpdatePanel();
                                                          this.dispatch(errorActions.bbzClearError());
                                                          if (auth.uid === uid || loggedInUser.isAdmin) {
                                                              var data = {
@@ -116,6 +109,7 @@ export class CompanyItem extends React.Component {
                                                  if (loggedInUser.isAdmin) {
                                                      this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyItemId, !isApproved));
                                                  } else {
+                                                     openUpdatePanel();
                                                      var error = {};
                                                      error.errorMessage = "You must be admin to approve";
                                                      this.dispatch(errorActions.bbzReportError(error));

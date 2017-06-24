@@ -25,6 +25,7 @@ export class Services extends React.Component {
 
     componentDidMount() {
         this.dispatch(navActions.setNavPage(SERVICES_TITLE));
+        this.dispatch(servicesActions.startAddServiceItems());
     }
 
     componentWillReceiveProps(newProps) {
@@ -45,6 +46,7 @@ export class Services extends React.Component {
 
     componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
+        this.dispatch(servicesActions.startAddServiceItems());
     }
 
     render() {
@@ -57,17 +59,17 @@ export class Services extends React.Component {
                 <div className={"columns " && this.state.container}>
 
                     <div>
-                        <button type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
-                                data-target="#addservice">New Service Panel
+                        <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                data-target="#update-panel-target">Service Panel
                         </button>
                     </div>
                     <p/>
-                    <div id="addservice" className="collapse">
+                    <div id="update-panel-target" className="collapse">
                         <AddServiceItem/>
                     </div>
 
                     <div>
-                        <ServiceList serviceItems={this.state.serviceItems}/>
+                        <ServiceList/>
                     </div>
                     <Loader loaded={this.state.loaded}>
                     </Loader>
