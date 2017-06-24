@@ -131,7 +131,7 @@ export class AddCompnayItem extends React.Component {
                                     if (this.state.operation === 'ADD') {
                                         this.handleSubmit(event);
                                     } else {
-                                        toggleUpdatePanel();
+                                        //toggleUpdatePanel();
                                         this.handleUpdate(event);
                                     }
                                 }}>
