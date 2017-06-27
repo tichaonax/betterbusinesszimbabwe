@@ -5,6 +5,7 @@ import {getMediaContainerClass} from 'app/common/Utils';
 import {REVIEWS_TITLE} from 'pageTitles';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
+import {Link} from 'react-router';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var navActions = require('navActions');
@@ -79,18 +80,24 @@ export class Reviews extends React.Component {
         return (
             <div className="row">
                 <div className={"columns " && this.state.container}>
-                    <div>
+                    {!isLoggedIn && (
+                        <Link to="/addreview" activeClassName="active" onClick={() => {
+                            this.dispatch(urlActions.setRedirectUrl("reviews"));
+                        }}
+                              activeStyle={{fontWeight: 'bold'}}>Add Review</Link>)}
+                    {isLoggedIn && (
                         <div>
-                            <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block"
-                                    data-toggle="collapse"
-                                    data-target="#update-panel-target">Review Panel
-                            </button>
+                            <div>
+                                <button id ="update-panel" type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                        data-target="#update-panel-target">Review Panel
+                                </button>
+                            </div>
+                            <div></div>
+                            <div id="update-panel-target" className="collapse">
+                                <AddReview/>
+                            </div>
                         </div>
-                        <div></div>
-                        <div id="update-panel-target" className="collapse">
-                            <AddReview/>
-                        </div>
-                    </div>
+                    )}
                     <p/>
                     <div>
                         <ReviewList showCompanyTitle={true} reviewItems={this.props.reviewItems}
