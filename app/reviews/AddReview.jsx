@@ -12,7 +12,7 @@ var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 import Error from 'Error';
 import Categories from 'serviceCategories';
-import {toggleUpdatePanel} from 'app/common/Utils';
+import {closeUpdatePanel} from 'app/common/Utils';
 
 
 export class AddReview extends React.Component {
@@ -156,7 +156,11 @@ export class AddReview extends React.Component {
                     }}>
                         <ModalDialog onClose={() => {
                             this.setState({isShowingModal: false});
-                            hashHistory.push(redirectUrl);
+                             if (!this.state.calledFromOutside) {
+                             this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
+                             } else {
+                             hashHistory.push(redirectUrl);
+                             }
                         }}>
                             <h1>Thank you, Review Added!</h1>
                             <p>After review by Admin it will be made available to the public</p>
@@ -177,7 +181,7 @@ export class AddReview extends React.Component {
                                         if (this.state.calledFromOutside) {
                                             this.onGoBack(event);
                                         } else {
-                                            toggleUpdatePanel();
+                                            closeUpdatePanel();
                                             this.handleCancel(event);
                                         }
                                     }}>
@@ -193,7 +197,7 @@ export class AddReview extends React.Component {
                                     if (this.state.operation === 'ADD') {
                                         this.handleSubmit(event);
                                     } else {
-                                        toggleUpdatePanel();
+                                        closeUpdatePanel();
                                         this.handleUpdate(event);
                                     }
                                 }}>
@@ -320,11 +324,11 @@ export class AddReview extends React.Component {
         this.resetInputs();
 
         this.setState({isShowingModal: true},
-            ()=>{
-                if (!this.state.calledFromOutside) {
-                    this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
-                } else {
-                    hashHistory.push(redirectUrl);
+            () => {
+                closeUpdatePanel();
+
+                if(this.state.calledFromOutside){
+                   // this.onGoBack();
                 }
             }
         );

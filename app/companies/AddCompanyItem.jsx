@@ -8,7 +8,7 @@ var companiesActions = require('companiesActions');
 var searchActions = require('searchActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
-import {toggleUpdatePanel} from 'app/common/Utils';
+import {closeUpdatePanel} from 'app/common/Utils';
 
 export class AddCompnayItem extends React.Component {
     constructor(props) {
@@ -115,7 +115,7 @@ export class AddCompnayItem extends React.Component {
                                         if (this.state.calledFromOutside) {
                                             this.onGoBack(event);
                                         } else {
-                                            toggleUpdatePanel();
+                                            closeUpdatePanel();
                                             this.handleCancel(event);
                                         }
                                     }}>
@@ -131,7 +131,7 @@ export class AddCompnayItem extends React.Component {
                                     if (this.state.operation === 'ADD') {
                                         this.handleSubmit(event);
                                     } else {
-                                        //toggleUpdatePanel();
+                                        closeUpdatePanel();
                                         this.handleUpdate(event);
                                     }
                                 }}>

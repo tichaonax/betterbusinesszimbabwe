@@ -79,3 +79,9 @@ export const openUpdatePanel = () => {
         $("#update-panel").trigger("click");
     }
 }
+
+export const closeUpdatePanel = () => {
+    if ($("#update-panel-target").hasClass("in")) {
+        $("#update-panel").trigger("click");
+    }
+}
