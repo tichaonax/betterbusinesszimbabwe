@@ -5,6 +5,7 @@ import {getMediaContainerClass} from 'app/common/Utils';
 import {REVIEWS_TITLE} from 'pageTitles';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
+import {Link} from 'react-router';
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var navActions = require('navActions');
@@ -79,6 +80,11 @@ export class Reviews extends React.Component {
         return (
             <div className="row">
                 <div className={"columns " && this.state.container}>
+                    {!isLoggedIn && (
+                        <Link to="/addreview" activeClassName="active" onClick={() => {
+                            this.dispatch(urlActions.setRedirectUrl("reviews"));
+                        }}
+                              activeStyle={{fontWeight: 'bold'}}>Add Review</Link>)}
                     {isLoggedIn && (
                         <div>
                             <div>
