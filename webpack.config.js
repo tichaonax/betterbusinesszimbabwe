@@ -67,7 +67,9 @@ module.exports = {
             './app/url',
             '.app/common',
             '.app/constants',
-            './app/users'
+            './app/users',
+            './app/dao',
+            './app/dao/services'
         ],
         alias: {
             app: 'app',
@@ -89,7 +91,7 @@ module.exports = {
             companiesItemsReducer: 'app/companies/companiesReducers.jsx',
             reviewsActions: 'app/reviews/reviewsActions.jsx',
             reviewsItemsReducer: 'app/reviews/reviewsReducers.jsx',
-            usersActions: 'app/users/UsersActions',
+            usersActions: 'app/users/UsersActions.jsx',
             usersItemsReducer: 'app/users/usersReducers.jsx',
             accountActions: 'app/account/accountActions.jsx',
             actions: 'app/actions/actions.jsx',
