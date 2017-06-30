@@ -1,9 +1,9 @@
 var bbzSqlite = (() => {
     var instance;
 
-    function createInstance() {
+    function createInstance(dbPath) {
         var Database = require('better-sqlite3');
-        db = new Database('../app/database/betterbusinesszimbabwe.sqlite3');
+        db = new Database(dbPath);
 
         process.on('SIGINT', () => {
             db.close();

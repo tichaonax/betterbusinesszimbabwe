@@ -13,7 +13,6 @@ var navActions = require('navActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 var Loader = require('react-loader');
-import Categories from 'serviceCategories';
 
 export class Companies extends React.Component {
     constructor(props) {
