@@ -48,7 +48,6 @@ var migrateUsersTable = () => {
             });
         });
 
-        //console.log("parsedUserItems",parsedUserItems);
         parsedUserItems.map((userItem) => {
             if (userItem.userProfile) {
                 let obj = userItem.userProfile;
@@ -60,16 +59,11 @@ var migrateUsersTable = () => {
                 let uid = obj.userId;
                 let reviewCount = (userItem.reviewCount) ? parseInt(userItem.reviewCount, 10) : 0;
                 let lastLogins = userItem.userProfile.lastLogins;
-                //console.log("firebaseId",firebaseId, displayName, email, photoURL, providerId, uid, reviewCount);
-
                 var insertRow = insertUser(firebaseId, displayName, email, photoURL, providerId, uid, reviewCount);
 
-                //console.log("insertRow:", findUserById(insertRow.lastInsertROWID));
                 let lastlogins = parseLastLogin(lastLogins);
-                //console.log("lastlogins",lastlogins);
 
                 if (lastlogins.length > 0) {
-                    //console.log("user>", displayName, lastlogins.length, lastlogins[0].loginAt);
                     let city = lastlogins[0].city;
                     let country = lastlogins[0].country;
                     let ipAddress = lastlogins[0].ipAddress;
