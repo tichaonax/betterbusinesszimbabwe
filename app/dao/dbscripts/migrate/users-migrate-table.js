@@ -22,7 +22,8 @@ var parseLastLogin = (lastLogins) => {
             id: lastLogin,
             city: lastLogins[lastLogin].city,
             country: lastLogins[lastLogin].country,
-            ipAddress: lastLogins[lastLogin].ipAddress
+            ipAddress: lastLogins[lastLogin].ipAddress,
+            loginAt: lastLogins[lastLogin].loginAt
         });
     })
 
@@ -68,23 +69,21 @@ var migrateUsersTable = () => {
                 //console.log("lastlogins",lastlogins);
 
                 if (lastlogins.length > 0) {
+                    //console.log("user>", displayName, lastlogins.length, lastlogins[0].loginAt);
                     let city = lastlogins[0].city;
                     let country = lastlogins[0].country;
                     let ipAddress = lastlogins[0].ipAddress;
-
-                    //console.log("lastlogins[0].loginAt",lastlogins[0].loginAt);
-                    let loginAt =  (lastlogins[0].loginAt) ? moment.unix(lastlogins[0].loginAt).format('YYYY-MM-DD HH:MM:SS') : moment.unix(1432252800).format('YYYY-MM-DD HH:MM:SS');//    ? parseInt(lastlogins[1].loginAt, 10) : 1497742583;
-                   // console.log("loginAt",loginAt);
-                    if (lastlogins.length === 2) {
-                        migrateUserLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
+                    let loginAt = moment.unix(lastlogins[0].loginAt).format('YYYY-MM-DD HH:MM:SS');
+                    if (lastlogins.length > 1) {
+                        migrateLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
                         city = lastlogins[1].city;
                         country = lastlogins[1].country;
                         ipAddress = lastlogins[1].ipAddress;
-                        loginAt = (lastlogins[1].loginAt) ? moment.unix(lastlogins[1].loginAt).format('YYYY-MM-DD HH:MM:SS') : moment.unix(1432252800).format('YYYY-MM-DD HH:MM:SS');
-
-                        migrateLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
+                        loginAt = moment.unix(lastlogins[1].loginAt).format('YYYY-MM-DD HH:MM:SS');
+                        migrateUserLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
+                    } else {
+                        migrateUserLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
                     }
-                    migrateUserLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
                 }
             }
         });
