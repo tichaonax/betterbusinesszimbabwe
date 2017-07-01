@@ -8,7 +8,7 @@ var db = bbzSqlite.getInstance(BBZ_DATABASE_PATH);
 var insertLastLogin = (userId, city, country, ipAddress, loginAt) => {
     let sql = `INSERT INTO lastlogin 
     (userId, city, country, ipAddress, loginAt)
-     VALUES (${userId}, '${city}', '${country}', '${ipAddress}', ${loginAt} )`;
+     VALUES (${userId}, '${city}', '${country}', '${ipAddress}', '${loginAt}' )`;
     return db.prepare(sql).run();
 }
 

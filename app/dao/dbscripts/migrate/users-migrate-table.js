@@ -1,12 +1,13 @@
 /**
  * Created by tichaona on 6/30/17.
  */
+var moment = require('moment');
 var firebase = require('firebase');
 var insertUser = require('../../users/insertUser');
 var findUserById = require('../../users/findUserById');
 var {getFirebaseConfig} = require('../../../../playground/firebaseConfig');
 var migrateLastLoginTable = require('./lastlogin-migrate-table');
-
+var migrateUserLastLoginTable = require('./user-lastlogin-migrate-table');
 try {
     firebase.initializeApp(getFirebaseConfig());
 } catch (e) {
@@ -56,7 +57,7 @@ var migrateUsersTable = () => {
                 let photoURL = obj.photoURL;
                 let providerId = obj.providerId;
                 let uid = obj.userId;
-                let reviewCount = (userItem.reviewCount) ? parseInt(userItem.reviewCount, 10) :0;
+                let reviewCount = (userItem.reviewCount) ? parseInt(userItem.reviewCount, 10) : 0;
                 let lastLogins = userItem.userProfile.lastLogins;
                 //console.log("firebaseId",firebaseId, displayName, email, photoURL, providerId, uid, reviewCount);
 
@@ -66,22 +67,24 @@ var migrateUsersTable = () => {
                 let lastlogins = parseLastLogin(lastLogins);
                 //console.log("lastlogins",lastlogins);
 
-                if (lastlogins) {
+                if (lastlogins.length > 0) {
+                    let city = lastlogins[0].city;
+                    let country = lastlogins[0].country;
+                    let ipAddress = lastlogins[0].ipAddress;
+
+                    //console.log("lastlogins[0].loginAt",lastlogins[0].loginAt);
+                    let loginAt =  (lastlogins[0].loginAt) ? moment.unix(lastlogins[0].loginAt).format('YYYY-MM-DD HH:MM:SS') : moment.unix(1432252800).format('YYYY-MM-DD HH:MM:SS');//    ? parseInt(lastlogins[1].loginAt, 10) : 1497742583;
+                   // console.log("loginAt",loginAt);
                     if (lastlogins.length === 2) {
-                        migrateLastLoginTable(
-                            insertRow.lastInsertROWID,
-                            lastlogins[1].city,
-                            lastlogins[1].country,
-                            lastlogins[1].ipAddress,
-                            (lastlogins[1].loginAt) ? parseInt(lastlogins[1].loginAt, 10) : 1497742583);
-                    } else {
-                        migrateLastLoginTable(
-                            insertRow.lastInsertROWID,
-                            lastlogins[0].city,
-                            lastlogins[0].country,
-                            lastlogins[0].ipAddress,
-                            (lastlogins[0].loginAt) ? parseInt(lastlogins[0].loginAt, 10) : 1497742583);
+                        migrateUserLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
+                        city = lastlogins[1].city;
+                        country = lastlogins[1].country;
+                        ipAddress = lastlogins[1].ipAddress;
+                        loginAt = (lastlogins[1].loginAt) ? moment.unix(lastlogins[1].loginAt).format('YYYY-MM-DD HH:MM:SS') : moment.unix(1432252800).format('YYYY-MM-DD HH:MM:SS');
+
+                        migrateLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
                     }
+                    migrateUserLastLoginTable(insertRow.lastInsertROWID, city, country, ipAddress, loginAt);
                 }
             }
         });
