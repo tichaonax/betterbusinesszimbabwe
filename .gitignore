@@ -11,3 +11,4 @@ config/
 playground
 defects
 migration
+database
