@@ -11,18 +11,14 @@ var createLastLoginTable = () => {
   "lastloginId" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   "userId" integer,
   "city" varchar(100),
-  "country" varchar(100), 
-  "ipAddress" varchar(30), 
+  "country" varchar(100),
+  "ipAddress" varchar(30),
   "loginAt" timestamp
 );
 
-CREATE INDEX IF NOT EXISTS idx_lastlogin_city ON "lastlogin" ("city");
 CREATE INDEX IF NOT EXISTS idx_lastlogin_country ON "lastlogin" ("country");
 
-CREATE TRIGGER IF NOT EXISTS lastlogin_trigger_ai AFTER INSERT ON lastlogin
- BEGIN
-  UPDATE users SET loginAt = DATETIME('NOW')  WHERE rowid = new.rowid;
- END;`;
+CREATE INDEX IF NOT EXISTS idx_lastlogin_city ON "lastlogin" ("city");`;
     return db.exec(sql);
 }
 

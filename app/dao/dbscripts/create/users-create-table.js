@@ -10,19 +10,23 @@ var createUsersTable = () => {
     let sql = `CREATE TABLE IF NOT EXISTS "users" (
   "userId" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   "firebaseId" varchar(45) NOT NULL,
+  "providerId" varchar(50),
+  "uid" varchar(45) NOT NULL,
+  "isSuperUser" integer DEFAULT 0,
+  "isAdmin" integer DEFAULT 0,
   "displayName" varchar(100) NOT NULL,
   "email" varchar(100) NOT NULL,
   "photoURL" varchar(200) NOT NULL,
-  "providerId" varchar(50),
-  "uid" varchar(45) NOT NULL,
   "reviewCount" numeric NOT NULL,
-  "createAt" timestamp,
-  "updateAt" timestamp,
   "city" varchar(100),
-  "country" varchar(100), 
-  "ipAddress" varchar(30), 
-  "loginAt" timestamp
+  "country" varchar(100),
+  "ipAddress" varchar(40),
+  "loginAt" timestamp,
+  "createAt" timestamp,
+  "updateAt" timestamp
 );
+
+CREATE INDEX IF NOT EXISTS idx_users_providerId ON "users" ("providerId");
 
 CREATE INDEX IF NOT EXISTS idx_users_displayName ON "users" ("displayName");
 

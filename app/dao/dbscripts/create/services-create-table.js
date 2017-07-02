@@ -10,11 +10,11 @@ var createServicesTable = () => {
     console.log("create Services Table");
     let sql = `CREATE TABLE IF NOT EXISTS "services" (
   "serviceId" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+  "userId" integer,
   "serviceItemId" integer,
   "serviceCategory" varchar(100),
   "createAt" timestamp,
-  "updateAt" timestamp,
-  "userId" integer
+  "updateAt" timestamp
 );
 
 CREATE INDEX IF NOT EXISTS idx_services_serviceCategory ON "services" ("serviceCategory");
