@@ -60,7 +60,6 @@ module.exports = {
             './app/login',
             './app/companies',
             './app/reviews',
-            './app/weather',
             './app/userprofile',
             './app/search',
             './app/error',
@@ -104,7 +103,8 @@ module.exports = {
             serviceCategories: 'app/constants/Categories.js',
             pageTitles: 'app/constants/PageTitles.js',
             navActions: 'app/navigation/navActions.jsx',
-            navReducers: 'app/navigation/navReducers.jsx'
+            navReducers: 'app/navigation/navReducers.jsx',
+            bbzServiceApi: 'app/api/BbzServicesApi.js'
         },
         extensions: ['', '.js', '.jsx']
     },

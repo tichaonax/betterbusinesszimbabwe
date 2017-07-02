@@ -257,8 +257,8 @@ export class AddCompnayItem extends React.Component {
 
     onServiceItemIdChange = (val) => {
         let serviceItemId = get(val, 'value');
-        let serviceTitle = get(val, 'label');
-        this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
+        let serviceCategory = get(val, 'label');
+        this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceCategory});
     }
 
     renderServiceSelect() {
@@ -267,7 +267,7 @@ export class AddCompnayItem extends React.Component {
         if (serviceItems) {
 
             serviceItems.map((serviceItem) => {
-                selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceTitle});
+                selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceCategory});
             });
 
             return (

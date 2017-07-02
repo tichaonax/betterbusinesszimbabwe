@@ -2,8 +2,7 @@ import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
 var loadingActions = require('loadingActions');
-//var findAllServices = require('findAllServices');
-//var findAllServices = require ('app/dao/services/findAllServices.js');
+var bbzServiceApi = require('bbzServiceApi');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -51,12 +50,12 @@ export var addServiceItems = (serviceItems) => {
 export var startAddServiceItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        return findAllServices.then((services) => {
+        return bbzServiceApi.findAllServices().then((services) => {
 
-            console.debug("services",services);
+            console.debug("services",services.data);
 
-            //dispatch(addServiceItems(parsedServiceItems));
-            //dispatch(loadingActions.setLoadingStatus(false));
+            dispatch(addServiceItems(services.data));
+            dispatch(loadingActions.setLoadingStatus(false));
 
          }, (error) => {
             console.log("Unable to fetch services", error);

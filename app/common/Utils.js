@@ -79,3 +79,35 @@ export const openUpdatePanel = () => {
         $("#update-panel").trigger("click");
     }
 }
+
+export class Utils {
+    static parseUrl = (url) => {
+        var link = document.createElement('a');
+        link.setAttribute('href', url);
+        var result = {
+            hostname: link.hostname,
+            port: link.port,
+            search: link.search,
+            pathname: link.pathname,
+            protocol: link.protocol
+        };
+        link = null;
+        return result;
+    }
+
+    static getQueryParameter = (name) => {
+        var url = window.location.href;
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
+        var results = regex.exec(url);
+        if (!results) return undefined;
+        if (!results[2]) return undefined;
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+    }
+
+    static getUrlAddress = (url) => {
+        console.log("url",url);
+        var newUrl = Utils.parseUrl(url);
+        return newUrl.protocol + '//' + newUrl.hostname + ':' + newUrl.port;
+    }
+}
