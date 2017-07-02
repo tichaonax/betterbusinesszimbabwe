@@ -10,7 +10,7 @@ var createCompaniesTable = () => {
     let sql = `CREATE TABLE IF NOT EXISTS "companies" (
   "companyId" integer PRIMARY KEY AUTOINCREMENT NOT NULL,
   "userId" integer(128),
-  "serviceItemId" integer,
+  "serviceId" integer,
   "companyTitle" varchar(100),
   "companyDesc" varchar(300),
   "rating" decimal(1,1),

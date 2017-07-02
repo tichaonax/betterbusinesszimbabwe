@@ -14,7 +14,7 @@ try {
 
 }
 
-var parseLastLogin = (lastLogins) => {
+var parsedLastLogin = (lastLogins) => {
     var parsedLastLogins = [];
 
     Object.keys(lastLogins).forEach((lastLogin) => {
@@ -63,7 +63,7 @@ var migrateUsersTable = () => {
                 let lastLogins = userItem.userProfile.lastLogins;
                 var insertRow = insertUser(firebaseId, displayName, email, photoURL, providerId, uid, reviewCount, isSuperUser, isAdmin);
 
-                let lastlogins = parseLastLogin(lastLogins);
+                let lastlogins = parsedLastLogin(lastLogins);
 
                 if (lastlogins.length > 0) {
                     let city = lastlogins[0].city;
