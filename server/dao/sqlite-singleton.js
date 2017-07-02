@@ -9,6 +9,7 @@ var bbzSqlite = (() => {
         process.on('SIGINT', () => {
             db.close();
             console.log("Sqlite database closed");
+            server.close();
         });
 
         return db;

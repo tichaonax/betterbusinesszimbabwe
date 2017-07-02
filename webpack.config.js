@@ -86,6 +86,7 @@ module.exports = {
             urlActions: 'app/url/urlActions.jsx',
             urlReducers: 'app/url/urlReducers.jsx',
             servicesActions: 'app/admin/services/servicesActions.jsx',
+            servicesSqliteActions: 'app/admin/services/servicesSqliteActions.jsx',
             servicesItemsReducer: 'app/admin/services/servicesReducers.jsx',
             companiesActions: 'app/companies/companiesActions.jsx',
             companiesItemsReducer: 'app/companies/companiesReducers.jsx',

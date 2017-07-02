@@ -9,6 +9,7 @@ var searchActions = require('searchActions');
 var companiesActions = require('companiesActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var navActions = require('navActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
@@ -36,7 +37,8 @@ export class Companies extends React.Component {
 
         if (props.isLoggedIn) {
            // this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
-            this.dispatch(servicesActions.startAddServiceItems());
+            //this.dispatch(servicesActions.startAddServiceItems());
+            this.dispatch(servicesSqliteActions.startAddServiceItems());
         }
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
