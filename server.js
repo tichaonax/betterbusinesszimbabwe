@@ -24,42 +24,19 @@ app.use((request, response, next) => {
 });
 
 app.use(express.static('public'));
-// REGISTER OUR ROUTES -------------------------------
-// all of our routes will be prefixed with /api
 
-
-
-// ROUTES FOR OUR API
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
-/*router.route('/services')
-    .get(function (req, res) {
-        var findAllServices = require('./server/dao/services/findAllServices');
-        return new Promise((resolve, reject) => {
-            var services= findAllServices();
-            return(Promise.resolve(res.json({data: services})));
-        }).catch((error)=>{
-                return Promise.reject(error)
-        });
-    });*/
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
 
-// on routes that end in /bears/:bear_id
-// ----------------------------------------------------
-router.route('/bears/:bear_id')
-
-// get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
+// ROUTES FOR OUR API
+router.route('/')
     .get(function(req, res) {
-        //Bear.findById(req.params.bear_id, function(err, bear) {
-        //    if (err)
-        //        res.send(err);
-
-            res.json({bear:`Masese: ${req.params.bear_id}`});
+        res.json({api:`Welcome to Better Business Zimbabwe Apis`});
         //});
     });
-
-
-
 
 app.use('/api', [router,servicesRoutes]);
 
