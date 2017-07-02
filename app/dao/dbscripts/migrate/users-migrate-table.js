@@ -58,8 +58,10 @@ var migrateUsersTable = () => {
                 let providerId = obj.providerId;
                 let uid = obj.userId;
                 let reviewCount = (userItem.reviewCount) ? parseInt(userItem.reviewCount, 10) : 0;
+                let isSuperUser = (obj.isSuperUser) ? 1 : 0;
+                let isAdmin = (obj.isAdmin) ? 1 : 0;
                 let lastLogins = userItem.userProfile.lastLogins;
-                var insertRow = insertUser(firebaseId, displayName, email, photoURL, providerId, uid, reviewCount);
+                var insertRow = insertUser(firebaseId, displayName, email, photoURL, providerId, uid, reviewCount, isSuperUser, isAdmin);
 
                 let lastlogins = parseLastLogin(lastLogins);
 
