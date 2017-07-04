@@ -9,7 +9,7 @@ export var serviceItemsReducer = (state = [], action) => {
         case 'UPDATE_SERVICE_ITEM':
             return state.map((serviceItem) => {
                 //replace with updated item
-                if (serviceItem.serviceItemId === action.serviceItemId) {
+                if (serviceItem.serviceId === action.serviceId) {
                     return {
                         ...serviceItem,
                         ...action.updates
@@ -22,7 +22,7 @@ export var serviceItemsReducer = (state = [], action) => {
             });
         case 'DELETE_SERVICE_ITEM':
             //remove deleted item
-            let toRemoveServiceItem = state.findIndex((serviceItem) => serviceItem.serviceItemId === action.serviceItemId);
+            let toRemoveServiceItem = state.findIndex((serviceItem) => serviceItem.serviceId === action.serviceId);
             return [
                 ...state.slice(0, toRemoveServiceItem),
                 ...state.slice(toRemoveServiceItem + 1)
@@ -34,6 +34,7 @@ export var serviceItemsReducer = (state = [], action) => {
                 ...state,
                 ...action.serviceItems
             ];*/
+            console.log("action.serviceItems",action.serviceItems);
             return action.serviceItems;
 
         default:

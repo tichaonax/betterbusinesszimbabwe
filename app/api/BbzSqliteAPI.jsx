@@ -206,12 +206,12 @@ module.exports = {
             filteredServiceItems = filteredServiceItems.filter((serviceItem) => {
                // console.debug("serviceItem", serviceItem);
                 const serviceId = (serviceItem.serviceId) ? serviceItem.serviceId.toString().toLowerCase() : "";
-                const serviceTitle = (serviceItem.serviceTitle) ? serviceItem.serviceTitle.toLowerCase() : "";
+                const serviceTitle = (serviceItem.serviceCategory) ? serviceItem.serviceCategory.toLowerCase() : "";
 
                 if (serviceId.indexOf(searchText.toLowerCase()) > -1) {
                     return serviceItem.serviceId;
                 } else if (serviceTitle.indexOf(searchText.toLowerCase()) > -1) {
-                    return serviceItem.serviceTitle;
+                    return serviceItem.serviceCategory;
                 }
             });
         }

@@ -14,22 +14,21 @@ export class ReviewItem extends React.Component {
         this.dispatch = props.dispatch;
     }
 
-    renderCompanyRating = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId) => {
+    renderCompanyRating = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId) => {
         return (<RatingItem rating={rating}
                             review={review}
-                            companyItemId={companyItemId}
+                            companyId={companyId}
                             companyTitle={companyTitle}
                             showCompanyTitle={showCompanyTitle}
-                            reviewId={reviewId}
-                            reviewItemId={reviewItemId}/>);
+                            reviewId={reviewId}/>);
     }
 
     render() {
         var {
             showCompanyTitle,
             displayName, email, uid,
-            companyTitle, companyItemId,
-            userProfile, reviewItemId, review,
+            companyTitle, companyId,
+            userProfile, reviewId, review,
             rating, isApproved, createAt, updateAt,
             auth, deleteReview, updateReview, photoURL,
             adminUid
@@ -48,8 +47,6 @@ export class ReviewItem extends React.Component {
             approveImageSource = "images/check-blue-64.png";
             approveMessage = "Approved";
         }
-
-        const reviewId = createAt;
 
         const reviewDate = moment.unix(createAt).format('MMM Do, YYYY');
 
@@ -83,7 +80,7 @@ export class ReviewItem extends React.Component {
                                                  onClick={() => {
                                                      if (userProfile && userProfile.isAdmin) {
                                                          //disable delete until confirm dialog is in place
-                                                         //this.dispatch(reviewsActions.startDeleteReviewItem(reviewItemId, isApproved));
+                                                         //this.dispatch(reviewsActions.startDeleteReviewItem(reviewId, isApproved));
                                                      } else {
                                                          openUpdatePanel();
                                                          var error = {};
@@ -109,8 +106,8 @@ export class ReviewItem extends React.Component {
                                                      if (auth.loggedIn && auth.uid === uid) {
                                                          var data = {
                                                              uid,
-                                                             reviewItemId,
-                                                             companyItemId,
+                                                             reviewId,
+                                                             companyId,
                                                              rating,
                                                              review,
                                                              isApproved
@@ -137,7 +134,7 @@ export class ReviewItem extends React.Component {
                                          onClick={() => {
                                              this.dispatch(errorActions.bbzClearError());
                                              if (userProfile.isAdmin) {
-                                                 this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewItemId, !isApproved, companyItemId, uid, auth.uid));
+                                                 this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewId, !isApproved, companyId, uid, auth.uid));
                                              } else {
                                                  openUpdatePanel();
                                                  var error = {};
@@ -157,7 +154,7 @@ export class ReviewItem extends React.Component {
                             </div>
                         </div>
                         <div className="col-sm-8">
-                            {this.renderCompanyRating(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, reviewItemId)}
+                            {this.renderCompanyRating(rating, review, companyId, companyTitle, showCompanyTitle, reviewId)}
                         </div>
                     </div>
                 </div>

@@ -73,7 +73,7 @@ export class ReviewList extends React.Component {
         //this will result is less memory used if you were to store all that rendering data with the reviews
         var reviewItem = this.state.reviews[index];
         if (reviewItem) {
-            var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
+            var row = <ReviewItem key={reviewItem.reviewId} {...reviewItem}
                                   deleteReview={this.refs.deleteReview}
                                   updateReview={this.refs.updateReview}
                                   showCompanyTitle={this.state.showCompanyTitle}/>;

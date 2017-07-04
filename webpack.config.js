@@ -91,6 +91,7 @@ module.exports = {
             companiesActions: 'app/companies/companiesActions.jsx',
             companiesItemsReducer: 'app/companies/companiesReducers.jsx',
             reviewsActions: 'app/reviews/reviewsActions.jsx',
+            reviewsSqliteActions: 'app/reviews/reviewsSqliteActions.jsx',
             reviewsItemsReducer: 'app/reviews/reviewsReducers.jsx',
             usersActions: 'app/users/UsersActions.jsx',
             usersItemsReducer: 'app/users/usersReducers.jsx',

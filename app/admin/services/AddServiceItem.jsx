@@ -12,9 +12,8 @@ export class AddServiceItem extends React.Component {
 
         this.state = {
             operation: 'ADD',
-            serviceId: 0,
-            serviceTitle: '',
-            serviceItemId: ''
+            serviceCategory: '',
+            serviceId: 0
         }
     }
 
@@ -31,21 +30,21 @@ export class AddServiceItem extends React.Component {
         this.setState({operation: nextProps.serviceOperation.operation});
 
         if (nextProps.serviceOperation.data) {
+            console.log("data",nextProps.serviceOperation.data);
             this.setState({
                 serviceItemId: nextProps.serviceOperation.data.serviceItemId,
-                serviceTitle: nextProps.serviceOperation.data.serviceTitle,
+                serviceCategory: nextProps.serviceOperation.data.serviceCategory,
                 serviceId: nextProps.serviceOperation.data.serviceId
             });
         }
     }
 
-    findDupeServices(serviceTitle, serviceItems) {
+    findDupeServices(serviceCategory, serviceItems) {
         var dupes = [];
         serviceItems.map((serviceItem) => {
-            if (serviceItem.serviceTitle.toLowerCase() === serviceTitle.toLowerCase()) {
+            if (serviceItem.serviceCategory.toLowerCase() === serviceCategory.toLowerCase()) {
                 dupes.push(serviceItem);
-            }
-            ;
+            };
         });
         return dupes;
     }
@@ -89,7 +88,7 @@ export class AddServiceItem extends React.Component {
     resetInputs = () => {
         this.setState({
             serviceItemId: '',
-            serviceTitle: '',
+            serviceCategory: '',
             serviceId: 0,
         });
         this.dispatch(errorActions.bbzClearError());
@@ -105,8 +104,8 @@ export class AddServiceItem extends React.Component {
         e.preventDefault();
 
         this.dispatch(servicesActions.startUpdateServiceItem(
-            this.state.serviceItemId,
-            this.state.serviceTitle,
+            this.state.serviceId,
+            this.state.serviceCategory,
             this.state.serviceDesc));
 
         this.resetInputs();
@@ -120,31 +119,31 @@ export class AddServiceItem extends React.Component {
 
         var error = {}
         var {dispatch} = this.props;
-        var serviceTitle = this.refs.serviceTitle.value;
+        var serviceCategory = this.refs.serviceCategory.value;
 
-        if (serviceTitle.length > 0) {
+        if (serviceCategory.length > 0) {
 
         } else {
             error.errorMessage = "Service title required";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceTitle.focus();
+            this.refs.serviceCategory.focus();
             return;
         }
 
-        if (this.findDupeServices(serviceTitle, serviceItems).length != 0) {
+        if (this.findDupeServices(serviceCategory, serviceItems).length != 0) {
             error.errorMessage = "This service title is in the list of services provided, please enter a different one!";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceTitle.focus();
+            this.refs.serviceCategory.focus();
             return;
         }
 
         this.resetInputs();
         dispatch(errorActions.bbzClearError());
-        dispatch(servicesActions.startAddNewServiceItem(serviceTitle));
+        dispatch(servicesActions.startAddNewServiceItem(serviceCategory));
     }
 
-    onChangeServiceTitle = (e) => {
-        this.setState({serviceTitle: e.target.value});
+    onChangeServiceCategory = (e) => {
+        this.setState({serviceCategory: e.target.value});
     }
 
     //****TODO call this method when a serviceCategory changes
@@ -163,9 +162,9 @@ export class AddServiceItem extends React.Component {
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
                                 <label htmlFor="stitle">Service Title</label>
-                                <input className="form-control" type="text" name="serviceTitle" ref="serviceTitle"
-                                       value={this.state.serviceTitle} maxLength={50}
-                                       placeholder="Service Title" onChange={this.onChangeServiceTitle}/>
+                                <input className="form-control" type="text" name="serviceCategory" ref="serviceCategory"
+                                       value={this.state.serviceCategory} maxLength={50}
+                                       placeholder="Service Title" onChange={this.onChangeServiceCategory}/>
                             </div>
                             <div className="row">
                                 <div className="col-sm-12">

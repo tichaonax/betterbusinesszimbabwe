@@ -6,6 +6,7 @@ import {REVIEWS_TITLE} from 'pageTitles';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 import {Link} from 'react-router';
+var reviewsSqliteActions = require('reviewsSqliteActions');
 var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var navActions = require('navActions');
@@ -40,7 +41,8 @@ export class Reviews extends React.Component {
             this.dispatch(searchActions.setSearchText(uid));
         }
 
-        this.dispatch(reviewsActions.startAddReviewItems());
+        //this.dispatch(reviewsActions.startAddReviewItems());
+        this.dispatch(reviewsSqliteActions.startAddReviewItems());
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
 

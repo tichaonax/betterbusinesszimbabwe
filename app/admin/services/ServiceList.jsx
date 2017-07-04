@@ -5,7 +5,7 @@ import {SERVICES_TITLE} from 'pageTitles';
 var {connect} = require('react-redux');
 import ServiceItem from 'ServiceItem';
 var navActions = require('navActions');
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 
 
 export class ServiceList extends React.Component {
@@ -21,7 +21,7 @@ export class ServiceList extends React.Component {
 
     componentWillReceiveProps(newProps) {
         this.dispatch(navActions.setNavPage(SERVICES_TITLE));
-        var filteredServiceItems = BbzAPI.getFilteredServices(newProps.serviceItems, newProps.searchText);
+        var filteredServiceItems = BbzSqliteAPI.getFilteredServices(newProps.serviceItems, newProps.searchText);
 
         this.setState({
             rowCount: filteredServiceItems.length,
@@ -42,8 +42,8 @@ export class ServiceList extends React.Component {
     itemSizeGetter = (index) => {
         var serviceItem = this.state.reviews[index];
         var divHeight = 30;
-        if (serviceItem.serviceTitle.length > 50) {
-            divHeight = 10 + Math.round((serviceItem.serviceTitle.length / 60)) * 30
+        if (serviceItem.serviceCategory.length > 50) {
+            divHeight = 10 + Math.round((serviceItem.serviceCategory.length / 60)) * 30
         }
         return divHeight;
     }
@@ -52,7 +52,7 @@ export class ServiceList extends React.Component {
         //the idea is you want to construct the row data on the fly from the services
         //this will result is less memory used if you were to store all that rendering data with the services
         var serviceItem = this.state.services[index];
-        var row = <ServiceItem key={serviceItem.serviceItemId} {...serviceItem}/>;
+        var row = <ServiceItem key={serviceItem.serviceId} {...serviceItem}/>;
 
         return <div key={key}>{row}</div>;
     }

@@ -17,7 +17,7 @@ export class RatingItem extends React.Component {
         return str.split(/\s+/).slice(0, 5).join(" ") + " ...";
     }
 
-    renderRatingItem = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth, reviewItemId) => {
+    renderRatingItem = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth) => {
 
         const reviewHeader = this.getWords(review);
 
@@ -32,14 +32,14 @@ export class RatingItem extends React.Component {
                     allowHalf
                     value={rating}
                 />
-                <Link to={`/addreview?company=${companyItemId}`} activeClassName="active" onClick={()=>{
+                <Link to={`/addreview?company=${companyId}`} activeClassName="active" onClick={()=>{
                     this.dispatch(urlActions.setRedirectUrl("reviews"));
                 }}
                       activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
 
                 {showCompanyTitle == true && (
                     <div className="review-block-title">
-                        <Link to={`/companyreviews?company=${companyItemId}`} activeClassName="active" onClick={()=>{
+                        <Link to={`/companyreviews?company=${companyId}`} activeClassName="active" onClick={()=>{
                             this.dispatch(companiesActions.startAddCompanyItems());
                         }}
                               activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
@@ -54,7 +54,7 @@ export class RatingItem extends React.Component {
                     <div>
                         <span className="label bbz-review-span">Review ID:</span>
                         <span>&nbsp;</span>
-                        {reviewItemId}
+                        {reviewId}
                     </div>)}
                 <div className="review-block-description">
                     <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
@@ -70,9 +70,9 @@ export class RatingItem extends React.Component {
             displayName,
             email, uid,
             companyTitle,
-            companyItemId,
+            companyId,
             loggedInUser,
-            reviewItemId,
+            reviewId,
             review, rating,
             isApproved, createAt,
             updateAt, auth, deleteReview,
@@ -80,7 +80,7 @@ export class RatingItem extends React.Component {
 
         return (
             <div>
-                {this.renderRatingItem(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth, reviewItemId)}
+                {this.renderRatingItem(rating, review, companyId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth)}
             </div>
 
         );

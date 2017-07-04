@@ -3,15 +3,15 @@
  */
 import {Utils} from 'app/common/Utils';
 var BbzApiBase = require('app/api/BbzApiBase');
-class ServicesApi extends BbzApiBase {
+class ReviewsApi extends BbzApiBase {
     constructor() {
         super(Utils.getUrlAddress(window.location.href));
     }
 
-    findAllServices = () => {
-        var resource = '/api/services';
+    findAllReviews = () => {
+        var resource = '/api/reviews';
         return this.GET(resource).then((resp) => {
-            //console.log(resp);
+            console.log(resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);
@@ -19,4 +19,4 @@ class ServicesApi extends BbzApiBase {
     }
 }
 
-module.exports = ServicesApi;
+module.exports = ReviewsApi;

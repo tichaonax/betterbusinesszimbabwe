@@ -48,7 +48,7 @@ export class Services extends React.Component {
 
     componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
-        this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(servicesSqliteActions.startAddServiceItems());
     }
 
     render() {

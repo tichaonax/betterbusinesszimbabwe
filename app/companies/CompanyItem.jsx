@@ -15,7 +15,7 @@ export class CompanyItem extends React.Component {
     }
 
     render() {
-        var {serviceItemId, serviceCategory, uid,
+        var {companyId, serviceId, serviceItemId, serviceCategory, uid,
             loggedInUser, companyItemId, rating,
             isApproved, reviewCount, companyTitle,
             companyDesc, createAt, updateAt, auth,
@@ -28,8 +28,6 @@ export class CompanyItem extends React.Component {
             approveImageSource = "images/check-blue-64.png";
             approveMessage = "Approved";
         }
-
-        const companyId = createAt;
 
         var loginClass = "col-sm-9";
         if (auth.loggedIn) {
@@ -54,7 +52,7 @@ export class CompanyItem extends React.Component {
                                                      onClick={() => {
                                                          this.dispatch(errorActions.bbzClearError());
                                                          if (loggedInUser.isAdmin) {
-                                                             this.dispatch(companiesActions.startDeleteCompanyItem(companyItemId));
+                                                             this.dispatch(companiesActions.startDeleteCompanyItem(companyId));
                                                          } else {
                                                              openUpdatePanel();
                                                              var error = {};
@@ -77,7 +75,7 @@ export class CompanyItem extends React.Component {
                                                          if (auth.uid === uid || loggedInUser.isAdmin) {
                                                              var data = {
                                                                  uid,
-                                                                 companyItemId,
+                                                                 companyId,
                                                                  companyTitle,
                                                                  companyDesc,
                                                                  rating,
@@ -107,7 +105,7 @@ export class CompanyItem extends React.Component {
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
                                                  if (loggedInUser.isAdmin) {
-                                                     this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyItemId, !isApproved));
+                                                     this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyId, !isApproved));
                                                  } else {
                                                      openUpdatePanel();
                                                      var error = {};
@@ -131,11 +129,11 @@ export class CompanyItem extends React.Component {
                                 <div>
                                     <span className="label bbz-review-span">Reviews:</span>
                                     <span>&nbsp;</span>
-                                    <Link to={`/reviews?company=${companyItemId}`} activeClassName="active bbz-review-span"
+                                    <Link to={`/reviews?company=${companyId}`} activeClassName="active bbz-review-span"
                                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                                 </div>
                                 <div>
-                                    <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                                    <Link to={`/addreview?company=${companyId}`} activeClassName="active"
                                           activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
                                 </div>
                             </div>
@@ -152,7 +150,7 @@ export class CompanyItem extends React.Component {
                                     <div>
                                         <span className="label bbz-review-span">Company ID:</span>
                                         <span>&nbsp;</span>
-                                        {companyItemId}
+                                        {companyId}
                                     </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
                                     <div>

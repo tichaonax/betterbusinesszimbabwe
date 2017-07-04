@@ -16,8 +16,7 @@ export var addServiceItem = (serviceItem) => {
 export var startAddNewServiceItem = (title) => {
     return (dispatch, getState) => {
         var serviceItem = {
-            serviceId: 0,
-            serviceTitle: title,
+            serviceCategory: title,
             createAt: moment().unix(),
             updateAt: null
         }
@@ -71,14 +70,14 @@ export var startAddServiceItems = () => {
     };
 };
 
-export var deleteServiceItem = (serviceItemId) => {
+export var deleteServiceItem = (serviceId) => {
     return {
         type: 'DELETE_SERVICE_ITEM',
-        serviceItemId
+        serviceId
     };
 };
 
-export var startDeleteServiceItem = (serviceItemId) => {
+export var startDeleteServiceItem = (serviceId) => {
     return (dispatch, getState) => {
         var serviceItemRef = firebaseRef.child(`services/${serviceItemId}`); //ES6 syntax
 
@@ -95,17 +94,17 @@ export var startDeleteServiceItem = (serviceItemId) => {
     };
 };
 
-export var updateServiceItem = (serviceItemId, updates) => {
+export var updateServiceItem = (serviceId, updates) => {
     return {
         type: 'UPDATE_SERVICE_ITEM',
-        serviceItemId,
+        serviceId,
         updates
     };
 };
 
-export var startUpdateServiceItem = (serviceItemId, title) => {
+export var startUpdateServiceItem = (serviceId, title) => {
     return (dispatch, getState) => {
-        var serviceItemRef = firebaseRef.child(`services/${serviceItemId}`); //ES6 syntax
+        var serviceItemRef = firebaseRef.child(`services/${serviceId}`); //ES6 syntax
 
         var updates = {
             updateAt: moment().unix(),
