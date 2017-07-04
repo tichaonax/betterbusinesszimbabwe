@@ -11,12 +11,12 @@ const API = require('../../constants/API');
 servicesRoutes.route('/services')
     .get(function (req, res) {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var findAllServices = require('../../dao/services/findAllServices');
         return new Promise(() => {
             var services= findAllServices();
-            return(Promise.resolve(res.json({data: services})));
+            return Promise.resolve(res.json({data: services}));
         }).catch((error)=>{
             return Promise.reject(error)
         });
@@ -26,12 +26,12 @@ servicesRoutes.route('/services')
 servicesRoutes.route('/services/:serviceId')
     .get((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var findServiceById = require('../../dao/services/findServiceById');
         return new Promise(() => {
             var service = findServiceById(req.params.serviceId);
-            return (Promise.resolve(res.json({data: service})));
+            return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
         });
@@ -41,12 +41,12 @@ servicesRoutes.route('/services/:serviceId')
 servicesRoutes.route('/services/update/:serviceId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var updateService = require('../../dao/services/updateService');
         return new Promise(() => {
             var service = updateService(req.params.serviceId, req.body.serviceItemId, req.body.serviceCategory, req.body.userId);
-            return (Promise.resolve(res.json({data: service})));
+            return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
         });
@@ -57,12 +57,12 @@ servicesRoutes.route('/services/update/:serviceId')
 servicesRoutes.route('/services/update/category/:serviceId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var updateServiceCategory = require('../../dao/services/updateServiceCategory');
         return new Promise(() => {
             var service = updateServiceCategory(req.params.serviceId, req.body.serviceCategory, req.body.userId);
-            return (Promise.resolve(res.json({data: service})));
+            return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
         });
@@ -72,11 +72,14 @@ servicesRoutes.route('/services/update/category/:serviceId')
 servicesRoutes.route('/services/save')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var insertServiceCategory = require('../../dao/services/insertServiceCategory');
         return new Promise(() => {
-            var service = insertServiceCategory(req.body.serviceCategory, req.body.userId);
+            var newRecord = insertServiceCategory(req.body.serviceCategory, req.body.userId);
+            var findServiceById = require('../../dao/services/findServiceById');
+            //return the newly created row
+            var service = findServiceById(newRecord.lastInsertROWID);
             return (Promise.resolve(res.json({data: service})));
         }).catch((error) => {
             return Promise.reject(error)
@@ -88,12 +91,12 @@ servicesRoutes.route('/services/save')
 servicesRoutes.route('/services/delete/:serviceId/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var deleteServiceById = require('../../dao/services/deleteServiceById');
         return new Promise(() => {
             var service = deleteServiceById(req.params.serviceId, req.params.userId);
-            return (Promise.resolve(res.json({data: service})));
+            return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
         });

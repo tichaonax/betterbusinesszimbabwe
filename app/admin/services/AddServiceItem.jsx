@@ -1,6 +1,7 @@
 var React = require('react');
 var {connect} = require('react-redux');
 var servicesActions = require('servicesActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
 import {toggleUpdatePanel} from 'app/common/Utils';
@@ -21,7 +22,7 @@ export class AddServiceItem extends React.Component {
         const {dispatch, error} = this.props;
         if (error) {
             dispatch(errorActions.bbzClearError());
-            dispatch(servicesActions.setAddServiceOperation());
+            dispatch(servicesSqliteActions.setAddServiceOperation());
         }
     }
 
@@ -96,26 +97,26 @@ export class AddServiceItem extends React.Component {
 
     handleCancel = (e) => {
         e.preventDefault();
-        this.dispatch(servicesActions.setAddServiceOperation());
+        this.dispatch(servicesSqliteActions.setAddServiceOperation());
         this.resetInputs();
     }
 
     handleUpdate = (e) => {
         e.preventDefault();
 
-        this.dispatch(servicesActions.startUpdateServiceItem(
+        this.dispatch(servicesSqliteActions.startUpdateServiceItem(
             this.state.serviceId,
             this.state.serviceCategory,
             this.state.serviceDesc));
 
         this.resetInputs();
 
-        this.dispatch(servicesActions.setAddServiceOperation());
+        this.dispatch(servicesSqliteActions.setAddServiceOperation());
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {serviceItems} = this.props;
+        var {serviceItems, userProfile} = this.props;
 
         var error = {}
         var {dispatch} = this.props;
@@ -137,9 +138,12 @@ export class AddServiceItem extends React.Component {
             return;
         }
 
+        ////TO DO change userId to data from user profile
+
+        let userId = 3;
         this.resetInputs();
         dispatch(errorActions.bbzClearError());
-        dispatch(servicesActions.startAddNewServiceItem(serviceCategory));
+        dispatch(servicesSqliteActions.startAddNewServiceItem(serviceCategory, userId));
     }
 
     onChangeServiceCategory = (e) => {
@@ -161,7 +165,7 @@ export class AddServiceItem extends React.Component {
                     <div className="form-group">
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="stitle">Service Title</label>
+                                <label htmlFor="stitle">Service Category</label>
                                 <input className="form-control" type="text" name="serviceCategory" ref="serviceCategory"
                                        value={this.state.serviceCategory} maxLength={50}
                                        placeholder="Service Title" onChange={this.onChangeServiceCategory}/>
@@ -184,6 +188,7 @@ export class AddServiceItem extends React.Component {
 export default connect(
     (state) => {
         return {
+            userProfile: state.userProfile,
             serviceItems: state.serviceItems,
             serviceOperation: state.serviceOperation
         }

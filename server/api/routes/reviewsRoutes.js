@@ -11,12 +11,12 @@ const API = require('../../constants/API');
 reviewsRoutes.route('/reviews')
     .get(function (req, res) {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
-            return new Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var findAllReviews = require('../../dao/reviews/findAllReviews');
         return new Promise(() => {
             var reviews = findAllReviews();
-            return (Promise.resolve(res.json({data: reviews})));
+            return Promise.resolve(res.json({data: reviews}));
         }).catch((error) => {
             return Promise.reject(error)
         });
@@ -26,9 +26,9 @@ reviewsRoutes.route('/reviews')
 reviewsRoutes.route('/reviews/:reviewId')
     .get(function(req, res) {
         var findReviewById = require('../../dao/reviews/findReviewById');
-        return new Promise((resolve, reject) => {
+        return Promise((resolve, reject) => {
             var review= findReviewById(req.params.reviewId);
-            return(Promise.resolve(res.json({data: review})));
+            return Promise.resolve(res.json({data: review} ));
         }).catch((error)=>{
             return Promise.reject(error)
         });

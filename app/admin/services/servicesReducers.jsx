@@ -29,12 +29,6 @@ export var serviceItemsReducer = (state = [], action) => {
             ];
 
         case 'ADD_SERVICE_ITEMS':
-            /*return [
-                //preserve original serviceItems then add a new ones passed in
-                ...state,
-                ...action.serviceItems
-            ];*/
-            console.log("action.serviceItems",action.serviceItems);
             return action.serviceItems;
 
         default:
@@ -53,4 +47,3 @@ export var serviceOperationReducer = (state = {operation: 'ADD'}, action) => {
             return state;
     }
 }
-

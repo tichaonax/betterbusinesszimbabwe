@@ -17,6 +17,17 @@ class ServicesApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    addServiceCategory = (serviceCategory, userId) => {
+        var resource = '/api/services/save';
+        var data = {serviceCategory, userId};
+        return this.POST(resource, data).then((resp) => {
+            console.log("addServiceCategory",resp);
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
 }
 
 module.exports = ServicesApi;

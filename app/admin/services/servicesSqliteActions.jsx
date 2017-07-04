@@ -13,19 +13,13 @@ export var addServiceItem = (serviceItem) => {
     };
 };
 
-export var startAddNewServiceItem = (title) => {
+export var startAddNewServiceItem = (serviceCategory, userId) => {
     return (dispatch, getState) => {
-        var serviceItem = {
-            serviceCategory: title
-        }
-
-        //This will add a mew service item to firebase and dispatch the newly created
-        var serviceItemRef = firebaseRef.child(`services`).push(serviceItem);
-        return serviceItemRef.then(() => {
-            dispatch(addServiceItem({
-                ...serviceItem,
-                serviceItemId: serviceItemRef.key
-            }));
+        var api = new ServicesApi();
+        return api.addServiceCategory(serviceCategory, userId).then((services) => {
+            let serviceItem = services.data;
+            dispatch(addServiceItem(serviceItem));
+            console.debug("services",services.data);
         }, (error) => {
             console.log("Unable to add new service", error);
             var errorObj = {

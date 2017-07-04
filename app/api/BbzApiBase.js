@@ -22,14 +22,11 @@ class BbzApiBase {
     }
 
     GET(resource) {
-        console.log("this.axiosConfig", this.axiosConfig);
         return axios.get(resource, this.axiosConfig);
     }
 
     POST(resource, data) {
-        var querystring = require('querystring');
-        console.log("this.axiosConfig", this.axiosConfig);
-        axios.post(resource, querystring.stringify(data), this.axiosConfig);
+        return axios.post(resource, data, this.axiosConfig);
     }
 
     buildUrl(resource) {
