@@ -2,7 +2,7 @@ import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
 var loadingActions = require('loadingActions');
-var bbzServiceApi = require('bbzServiceApi');
+var ServicesApi = require('../../api/servicesApi');
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -50,7 +50,9 @@ export var addServiceItems = (serviceItems) => {
 export var startAddServiceItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        return bbzServiceApi.findAllServices().then((services) => {
+        var api = new ServicesApi();
+        console.log("ServicesApi",api);
+        return api.findAllServices().then((services) => {
 
             console.debug("services",services.data);
 

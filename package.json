@@ -39,6 +39,7 @@
     "narcissus": "^1.0.0",
     "node-env-file": "^0.1.8",
     "node-sass": "^4.1.1",
+    "querystring": "^0.2.0",
     "rc-rate": "^2.1.1",
     "react": "^15.5.4",
     "react-addons-perf": "^15.0.1",

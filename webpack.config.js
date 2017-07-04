@@ -39,7 +39,8 @@ module.exports = {
                 MESSAGING_SENDER_ID: JSON.stringify(process.env.MESSAGING_SENDER_ID),
                 STORAGE_BUCKET: JSON.stringify(process.env.STORAGE_BUCKET),
                 OPEN_WEATHER_APP_ID: JSON.stringify(process.env.OPEN_WEATHER_APP_ID),
-                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID)
+                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID),
+                BBZ_API_KEY: JSON.stringify(process.env.BBZ_API_KEY)
             }
         }),
     ],
@@ -104,7 +105,7 @@ module.exports = {
             pageTitles: 'app/constants/PageTitles.js',
             navActions: 'app/navigation/navActions.jsx',
             navReducers: 'app/navigation/navReducers.jsx',
-            bbzServiceApi: 'app/api/BbzServicesApi.js'
+            servicesApi: 'app/api/servicesApi.js'
         },
         extensions: ['', '.js', '.jsx']
     },
