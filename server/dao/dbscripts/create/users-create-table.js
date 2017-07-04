@@ -14,6 +14,7 @@ var createUsersTable = () => {
   "uid" varchar(45) NOT NULL,
   "isSuperUser" integer DEFAULT 0,
   "isAdmin" integer DEFAULT 0,
+  "isApproved" integer DEFAULT(1),
   "displayName" varchar(100) NOT NULL,
   "email" varchar(100) NOT NULL,
   "photoURL" varchar(200) NOT NULL,

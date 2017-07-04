@@ -3,7 +3,7 @@
  */
 var Promise = require("bluebird");
 var express = require('express');
-var reviewsRoutes = express.Router();              // get an instance of the express Router
+var reviewsRoutes = express.Router();
 var ServerUtils = require('../../ServerUtils');
 const API = require('../../constants/API');
 

@@ -14,7 +14,7 @@ var createReviewsTable = () => {
   "companyId" integer,
   "rating" decimal(1,1) NOT NULL,
   "review" varchar(350),
-  "isApproved" integer,
+  "isApproved" integer DEFAULT(0),
   "createAt" timestamp,
   "updateAt" timestamp
 );

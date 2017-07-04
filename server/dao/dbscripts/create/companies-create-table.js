@@ -15,7 +15,7 @@ var createCompaniesTable = () => {
   "companyDesc" varchar(300),
   "rating" decimal(1,1),
   "reviewCount" integer,
-  "isApproved" integer,
+  "isApproved" integer DEFAULT(0),
   "createAt" timestamp,
   "updateAt" timestamp
 );

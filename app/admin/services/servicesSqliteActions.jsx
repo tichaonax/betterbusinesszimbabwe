@@ -16,9 +16,7 @@ export var addServiceItem = (serviceItem) => {
 export var startAddNewServiceItem = (title) => {
     return (dispatch, getState) => {
         var serviceItem = {
-            serviceCategory: title,
-            createAt: moment().unix(),
-            updateAt: null
+            serviceCategory: title
         }
 
         //This will add a mew service item to firebase and dispatch the newly created

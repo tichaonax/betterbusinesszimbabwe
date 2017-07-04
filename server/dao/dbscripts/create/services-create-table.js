@@ -13,6 +13,7 @@ var createServicesTable = () => {
   "userId" integer,
   "serviceItemId" integer,
   "serviceCategory" varchar(100),
+  "isApproved" integer DEFAULT(1),
   "createAt" timestamp,
   "updateAt" timestamp
 );
