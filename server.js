@@ -8,12 +8,27 @@ process.env.BBZ_DATABASE_PATH = path.join(__dirname, '/server/database/betterbus
 console.log("process.env.BBZ_DATABASE_PATH",process.env.BBZ_DATABASE_PATH);
 var app = express();
 
+
+var path = require('path');
+var envFile = require('node-env-file');
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
+try {
+    envFile(path.join(__dirname, 'config/' + process.env.NODE_ENV + '.env'));
+} catch (e) {
+
+}
+
+
 // configure app to use bodyParser()
 // this will let us get the data from a POST
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const SERVER_PORT = process.env.PORT || 3000;
+
+console.log("BBZ_API_KEY",process.env.BBZ_API_KEY);
 
 app.use((request, response, next) => {
 

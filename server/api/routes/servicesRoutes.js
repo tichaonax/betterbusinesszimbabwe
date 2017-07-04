@@ -1,6 +1,7 @@
 /**
  * Created by tichaona on 7/2/17.
  */
+var Promise = require("bluebird");
 var express = require('express');
 var servicesRoutes = express.Router();              // get an instance of the express Router
 
@@ -8,7 +9,7 @@ var servicesRoutes = express.Router();              // get an instance of the ex
 servicesRoutes.route('/services')
     .get(function (req, res) {
         var findAllServices = require('../../dao/services/findAllServices');
-        return new Promise((resolve, reject) => {
+        return new Promise(() => {
             var services= findAllServices();
             return(Promise.resolve(res.json({data: services})));
         }).catch((error)=>{

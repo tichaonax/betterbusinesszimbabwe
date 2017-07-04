@@ -9,10 +9,12 @@ class BbzApiBase {
         baseUrl = baseUrl.replace(/\/+$/g, '');
         this.baseUrl = baseUrl + "/";
         axios.defaults.baseURL = this.baseUrl;
-        axios.defaults.headers.common['Authorization'] = process.env.BBZ_API_KEY;
         axios.defaults.headers.post['Content-Type'] = 'application/json';
         console.log("this.baseUrl", this.baseUrl);
-        console.log("Authorization", process.env.BBZ_API_KEY);
+
+        this.axiosConfig = {
+            headers: {'Authorization': process.env.BBZ_API_KEY}
+        };
     }
 
     getBaseUrl = () => {
@@ -20,12 +22,14 @@ class BbzApiBase {
     }
 
     GET(resource) {
-        return axios.get(resource);
+        console.log("this.axiosConfig", this.axiosConfig);
+        return axios.get(resource, this.axiosConfig);
     }
 
     POST(resource, data) {
         var querystring = require('querystring');
-        axios.post(resource, querystring.stringify(data));
+        console.log("this.axiosConfig", this.axiosConfig);
+        axios.post(resource, querystring.stringify(data), this.axiosConfig);
     }
 
     buildUrl(resource) {
