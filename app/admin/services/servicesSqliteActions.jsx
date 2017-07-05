@@ -14,16 +14,17 @@ export var addServiceItem = (serviceItem) => {
 
 export var startAddNewServiceItem = (serviceCategory, userId) => {
     return (dispatch, getState) => {
+        dispatch(loadingActions.setLoadingStatus(true));
         return api.addServiceCategory(serviceCategory, userId).then((services) => {
-            let serviceItem = services.data;
-            dispatch(addServiceItem(serviceItem));
-           // console.debug("services",services.data);
+            dispatch(addServiceItem(services.data));
+            dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.log("Unable to add new service", error);
             var errorObj = {
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         });
     };
@@ -39,9 +40,7 @@ export var addServiceItems = (serviceItems) => {
 export var startAddServiceItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        //console.log("ServicesApi",api);
         return api.findAllServices().then((services) => {
-            //console.debug("services",services.data);
             dispatch(addServiceItems(services.data));
             dispatch(loadingActions.setLoadingStatus(false));
          }, (error) => {
@@ -67,8 +66,7 @@ export var startDeleteServiceItem = (serviceId, userId) => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return api.deleteServiceCategory(serviceId, userId).then((services) => {
-            console.debug("services", services.data);
-            dispatch(updateServiceItem(services.data));
+            dispatch(updateServiceItem(serviceId, services.data));
             dispatch(loadingActions.setLoadingStatus(false));
             //dispatch(deleteServiceItem(serviceItemId));
         }, (error) => {

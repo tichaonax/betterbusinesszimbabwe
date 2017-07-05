@@ -200,6 +200,10 @@ module.exports = {
         //console.debug("serviceItems", serviceItems);
         var filteredServiceItems = serviceItems;
 
+        filteredServiceItems = filteredServiceItems.filter((serviceItem) => {
+            return serviceItem.isApproved
+        });
+
         //filter by searchText
 
         if (searchText.length > 0) {
