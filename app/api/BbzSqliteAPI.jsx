@@ -233,6 +233,22 @@ module.exports = {
             }
         });
 
+
+        //sort by recently updated first
+        filteredServiceItems.sort((a, b) => {
+            if (a.updateAt > b.updateAt) {
+                //take a first
+                return -1
+            } else if (a.updateAt < b.updateAt) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+
         return (filteredServiceItems);
     },
 };

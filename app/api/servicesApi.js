@@ -11,7 +11,6 @@ class ServicesApi extends BbzApiBase {
     findAllServices = () => {
         var resource = '/api/services';
         return this.GET(resource).then((resp) => {
-            //console.log(resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);
@@ -19,10 +18,31 @@ class ServicesApi extends BbzApiBase {
     }
 
     addServiceCategory = (serviceCategory, userId) => {
-        var resource = '/api/services/save';
-        var data = {serviceCategory, userId};
+        var resource = `/api/services/save/${userId}`;
+        var data = {serviceCategory};
         return this.POST(resource, data).then((resp) => {
-            console.log("addServiceCategory",resp);
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
+    updateServiceCategory = (serviceId, serviceCategory, userId) => {
+        var resource = `/api/services/update/category/${serviceId}/${userId}`;
+        var data = {serviceCategory};
+        return this.POST(resource, data).then((resp) => {
+            console.log("updateServiceCategory",resp);
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
+    deleteServiceCategory = (serviceId, userId) => {
+        var resource = `/api/services/delete/${serviceId}/${userId}`;
+        var data = {};
+        return this.POST(resource, data).then((resp) => {
+            console.log("deleteServiceCategory", resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);

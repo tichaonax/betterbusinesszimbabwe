@@ -3,8 +3,7 @@ var errorActions = require('errorActions');
 var companiesActions = require('companiesActions');
 var loadingActions = require('loadingActions');
 var ServicesApi = require('../../api/servicesApi');
-
-import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
+const api = new ServicesApi();
 
 export var addServiceItem = (serviceItem) => {
     return {
@@ -15,11 +14,10 @@ export var addServiceItem = (serviceItem) => {
 
 export var startAddNewServiceItem = (serviceCategory, userId) => {
     return (dispatch, getState) => {
-        var api = new ServicesApi();
         return api.addServiceCategory(serviceCategory, userId).then((services) => {
             let serviceItem = services.data;
             dispatch(addServiceItem(serviceItem));
-            console.debug("services",services.data);
+           // console.debug("services",services.data);
         }, (error) => {
             console.log("Unable to add new service", error);
             var errorObj = {
@@ -41,15 +39,11 @@ export var addServiceItems = (serviceItems) => {
 export var startAddServiceItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        var api = new ServicesApi();
-        console.log("ServicesApi",api);
+        //console.log("ServicesApi",api);
         return api.findAllServices().then((services) => {
-
-            console.debug("services",services.data);
-
+            //console.debug("services",services.data);
             dispatch(addServiceItems(services.data));
             dispatch(loadingActions.setLoadingStatus(false));
-
          }, (error) => {
             console.log("Unable to fetch services", error);
             var errorObj = {
@@ -69,12 +63,14 @@ export var deleteServiceItem = (serviceId) => {
     };
 };
 
-export var startDeleteServiceItem = (serviceId) => {
+export var startDeleteServiceItem = (serviceId, userId) => {
     return (dispatch, getState) => {
-        var serviceItemRef = firebaseRef.child(`services/${serviceItemId}`); //ES6 syntax
-
-        return serviceItemRef.remove().then(() => {
-            dispatch(deleteServiceItem(serviceItemId));
+        dispatch(loadingActions.setLoadingStatus(true));
+        return api.deleteServiceCategory(serviceId, userId).then((services) => {
+            console.debug("services", services.data);
+            dispatch(updateServiceItem(services.data));
+            dispatch(loadingActions.setLoadingStatus(false));
+            //dispatch(deleteServiceItem(serviceItemId));
         }, (error) => {
             console.debug("Unable to fetch services", error);
             var errorObj = {
@@ -94,19 +90,14 @@ export var updateServiceItem = (serviceId, updates) => {
     };
 };
 
-export var startUpdateServiceItem = (serviceId, title) => {
+export var startUpdateServiceItem = (serviceId, serviceCategory, userId) => {
     return (dispatch, getState) => {
-        var serviceItemRef = firebaseRef.child(`services/${serviceId}`); //ES6 syntax
-
-        var updates = {
-            updateAt: moment().unix(),
-            serviceTitle: title
-        };
-
-        return serviceItemRef.update(updates).then(() => {
-            dispatch(updateServiceItem(serviceItemId, updates));
+        dispatch(loadingActions.setLoadingStatus(true));
+        return api.updateServiceCategory(serviceId, serviceCategory, userId).then((services) => {
+            dispatch(updateServiceItem(serviceId, services.data));
+            dispatch(loadingActions.setLoadingStatus(false));
             //start the process to update all the companies that reference this service
-            dispatch(companiesActions.startUpdateCompaniesCategory(serviceItemId, title));
+            //  dispatch(companiesActions.startUpdateCompaniesCategory(serviceId, serviceCategory));
         }, (error) => {
             console.debug("Unable to update service", error);
             var errorObj = {

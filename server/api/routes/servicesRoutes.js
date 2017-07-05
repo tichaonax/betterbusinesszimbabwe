@@ -28,9 +28,12 @@ servicesRoutes.route('/services/:serviceId')
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
+
+        let serviceId = req.params.serviceId;
+
         var findServiceById = require('../../dao/services/findServiceById');
         return new Promise(() => {
-            var service = findServiceById(req.params.serviceId);
+            var service = findServiceById(serviceId);
             return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
@@ -38,30 +41,42 @@ servicesRoutes.route('/services/:serviceId')
     });
 
 // update service record
-servicesRoutes.route('/services/update/:serviceId')
+servicesRoutes.route('/services/update/:serviceId/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
+
+        let serviceId = req.params.serviceId;
+        let userId = req.params.userId;
+        let serviceCategory = req.body.serviceCategory;
+        let serviceItemId = req.body.serviceItemId;
+
         var updateService = require('../../dao/services/updateService');
         return new Promise(() => {
-            var service = updateService(req.params.serviceId, req.body.serviceItemId, req.body.serviceCategory, req.body.userId);
+            var service = updateService(serviceId, serviceItemId, serviceCategory, userId);
             return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
         });
     });
 
-
 // update service category
-servicesRoutes.route('/services/update/category/:serviceId')
+servicesRoutes.route('/services/update/category/:serviceId/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
+
+        let serviceId = req.params.serviceId;
+        let userId = req.params.userId;
+        let serviceCategory = req.body.serviceCategory;
+
         var updateServiceCategory = require('../../dao/services/updateServiceCategory');
         return new Promise(() => {
-            var service = updateServiceCategory(req.params.serviceId, req.body.serviceCategory, req.body.userId);
+            updateServiceCategory(serviceId, serviceCategory, userId);
+            var findServiceById = require('../../dao/services/findServiceById');
+            var service = findServiceById(serviceId);
             return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)
@@ -69,14 +84,18 @@ servicesRoutes.route('/services/update/category/:serviceId')
     });
 
 // insert service category
-servicesRoutes.route('/services/save')
+servicesRoutes.route('/services/save/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
+
+        let userId = req.params.userId;
+        let serviceCategory = req.body.serviceCategory;
+
         var insertServiceCategory = require('../../dao/services/insertServiceCategory');
         return new Promise(() => {
-            var newRecord = insertServiceCategory(req.body.serviceCategory, req.body.userId);
+            var newRecord = insertServiceCategory(serviceCategory, userId);
             var findServiceById = require('../../dao/services/findServiceById');
             //return the newly created row
             var service = findServiceById(newRecord.lastInsertROWID);
@@ -86,16 +105,22 @@ servicesRoutes.route('/services/save')
         });
     });
 
-
 // delete service category, just mark the isApproved flag
 servicesRoutes.route('/services/delete/:serviceId/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
+
+        let serviceId = req.params.serviceId;
+        let userId = req.params.userId;
+
         var deleteServiceById = require('../../dao/services/deleteServiceById');
         return new Promise(() => {
-            var service = deleteServiceById(req.params.serviceId, req.params.userId);
+            deleteServiceById(serviceId, userId);
+            var findServiceById = require('../../dao/services/findServiceById');
+            //return the newly created row
+            var service = findServiceById(serviceId);
             return Promise.resolve(res.json({data: service}));
         }).catch((error) => {
             return Promise.reject(error)

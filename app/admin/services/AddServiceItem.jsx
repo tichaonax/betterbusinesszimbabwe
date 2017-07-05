@@ -104,10 +104,13 @@ export class AddServiceItem extends React.Component {
     handleUpdate = (e) => {
         e.preventDefault();
 
+        ///TODO replace 3 with userId
+
+
         this.dispatch(servicesSqliteActions.startUpdateServiceItem(
             this.state.serviceId,
             this.state.serviceCategory,
-            this.state.serviceDesc));
+            3));
 
         this.resetInputs();
 

@@ -24,12 +24,12 @@ reviewsRoutes.route('/reviews')
 
 // get review with that reviewId
 reviewsRoutes.route('/reviews/:reviewId')
-    .get(function(req, res) {
+    .get(function (req, res) {
         var findReviewById = require('../../dao/reviews/findReviewById');
-        return Promise((resolve, reject) => {
-            var review= findReviewById(req.params.reviewId);
-            return Promise.resolve(res.json({data: review} ));
-        }).catch((error)=>{
+        return new Promise(() => {
+            var review = findReviewById(req.params.reviewId);
+            return Promise.resolve(res.json({data: review}));
+        }).catch((error) => {
             return Promise.reject(error)
         });
     });
