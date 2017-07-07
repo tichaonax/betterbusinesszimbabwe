@@ -20,13 +20,13 @@ export var bbzLogin = (auth) => {
 
 //<editor-fold desc="Provider Login">
 
-function isUserProfileUpdateNeeded(getState, gAuth) {
-    //console.debug("isUserProfileUpdateNeeded->gAuth", gAuth);
-    if (gAuth.email != getState().userProfile.email ||
-        gAuth.providerId != getState().userProfile.providerId ||
-        gAuth.uid != getState().userProfile.uid ||
-        gAuth.displayName != getState().userProfile.displayName ||
-        gAuth.photoURL != getState().userProfile.photoURL) {
+function isUserProfileUpdateNeeded(getState, auth) {
+    console.debug("isUserProfileUpdateNeeded->auth", auth);
+    if (auth.email != getState().userProfile.email ||
+        auth.providerId != getState().userProfile.providerId ||
+        auth.uid != getState().userProfile.uid ||
+        auth.displayName != getState().userProfile.displayName ||
+        auth.photoURL != getState().userProfile.photoURL) {
         //console.debug("isUserProfileUpdateNeeded", true);
         return (true);
     } else {
@@ -43,6 +43,27 @@ function getUserAvatar(avatar) {
     }
     return (photoURL);
 }
+
+function setPostLoginUserProfile(dispatch, getState, auth) {
+    return dispatch(profileSqliteActions.startSetUserProfile()).then(
+        () => {
+            var timestamp = getState().userProfile.createAt;
+            console.log("timestamp", timestamp);
+            if (timestamp) {
+                console.log("Update User Profile");
+                if (isUserProfileUpdateNeeded(getState, auth)) {
+                    return dispatch(profileSqliteActions.startUpdateUserProfile(auth.firebaseId,
+                        auth.email, auth.displayName, auth.providerId, auth.uid, auth.photoURL));
+                }
+            } else {
+                console.log("Add New User Profile");
+                return dispatch(profileSqliteActions.startAddUserProfile(auth.firebaseId, auth.email,
+                    auth.displayName, auth.providerId, auth.uid, auth.photoURL));
+            }
+        }
+    )
+}
+
 
 export var startBbzLogin = (provider) => {
     var gAuth;
@@ -77,30 +98,28 @@ export var startBbzLogin = (provider) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(profileSqliteActions.startSetUserProfile()).then(
-                    () => {
-                        console.log("getState().userProfile",getState().userProfile);
-                        var timestamp = getState().userProfile.createAt;
-                        if (timestamp) {
-                            console.debug("User profile created on: ", timestamp);
-                            if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                                return dispatch(profileSqliteActions.startUpdateUserProfile(gAuth.firebaseId,
-                                    gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.uid, gAuth.photoURL));
-                            }
-                        } else {
-                            console.log("Crete new user to the system")
-                            return dispatch(profileSqliteActions.startAddUserProfile(gAuth.firebaseId, gAuth.email,
-                                gAuth.displayName, gAuth.providerId, gAuth.uid, gAuth.photoURL));
-                        }
-                    }
-                )
+                return setPostLoginUserProfile(dispatch, getState, gAuth);
+                /*return dispatch(profileSqliteActions.startSetUserProfile()).then(
+                 () => {
+                 var timestamp = getState().userProfile.createAt;
+                 if (timestamp) {
+                 if (isUserProfileUpdateNeeded(getState, gAuth)) {
+                 return dispatch(profileSqliteActions.startUpdateUserProfile(gAuth.firebaseId,
+                 gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.uid, gAuth.photoURL));
+                 }
+                 } else {
+                 return dispatch(profileSqliteActions.startAddUserProfile(gAuth.firebaseId, gAuth.email,
+                 gAuth.displayName, gAuth.providerId, gAuth.uid, gAuth.photoURL));
+                 }
+                 }
+                 )*/
             }
         ).then(
             () => {
                 dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(startLastLogin());
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             dispatch(loadingActions.setLoadingStatus(false));
             console.debug("firebase-login-error", error);
         })
@@ -118,16 +137,14 @@ export var startBbzEmailLogin = (email, password) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
             let user = result;
-            //console.debug("Email user:", user);
-            //console.debug("userId: user.providerData[0]",user.providerData[0]);
             gAuth = {
-                uid: user.uid,
+                firebaseId: user.uid,
                 displayName: email,
                 email: user.email,
                 photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: (user.providerData[0].providerId) ? user.providerData[0].providerId : 'password',
-                userId: (user.providerData[0].uid) ? user.providerData[0].uid : email
+                uid: (user.providerData[0].uid) ? user.providerData[0].uid : email
             }
 
             console.debug("Auth data!", gAuth);
@@ -144,28 +161,29 @@ export var startBbzEmailLogin = (email, password) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(profileSqliteActions.startSetUserProfile()).then(
-                    () => {
-                        var timestamp = getState().userProfile.createDate;
-                        if (timestamp) {
-                            //console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
-                            if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                                return dispatch(profileSqliteActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
-                                    gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
-                            }
-                        } else {
-                            return dispatch(profileSqliteActions.startAddUserProfile(gAuth.email, gAuth.displayName,
-                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
-                        }
-                    }
-                )
+                return setPostLoginUserProfile(dispatch, getState, gAuth);
+                /*return dispatch(profileSqliteActions.startSetUserProfile()).then(
+                 () => {
+                 var timestamp = getState().userProfile.createDate;
+                 if (timestamp) {
+                 //console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                 if (isUserProfileUpdateNeeded(getState, gAuth)) {
+                 return dispatch(profileSqliteActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
+                 gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
+                 }
+                 } else {
+                 return dispatch(profileSqliteActions.startAddUserProfile(gAuth.email, gAuth.displayName,
+                 gAuth.providerId, gAuth.userId, gAuth.photoURL));
+                 }
+                 }
+                 )*/
             }
         ).then(
             () => {
                 dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(startLastLogin());
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             dispatch(loadingActions.setLoadingStatus(false));
             console.debug("firebase-email-login-error", error);
         })
@@ -294,7 +312,7 @@ export var startLastLogin = () => {
                         });
                     }
                 );
-            }).catch((error)=>{
+            }).catch((error) => {
             console.debug("Error getClientIpAddress", error);
         });
     }
