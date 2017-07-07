@@ -2,8 +2,11 @@ var Promise = require("bluebird");
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
+
 var servicesRoutes = require('./server/api/routes/servicesRoutes');
 var reviewsRoutes = require('./server/api/routes/reviewsRoutes');
+var usersRoutes = require('./server/api/routes/usersRoutes');
+
 process.env.BBZ_DATABASE_PATH = path.join(__dirname, '/server/database/betterbusinesszimbabwe.sqlite3');
 console.log("process.env.BBZ_DATABASE_PATH",process.env.BBZ_DATABASE_PATH);
 var app = express();
@@ -54,6 +57,6 @@ router.route('/')
         //});
     });
 
-app.use('/api', [router, servicesRoutes, reviewsRoutes]);
+app.use('/api', [router, servicesRoutes, reviewsRoutes, usersRoutes]);
 
 app.listen(SERVER_PORT, () => console.log('Express server is up on port ' + SERVER_PORT));

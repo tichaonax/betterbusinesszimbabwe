@@ -26,6 +26,8 @@ class BbzApiBase {
     }
 
     POST(resource, data) {
+        console.log("resource", resource);
+        console.log("data", data);
         return axios.post(resource, data, this.axiosConfig);
     }
 

@@ -3,7 +3,7 @@ import requestip from 'clientIpAddress';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
 var errorActions = require('errorActions');
-var profileActions = require('profileActions');
+var profileSqliteActions = require('profileSqliteActions');
 var servicesActions = require('servicesActions');
 var loadingActions = require('loadingActions');
 
@@ -24,7 +24,7 @@ function isUserProfileUpdateNeeded(getState, gAuth) {
     //console.debug("isUserProfileUpdateNeeded->gAuth", gAuth);
     if (gAuth.email != getState().userProfile.email ||
         gAuth.providerId != getState().userProfile.providerId ||
-        gAuth.userId != getState().userProfile.userId ||
+        gAuth.uid != getState().userProfile.uid ||
         gAuth.displayName != getState().userProfile.displayName ||
         gAuth.photoURL != getState().userProfile.photoURL) {
         //console.debug("isUserProfileUpdateNeeded", true);
@@ -54,13 +54,13 @@ export var startBbzLogin = (provider) => {
             let user = result.user;
 
             gAuth = {
-                uid: user.uid,
+                firebaseId: user.uid,
                 displayName: user.displayName,
                 email: user.email,
                 photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: user.providerData[0].providerId,
-                userId: user.providerData[0].uid,
+                uid: user.providerData[0].uid,
             };
 
             //console.debug("Auth data!", gAuth);
@@ -77,18 +77,20 @@ export var startBbzLogin = (provider) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(profileActions.startSetUserProfile()).then(
+                return dispatch(profileSqliteActions.startSetUserProfile()).then(
                     () => {
-                        var timestamp = getState().userProfile.createDate;
+                        console.log("getState().userProfile",getState().userProfile);
+                        var timestamp = getState().userProfile.createAt;
                         if (timestamp) {
-                           // console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
+                            console.debug("User profile created on: ", timestamp);
                             if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                                return dispatch(profileActions.startUpdateUserProfile(gAuth.uid,
-                                    gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
+                                return dispatch(profileSqliteActions.startUpdateUserProfile(gAuth.firebaseId,
+                                    gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.uid, gAuth.photoURL));
                             }
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
-                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
+                            console.log("Crete new user to the system")
+                            return dispatch(profileSqliteActions.startAddUserProfile(gAuth.firebaseId, gAuth.email,
+                                gAuth.displayName, gAuth.providerId, gAuth.uid, gAuth.photoURL));
                         }
                     }
                 )
@@ -142,17 +144,17 @@ export var startBbzEmailLogin = (email, password) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(profileActions.startSetUserProfile()).then(
+                return dispatch(profileSqliteActions.startSetUserProfile()).then(
                     () => {
                         var timestamp = getState().userProfile.createDate;
                         if (timestamp) {
                             //console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
                             if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                                return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
+                                return dispatch(profileSqliteActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
                                     gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
                             }
                         } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
+                            return dispatch(profileSqliteActions.startAddUserProfile(gAuth.email, gAuth.displayName,
                                 gAuth.providerId, gAuth.userId, gAuth.photoURL));
                         }
                     }
@@ -188,7 +190,7 @@ export var startBbzLogout = () => {
             return dispatch(bbzLogout());
         }).then(
             () => {
-                return dispatch(profileActions.resetUserProfile());
+                return dispatch(profileSqliteActions.resetUserProfile());
             }
         );
     };

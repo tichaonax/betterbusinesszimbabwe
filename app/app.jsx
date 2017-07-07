@@ -20,6 +20,7 @@ store.dispatch(searchActions.setSearchText(""));
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+        //console.log("user",user);
         //console.debug("subscribed user:", user);
         //console.debug("providerId:", user.providerData[0].providerId);
         //console.debug("email:", user.providerData[0].email);
@@ -33,6 +34,7 @@ firebase.auth().onAuthStateChanged((user) => {
         }
 
         var auth = {
+            firebaseId: user.firebaseId,
             uid: user.uid,
             displayName: displayName,
             email: user.email,
