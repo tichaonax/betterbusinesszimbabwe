@@ -1,5 +1,3 @@
-import moment from 'moment';
-import firebase, {firebaseRef} from 'app/firebase/index';
 var UsersApi = require('../api/usersApi');
 var userApi = new UsersApi();
 

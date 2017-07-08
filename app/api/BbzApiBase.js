@@ -10,7 +10,7 @@ class BbzApiBase {
         this.baseUrl = baseUrl + "/";
         axios.defaults.baseURL = this.baseUrl;
         axios.defaults.headers.post['Content-Type'] = 'application/json';
-        console.log("this.baseUrl", this.baseUrl);
+        //console.log("this.baseUrl", this.baseUrl);
 
         this.axiosConfig = {
             headers: {'Authorization': process.env.BBZ_API_KEY}

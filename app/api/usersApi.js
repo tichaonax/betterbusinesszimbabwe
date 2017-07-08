@@ -56,8 +56,9 @@ class UsersApi extends BbzApiBase {
     }
 
     updateUserLastLogin = (userId, city, country, ipAddress) => {
-        var resource = "/api/users/profile/lastlogin/update";
+        var resource = `/api/users/profile/lastlogin/update/${userId}`;
         var data = {userId, city, country, ipAddress};
+        console.log("data",data);
         return this.POST(resource, data).then((resp) => {
             return resp.data;
         }, (error) => {
@@ -69,17 +70,6 @@ class UsersApi extends BbzApiBase {
         var resource = `/api/users/lastlogin/update/${userId}`;
         var data = {city, country, ipAddress, loginAt};
         return this.POST(resource, data).then((resp) => {
-            return resp.data;
-        }, (error) => {
-            throw new Error(error);
-        })
-    }
-
-    updateUser = (serviceId, serviceCategory, userId) => {
-        var resource = `/api/users/update/category/${serviceId}/${userId}`;
-        var data = {serviceCategory};
-        return this.POST(resource, data).then((resp) => {
-            console.log("updateServiceCategory",resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);

@@ -63,13 +63,9 @@ export var startAddReviewItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         var api = new ReviewsApi();
-        console.log("ReviewsApi", api);
         return api.findAllReviews().then((reviews) => {
-
-            console.debug("reviews",reviews.data);
-
+            //console.debug("reviews",reviews.data);
             dispatch(addReviewItems(reviews.data));
-
             dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to fetch reviews", error);

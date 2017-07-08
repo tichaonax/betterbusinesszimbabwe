@@ -106,7 +106,6 @@ export class Utils {
     }
 
     static getUrlAddress = (url) => {
-        console.log("url",url);
         var newUrl = Utils.parseUrl(url);
         return newUrl.protocol + '//' + newUrl.hostname + ':' + newUrl.port;
     }

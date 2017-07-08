@@ -88,7 +88,6 @@ usersRoutes.route('/users/save/:firebaseId')
         });
     });
 
-
 //update user firebase user profile
 usersRoutes.route('/users/update/profile/:firebaseId')
     .post((req, res) => {
@@ -115,27 +114,52 @@ usersRoutes.route('/users/update/profile/:firebaseId')
         });
     });
 
-/*
-// update user record on login
-usersRoutes.route('/users/update/login/:userId')
+
+//update user profile lastlogin
+usersRoutes.route('/users/profile/lastlogin/update/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
 
-//        let userId = req.params.userId;
+        let userId = req.params.userId;
+        let city = req.body.city;
+        let country = req.body.country;
+        let ipAddress = req.body.ipAddress;
+
+        var updateUserLastLogin = require('../../dao/users/updateUserLastLogin');
+        return new Promise(() => {
+            let updateRecord = updateUserLastLogin(userId, city, country, ipAddress);
+            var findUserById = require('../../dao/users/findUserById');
+            //return the updated row
+            let user = findUserById(userId);
+            return (Promise.resolve(res.json({data: user})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+
+
+/*
+// get last login by userId
+usersRoutes.route('/lastlogin/:userId')
+    .get((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
         let userId = req.params.userId;
 
-        var updateUser = require('../../dao/users/updateUser');
+        var findUserById = require('../../dao/users/findUserById');
         return new Promise(() => {
-            var user = updateUser(userId, userItemId, userCategory, userId);
+            var user = findUserById(userId);
             return Promise.resolve(res.json({data: user}));
         }).catch((error) => {
             return Promise.reject(error)
         });
     });
 */
-
 
 /*
 // update user record by admin
