@@ -27,22 +27,23 @@ class CompaniesApi extends BbzApiBase {
         })
     }
 
-    updateCompany = (serviceId, serviceCategory, userId) => {
-        var resource = `/api/companies/update/category/${serviceId}/${userId}`;
-        var data = {serviceCategory};
+    updateCompany = (companyId, serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved) => {
+        var resource = `/api/companies/update/${companyId}`;
+        var data = {serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved};
         return this.POST(resource, data).then((resp) => {
-            console.log("updateServiceCategory",resp);
+            console.log("updateCompany",resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);
         })
     }
 
-    deleteCompany = (userId, adminUserId) => {
-        var resource = `/api/companies/delete/${userId}/${adminUserId}`;
-        var data = {};
+
+    updateCompanyIsApprovedFlag=(companyId, isApproved)=>{
+        var resource = `/api/companies/update/isapproved/${companyId}`;
+        var data = {isApproved};
         return this.POST(resource, data).then((resp) => {
-            console.log("deleteUser", resp);
+            console.log("updateCompanyIsApprovedFlag",resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);

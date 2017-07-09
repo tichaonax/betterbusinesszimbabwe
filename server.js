@@ -7,6 +7,7 @@ var servicesRoutes = require('./server/api/routes/servicesRoutes');
 var reviewsRoutes = require('./server/api/routes/reviewsRoutes');
 var usersRoutes = require('./server/api/routes/usersRoutes');
 var lastLoginRoutes = require('./server/api/routes/lastloginRoutes');
+var companiesRoutes = require('./server/api/routes/companiesRoutes');
 
 process.env.BBZ_DATABASE_PATH = path.join(__dirname, '/server/database/betterbusinesszimbabwe.sqlite3');
 console.log("process.env.BBZ_DATABASE_PATH",process.env.BBZ_DATABASE_PATH);
@@ -58,6 +59,6 @@ router.route('/')
         //});
     });
 
-app.use('/api', [router, servicesRoutes, reviewsRoutes, usersRoutes, lastLoginRoutes]);
+app.use('/api', [router, servicesRoutes, reviewsRoutes, usersRoutes, lastLoginRoutes, companiesRoutes]);
 
 app.listen(SERVER_PORT, () => console.log('Express server is up on port ' + SERVER_PORT));

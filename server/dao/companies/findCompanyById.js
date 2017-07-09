@@ -6,7 +6,7 @@ var bbzSqlite = require('../../dao/sqlite-singleton');
 var db = bbzSqlite.getInstance(BBZ_DATABASE_PATH);
 
 var findCompanyById = (companyId) => {
-    return db.prepare('select * from users where companyId=?').get(companyId);
+    return db.prepare('select * from companies where companyId=?').get(companyId);
 }
 
 module.exports = findCompanyById;

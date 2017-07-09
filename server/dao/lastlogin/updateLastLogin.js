@@ -13,7 +13,7 @@ var updateLastLogin = (userId, city, country, ipAddress, loginAt) => {
     ipAddress = '${ipAddress}',
     loginAt = ${loginDate} 
     WHERE userId = ${userId};`;
-    console.log("sql",sql);
+    //console.log("sql",sql);
     return db.prepare(sql).run();
 }
 
