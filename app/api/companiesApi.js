@@ -38,7 +38,6 @@ class CompaniesApi extends BbzApiBase {
         })
     }
 
-
     updateCompanyIsApprovedFlag=(companyId, isApproved)=>{
         var resource = `/api/companies/update/isapproved/${companyId}`;
         var data = {isApproved};

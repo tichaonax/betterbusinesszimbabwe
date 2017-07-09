@@ -6,7 +6,7 @@ import {COMPANIES_TITLE} from 'pageTitles';
 import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
 var searchActions = require('searchActions');
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
 var servicesSqliteActions = require('servicesSqliteActions');
@@ -33,7 +33,7 @@ export class Companies extends React.Component {
             this.dispatch(searchActions.setSearchText(company));
         }
 
-        this.dispatch(companiesActions.startAddCompanyItems());
+        this.dispatch(companiesSqliteActions.startAddCompanyItems());
 
         if (props.isLoggedIn) {
            // this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
