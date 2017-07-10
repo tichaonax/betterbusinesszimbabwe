@@ -13,9 +13,9 @@ companiesRoutes.route('/companies')
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
-        var findAllCompanies = require('../../dao/companies/findAllCompanies');
+        var findAllCompaniesWithServicesCategory = require('../../dao/companies/findAllCompaniesWithServicesCategory');
         return new Promise(() => {
-            var companies= findAllCompanies();
+            var companies= findAllCompaniesWithServicesCategory();
             return Promise.resolve(res.json({data: companies}));
         }).catch((error)=>{
             return Promise.reject(error)

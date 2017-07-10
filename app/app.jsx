@@ -7,7 +7,7 @@ var loginActions = require('loginActions');
 var errorActions = require('errorActions');
 var profileActions = require('profileActions');
 var searchActions = require('searchActions');
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var reviewsActions = require('reviewsActions');
 var navActions = require('navActions');
 var store = require('configureStore').configure();
@@ -44,7 +44,7 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
         store.dispatch(loginActions.bbzLogin(auth));
         store.dispatch(loginActions.startGetLastLogin());
         store.dispatch(profileActions.startSetUserProfile());
-        store.dispatch(companiesActions.startAddCompanyItems());
+        store.dispatch(companiesSqliteActions.startAddCompanyItems());
         store.dispatch(searchActions.setSearchText(""));
         hashHistory.push(store.getState().redirectUrl);
     } else {

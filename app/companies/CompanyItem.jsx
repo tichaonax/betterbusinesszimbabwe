@@ -4,7 +4,7 @@ import {Link} from 'react-router';
 var Rate = require('rc-rate');
 import Linkify from 'react-linkify';
 import {openUpdatePanel} from 'app/common/Utils';
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 
@@ -52,7 +52,7 @@ export class CompanyItem extends React.Component {
                                                      onClick={() => {
                                                          this.dispatch(errorActions.bbzClearError());
                                                          if (loggedInUser.isAdmin) {
-                                                             this.dispatch(companiesActions.startDeleteCompanyItem(companyId));
+                                                             this.dispatch(companiesSqliteActions.startDeleteCompanyItem(companyId));
                                                          } else {
                                                              openUpdatePanel();
                                                              var error = {};
@@ -85,7 +85,7 @@ export class CompanyItem extends React.Component {
 
                                                              // console.debug("CompanyItems Data:", data);
 
-                                                             this.dispatch(companiesActions.setUpdateCompanyOperation(data));
+                                                             this.dispatch(companiesSqliteActions.setUpdateCompanyOperation(data));
                                                          }
                                                          else {
                                                              var error = {};
@@ -105,7 +105,7 @@ export class CompanyItem extends React.Component {
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
                                                  if (loggedInUser.isAdmin) {
-                                                     this.dispatch(companiesActions.startApproveUpdateCompanyItem(companyId, !isApproved));
+                                                     this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId, !isApproved));
                                                  } else {
                                                      openUpdatePanel();
                                                      var error = {};
