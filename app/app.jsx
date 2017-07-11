@@ -5,17 +5,17 @@ import {hashHistory} from 'react-router';
 
 var loginActions = require('loginActions');
 var errorActions = require('errorActions');
-var profileActions = require('profileActions');
+var profileSqliteActions = require('profileSqliteActions');
 var searchActions = require('searchActions');
 var companiesSqliteActions = require('companiesSqliteActions');
-var reviewsActions = require('reviewsActions');
+var reviewsSqliteActions = require('reviewsSqliteActions');
 var navActions = require('navActions');
 var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
 
 store.dispatch(errorActions.bbzClearError());
-store.dispatch(profileActions.resetUserProfile());
+store.dispatch(profileSqliteActions.resetUserProfile());
 store.dispatch(searchActions.setSearchText(""));
 
 firebase.auth().onAuthStateChanged((firebaseUser) => {
@@ -43,15 +43,16 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
 
         store.dispatch(loginActions.bbzLogin(auth));
         store.dispatch(loginActions.startGetLastLogin());
-        store.dispatch(profileActions.startSetUserProfile());
+        store.dispatch(profileSqliteActions.startSetUserProfile());
         store.dispatch(companiesSqliteActions.startAddCompanyItems());
+        store.dispatch(reviewsSqliteActions.startAddReviewItems());
         store.dispatch(searchActions.setSearchText(""));
         hashHistory.push(store.getState().redirectUrl);
     } else {
         //console.debug("firebaseUser session invlaid:", firebaseUser);
         store.dispatch(loginActions.bbzLogout());
-        store.dispatch(profileActions.resetUserProfile());
-        store.dispatch(reviewsActions.startAddReviewItems());
+        store.dispatch(profileSqliteActions.resetUserProfile());
+        store.dispatch(reviewsSqliteActions.startAddReviewItems());
         hashHistory.push('/reviews');
     }
 });

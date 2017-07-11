@@ -5,7 +5,7 @@ import {COMPANIES_TITLE} from 'pageTitles';
 import ReactList from 'react-list';
 import CompanyItem from 'CompanyItem';
 var navActions = require('navActions');
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 
 export class CompanyList extends React.Component {
     constructor(props) {
@@ -29,14 +29,14 @@ export class CompanyList extends React.Component {
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
+            filteredCompanyItems = BbzSqliteAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
         } else {
             var {companyItems, searchOptions, searchText, auth} = this.props;
 
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
+            filteredCompanyItems = BbzSqliteAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
         }
 
         this.setState({
@@ -68,6 +68,7 @@ export class CompanyList extends React.Component {
         //the idea is you want to construct the row data on the fly from the companies list
         //this will result is less memory used than if you were to store all that rendering data with the companies object
         var companyItem = this.state.companies[index];
+        companyItem.isApproved = (companyItem.isApproved === 1);
         var row = <CompanyItem key={companyItem.companyItemId} {...companyItem}
                                deleteReview={this.refs.deleteCompany}
                                updateReview={this.refs.updateCompany}

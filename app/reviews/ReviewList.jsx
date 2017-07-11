@@ -6,7 +6,7 @@ import ReviewItem from 'ReviewItem';
 import {getMediaContainerClass, getMedia, setListCounts} from 'app/common/Utils';
 import {REVIEWS_TITLE} from 'pageTitles';
 var navActions = require('navActions');
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 
 export class ReviewList extends React.Component {
     constructor(props) {
@@ -24,21 +24,22 @@ export class ReviewList extends React.Component {
         this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
         var filteredReviewItems;
         var bCompanyTitle;
-        var uid = 0;
+        var userId = 0;
         /*if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions) {
             var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
         } else {*/
-            var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
-            bCompanyTitle = showCompanyTitle;
-            if (auth.loggedIn) {
-                uid = auth.uid;
-            }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
+        var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
+
+        bCompanyTitle = showCompanyTitle;
+        if (auth.loggedIn) {
+            userId = auth.userId;
+        }
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pendind, searchText, userId, searchOptions.showMyReviews);
         //}
 
         this.setState({
@@ -72,6 +73,7 @@ export class ReviewList extends React.Component {
         //the idea is you want to construct the row data on the fly from the reviews
         //this will result is less memory used if you were to store all that rendering data with the reviews
         var reviewItem = this.state.reviews[index];
+        reviewItem.isApproved = (reviewItem.isApproved === 1);
         if (reviewItem) {
             var row = <ReviewItem key={reviewItem.reviewId} {...reviewItem}
                                   deleteReview={this.refs.deleteReview}

@@ -60,15 +60,15 @@ module.exports = {
         return (filteredUserItems);
     },
 
-    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, uid = 0) {
-        //console.debug("searchText", searchText);
+    getFilteredCompanies: function (companyItems, showApprovalPending, searchText, userId = 0) {
+        console.debug("companyItems", companyItems);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
 
         //filter by showApprovalPending
 
         filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
-            return companyItem.isApproved || showApprovalPending || companyItem.uid == uid
+            return companyItem.isApproved || showApprovalPending || companyItem.userId === userId
         });
 
         //filter by searchText
@@ -80,7 +80,7 @@ module.exports = {
                 const companyTitle = (companyItem.companyTitle) ? companyItem.companyTitle.toLowerCase() : "";
                 const companyDesc = (companyItem.companyDesc) ? companyItem.companyDesc.toLowerCase() : "";
                 const companyId = (companyItem.createAt) ? companyItem.createAt.toString() : "";
-                const companyItemId = (companyItem.companyItemId) ? companyItem.companyItemId : "";
+                //const rating = (companyItem.rating) ? companyItem.rating : 0;
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyTitle;
@@ -89,12 +89,29 @@ module.exports = {
                 } else if (serviceCategory.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyDesc;
                 } else if (companyId.indexOf(searchText.toLowerCase()) > -1) {
-                    return companyItem.createAt;
-                }else if (companyItemId.indexOf(searchText) > -1) {
-                    return companyItem.companyItemId;
+                    return companyItem.companyId;
+               // }else if (companyItemId.indexOf(searchText) > -1) {
+                 //   return companyItem.companyItemId;
                 }
             });
         }
+
+
+        //sort by recently updated first
+        filteredCompanyItems.sort((a, b) => {
+            if (a.updateAt > b.updateAt) {
+                //take a first
+                return -1
+            } else if (a.updateAt < b.updateAt) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+
 
         //sort companyItems with Approval Pending first
 
@@ -115,26 +132,21 @@ module.exports = {
         return (filteredCompanyItems);
     },
 
-    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, uid = 0, showMyReviews = false) {
-        //console.debug("reviewItems", reviewItems);
-        //console.debug("showApprovalPending", showApprovalPending);
-        //console.debug("showMyReviews", showMyReviews);
-        //console.debug("uid", uid);
+    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showMyReviews = false) {
         var filteredreviewItems = reviewItems;
 
         //filter by showApprovalPending
 
         filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
-            return reviewItem.isApproved || showApprovalPending || reviewItem.uid == uid
+            return reviewItem.isApproved || showApprovalPending || reviewItem.userId === userId
         });
 
         if(showMyReviews){
             //just get the reviews of the logged user
             filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
-                return reviewItem.uid == uid
+                return reviewItem.userId === userId
             });
         }
-
 
         //filter by searchText
         //we want to also search by review description
@@ -144,8 +156,8 @@ module.exports = {
                 var companyTitle = reviewItem.companyTitle.toLowerCase();
                 var review = reviewItem.review.toLowerCase();
                 var reviewId = reviewItem.createAt.toString();
-                var companyItemId = reviewItem.companyItemId;
-                var user = reviewItem.uid;
+                var companyId = reviewItem.companyId;
+                var user = reviewItem.userId;
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.companyTitle;
@@ -153,10 +165,10 @@ module.exports = {
                     return reviewItem.review;
                 } else if (reviewId.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.createAt;
-                } else if (companyItemId.indexOf(searchText) > -1) {
+                } else if (companyId.indexOf(searchText) > -1) {
                     return reviewItem.companyItemId;
                 }else if (user.indexOf(searchText) > -1) {
-                    return reviewItem.uid;
+                    return reviewItem.userId;
                 }
             });
         }
@@ -192,6 +204,7 @@ module.exports = {
                 return 0;
             }
         });
+
         return filteredreviewItems;
     },
 
