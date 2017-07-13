@@ -68,7 +68,6 @@ export class CompanyList extends React.Component {
         //the idea is you want to construct the row data on the fly from the companies list
         //this will result is less memory used than if you were to store all that rendering data with the companies object
         var companyItem = this.state.companies[index];
-        companyItem.isApproved = (companyItem.isApproved === 1);
         var row = <CompanyItem key={companyItem.companyItemId} {...companyItem}
                                deleteReview={this.refs.deleteCompany}
                                updateReview={this.refs.updateCompany}

@@ -5,7 +5,7 @@ import {Link, browserHistory, hashHistory} from 'react-router';
 import get from 'lodash.get';
 var Rate = require('rc-rate');
 import Select from 'react-select';
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
 var errorActions = require('errorActions');
@@ -71,7 +71,7 @@ export class AddReview extends React.Component {
         });
 
         if (!isMatch) {
-            this.dispatch(companiesActions.startAddCompanyItems());
+            this.dispatch(companiesSqliteActions.startAddCompanyItems());
         }
     }
 
@@ -85,7 +85,7 @@ export class AddReview extends React.Component {
         if (location && location.query) {
             this.validateAddNewReviewParameters(location.query.company);
         } else {
-            this.dispatch(companiesActions.startAddCompanyItems());
+            this.dispatch(companiesSqliteActions.startAddCompanyItems());
         }
     }
 

@@ -15,16 +15,18 @@ export class CompanyItem extends React.Component {
     }
 
     render() {
-        var {companyId, serviceId, serviceItemId, serviceCategory, uid,
+        var {companyId, serviceId, serviceItemId, serviceCategory, userId,
             loggedInUser, companyItemId, rating,
             isApproved, reviewCount, companyTitle,
             companyDesc, createAt, updateAt, auth,
-            deleteCompany, updateCompany,} = this.props;
+            deleteCompany, updateCompany} = this.props;
 
+        //console.log("serviceId",serviceId);
+        let approved = (isApproved === 1);
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";
 
-        if (isApproved) {
+        if (approved) {
             approveImageSource = "images/check-blue-64.png";
             approveMessage = "Approved";
         }
@@ -72,14 +74,14 @@ export class CompanyItem extends React.Component {
                                                      onClick={() => {
                                                          openUpdatePanel();
                                                          this.dispatch(errorActions.bbzClearError());
-                                                         if (auth.uid === uid || loggedInUser.isAdmin) {
+                                                         if (auth.userId === userId || loggedInUser.isAdmin) {
                                                              var data = {
-                                                                 uid,
+                                                                 userId,
                                                                  companyId,
                                                                  companyTitle,
                                                                  companyDesc,
                                                                  rating,
-                                                                 selectedServiceItemId: serviceItemId,
+                                                                 selectedServiceId: serviceId,
                                                                  serviceCategory
                                                              }
 
@@ -105,7 +107,7 @@ export class CompanyItem extends React.Component {
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
                                                  if (loggedInUser.isAdmin) {
-                                                     this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId, !isApproved));
+                                                     this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId, !approved));
                                                  } else {
                                                      openUpdatePanel();
                                                      var error = {};
@@ -154,7 +156,7 @@ export class CompanyItem extends React.Component {
                                     </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
                                     <div>
-                                        <Link to={`/users?uid=${uid}`} activeClassName="active"
+                                        <Link to={`/users?uid=${userId}`} activeClassName="active"
                                               activeStyle={{fontWeight: 'bold'}}>Reviewer</Link>
                                     </div>)}
                                 <div>

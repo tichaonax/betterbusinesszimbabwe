@@ -23,7 +23,7 @@ export var configure = (initialState = {}) => {
         redirectUrl: setRedirectUrlReducer,
         error: bbzErrorReducer,
         userProfile: userProfileReducer,
-        todoItems: todoItemsReducer,
+        //todoItems: todoItemsReducer,
         serviceItems: serviceItemsReducer,
         serviceOperation: serviceOperationReducer,
         companyItems: companyItemsReducer,

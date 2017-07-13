@@ -75,6 +75,7 @@ export var startAddCompanyItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return api.findAllCompanies().then((companies) => {
+            console.log("findAllCompanies.....",companies.data);
             dispatch(addCompanyItems(companies.data));
             dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
@@ -113,11 +114,11 @@ export var startDeleteCompanyItem = (companyItemId) => {
     };
 };
 
-export var updateCompanyItem = (companyItemId, updates) => {
+export var updateCompanyItem = (companyId, data) => {
     return {
         type: 'UPDATE_COMPANY_ITEM',
-        companyItemId,
-        updates
+        companyId,
+        data
     };
 };
 
@@ -147,16 +148,17 @@ export var startUpdateCompanyItem = (companyItemId, title, description, rating, 
     };
 };
 
-export var startApproveUpdateCompanyItem = (companyItemId, isApproved) => {
+export var startApproveUpdateCompanyItem = (companyId, isApproved) => {
     return (dispatch, getState) => {
-        var companyItemRef = firebaseRef.child(`companies/${companyItemId}`); //ES6 syntax
-
-        var updates = {
-            isApproved: isApproved,
-        };
-
-        return companyItemRef.update(updates).then(() => {  //return needed to chain our tests
-            dispatch(updateCompanyItem(companyItemId, updates));
+        console.log("companyId",companyId, isApproved);
+        dispatch(loadingActions.setLoadingStatus(true));
+        return api.updateCompanyIsApprovedFlag(companyId,isApproved).then((company) => {
+            console.log("updateCompanyIsApprovedFlag",company);
+            //dispatch(addCompanyItems(companies.data));
+            let updates =company.data;
+            console.log("updates",updates);
+            dispatch(loadingActions.setLoadingStatus(false));
+            dispatch(updateCompanyItem(companyId, updates));
         }, (error) => {
             console.debug("Unable to update company", error);
             var errorObj = {

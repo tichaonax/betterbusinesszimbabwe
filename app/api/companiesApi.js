@@ -11,6 +11,7 @@ class CompaniesApi extends BbzApiBase {
     findAllCompanies = () => {
         var resource = '/api/companies';
         return this.GET(resource).then((resp) => {
+            //console.log("/api/companies=>",JSON.stringify(resp.data));
             return resp.data;
         }, (error) => {
             throw new Error(error);
@@ -42,7 +43,6 @@ class CompaniesApi extends BbzApiBase {
         var resource = `/api/companies/update/isapproved/${companyId}`;
         var data = {isApproved};
         return this.POST(resource, data).then((resp) => {
-            console.log("updateCompanyIsApprovedFlag",resp);
             return resp.data;
         }, (error) => {
             throw new Error(error);

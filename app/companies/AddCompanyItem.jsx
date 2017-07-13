@@ -21,9 +21,9 @@ export class AddCompnayItem extends React.Component {
             operation: 'ADD',
             companyTitle: '',
             companyDesc: '',
-            companyItemId: '',
+            companyId: '',
             serviceItems: undefined,
-            selectedServiceItemId: '',
+            selectedServiceId: '',
             selectedCategory: '',
             rating: 0,
             remainingCharacters: null,
@@ -74,12 +74,13 @@ export class AddCompnayItem extends React.Component {
 
         if (nextProps.companyOperation.data) {
             const newProps = nextProps.companyOperation.data;
+            console.log("newProps",newProps);
             this.setState({
-                companyItemId: newProps.companyItemId,
+                companyId: newProps.companyId,
                 companyTitle: newProps.companyTitle,
                 rating: nextProps.companyOperation.data.rating,
                 companyDesc: newProps.companyDesc,
-                selectedServiceItemId: newProps.selectedServiceItemId,
+                selectedServiceId: newProps.selectedServiceId,
                 serviceCategory: newProps.serviceCategory
             });
 
@@ -146,10 +147,10 @@ export class AddCompnayItem extends React.Component {
 
     resetInputs = () => {
         this.setState({
-            companyItemId: '',
+            companyId: '',
             companyTitle: '',
             companyDesc: '',
-            selectedServiceItemId: null,
+            selectedServiceId: null,
             serviceCategory: null
         });
         this.dispatch(searchActions.setSearchText(""));
@@ -173,11 +174,11 @@ export class AddCompnayItem extends React.Component {
 
         //*********to do validate inputs
         this.dispatch(companiesActions.startUpdateCompanyItem(
-            this.state.companyItemId,
+            this.state.companyId,
             this.state.companyTitle,
             this.state.companyDesc,
             this.state.rating,
-            this.state.selectedServiceItemId,
+            this.state.selectedServiceId,
             this.state.selectedCategory
         ));
 
@@ -192,7 +193,7 @@ export class AddCompnayItem extends React.Component {
 
         var error = {}
 
-        if (this.state.selectedServiceItemId == null) {
+        if (this.state.selectedServiceId == null) {
             error.errorMessage = "You must select Service Category";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.serviceSelect.focus();
@@ -233,7 +234,7 @@ export class AddCompnayItem extends React.Component {
             auth.uid,
             companyTitle,
             companyDesc,
-            this.state.selectedServiceItemId,
+            this.state.selectedServiceId,
             this.state.selectedCategory
         ));
 
@@ -256,18 +257,17 @@ export class AddCompnayItem extends React.Component {
     }
 
     onServiceItemIdChange = (val) => {
-        let serviceItemId = get(val, 'value');
+        let serviceId = get(val, 'value');
         let serviceCategory = get(val, 'label');
-        this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceCategory});
+        this.setState({selectedServiceId: serviceId, selectedCategory: serviceCategory});
     }
 
     renderServiceSelect() {
-        var selectedServiceItemIds = [];
+        var selectedServiceIds = [];
         var serviceItems = this.props.serviceItems;
         if (serviceItems) {
-
             serviceItems.map((serviceItem) => {
-                selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceCategory});
+                selectedServiceIds.push({value: serviceItem.serviceId, label: serviceItem.serviceCategory});
             });
 
             return (
@@ -275,8 +275,8 @@ export class AddCompnayItem extends React.Component {
                     <Select
                         ref="serviceSelect"
                         name="service"
-                        value={this.state.selectedServiceItemId}
-                        options={selectedServiceItemIds}
+                        value={this.state.selectedServiceId}
+                        options={selectedServiceIds}
                         onChange={this.onServiceItemIdChange}
                         matchPos="start"
                         ignoreCase={true}

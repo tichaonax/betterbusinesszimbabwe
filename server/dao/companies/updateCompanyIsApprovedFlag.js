@@ -6,9 +6,11 @@ var bbzSqlite = require('../../dao/sqlite-singleton');
 var db = bbzSqlite.getInstance(BBZ_DATABASE_PATH);
 
 var updateCompanyIsApprovedFlag = (companyId, isApproved) => {
+    let approval = (isApproved) ? 1 : 0;
     let sql = `UPDATE companies SET 
-    isApproved = ${isApproved}
+    isApproved = ${approval}
     WHERE companyId = ${companyId};`;
+    console.log("slq", sql);
     return db.prepare(sql).run();
 }
 

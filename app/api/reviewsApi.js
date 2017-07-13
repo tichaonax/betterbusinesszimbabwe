@@ -11,7 +11,7 @@ class ReviewsApi extends BbzApiBase {
     findAllReviews = () => {
         var resource = '/api/reviews';
         return this.GET(resource).then((resp) => {
-            //console.log(resp);
+            //console.log(JSON.stringify(resp.data));
             return resp.data;
         }, (error) => {
             throw new Error(error);

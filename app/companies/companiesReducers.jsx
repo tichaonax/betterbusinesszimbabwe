@@ -9,7 +9,8 @@ export var companyItemsReducer = (state = [], action) => {
         case 'UPDATE_COMPANY_ITEM':
             return state.map((companyItem) => {
                 //replace with updated item
-                if (companyItem.companyItemId === action.companyItemId) {
+                if (companyItem.companyId === action.companyId) {
+                    console.log("updates match",companyItem);
                     return {
                         ...companyItem,
                         ...action.updates

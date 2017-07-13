@@ -61,14 +61,16 @@ module.exports = {
     },
 
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, userId = 0) {
-        console.debug("companyItems", companyItems);
+        //console.debug("getFilteredCompanies companyItems", companyItems);
         //console.debug("showApprovalPending", showApprovalPending);
         var filteredCompanyItems = companyItems;
 
         //filter by showApprovalPending
 
         filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
-            return companyItem.isApproved || showApprovalPending || companyItem.userId === userId
+            let approved = (companyItem.isApproved == 1);
+            //console.log("isApproved, approved", companyItem.isApproved, approved);
+            return approved || showApprovalPending || companyItem.userId === userId
         });
 
         //filter by searchText

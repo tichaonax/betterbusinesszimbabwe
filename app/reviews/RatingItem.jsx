@@ -3,7 +3,7 @@ var {connect} = require('react-redux');
 var Rate = require('rc-rate');
 import {Link} from 'react-router';
 import Linkify from 'react-linkify';
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 
@@ -40,7 +40,7 @@ export class RatingItem extends React.Component {
                 {showCompanyTitle == true && (
                     <div className="review-block-title">
                         <Link to={`/companyreviews?company=${companyId}`} activeClassName="active" onClick={()=>{
-                            this.dispatch(companiesActions.startAddCompanyItems());
+                            this.dispatch(companiesSqliteActions.startAddCompanyItems());
                         }}
                               activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                     </div>)}
