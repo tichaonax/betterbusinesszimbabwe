@@ -17,6 +17,37 @@ class ReviewsApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    addNewReview = (userId, companyId, review, rating) => {
+        var resource = `/api/reviews/save/${userId}`;
+        let isApproved = 0;
+        var data = {companyId, review, rating, isApproved};
+        return this.POST(resource, data).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
+    updateReviewItem(reviewId, review, rating, userId) {
+        var resource = `/api/reviews/update/info/${userId}`;
+        var data = {reviewId, review, rating};
+        return this.POST(resource, data).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
+    updateReviewIsApprovedFlag = (reviewId, isApproved, adminUserId) => {
+        var resource = `/api/reviews/update/isapproved/${reviewId}/${adminUserId}`;
+        var data = {isApproved};
+        return this.POST(resource, data).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
 }
 
 module.exports = ReviewsApi;

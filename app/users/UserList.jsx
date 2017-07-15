@@ -5,7 +5,7 @@ import {USERS_TITLE} from 'pageTitles';
 import ReactList from 'react-list';
 import UserItem from 'UserItem';
 var navActions = require('navActions');
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 
 export class UserList extends React.Component {
     constructor(props) {
@@ -26,7 +26,7 @@ export class UserList extends React.Component {
         if (auth.loggedIn) {
             uid = auth.uid;
         }
-        var filteredUserItems = BbzAPI.getFilteredUsers(userItems, searchOptions.pending, searchText, uid);
+        var filteredUserItems = BbzSqliteAPI.getFilteredUsers(userItems, searchOptions.pending, searchText, uid);
 
         this.setState({
                 rowCount: filteredUserItems.length,
@@ -56,7 +56,7 @@ export class UserList extends React.Component {
 
     renderUserItem = (index, key) => {
         var userItem = this.state.users[index];
-        var row = <UserItem key={userItem.userItemId} {...userItem}/>;
+        var row = <UserItem key={userItem.userId} {...userItem}/>;
 
         return <div key={key}>{row}</div>;
     }

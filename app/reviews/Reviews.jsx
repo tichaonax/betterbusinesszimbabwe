@@ -7,7 +7,6 @@ import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 import {Link} from 'react-router';
 var reviewsSqliteActions = require('reviewsSqliteActions');
-var reviewsActions = require('reviewsActions');
 var searchActions = require('searchActions');
 var navActions = require('navActions');
 var urlActions = require('urlActions');
@@ -24,24 +23,20 @@ export class Reviews extends React.Component {
     }
 
     loadData(props) {
-        var uid = props.location.query.user;
+        var userId = props.location.query.user;
         var company = props.location.query.company;
         var myreviews = props.location.query.myreviews;
-
-        //console.debug("uid--", uid);
-        //console.debug("company--", company);
 
         if (company && company.length > 0) {
             console.debug("searchActions.setSearchText(company)", company);
             this.dispatch(searchActions.setSearchText(company));
-        } else if (uid && uid.length > 0) {
+        } else if (userId && userId.length > 0) {
             if (myreviews == 'true') {
                 this.dispatch(searchActions.setMyReviews(true));
             }
-            this.dispatch(searchActions.setSearchText(uid));
+            this.dispatch(searchActions.setSearchText(userId));
         }
 
-        //this.dispatch(reviewsActions.startAddReviewItems());
         this.dispatch(reviewsSqliteActions.startAddReviewItems());
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
@@ -90,7 +85,8 @@ export class Reviews extends React.Component {
                     {isLoggedIn && (
                         <div>
                             <div>
-                                <button id ="update-panel" type="button" className="btn btn-info btn-lg btn-block" data-toggle="collapse"
+                                <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block"
+                                        data-toggle="collapse"
                                         data-target="#update-panel-target">Review Panel
                                 </button>
                             </div>

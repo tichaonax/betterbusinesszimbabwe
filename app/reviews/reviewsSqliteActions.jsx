@@ -4,6 +4,9 @@ var companiesActions = require('companiesActions');
 var usersActions = require('usersActions');
 var loadingActions = require('loadingActions');
 var ReviewsApi = require('../api/reviewsApi');
+var reviewsApi = new ReviewsApi();
+var UsersApi = require('../api/usersApi');
+var usersApi = new UsersApi();
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -14,33 +17,13 @@ export var addReviewItem = (reviewItem) => {
     };
 };
 
-export var startAddNewReviewItem = (uid, companyItemId, review, rating, companyTitle, displayName, email, photoURL) => {
+export var startAddNewReviewItem = (userId, companyId, review, rating) => {
     return (dispatch, getState) => {
-        var reviewItem = {
-            uid: uid,
-            companyItemId: companyItemId,
-            companyTitle: companyTitle,
-            review: review,
-            rating: rating,
-            createAt: moment().unix(),
-            updateAt: null,
-            isApproved: false,
-            displayName: displayName,
-            email: email,
-            photoURL: photoURL
-        }
-
-        //This will add a mew review item to firebase and dispatch the newly created
-        var reviewItemRef = firebaseRef.child(`reviews`).push(reviewItem);
-        return reviewItemRef.then(() => {
-            dispatch(addReviewItem({
-                ...reviewItem,
-                reviewItemId: reviewItemRef.key
-            }));
-
-            //clear recently addedCompany so the review select is deselected
-            dispatch(companiesActions.clearRecentlyAddedCompany());
-
+        dispatch(loadingActions.setLoadingStatus(true));
+        return reviewsApi.addNewReview(userId, companyId, review, rating).then((review) => {
+            //console.debug("review", review.data);
+            dispatch(addReviewItem(review.data));
+            dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.log("Unable to add new review", error);
             var errorObj = {
@@ -62,8 +45,7 @@ export var addReviewItems = (reviewItems) => {
 export var startAddReviewItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        var api = new ReviewsApi();
-        return api.findAllReviews().then((reviews) => {
+        return reviewsApi.findAllReviews().then((reviews) => {
             //console.debug("reviews",reviews.data);
             dispatch(addReviewItems(reviews.data));
             dispatch(loadingActions.setLoadingStatus(false));
@@ -103,74 +85,63 @@ export var startDeleteReviewItem = (reviewItemId) => {
     };
 };
 
-export var updateReviewItem = (reviewItemId, updates) => {
+export var updateReviewItem = (reviewId, updates) => {
+    //console.log("action updateReviewItem",reviewId, updates);
     return {
         type: 'UPDATE_REVIEW_ITEM',
-        reviewItemId,
+        reviewId,
         updates
     };
 };
 
-export var startUpdateReviewItem = (reviewItemId, review, rating, companyItemId, photoURL, uid, isApproved) => {
-    //console.debug(" photoURL, uid, isApproved", photoURL, uid, isApproved);
+export var startUpdateReviewItem = (reviewId, review, rating, userId, companyId, isApproved) => {
+    //console.log("***update review",reviewId, review, rating, userId, companyId, isApproved);
     return (dispatch, getState) => {
-        var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`); //ES6 syntax
-
-        var updates = {
-            updateAt: moment().unix(),
-            review: review,
-            rating: rating,
-            isApproved: false
-        };
-
-        if (photoURL) {
-            updates["photoURL"] = photoURL;
-        }
-
-        return reviewItemRef.update(updates).then(() => {
-                return dispatch(updateReviewItem(reviewItemId, updates));
+        dispatch(loadingActions.setLoadingStatus(true));
+        return reviewsApi.updateReviewItem(reviewId, review, rating, userId).then((review) => {
+                //console.debug("review updated", review.data);
+                let reviewItem = review.data;
+                dispatch(updateReviewItem(reviewId, reviewItem));
+                dispatch(loadingActions.setLoadingStatus(false));
+                return (reviewItem);
             }
-        ).then(()=>{
+        ).then(() => {
             if (isApproved) {
-                return dispatch(recalculateUserReviewCount(uid, !isApproved))
+                return dispatch(recalculateUserReviewCount(userId, !isApproved))
             } else {
                 return (null);
             }
         }).then(() => {
-                return dispatch(recalculateCompanyReview(companyItemId));
+                return dispatch(recalculateCompanyReview(companyId));
             }
         ).catch((error) => {
-                console.debug("Unable to update review", error);
-                var errorObj = {
-                    errorCode: error.code,
-                    errorMessage: error.message
-                };
-                return dispatch(errorActions.bbzReportError(errorObj));
-            });
+            console.debug("Unable to update review", error);
+            var errorObj = {
+                errorCode: error.code,
+                errorMessage: error.message
+            };
+            return dispatch(errorActions.bbzReportError(errorObj));
+        });
     };
 };
 
-export var startApproveUpdateReviewItem = (reviewItemId, isApproved, companyItemId, uid, adminUid) => {
-    //console.debug("startApproveUpdateReviewItem",reviewItemId, isApproved, companyItemId);
+export var startApproveUpdateReviewItem = (reviewId, isApproved, companyId, userId, adminUserId) => {
+    console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
     return (dispatch, getState) => {
-        var reviewItemRef = firebaseRef.child(`reviews/${reviewItemId}`);
-
-        var updates = {
-            isApproved: isApproved,
-            adminUid: adminUid
-        };
-
-        return reviewItemRef.update(updates).then(() => {
-            dispatch(updateReviewItem(reviewItemId, updates));
+        dispatch(loadingActions.setLoadingStatus(true));
+        return reviewsApi.updateReviewIsApprovedFlag(reviewId, isApproved, adminUserId).then((review) => {
+            //console.debug("review", review.data);
+            let reviewItem = review.data;
+            dispatch(updateReviewItem(reviewId, reviewItem));
+            return dispatch(loadingActions.setLoadingStatus(false));
         }).then(
             () => {
-                return dispatch(recalculateCompanyReview(companyItemId));
+                return dispatch(recalculateCompanyReview(companyId));
             }
         ).then(() => {
-            return dispatch(recalculateUserReviewCount(uid, isApproved))
+            return dispatch(recalculateUserReviewCount(userId, isApproved))
         }).catch(
             (error) => {
-
                 console.debug("Unable to update review", error);
                 var errorObj = {
                     errorCode: error.code,
@@ -198,12 +169,12 @@ export var setUpdateReviewOperation = (data, operation = 'UPDATE') => {
     };
 };
 
-export var recalculateUserReviewCount = (userItemId, isApproved) => {
+export var recalculateUserReviewCount = (userId, isApproved) => {
     return (dispatch, getState) => {
-        var userItemRef = firebaseRef.child(`users/${userItemId}`);
-        return userItemRef.once('value').then((snapshot) => {
-            var user = snapshot.val() || {};
-            //console.debug("user", user);
+        dispatch(loadingActions.setLoadingStatus(true));
+        return usersApi.findUserById(userId).then((reponse) => {
+            let user = reponse.data;
+            console.debug("user", user);
             return (user);
         }).then(
             (user) => {
@@ -225,12 +196,13 @@ export var recalculateUserReviewCount = (userItemId, isApproved) => {
                         newReviewCount = 0;
                     }
 
-                    var updates = {
-                        reviewCount: newReviewCount
-                    };
+                    return usersApi.updateUserReviewCount(userId, newReviewCount).then((reponse) => {
+                        let user = reponse.data;
+                        console.debug("user updateUserReviewCount", user);
+                        //dispatch(addReviewItems(reviews.data));
+                        dispatch(loadingActions.setLoadingStatus(false));
 
-                    return userItemRef.update(updates).then(() => {
-                        dispatch(usersActions.updateUserItem(userItemId, updates))
+                        dispatch(usersActions.updateUserItem(userId, user))
                     })
                 }
             }

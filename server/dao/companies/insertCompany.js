@@ -7,9 +7,10 @@ var db = bbzSqlite.getInstance(BBZ_DATABASE_PATH);
 
 var insertCompany = (userId, serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved) => {
     let sql = `INSERT INTO companies 
-    (userId, serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved, createAt)
+    (userId, serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved, updateAt)
      VALUES ('${userId}', ${serviceId}, '${companyTitle}', '${companyDesc}', ${rating}, 
-     ${reviewCount}, ${isApproved})`;
+     ${reviewCount}, ${isApproved}, DATETIME('NOW'))`;
+    console.log("sql",sql);
     return db.prepare(sql).run();
 }
 

@@ -86,6 +86,16 @@ class UsersApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    updateUserReviewCount = (userId, reviewCount) => {
+        var resource = `/api/users/update/reviewcount/${userId}`;
+        var data = {reviewCount};
+        return this.POST(resource, data).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
 }
 
 module.exports = UsersApi;

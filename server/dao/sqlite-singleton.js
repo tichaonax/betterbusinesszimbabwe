@@ -4,7 +4,7 @@ var bbzSqlite = (() => {
     function createInstance(dbPath) {
         console.log("dbPath", dbPath);
         var Database = require('better-sqlite3');
-        db = new Database(dbPath);
+        let db = new Database(dbPath);
 
         process.on('SIGINT', () => {
             db.close();

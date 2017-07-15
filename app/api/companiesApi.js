@@ -11,16 +11,18 @@ class CompaniesApi extends BbzApiBase {
     findAllCompanies = () => {
         var resource = '/api/companies';
         return this.GET(resource).then((resp) => {
-            //console.log("/api/companies=>",JSON.stringify(resp.data));
             return resp.data;
         }, (error) => {
             throw new Error(error);
         })
     }
 
-    addCompany = (userId) => {
+    addNewCompanyInfo = (userId, serviceId, companyTitle, companyDesc) => {
         var resource = `/api/companies/save/${userId}`;
-        var data = {serviceCategory};
+        let rating = 0;
+        let reviewCount = 0;
+        let isApproved = 0;
+        var data = {serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved};
         return this.POST(resource, data).then((resp) => {
             return resp.data;
         }, (error) => {
@@ -32,7 +34,18 @@ class CompaniesApi extends BbzApiBase {
         var resource = `/api/companies/update/${companyId}`;
         var data = {serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved};
         return this.POST(resource, data).then((resp) => {
-            console.log("updateCompany",resp);
+            console.log("updateCompany",resp.data);
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
+    updateCompanyInfo = (companyId, serviceId, companyTitle, companyDesc) => {
+        var resource = `/api/companies/update/info/${companyId}`;
+        var data = {serviceId, companyTitle, companyDesc};
+        return this.POST(resource, data).then((resp) => {
+            console.log("updateCompanyInfo",resp.data);
             return resp.data;
         }, (error) => {
             throw new Error(error);

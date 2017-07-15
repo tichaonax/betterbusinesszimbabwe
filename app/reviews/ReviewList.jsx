@@ -33,13 +33,13 @@ export class ReviewList extends React.Component {
             }
             filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
         } else {*/
-        var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
+        var {reviewItems, searchOptions, searchText, userProfile, showCompanyTitle} = newProps;
 
         bCompanyTitle = showCompanyTitle;
-        if (auth.loggedIn) {
-            userId = auth.userId;
+        if (userProfile) {
+            userId = userProfile.userId;
         }
-            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pendind, searchText, userId, searchOptions.showMyReviews);
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, userId, searchOptions.showMyReviews);
         //}
 
         this.setState({
@@ -73,7 +73,7 @@ export class ReviewList extends React.Component {
         //the idea is you want to construct the row data on the fly from the reviews
         //this will result is less memory used if you were to store all that rendering data with the reviews
         var reviewItem = this.state.reviews[index];
-        reviewItem.isApproved = (reviewItem.isApproved === 1);
+
         if (reviewItem) {
             var row = <ReviewItem key={reviewItem.reviewId} {...reviewItem}
                                   deleteReview={this.refs.deleteReview}

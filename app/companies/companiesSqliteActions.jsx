@@ -13,10 +13,10 @@ export var addCompanyItem = (companyItem) => {
     };
 };
 
-export var setRecentlyAddedCompany=(companyItemId, companyTitle)=>{
+export var setRecentlyAddedCompany=(companyId, companyTitle)=>{
     return {
         type: 'SET_RECENT_ADD_COMPANY_ITEM',
-        companyItemId,
+        companyId,
         companyTitle
     };
 }
@@ -27,32 +27,15 @@ export var clearRecentlyAddedCompany = () => {
     };
 }
 
-export var startAddNewCompanyItem = (uid, title, description, serviceId, category) => {
+export var startAddNewCompanyItem = (userId, companyTitle, companyDesc, serviceId) => {
     return (dispatch, getState) => {
-        var companyItem = {
-            uid: uid,
-            companyTitle: title,
-            companyDesc: description,
-            createAt: moment().unix(),
-            updateAt: null,
-            reviewCount: 0,
-            rating: 0,
-            isApproved: false,
-            serviceItemId: serviceId,
-            serviceCategory: category
-        }
-
-        //This will add a mew company item to firebase and dispatch the newly created
-        var companyItemRef = firebaseRef.child(`companies`).push(companyItem);
-        return companyItemRef.then(() => {
-            dispatch(addCompanyItem({
-                ...companyItem,
-                companyItemId: companyItemRef.key
-            }));
-
+        dispatch(loadingActions.setLoadingStatus(true));
+        return api.addNewCompanyInfo(userId, serviceId, companyTitle, companyDesc).then((company) => {
+            let companyItem = company.data;
+            dispatch(addCompanyItem(company.data));
             //dispatch recently added so you can select it from reviews
-            dispatch(setRecentlyAddedCompany(companyItemRef.key, title));
-
+            dispatch(setRecentlyAddedCompany(companyItem.companyId, companyDesc));
+            dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to add new company", error);
             var errorObj = {
@@ -75,7 +58,6 @@ export var startAddCompanyItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return api.findAllCompanies().then((companies) => {
-            console.log("findAllCompanies.....",companies.data);
             dispatch(addCompanyItems(companies.data));
             dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
@@ -114,29 +96,21 @@ export var startDeleteCompanyItem = (companyItemId) => {
     };
 };
 
-export var updateCompanyItem = (companyId, data) => {
+export var updateCompanyItem = (companyId, updates) => {
     return {
         type: 'UPDATE_COMPANY_ITEM',
         companyId,
-        data
+        updates
     };
 };
 
-export var startUpdateCompanyItem = (companyItemId, title, description, rating, serviceId, category) => {
+export var startUpdateCompanyItem = (companyId, companyTitle, companyDesc, rating, serviceId, serviceCategory) => {
     return (dispatch, getState) => {
-        var companyItemRef = firebaseRef.child(`companies/${companyItemId}`); //ES6 syntax
-        var updates = {
-            updateAt: moment().unix(),
-            companyTitle: title,
-            companyDesc: description,
-            isApproved: false,
-            rating: rating,
-            serviceItemId: serviceId,
-            serviceCategory: category
-        };
-
-        return companyItemRef.update(updates).then(() => {  //return needed to chain our tests
-            dispatch(updateCompanyItem(companyItemId, updates));
+        dispatch(loadingActions.setLoadingStatus(true));
+        return api.updateCompanyInfo(companyId, serviceId, companyTitle, companyDesc).then((company) => {
+            console.log("updateCompanyInfo",companyId, serviceId, companyTitle, companyDesc);
+            dispatch(addCompanyItems(company.data));
+            dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to update company", error);
             var errorObj = {

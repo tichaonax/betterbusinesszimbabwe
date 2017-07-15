@@ -1,5 +1,7 @@
 var errorActions = require('errorActions');
 var loadingActions = require('loadingActions');
+var UsersApi = require('../api/usersApi');
+var usersApi = new UsersApi();
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -20,21 +22,11 @@ export var addUserItems = (userItems) => {
 export var startAddUserItems = () => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        var userItemRef = firebaseRef.child(`users`);
-        return userItemRef.once('value').then((snapshot) => {
-            var userItems = snapshot.val() || {}; //return available data or empty object
-
-            var parsedUserItems = [];
-
-            Object.keys(userItems).forEach((userItemId) => {
-                parsedUserItems.push({
-                    userItemId: userItemId,
-                    ...userItems[userItemId]
-                });
-            });
-            //console.debug("startAddUserItems:",parsedUserItems);
+        return usersApi.findAllUsers().then((response) => {
+            let users = response.data;
+            console.debug("users", users);
             dispatch(loadingActions.setLoadingStatus(false));
-            dispatch(addUserItems(parsedUserItems));
+            dispatch(addUserItems(users));
         }, (error) => {
             console.debug("Unable to fetch users", error);
             var errorObj = {
@@ -79,6 +71,3 @@ export var startToggleAdminUserItem = (userItemId, isAdmin) => {
         );
     };
 };
-
-
-

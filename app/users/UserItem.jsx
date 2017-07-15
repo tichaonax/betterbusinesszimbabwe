@@ -1,9 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
 import {Link} from 'react-router';
-import {findDOMNode} from 'react-dom'
-import ReactTooltip from 'react-tooltip'
-var Rate = require('rc-rate');
 import Linkify from 'react-linkify';
 var usersActions = require('usersActions');
 var urlActions = require('urlActions');
@@ -16,33 +13,29 @@ export class CompanyItem extends React.Component {
     }
 
     render() {
-        var {userItemId, reviewCount, loggedInUser, userProfile, auth} = this.props;
-        let displayName;
-        let photoURL;
+        var {
+            userId, firebaseId, providerId, isSuperUser, createAt, displayName,
+            email, ipAddress, isAdmin, isApproved, loginAt, photoURL, reviewCount,
+            uid, loggedInUser, user, auth
+        } = this.props;
+
+        if (loggedInUser) {
+            loggedInUser.isSuperUser = (loggedInUser.isSuperUser == 1);
+            loggedInUser.isAdmin = (loggedInUser.isAdmin == 1);
+        }
+
+        isApproved = (isApproved == 1);
+        isSuperUser = (isSuperUser == 1);
+        isAdmin = (isAdmin == 1);
         let approveImageSource = "images/like-64.png";
         let approveMessage = "Make Admin";
-        let providerId;
-        let email;
-        let userId;
-        let isAdmin = false;
 
-        if (userProfile) {
-            displayName = userProfile.displayName;
-            photoURL = userProfile.photoURL;
-            providerId = userProfile.providerId;
-            email = userProfile.email;
-            userId = userProfile.userId;
-            isAdmin = userProfile.isAdmin;
-
-            if (userProfile.isAdmin) {
-                approveImageSource = "images/bbz_admin.png";
-                approveMessage = "Admin";
-            }
-
-            if (displayName) {
-                displayName = userProfile.displayName.split('@')[0];
-            }
+        if (isAdmin) {
+            approveImageSource = "images/bbz_admin.png";
+            approveMessage = "Admin";
         }
+
+        displayName = displayName.split('@')[0];
 
         var loginClass = "col-sm-9";
         if (auth.loggedIn) {
@@ -55,25 +48,27 @@ export class CompanyItem extends React.Component {
                     <div className="review-block">
                         <div className="row">
                             {auth.loggedIn && (
-                            <div className="col-sm-3">
-                                <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
-                            </div>)}
+                                <div className="col-sm-3">
+                                    <img src={photoURL} alt="Smiley face" height="43" width="43"
+                                         className="img-rounded"/>
+                                </div>)}
                             <div className="col-sm-3">
                                 <div>
                                     <span className="label bbz-review-span">Reviews:</span>
                                     <span>&nbsp;</span>
-                                    <Link to={`/reviews?user=${userItemId}`} activeClassName="active bbz-review-span"
+                                    <Link to={`/reviews?user=${userId}`} activeClassName="active bbz-review-span"
                                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                                 </div>
                                 {auth.loggedIn && loggedInUser.isSuperUser && (
                                     <div className="column">
                                         <span className="bbz-review-span">{approveMessage}:</span>
                                         <span>&nbsp;</span>
-                                        <img className="bbz-general-pointer" type="image" value="submit" height="20" width="20" src={approveImageSource}
+                                        <img className="bbz-general-pointer" type="image" value="submit" height="20"
+                                             width="20" src={approveImageSource}
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
                                                  if (loggedInUser.isSuperUser) {
-                                                     this.dispatch(usersActions.startToggleAdminUserItem(userItemId,!isAdmin));
+                                                     this.dispatch(usersActions.startToggleAdminUserItem(userId, !isAdmin));
                                                  } else {
                                                      var error = {};
                                                      error.errorMessage = "You must be Super User to approve";
@@ -95,12 +90,12 @@ export class CompanyItem extends React.Component {
                                 <div className="review-block-title">
                                     {displayName}
                                 </div>
-                                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
-                                <div>
-                                    <span className="label bbz-review-span">ID:</span>
-                                    <span>&nbsp;</span>
-                                    {userItemId}
-                                </div>)}
+                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                    <div>
+                                        <span className="label bbz-review-span">ID:</span>
+                                        <span>&nbsp;</span>
+                                        {firebaseId}
+                                    </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
                                     <div>
                                         <span className="label bbz-review-span">UserID:</span>
@@ -108,11 +103,11 @@ export class CompanyItem extends React.Component {
                                         {userId}
                                     </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
-                                <div>
-                                    <span className="bbz-review-span">Email:</span>
-                                    <span>&nbsp;</span>
-                                    {email}
-                                </div>)}
+                                    <div>
+                                        <span className="bbz-review-span">Email:</span>
+                                        <span>&nbsp;</span>
+                                        {email}
+                                    </div>)}
                             </div>
                         </div>
                     </div>

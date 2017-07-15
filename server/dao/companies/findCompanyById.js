@@ -9,7 +9,7 @@ var findCompanyById = (companyId) => {
     let sql =`select c.companyId, c.userId, c.serviceId, c.companyTitle,
         c.companyDesc, c.rating, c.reviewCount, c.createAt, 
         c.updateAt, s.serviceItemId, s.serviceCategory,
-         cast(case when c.isApproved is null or c.isApproved is 0 then 'false' else 'true' end as varchar) as isApproved
+        c.isApproved
          from 
         companies c
         join services s

@@ -35,11 +35,11 @@ export class Companies extends React.Component {
 
         this.dispatch(companiesSqliteActions.startAddCompanyItems());
 
-        if (props.isLoggedIn) {
+       /* if (props.isLoggedIn) {
            // this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
             //this.dispatch(servicesActions.startAddServiceItems());
             this.dispatch(servicesSqliteActions.startAddServiceItems());
-        }
+        }*/
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 
@@ -84,7 +84,9 @@ export class Companies extends React.Component {
                         <div>
                             <div>
                                 <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block"
-                                        data-toggle="collapse"
+                                        data-toggle="collapse" onClick={() => {
+                                    this.dispatch(servicesSqliteActions.startAddServiceItems());
+                                }}
                                         data-target="#update-panel-target">Company Panel
                                 </button>
                             </div>

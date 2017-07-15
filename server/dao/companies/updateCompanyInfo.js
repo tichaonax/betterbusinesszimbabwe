@@ -1,17 +1,18 @@
 /**
- * Created by tichaona on 7/8/17.
+ * Created by tichaona on 7/14/17.
  */
 var {BBZ_DATABASE_PATH} = require('../../constants/Database');
 var bbzSqlite = require('../../dao/sqlite-singleton');
 var db = bbzSqlite.getInstance(BBZ_DATABASE_PATH);
 
-var updateCompanyIsApprovedFlag = (companyId, isApproved) => {
-    let approval = (isApproved) ? 1 : 0;
+var updateCompanyInfo = (companyId, serviceId, companyTitle, companyDesc) => {
     let sql = `UPDATE companies SET 
-    isApproved = ${approval}
+    serviceId = ${serviceId}, 
+    companyTitle = '${companyTitle}', 
+    companyDesc = '${companyDesc}'
     WHERE companyId = ${companyId};`;
-    //console.log("slq", sql);
+    //console.log("sql",sql);
     return db.prepare(sql).run();
 }
 
-module.exports = updateCompanyIsApprovedFlag;
+module.exports = updateCompanyInfo;

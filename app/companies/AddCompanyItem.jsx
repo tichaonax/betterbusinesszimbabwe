@@ -4,7 +4,7 @@ import Select from 'react-select';
 import get from 'lodash.get';
 import {Link, browserHistory, hashHistory} from 'react-router';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var searchActions = require('searchActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
@@ -61,7 +61,7 @@ export class AddCompnayItem extends React.Component {
                     calledFromOutside: true
                 }
             } else {
-                this.dispatch(companiesActions.setAddCompanyOperation());
+                this.dispatch(companiesSqliteActions.setAddCompanyOperation());
             }
         }
     }
@@ -74,7 +74,7 @@ export class AddCompnayItem extends React.Component {
 
         if (nextProps.companyOperation.data) {
             const newProps = nextProps.companyOperation.data;
-            console.log("newProps",newProps);
+            //console.log("newProps",newProps);
             this.setState({
                 companyId: newProps.companyId,
                 companyTitle: newProps.companyTitle,
@@ -162,7 +162,7 @@ export class AddCompnayItem extends React.Component {
         this.setState({
             cancelOperation: true,
         });
-        this.dispatch(companiesActions.setAddCompanyOperation());
+        this.dispatch(companiesSqliteActions.setAddCompanyOperation());
         this.dispatch(errorActions.bbzClearError());
     }
 
@@ -173,7 +173,7 @@ export class AddCompnayItem extends React.Component {
         }
 
         //*********to do validate inputs
-        this.dispatch(companiesActions.startUpdateCompanyItem(
+        this.dispatch(companiesSqliteActions.startUpdateCompanyItem(
             this.state.companyId,
             this.state.companyTitle,
             this.state.companyDesc,
@@ -184,7 +184,8 @@ export class AddCompnayItem extends React.Component {
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(companiesActions.setAddCompanyOperation());
+        this.dispatch(companiesSqliteActions.setAddCompanyOperation());
+        window.scrollTo(0, 0);
     }
 
     handleSubmit = (e) => {
@@ -230,7 +231,7 @@ export class AddCompnayItem extends React.Component {
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(companiesActions.startAddNewCompanyItem(
+        this.dispatch(companiesSqliteActions.startAddNewCompanyItem(
             auth.uid,
             companyTitle,
             companyDesc,

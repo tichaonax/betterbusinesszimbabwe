@@ -6,11 +6,12 @@ var bbzSqlite = require('../../dao/sqlite-singleton');
 var db = bbzSqlite.getInstance(BBZ_DATABASE_PATH);
 
 var insertReview = (userId, adminUserId, companyId, rating, review, isApproved, createAt) => {
+    let createDate = (createAt) ? `'${createAt}'` : "DATETIME('NOW')";
     let sql = `INSERT INTO reviews 
-    (userId, adminUserId, companyId, rating, review, isApproved, createAt)
+    (userId, adminUserId, companyId, rating, review, isApproved, createAt, updateAt)
      VALUES (${userId}, ${adminUserId}, ${companyId}, ${rating}, '${review}', 
-     ${isApproved}, '${createAt}')`;
-    //console.log("sql",sql);
+     ${isApproved}, ${createDate}, DATETIME('NOW'))`;
+    console.log("sql",sql);
     return db.prepare(sql).run();
 }
 

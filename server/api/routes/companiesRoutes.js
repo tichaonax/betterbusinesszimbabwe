@@ -67,6 +67,31 @@ companiesRoutes.route('/companies/save/:userId')
         });
     });
 
+//update company basic Info by companyId
+companiesRoutes.route('/companies/update/info/:companyId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let companyId = req.params.companyId;
+        let serviceId = req.body.serviceId;
+        let companyTitle = req.body.companyTitle;
+        let companyDesc = req.body.companyDesc;
+
+        var updateCompanyInfo = require('../../dao/companies/updateCompanyInfo');
+        return new Promise(() => {
+            let updateRecord = updateCompanyInfo(companyId, serviceId, companyTitle, companyDesc);
+            var findCompanyById = require('../../dao/companies/findCompanyById');
+            //return the updated row
+            let company = findCompanyById(companyId);
+            return (Promise.resolve(res.json({data: company})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+
 //update company by companyId
 companiesRoutes.route('/companies/update/:companyId')
     .post((req, res) => {
@@ -116,8 +141,5 @@ companiesRoutes.route('/companies/update/isapproved/:companyId')
             return Promise.reject(error)
         });
     });
-
-
-
 
 module.exports = companiesRoutes;

@@ -34,4 +34,78 @@ reviewsRoutes.route('/reviews/:reviewId')
         });
     });
 
+
+reviewsRoutes.route('/reviews/save/:userId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let userId = req.params.userId;
+        let adminUserId = null;
+        let companyId = req.body.companyId;
+        let rating = req.body.rating;
+        let review = req.body.review;
+        let isApproved = 0;
+        let createAt = undefined;
+
+        var insertReview = require('../../dao/reviews/insertReview');
+        return new Promise(() => {
+            let newRecord = insertReview(userId, adminUserId, companyId, rating, review, isApproved, createAt);
+            let findReviewById = require('../../dao/reviews/findReviewById');
+            //return the newly created row
+            let newReview = findReviewById(newRecord.lastInsertROWID);
+            return (Promise.resolve(res.json({data: newReview})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+reviewsRoutes.route('/reviews/update/info/:userId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let userId = req.params.userId;
+        let reviewId = req.body.reviewId;
+        let rating = req.body.rating;
+        let review = req.body.review;
+
+        var updateReviewInfo = require('../../dao/reviews/updateReviewInfo');
+        return new Promise(() => {
+            let updateRecord = updateReviewInfo(reviewId, review, rating, userId);
+            let findReviewById = require('../../dao/reviews/findReviewById');
+            //return the newly created row
+            let updatedReview = findReviewById(reviewId);
+            return (Promise.resolve(res.json({data: updatedReview})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+//update review isapproved by reviewId
+reviewsRoutes.route('/reviews/update/isapproved/:reviewId/:adminUserId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let adminUserId = req.params.adminUserId;
+        let reviewId = req.params.reviewId;
+        let isApproved = (req.body.isApproved) ? 1 : 0;
+
+        var updateReviewIsApprovedFlag = require('../../dao/reviews/updateReviewIsApprovedFlag');
+        return new Promise(() => {
+            let updateRecord = updateReviewIsApprovedFlag(reviewId, isApproved, adminUserId);
+            var findReviewById = require('../../dao/reviews/findReviewById');
+            //return the updated row
+            let review = findReviewById(reviewId);
+            return (Promise.resolve(res.json({data: review})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+
 module.exports = reviewsRoutes;

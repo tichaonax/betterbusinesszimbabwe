@@ -6,12 +6,12 @@ import get from 'lodash.get';
 var Rate = require('rc-rate');
 import Select from 'react-select';
 var companiesSqliteActions = require('companiesSqliteActions');
-var reviewsActions = require('reviewsActions');
-var servicesActions = require('servicesActions');
+var reviewsSqliteActions = require('reviewsSqliteActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
+import AlertContainer from 'react-alert'
 import Error from 'Error';
-import Categories from 'serviceCategories';
 import {toggleUpdatePanel} from 'app/common/Utils';
 
 
@@ -23,21 +23,43 @@ export class AddReview extends React.Component {
         this.maxReviewCharacters = 300;
         this.state = {
             operation: 'ADD',
-            companyItemId: null,
+            companyId: null,
             review: '',
-            reviewItemId: null,
+            reviewId: null,
             rating: 0,
             isApproved: false,
             companyItems: [],
-            companyItemId: null,
-            selectedCompanyItemId: null,
+            selectedCompanyId: null,
             selectedCompanyTitle: '',
-            uid: 0,
+            userId: 0,
             calledFromOutside: false,
-            isShowingModal: false,
             cancelOperation: false,
             remainingCharacters: null,
         }
+    }
+
+    alertOptions = {
+        offset: 14,
+        position: 'top right',
+        theme: 'dark',
+        time: 5000,
+        transition: 'scale'
+    }
+
+    showAlert = (message) => {
+        var {redirectUrl, userProfile} = this.props;
+        this.msg.show(message, {
+            time: 4000,
+            type: 'success',
+            icon: <img src="images/bbz-favicon.ico"/>,
+            onClose: () => {
+                if (!this.state.calledFromOutside) {
+                    this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${userProfile.userId}&myreviews=true`));
+                } else {
+                    hashHistory.push(redirectUrl);
+                }
+            }
+        })
     }
 
     onGoBack = (evt) => {
@@ -49,19 +71,19 @@ export class AddReview extends React.Component {
         }
     }
 
-    validateAddNewReviewParameters(companyItemId) {
-        //console.debug("validateAddNewReviewParameters", companyItemId);
+    validateAddNewReviewParameters(companyId) {
+        //console.debug("validateAddNewReviewParameters", companyId);
         var {companyItems} = this.props;
 
         var isMatch = false;
 
         companyItems.map((companyItem) => {
-            if (companyItem.companyItemId == companyItemId) {
+            if (companyItem.companyId == companyId) {
 
                 //console.debug("Match", companyItem);
 
                 this.state = {
-                    selectedCompanyItemId: companyItem.companyItemId,
+                    selectedCompanyId: companyItem.companyId,
                     selectedCompanyTitle: companyItem.companyTitle,
                     calledFromOutside: true
                 }
@@ -79,7 +101,7 @@ export class AddReview extends React.Component {
         const {error, location} = props;
         if (error) {
             this.dispatch(errorActions.bbzClearError());
-            this.dispatch(reviewsActions.setAddReviewOperation());
+            this.dispatch(reviewsSqliteActions.setAddReviewOperation());
         }
 
         if (location && location.query) {
@@ -91,10 +113,10 @@ export class AddReview extends React.Component {
 
     componentDidMount() {
         this.loadData(this.props);
-        if (this.props.recentlyAddedCompany.companyItemId != '') {
+        if (this.props.recentlyAddedCompany.companyId != '') {
             //console.debug("this.props.recentlyAddedCompany", this.props.recentlyAddedCompany);
             this.setState({
-                selectedCompanyItemId: this.props.recentlyAddedCompany.companyItemId,
+                selectedCompanyId: this.props.recentlyAddedCompany.companyId,
                 selectedCompanyTitle: this.props.recentlyAddedCompany.companyTitle
             });
         }
@@ -113,12 +135,12 @@ export class AddReview extends React.Component {
         if (nextProps.reviewOperation.data) {
             const newProps = nextProps.reviewOperation.data;
             this.setState({
-                reviewItemId: newProps.reviewItemId,
+                reviewId: newProps.reviewId,
                 review: newProps.review,
-                companyItemId: newProps.companyItemId,
-                uid: newProps.uid,
+                companyId: newProps.companyId,
+                userId: newProps.userId,
                 rating: newProps.rating,
-                isApproved: newProps.isApproved
+                isApproved: (newProps.isApproved == 1)
             });
 
             if (newProps.review && newProps.review.length > 0) {
@@ -129,41 +151,16 @@ export class AddReview extends React.Component {
         }
     }
 
-    findDupeReviews(reviewItems, uid, companyItemId) {
+    findDupeReviews(reviewItems, userId, companyId) {
         var dupes = [];
         if (reviewItems) {
             reviewItems.map((reviewItem) => {
-                if (reviewItem.companyItemId == companyItemId && reviewItem.uid == uid) {
+                if (reviewItem.companyId == companyId && reviewItem.userId == userId) {
                     dupes.push(reviewItem);
-                }
-                ;
+                };
             });
         }
         return dupes;
-    }
-
-    onModalClick = () => this.setState({isShowingModal: true});
-
-    renderModalFeedback() {
-        var {redirectUrl} = this.props;
-        return (
-            <div onClick={this.onModalClick}>
-                {
-                    this.state.isShowingModal &&
-                    <ModalContainer onClose={() => {
-                        this.setState({isShowingModal: false});
-                        hashHistory.push(redirectUrl);
-                    }}>
-                        <ModalDialog onClose={() => {
-                            this.setState({isShowingModal: false});
-                            hashHistory.push(redirectUrl);
-                        }}>
-                            <h1>Thank you, Review Added!</h1>
-                            <p>After review by Admin it will be made available to the public</p>
-                        </ModalDialog>
-                    </ModalContainer>}
-
-            </div>);
     }
 
     renderAddAUpdateView = () => {
@@ -208,25 +205,25 @@ export class AddReview extends React.Component {
 
     resetInputs = () => {
         this.setState({
-            reviewItemId: '',
+            reviewId: '',
             review: '',
             rating: 0,
             remainingCharacters: null,
-            selectedCompanyItemId: ''
+            selectedCompanyId: ''
         });
     }
 
     getReviewerAvatar = (owner = false) => {
-        var {auth} = this.props;
+        var {userProfile} = this.props;
         let photoURL = "images/no-image.png";
 
-        if (auth.uid == this.state.uid || owner) {
-            if (auth.photoURL) {
-                photoURL = auth.photoURL;
-                //console.debug("Photo Owner", auth.photoURL);
+        if (userProfile.userId == this.state.userId || owner) {
+            if (userProfile.photoURL) {
+                photoURL = userProfile.photoURL;
+                //console.debug("Photo Owner", userProfile.photoURL);
             }
         } else {
-            //console.debug("Not Owner", auth.photoURL);
+            //console.debug("Not Owner", userProfile.photoURL);
             photoURL = null;
         }
 
@@ -241,7 +238,7 @@ export class AddReview extends React.Component {
             cancelOperation: true,
         });
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(reviewsActions.setAddReviewOperation());
+        this.dispatch(reviewsSqliteActions.setAddReviewOperation());
     }
 
     handleUpdate = (e) => {
@@ -250,29 +247,28 @@ export class AddReview extends React.Component {
             return;
         }
 
-        this.dispatch(reviewsActions.startUpdateReviewItem(
-            this.state.reviewItemId,
+        this.dispatch(reviewsSqliteActions.startUpdateReviewItem(
+            this.state.reviewId,
             this.state.review,
             this.state.rating,
-            this.state.companyItemId,
-            this.getReviewerAvatar(),
-            this.state.uid,
+            this.state.userId,
             this.state.isApproved
         ));
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(reviewsActions.setAddReviewOperation());
+        this.dispatch(reviewsSqliteActions.setAddReviewOperation());
+        window.scrollTo(0, 0);
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {auth, reviewItems, userProfile, redirectUrl} = this.props;
+        var {userProfile, reviewItems, userProfile, redirectUrl} = this.props;
 
         var error = {}
         var review = this.refs.review.value;
 
-        if (this.state.selectedCompanyItemId == null) {
+        if (this.state.selectedCompanyId == null) {
             error.errorMessage = "You must select company to review";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companySelect.focus();
@@ -293,41 +289,36 @@ export class AddReview extends React.Component {
             return;
         }
 
-        if (this.findDupeReviews(reviewItems, auth.uid, this.state.selectedCompanyItemId).length != 0) {
+        if (this.findDupeReviews(reviewItems, userProfile.userId, this.state.selectedCompanyId).length != 0) {
             error.errorMessage = "You can only add one review per company, please select another company from drop down!";
             this.dispatch(errorActions.bbzReportError(error));
             return;
         }
 
-        console.debug("this.state.rating",this.state.rating);
+        console.debug("this.state.rating", this.state.rating);
         if (!this.state.rating || this.state.rating == 0) {
             error.errorMessage = "You must select a review rating before you can save review!";
             this.dispatch(errorActions.bbzReportError(error));
             return;
         }
 
-        this.dispatch(reviewsActions.startAddNewReviewItem(
-            auth.uid,
-            this.state.selectedCompanyItemId,
+        this.dispatch(reviewsSqliteActions.startAddNewReviewItem(
+            userProfile.userId,
+            this.state.selectedCompanyId,
             review,
             this.state.rating,
-            this.state.selectedCompanyTitle,
-            userProfile.displayName,
-            userProfile.email,
-            this.getReviewerAvatar(true)
+            this.state.selectedCompanyTitle
         ));
 
         this.resetInputs();
 
-        this.setState({isShowingModal: true},
-            ()=>{
-                if (!this.state.calledFromOutside) {
-                    this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
-                } else {
-                    hashHistory.push(redirectUrl);
-                }
-            }
-        );
+        this.showAlert("Thank you, Review Added!\nAfter review by Admin it will be made available to the public");
+
+        /*if (!this.state.calledFromOutside) {
+            this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${userProfile.userId}&myreviews=true`));
+        } else {
+            hashHistory.push(redirectUrl);
+        }*/
 
         this.dispatch(errorActions.bbzClearError());
     }
@@ -338,34 +329,34 @@ export class AddReview extends React.Component {
         this.setState({remainingCharacters: textRemaining + ' remaining'});
     }
 
-    onCompanyItemIdChange = (val) => {
-        let companyItemId = get(val, 'value');
+    onCompanyIdChange = (val) => {
+        let companyId = get(val, 'value');
         let companyTitle = get(val, 'label');
-        this.setState({selectedCompanyItemId: companyItemId, selectedCompanyTitle: companyTitle});
+        this.setState({selectedCompanyId: companyId, selectedCompanyTitle: companyTitle});
     }
 
     renderCompanySelect() {
-        var {auth} = this.props;
-        var selectedCompanyItemIds = [];
+        var {userProfile} = this.props;
+        var selectedCompanyIds = [];
         var companyItems = this.state.companyItems;
         if (companyItems) {
             companyItems.map((companyItem) => {
-                if (companyItem.isApproved || companyItem.uid == auth.uid) {
-                    selectedCompanyItemIds.push({value: companyItem.companyItemId, label: companyItem.companyTitle});
+                if (companyItem.isApproved == 1 || companyItem.userId == userProfile.userId) {
+                    selectedCompanyIds.push({value: companyItem.companyId, label: companyItem.companyTitle});
                 }
             });
 
             return (
-                <div className="container-fluid">
+                <div className="container-fluserId">
                     <div className="row">
                         <div className="col-sm-10">
                             <div className="form-group">
                                 <Select
                                     ref="companySelect"
                                     name="company-select"
-                                    value={this.state.selectedCompanyItemId}
-                                    options={selectedCompanyItemIds}
-                                    onChange={this.onCompanyItemIdChange}
+                                    value={this.state.selectedCompanyId}
+                                    options={selectedCompanyIds}
+                                    onChange={this.onCompanyIdChange}
                                     matchPos="start"
                                     ignoreCase={true}
                                     clearable={false}
@@ -379,8 +370,8 @@ export class AddReview extends React.Component {
                                       activeStyle={{fontWeight: 'bold'}}>
                                     <span className="glyphicon glyphicon-plus button" data-toggle="tooltip"
                                           title="Add New Company!" onClick={() => {
-                                        //this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
-                                        this.dispatch(servicesActions.startAddServiceItems());
+                                        //this.dispatch(servicesSqliteActions.addServiceItems(Categories.getServices()));
+                                        this.dispatch(servicesSqliteActions.startAddServiceItems());
                                     }}
                                     ></span>
                                 </Link>
@@ -396,6 +387,7 @@ export class AddReview extends React.Component {
     render() {
         return (
             <div className="col-sm-12">
+                <div><AlertContainer ref={a => this.msg = a} {...this.alertOptions} /></div>
                 <div className="review-block">
                     <div className="row">
                         <div className="col-sm-12">
@@ -406,7 +398,6 @@ export class AddReview extends React.Component {
                         <div className="row">
                             <div className="col-sm-6">
                                 <div className="form-group">
-                                    {this.renderModalFeedback()}
                                     {this.state.calledFromOutside && (<Link onClick={this.onGoBack}>Back &nbsp;</Link>)}
                                     {this.state.operation === 'ADD' && (
                                         <label htmlFor="company-item-id">Company</label>)}

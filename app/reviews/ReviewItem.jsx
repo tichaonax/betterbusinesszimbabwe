@@ -3,7 +3,7 @@ var {connect} = require('react-redux');
 import moment from 'moment';
 import RatingItem from 'RatingItem';
 import {Link} from 'react-router';
-var reviewsActions = require('reviewsActions');
+var reviewsSqliteActions = require('reviewsSqliteActions');
 var companiesActions = require('companiesActions');
 var errorActions = require('errorActions');
 import {openUpdatePanel} from 'app/common/Utils';
@@ -26,7 +26,7 @@ export class ReviewItem extends React.Component {
     render() {
         var {
             showCompanyTitle,
-            displayName, email, uid,
+            displayName, email, userId,
             companyTitle, companyId,
             userProfile, reviewId, review,
             rating, isApproved, createAt, updateAt,
@@ -43,12 +43,12 @@ export class ReviewItem extends React.Component {
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";
 
-        if (isApproved) {
+        let approved = (isApproved === 1);
+
+        if (approved) {
             approveImageSource = "images/check-blue-64.png";
             approveMessage = "Approved";
         }
-
-        const reviewDate = moment.unix(createAt).format('MMM Do, YYYY');
 
         return (
             <div className="col-sm-12">
@@ -57,18 +57,19 @@ export class ReviewItem extends React.Component {
                         <div className="col-sm-4">
                             <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
                             <div className="review-block-name">{reviewer}</div>
-                            {auth.loggedIn && userProfile && userProfile.isAdmin && (
+                            {auth.loggedIn && userProfile && (userProfile.isAdmin == 1) && (
                                 <div className="review-block-name">
                                     <span className="bbz-review-span">Email:</span>
                                     <span>&nbsp;</span>
                                     {email}
                                     <span>&nbsp;</span>
                                 </div>)}
-                            <div className="review-block-date">{reviewDate}<br/></div>
+                            <div className="review-block-date">{createAt}<br/></div>
 
-                            {((auth.loggedIn && userProfile && userProfile.isAdmin) || (auth.uid === uid)) && (
+                            {((auth.loggedIn && userProfile && userProfile.isAdmin == 1) ||
+                            (userProfile && userProfile.userId === userId)) && (
                                 <form className="form-inline">
-                                    {(auth.loggedIn && userProfile && userProfile.isAdmin) && (
+                                    {(auth.loggedIn && userProfile && userProfile.isAdmin == 1) && (
                                         <div className="form-group">
                                             <span className="bbz-review-span">Delete:</span>
                                             <span>&nbsp;</span>
@@ -78,9 +79,9 @@ export class ReviewItem extends React.Component {
                                                  alt="Delete Review"
 
                                                  onClick={() => {
-                                                     if (userProfile && userProfile.isAdmin) {
+                                                     if (userProfile && userProfile.isAdmin == 1) {
                                                          //disable delete until confirm dialog is in place
-                                                         //this.dispatch(reviewsActions.startDeleteReviewItem(reviewId, isApproved));
+                                                         //this.dispatch(reviewsSqliteActions.startDeleteReviewItem(reviewId, approved));
                                                      } else {
                                                          openUpdatePanel();
                                                          var error = {};
@@ -91,7 +92,7 @@ export class ReviewItem extends React.Component {
                                                  }}/>
                                         </div>
                                     )}
-                                    {auth.uid === uid && (
+                                    {userProfile && userProfile.userId === userId && (
                                         <div className="form-group">
                                             <span className="bbz-review-span">Update:</span>
                                             <span>&nbsp;</span>
@@ -101,19 +102,19 @@ export class ReviewItem extends React.Component {
 
                                                  onClick={() => {
                                                      openUpdatePanel();
-                                                     //console.debug("auth.uid", auth.uid);
-                                                     //console.debug("rating uid", uid);
-                                                     if (auth.loggedIn && auth.uid === uid) {
+                                                     //console.debug("auth.userId", auth.userId);
+                                                     //console.debug("rating userId", userId);
+                                                     if (auth.loggedIn && userProfile && userProfile.userId === userId) {
                                                          var data = {
-                                                             uid,
+                                                             userId,
                                                              reviewId,
-                                                             companyId,
+                                                             //companyId,
                                                              rating,
                                                              review,
-                                                             isApproved
+                                                             approved
                                                          }
                                                          //console.debug("ReviewItems Data:", data);
-                                                         this.dispatch(reviewsActions.setUpdateReviewOperation(data));
+                                                         this.dispatch(reviewsSqliteActions.setUpdateReviewOperation(data));
                                                      }
                                                      else {
                                                          var error = {};
@@ -125,7 +126,8 @@ export class ReviewItem extends React.Component {
                                         </div>
                                     )}
                                 </form>)}
-                            {((auth.loggedIn && userProfile && userProfile.isAdmin) || (auth.uid === uid)) && (
+                            {((auth.loggedIn && userProfile && userProfile.isAdmin == 1) ||
+                            (userProfile && userProfile.userId === userId)) && (
                                 <div className="column">
                                     <span className="bbz-review-span">{approveMessage}:</span>
                                     <span>&nbsp;</span>
@@ -133,8 +135,10 @@ export class ReviewItem extends React.Component {
                                          width="20" src={approveImageSource}
                                          onClick={() => {
                                              this.dispatch(errorActions.bbzClearError());
-                                             if (userProfile.isAdmin) {
-                                                 this.dispatch(reviewsActions.startApproveUpdateReviewItem(reviewId, !isApproved, companyId, uid, auth.uid));
+                                             if (userProfile.isAdmin == 1) {
+                                                 this.dispatch(reviewsSqliteActions.startApproveUpdateReviewItem(reviewId,
+                                                     !approved,
+                                                     companyId, userId, userProfile.userId));
                                              } else {
                                                  openUpdatePanel();
                                                  var error = {};
@@ -146,9 +150,9 @@ export class ReviewItem extends React.Component {
                                 </div>
                             )}
                             <div>
-                                {auth.loggedIn && userProfile && userProfile.isAdmin && adminUid && (
+                                {auth.loggedIn && userProfile && (userProfile.isAdmin == 1) && adminUid && (
                                     <div>
-                                        <Link to={`/users?uid=${adminUid}`} activeClassName="active"
+                                        <Link to={`/users?userId=${adminUid}`} activeClassName="active"
                                               activeStyle={{fontWeight: 'bold'}}>Status By</Link>
                                     </div>)}
                             </div>

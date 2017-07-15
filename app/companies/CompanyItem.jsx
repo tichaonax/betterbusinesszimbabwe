@@ -5,6 +5,7 @@ var Rate = require('rc-rate');
 import Linkify from 'react-linkify';
 import {openUpdatePanel} from 'app/common/Utils';
 var companiesSqliteActions = require('companiesSqliteActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 
@@ -15,13 +16,14 @@ export class CompanyItem extends React.Component {
     }
 
     render() {
-        var {companyId, serviceId, serviceItemId, serviceCategory, userId,
-            loggedInUser, companyItemId, rating,
+        var {
+            companyId, serviceId, serviceItemId, serviceCategory, userId,
+            userProfile, companyItemId, rating,
             isApproved, reviewCount, companyTitle,
             companyDesc, createAt, updateAt, auth,
-            deleteCompany, updateCompany} = this.props;
+            deleteCompany, updateCompany
+        } = this.props;
 
-        //console.log("serviceId",serviceId);
         let approved = (isApproved === 1);
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";
@@ -43,82 +45,83 @@ export class CompanyItem extends React.Component {
                     <div className="review-block">
                         <div className="row">
                             {auth.loggedIn && (
-                            <div className="col-sm-3">
-                                            <div>
-                                                <span className="bbz-review-span">Delete:</span>
-                                                <span>&nbsp;</span>
-                                                <img className="bbz-general-pointer" type="image" value="submit"
-                                                     height="15"
-                                                     width="15" src="images/delete-blue-x-64.png"
-                                                     alt="Delete Company"
-                                                     onClick={() => {
-                                                         this.dispatch(errorActions.bbzClearError());
-                                                         if (loggedInUser.isAdmin) {
-                                                             this.dispatch(companiesSqliteActions.startDeleteCompanyItem(companyId));
-                                                         } else {
-                                                             openUpdatePanel();
-                                                             var error = {};
-                                                             error.errorMessage = "You must be admin to delete this company information";
-                                                             this.dispatch(errorActions.bbzReportError(error));
-                                                             window.scrollTo(0, 0);
-                                                         }
-                                                     }}/>
-                                            </div>
-                                            <div>
-                                                <span className="bbz-review-span">Update:</span>
-                                                <span>&nbsp;</span>
-                                                <img className="bbz-general-pointer" type="image" value="submit"
-                                                     height="20"
-                                                     width="20" src="images/update-blue-64.png"
-                                                     alt="Update Company"
-                                                     onClick={() => {
-                                                         openUpdatePanel();
-                                                         this.dispatch(errorActions.bbzClearError());
-                                                         if (auth.userId === userId || loggedInUser.isAdmin) {
-                                                             var data = {
-                                                                 userId,
-                                                                 companyId,
-                                                                 companyTitle,
-                                                                 companyDesc,
-                                                                 rating,
-                                                                 selectedServiceId: serviceId,
-                                                                 serviceCategory
-                                                             }
-
-                                                             // console.debug("CompanyItems Data:", data);
-
-                                                             this.dispatch(companiesSqliteActions.setUpdateCompanyOperation(data));
-                                                         }
-                                                         else {
-                                                             var error = {};
-                                                             error.errorMessage = "You must be the owner or admin to update this company information";
-                                                             this.dispatch(errorActions.bbzReportError(error));
-                                                         }
-                                                         window.scrollTo(0, 0);
-                                                     }}/>
-                                            </div>
-                                {loggedInUser && loggedInUser.isAdmin && (
+                                <div className="col-sm-3">
                                     <div>
-                                        <span className="bbz-review-span">{approveMessage}:</span>
+                                        <span className="bbz-review-span">Delete:</span>
                                         <span>&nbsp;</span>
-                                        <img className="bbz-general-pointer" type="image" value="submit" height="20"
-                                             width="20"
-                                             src={approveImageSource}
+                                        <img className="bbz-general-pointer" type="image" value="submit"
+                                             height="15"
+                                             width="15" src="images/delete-blue-x-64.png"
+                                             alt="Delete Company"
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
-                                                 if (loggedInUser.isAdmin) {
-                                                     this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId, !approved));
+                                                 if (userProfile.isAdmin == 1) {
+                                                     this.dispatch(companiesSqliteActions.startDeleteCompanyItem(companyId));
                                                  } else {
                                                      openUpdatePanel();
                                                      var error = {};
-                                                     error.errorMessage = "You must be admin to approve";
+                                                     error.errorMessage = "You must be admin to delete this company information";
                                                      this.dispatch(errorActions.bbzReportError(error));
                                                      window.scrollTo(0, 0);
                                                  }
                                              }}/>
                                     </div>
-                                )}
-                            </div>)}
+                                    <div>
+                                        <span className="bbz-review-span">Update:</span>
+                                        <span>&nbsp;</span>
+                                        <img className="bbz-general-pointer" type="image" value="submit"
+                                             height="20"
+                                             width="20" src="images/update-blue-64.png"
+                                             alt="Update Company"
+                                             onClick={() => {
+                                                 openUpdatePanel();
+                                                 this.dispatch(errorActions.bbzClearError());
+                                                 if (userProfile.userId === userId || userProfile.isAdmin) {
+                                                     var data = {
+                                                         userId,
+                                                         companyId,
+                                                         companyTitle,
+                                                         companyDesc,
+                                                         rating,
+                                                         selectedServiceId: serviceId,
+                                                         serviceCategory
+                                                     }
+
+                                                     console.debug("CompanyItems Data:", data);
+                                                     this.dispatch(servicesSqliteActions.startAddServiceItems());
+                                                     this.dispatch(companiesSqliteActions.setUpdateCompanyOperation(data));
+                                                 }
+                                                 else {
+                                                     var error = {};
+                                                     error.errorMessage = "You must be the owner or admin to update this company information";
+                                                     this.dispatch(errorActions.bbzReportError(error));
+                                                 }
+                                                 window.scrollTo(0, 0);
+                                             }}/>
+                                    </div>
+                                    {userProfile && (userProfile.isAdmin == 1) && (
+                                        <div>
+                                            <span className="bbz-review-span">{approveMessage}:</span>
+                                            <span>&nbsp;</span>
+                                            <img className="bbz-general-pointer" type="image" value="submit" height="20"
+                                                 width="20"
+                                                 src={approveImageSource}
+                                                 onClick={() => {
+                                                     this.dispatch(errorActions.bbzClearError());
+                                                     if (userProfile.isAdmin == 1) {
+                                                         this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId,
+                                                             !approved));
+                                                     } else {
+                                                         openUpdatePanel();
+                                                         var error = {};
+                                                         error.errorMessage = "You must be admin to approve";
+                                                         this.dispatch(errorActions.bbzReportError(error));
+                                                         window.scrollTo(0, 0);
+                                                     }
+                                                 }}/>
+                                        </div>
+                                    )}
+                                </div>)}
                             <div className="col-sm-3">
                                 <div>
                                     <Rate
@@ -148,13 +151,13 @@ export class CompanyItem extends React.Component {
                                     <span className="label bbz-review-span">ID:</span>
                                     <span>&nbsp;</span>{companyId}
                                 </div>
-                                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
+                                {auth.loggedIn && userProfile && (userProfile.isSuperUser == 1) && (
                                     <div>
                                         <span className="label bbz-review-span">Company ID:</span>
                                         <span>&nbsp;</span>
                                         {companyId}
                                     </div>)}
-                                {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
+                                {auth.loggedIn && userProfile && (userProfile.isAdmin == 1) && (
                                     <div>
                                         <Link to={`/users?uid=${userId}`} activeClassName="active"
                                               activeStyle={{fontWeight: 'bold'}}>Reviewer</Link>
@@ -183,7 +186,7 @@ export class CompanyItem extends React.Component {
 function mapStateToProps(state, ownProps) {
     return {
         auth: state.auth,
-        loggedInUser: state.userProfile,
+        userProfile: state.userProfile,
     }
 }
 export default  connect(mapStateToProps)(CompanyItem);

@@ -140,6 +140,28 @@ usersRoutes.route('/users/profile/lastlogin/update/:userId')
     });
 
 
+//update user reviewCount
+usersRoutes.route('/users/update/reviewcount/:userId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let userId = req.params.userId;
+        let reviewCount = req.body.reviewCount;
+
+        var updateUserReviewCount = require('../../dao/users/updateUserReviewCount');
+        return new Promise(() => {
+            let updateRecord = updateUserReviewCount(userId, reviewCount);
+            var findUserById = require('../../dao/users/findUserById');
+            //return the updated row
+            let user = findUserById(userId);
+            return (Promise.resolve(res.json({data: user})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
 
 /*
 // get last login by userId

@@ -17,7 +17,7 @@ export class RatingItem extends React.Component {
         return str.split(/\s+/).slice(0, 5).join(" ") + " ...";
     }
 
-    renderRatingItem = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth) => {
+    renderRatingItem = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId, userProfile, auth) => {
 
         const reviewHeader = this.getWords(review);
 
@@ -50,7 +50,7 @@ export class RatingItem extends React.Component {
                     <span>&nbsp;</span>
                     {reviewId}
                 </div>
-                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
+                {auth.loggedIn && userProfile &&  (userProfile.isSuperUser==1) && (
                     <div>
                         <span className="label bbz-review-span">Review ID:</span>
                         <span>&nbsp;</span>
@@ -71,7 +71,7 @@ export class RatingItem extends React.Component {
             email, uid,
             companyTitle,
             companyId,
-            loggedInUser,
+            userProfile,
             reviewId,
             review, rating,
             isApproved, createAt,
@@ -80,7 +80,7 @@ export class RatingItem extends React.Component {
 
         return (
             <div>
-                {this.renderRatingItem(rating, review, companyId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth)}
+                {this.renderRatingItem(rating, review, companyId, companyTitle, showCompanyTitle, reviewId, userProfile, auth)}
             </div>
 
         );
@@ -90,7 +90,7 @@ export class RatingItem extends React.Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        loggedInUser: state.userProfile
+        userProfile: state.userProfile
     }
 }
 export default  connect(mapStateToProps)(RatingItem);

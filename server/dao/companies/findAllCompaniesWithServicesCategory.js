@@ -14,7 +14,7 @@ var findAllCompaniesWithServicesCategory = () => {
         companies c
         join services s
         on c.serviceId = s.serviceId`;
-    console.log("sql",sql);
+    //console.log("sql",sql);
     return db.prepare(sql).all();
 }
 

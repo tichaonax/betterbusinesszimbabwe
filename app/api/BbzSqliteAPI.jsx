@@ -81,8 +81,8 @@ module.exports = {
                 const serviceCategory = (companyItem.serviceCategory) ? companyItem.serviceCategory.toLowerCase() : "";
                 const companyTitle = (companyItem.companyTitle) ? companyItem.companyTitle.toLowerCase() : "";
                 const companyDesc = (companyItem.companyDesc) ? companyItem.companyDesc.toLowerCase() : "";
-                const companyId = (companyItem.createAt) ? companyItem.createAt.toString() : "";
-                //const rating = (companyItem.rating) ? companyItem.rating : 0;
+                const companyId = companyItem.companyId;
+                const rating = ((companyItem.rating) ? companyItem.rating : 0).toString();
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyTitle;
@@ -90,10 +90,10 @@ module.exports = {
                     return companyItem.companyDesc;
                 } else if (serviceCategory.indexOf(searchText.toLowerCase()) > -1) {
                     return companyItem.companyDesc;
-                } else if (companyId.indexOf(searchText.toLowerCase()) > -1) {
+                } else if (companyId == searchText) {
                     return companyItem.companyId;
-               // }else if (companyItemId.indexOf(searchText) > -1) {
-                 //   return companyItem.companyItemId;
+                } else if (rating.indexOf(searchText.toLowerCase()) > -1) {
+                    return companyItem.companyItemId;
                 }
             });
         }
@@ -118,10 +118,10 @@ module.exports = {
         //sort companyItems with Approval Pending first
 
         filteredCompanyItems.sort((a, b) => {
-            if (!a.isApproved && b.isApproved) {
+            if (a.isApproved == 0 && b.isApproved == 1) {
                 //take a first
                 return -1
-            } else if (a.isApproved && !b.isApproved) {
+            } else if (a.isApproved == 1 && b.isApproved == 0) {
                 // take b first
                 return 1;
             } else {
@@ -140,7 +140,8 @@ module.exports = {
         //filter by showApprovalPending
 
         filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
-            return reviewItem.isApproved || showApprovalPending || reviewItem.userId === userId
+            let approved = (reviewItem.isApproved == 1);
+            return approved || showApprovalPending || reviewItem.userId === userId
         });
 
         if(showMyReviews){
@@ -157,7 +158,7 @@ module.exports = {
             filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
                 var companyTitle = reviewItem.companyTitle.toLowerCase();
                 var review = reviewItem.review.toLowerCase();
-                var reviewId = reviewItem.createAt.toString();
+                var reviewId = reviewItem.reviewId;
                 var companyId = reviewItem.companyId;
                 var user = reviewItem.userId;
 
@@ -165,11 +166,11 @@ module.exports = {
                     return reviewItem.companyTitle;
                 } else if (review.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.review;
-                } else if (reviewId.indexOf(searchText.toLowerCase()) > -1) {
+                } else if (reviewId == searchText) {
                     return reviewItem.createAt;
-                } else if (companyId.indexOf(searchText) > -1) {
+                } else if (companyId == searchText) {
                     return reviewItem.companyItemId;
-                }else if (user.indexOf(searchText) > -1) {
+                } else if (user == searchText) {
                     return reviewItem.userId;
                 }
             });
@@ -177,7 +178,7 @@ module.exports = {
 
         //sort reviewItems with latest additions at the top
 
-        filteredreviewItems.sort((a, b) => {
+    /*    filteredreviewItems.sort((a, b) => {
             if (parseInt(a.createAt) > parseInt(b.createAt)) {
                 //take a first
                 return -1
@@ -189,15 +190,33 @@ module.exports = {
                 //no change
                 return 0;
             }
+        });*/
+
+
+        //sort by recently updated first
+        filteredreviewItems.sort((a, b) => {
+            if (a.updateAt > b.updateAt) {
+                //take a first
+                return -1
+            } else if (a.updateAt < b.updateAt) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
         });
+
+
 
         //sort reviewItems with Approval Pending first
 
         filteredreviewItems.sort((a, b) => {
-            if (!a.isApproved && b.isApproved) {
+            if (a.isApproved == 0 && b.isApproved == 1) {
                 //take a first
                 return -1
-            } else if (a.isApproved && !b.isApproved) {
+            } else if (a.isApproved == 1 && b.isApproved == 0) {
                 // take b first
                 return 1;
             } else {

@@ -5,7 +5,7 @@ import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import {USERS_TITLE} from 'pageTitles';
 import UserList from 'UserList'
 var searchActions = require('searchActions');
-var usersActions = require('usersActions');
+var usersSqliteActions = require('usersSqliteActions');
 var urlActions = require('urlActions');
 var navActions = require('navActions');
 var errorActions = require('errorActions');
@@ -29,7 +29,7 @@ export class Users extends React.Component {
             this.dispatch(searchActions.setSearchText(uid));
         }
 
-        this.dispatch(usersActions.startAddUserItems());
+        this.dispatch(usersSqliteActions.startAddUserItems());
         this.dispatch(urlActions.setRedirectUrl('/users'));
     }
 
