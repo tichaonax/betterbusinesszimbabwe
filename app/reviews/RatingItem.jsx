@@ -50,12 +50,12 @@ export class RatingItem extends React.Component {
                     <span>&nbsp;</span>
                     {reviewId}
                 </div>
-                {auth.loggedIn && userProfile &&  (userProfile.isSuperUser==1) && (
+               {/* {auth.loggedIn && userProfile &&  (userProfile.isSuperUser==1) && (
                     <div>
                         <span className="label bbz-review-span">Review ID:</span>
                         <span>&nbsp;</span>
                         {reviewId}
-                    </div>)}
+                    </div>)}*/}
                 <div className="review-block-description">
                     <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
                         {review}

@@ -11,7 +11,6 @@ export var reviewItemsReducer = (state = [], action) => {
             return state.map((reviewItem) => {
                 //replace with updated item
                 if (reviewItem.reviewId === action.reviewId) {
-                    console.log("review match", reviewItem);
                     return {
                         ...reviewItem,
                         ...action.updates

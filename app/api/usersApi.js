@@ -96,6 +96,16 @@ class UsersApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    updateUserIsAdminFlag = (userId, isAdmin, adminUserId) => {
+        var resource = `/api/users/update/isadmin/${userId}/${adminUserId}`;
+        var data = {isAdmin};
+        return this.POST(resource, data).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
 }
 
 module.exports = UsersApi;

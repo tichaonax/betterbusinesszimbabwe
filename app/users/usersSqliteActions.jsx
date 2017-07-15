@@ -39,26 +39,23 @@ export var startAddUserItems = () => {
     };
 };
 
-export var updateUserItem = (userItemId, updates) => {
+export var updateUserItem = (userId, updates) => {
     return {
         type: 'UPDATE_USER_ITEM',
-        userItemId,
+        userId,
         updates
     };
 };
 
-export var startToggleAdminUserItem = (userItemId, isAdmin) => {
+export var startToggleAdminUserItem = (userId, isAdmin, adminUserId) => {
+    //console.log("startToggleAdminUserItem userId, isAdmin, adminUserId",userId, isAdmin, adminUserId);
     return (dispatch, getState) => {
-        var userItemRef = firebaseRef.child(`users/${userItemId}/userProfile`);
-        var userProfile={};
-        return userItemRef.once('value').then((snapshot) => {
-            userProfile = snapshot.val() || {}; //return available data or empty object
-        }).then(()=>{
-            var updates = {isAdmin: isAdmin};
-            userProfile["isAdmin"] = isAdmin;
-            return userItemRef.update(updates).then(()=>{
-                return dispatch(updateUserItem(userItemId, {userProfile: userProfile}));
-            })
+        dispatch(loadingActions.setLoadingStatus(true));
+        return usersApi.updateUserIsAdminFlag(userId, isAdmin, adminUserId).then((response) => {
+            let user = response.data;
+            console.debug("user", user);
+            dispatch(loadingActions.setLoadingStatus(false));
+            return dispatch(updateUserItem(userId, user));
         }).catch(
             (error) => {
                 console.debug("Unable to update user admin status", error);

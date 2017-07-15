@@ -259,4 +259,28 @@ usersRoutes.route('/users/delete/:userId/:adminUid')
         });
     });
 
+//update user isAdmin status by userId
+usersRoutes.route('/users/update/isadmin/:userId/:adminUserId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let adminUserId = req.params.adminUserId;
+        let userId = req.params.userId;
+        let isAdmin = (req.body.isAdmin) ? 1 : 0;
+
+        var updateUsersIsAdminFlag = require('../../dao/users/updateUsersIsAdminFlag');
+        return new Promise(() => {
+            let updateRecord = updateUsersIsAdminFlag(userId, isAdmin);
+            var findUserById = require('../../dao/users/findUserById');
+            //return the updated row
+            let user = findUserById(userId);
+            return (Promise.resolve(res.json({data: user})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+
 module.exports = usersRoutes;

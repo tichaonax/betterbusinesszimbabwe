@@ -2,7 +2,7 @@ import React from 'react';
 var {connect} = require('react-redux');
 import {Link} from 'react-router';
 import Linkify from 'react-linkify';
-var usersActions = require('usersActions');
+var usersSqliteActions = require('usersSqliteActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 
@@ -68,7 +68,7 @@ export class CompanyItem extends React.Component {
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
                                                  if (loggedInUser.isSuperUser) {
-                                                     this.dispatch(usersActions.startToggleAdminUserItem(userId, !isAdmin));
+                                                     this.dispatch(usersSqliteActions.startToggleAdminUserItem(userId, !isAdmin, loggedInUser.userId));
                                                  } else {
                                                      var error = {};
                                                      error.errorMessage = "You must be Super User to approve";
@@ -78,7 +78,7 @@ export class CompanyItem extends React.Component {
                                              }}/>
                                     </div>
                                 )}
-                                {auth.loggedIn && loggedInUser.isSuperUser && (
+                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
                                     <div>
                                         <span className="label bbz-review-span">Provider:</span>
                                         <span>&nbsp;</span>{providerId}
@@ -92,13 +92,19 @@ export class CompanyItem extends React.Component {
                                 </div>
                                 {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
                                     <div>
-                                        <span className="label bbz-review-span">ID:</span>
+                                        <span className="label bbz-review-span">Firebase ID:</span>
                                         <span>&nbsp;</span>
                                         {firebaseId}
                                     </div>)}
                                 {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
                                     <div>
-                                        <span className="label bbz-review-span">UserID:</span>
+                                        <span className="label bbz-review-span">Provider UID:</span>
+                                        <span>&nbsp;</span>{uid}
+                                    </div>
+                                )}
+                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                    <div>
+                                        <span className="label bbz-review-span">User ID:</span>
                                         <span>&nbsp;</span>
                                         {userId}
                                     </div>)}
