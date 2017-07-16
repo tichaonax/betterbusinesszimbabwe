@@ -24,9 +24,9 @@ export class Users extends React.Component {
     loadData(props) {
         this.dispatch(errorActions.bbzClearError());
 
-        var uid = props.location.query.uid;
-        if (uid && uid.length > 0) {
-            this.dispatch(searchActions.setSearchText(uid));
+        var userId = props.location.query.user;
+        if (userId && userId.length > 0) {
+            this.dispatch(searchActions.setSearchText(userId));
         }
 
         this.dispatch(usersSqliteActions.startAddUserItems());
@@ -46,9 +46,10 @@ export class Users extends React.Component {
 
     componentWillReceiveProps(newProps) {
         var {isLoggedIn, userProfile} = newProps;
-        if (isLoggedIn && userProfile && userProfile.isAdmin) {
+        if (isLoggedIn && userProfile && (userProfile.isAdmin == 1)) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
+
         this.setState({
             loaded: !newProps.loading.loaded
         });

@@ -14,12 +14,18 @@ export class CompanyReviews extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            companyId: 0
+        }
     }
 
     loadData(props) {
-        var company = props.location.query.company;
-        if (company && company.length > 0) {
-            this.dispatch(searchActions.setSearchText(company));
+        var companyId = props.location.query.company;
+        if (companyId && companyId.length > 0) {
+            this.dispatch(searchActions.setSearchText(companyId));
+            this.setState({
+                companyId: companyId
+            });
         }
     }
 
@@ -35,7 +41,7 @@ export class CompanyReviews extends React.Component {
 
     componentWillReceiveProps(newProps) {
         var {isLoggedIn, userProfile} = newProps;
-        if (isLoggedIn && userProfile && userProfile.isAdmin) {
+        if (isLoggedIn && userProfile && (userProfile.isAdmin == 1)) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
     }
@@ -46,7 +52,8 @@ export class CompanyReviews extends React.Component {
 
     render() {
 
-        var {reviewItems, showApprovalPending, searchText, isLoggedIn, companyItems, userProfile} = this.props;
+        var {reviewItems, companyItems, searchOptions} = this.props;
+        console.log("searchOptions",searchOptions);
 
         function getCompanyDescription(companyId) {
             if (companyId == undefined) return {companyDesc: ''};
@@ -59,21 +66,29 @@ export class CompanyReviews extends React.Component {
             return (match) ? match : {companyDesc: ''};
         }
 
-        var userId = 0;
-        if (isLoggedIn && userProfile) {
-            userId = userProfile.userId;
-        }
-
-        var filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, userId);
-
         let companyTitle = '';
-        let companyItemId = '';
         let companyDesc = '';
+
+        let filteredReviewItems = [];
+        reviewItems.map((reviewItem) => {
+            if (reviewItem.companyId == this.state.companyId) {
+                if (searchOptions.pending) {
+                    console.log("pending reviewItem", reviewItem);
+                    filteredReviewItems.push(reviewItem);
+                } else {
+                    if (reviewItem.isApproved == 1) {
+                        console.log("approved only reviewItem", reviewItem);
+                        filteredReviewItems.push(reviewItem);
+                    }
+                }
+            }
+        })
+
+        console.log("filteredReviewItems",filteredReviewItems);
 
         if (filteredReviewItems.length > 0) {
             companyTitle = filteredReviewItems[0].companyTitle;
-            companyItemId = filteredReviewItems[0].companyItemId;
-            companyDesc = getCompanyDescription(companyItemId).companyDesc;
+            companyDesc = getCompanyDescription(this.state.companyId).companyDesc;
         }
 
         var rating = getRatingRoundedToHalf(getRatingsAverage(filteredReviewItems));
@@ -96,7 +111,7 @@ export class CompanyReviews extends React.Component {
                                 <div className="rating-block col-sm-5">
                                     <h3>{companyTitle}</h3>
                                     <div>
-                                        <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                                        <Link to={`/addreview?company=${this.state.companyId}`} activeClassName="active"
                                               activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
                                     </div>
                                 </div>
@@ -133,7 +148,8 @@ export class CompanyReviews extends React.Component {
                                 </div>
                             </div>
                             <div>
-                                <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
+                                <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}
+                                            companyId={this.state.companyId}/>
                             </div>
                         </div>
                     </div>
@@ -146,10 +162,8 @@ export class CompanyReviews extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile,
         reviewItems: state.reviewItems,
-        showApprovalPending: state.showApprovalPending,
-        searchText: state.searchText,
         companyItems: state.companyItems,
+        searchOptions: state.searchOptions
     }
 })(CompanyReviews);

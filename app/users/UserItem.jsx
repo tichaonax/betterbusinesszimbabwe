@@ -19,10 +19,10 @@ export class CompanyItem extends React.Component {
             uid, loggedInUser, user, auth
         } = this.props;
 
-        if (loggedInUser) {
-            loggedInUser.isSuperUser = (loggedInUser.isSuperUser == 1);
-            loggedInUser.isAdmin = (loggedInUser.isAdmin == 1);
-        }
+        //if (loggedInUser) {
+        //    loggedInUser.isSuperUser = (loggedInUser.isSuperUser == 1);
+        //    loggedInUser.isAdmin = (loggedInUser.isAdmin == 1);
+        //}
 
         isApproved = (isApproved == 1);
         isSuperUser = (isSuperUser == 1);
@@ -59,7 +59,7 @@ export class CompanyItem extends React.Component {
                                     <Link to={`/reviews?user=${userId}`} activeClassName="active bbz-review-span"
                                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                                 </div>
-                                {auth.loggedIn && loggedInUser.isSuperUser && (
+                                {auth.loggedIn && loggedInUser && (loggedInUser.isSuperUser == 1) && (
                                     <div className="column">
                                         <span className="bbz-review-span">{approveMessage}:</span>
                                         <span>&nbsp;</span>
@@ -67,8 +67,9 @@ export class CompanyItem extends React.Component {
                                              width="20" src={approveImageSource}
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
-                                                 if (loggedInUser.isSuperUser) {
-                                                     this.dispatch(usersSqliteActions.startToggleAdminUserItem(userId, !isAdmin, loggedInUser.userId));
+                                                 if (loggedInUser.isSuperUser == 1) {
+                                                     this.dispatch(usersSqliteActions.startToggleAdminUserItem(userId,
+                                                         !isAdmin, loggedInUser.userId));
                                                  } else {
                                                      var error = {};
                                                      error.errorMessage = "You must be Super User to approve";
@@ -78,7 +79,7 @@ export class CompanyItem extends React.Component {
                                              }}/>
                                     </div>
                                 )}
-                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                {auth.loggedIn && loggedInUser && (loggedInUser.isSuperUser == 1) && (
                                     <div>
                                         <span className="label bbz-review-span">Provider:</span>
                                         <span>&nbsp;</span>{providerId}
@@ -90,25 +91,25 @@ export class CompanyItem extends React.Component {
                                 <div className="review-block-title">
                                     {displayName}
                                 </div>
-                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                {auth.loggedIn && loggedInUser && (loggedInUser.isSuperUser == 1) && (
                                     <div>
                                         <span className="label bbz-review-span">Firebase ID:</span>
                                         <span>&nbsp;</span>
                                         {firebaseId}
                                     </div>)}
-                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                {auth.loggedIn && loggedInUser && (loggedInUser.isSuperUser == 1) && (
                                     <div>
                                         <span className="label bbz-review-span">Provider UID:</span>
                                         <span>&nbsp;</span>{uid}
                                     </div>
                                 )}
-                                {auth.loggedIn && loggedInUser && loggedInUser.isSuperUser && (
+                                {auth.loggedIn && loggedInUser && (loggedInUser.isSuperUser == 1) && (
                                     <div>
                                         <span className="label bbz-review-span">User ID:</span>
                                         <span>&nbsp;</span>
                                         {userId}
                                     </div>)}
-                                {auth.loggedIn && loggedInUser && loggedInUser.isAdmin && (
+                                {auth.loggedIn && loggedInUser && (loggedInUser.isAdmin == 1) && (
                                     <div>
                                         <span className="bbz-review-span">Email:</span>
                                         <span>&nbsp;</span>

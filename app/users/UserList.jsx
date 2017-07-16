@@ -20,13 +20,13 @@ export class UserList extends React.Component {
 
     componentWillReceiveProps(newProps) {
         this.dispatch(navActions.setNavPage(USERS_TITLE));
-        var {userItems, searchOptions, searchText, auth} = newProps;
-        var uid = 0;
+        var {userItems, searchOptions, searchText, userProfile, auth} = newProps;
+        var userId = 0;
 
-        if (auth.loggedIn) {
-            uid = auth.uid;
+        if (auth.loggedIn && userProfile) {
+            userId = userProfile.userId;
         }
-        var filteredUserItems = BbzSqliteAPI.getFilteredUsers(userItems, searchOptions.pending, searchText, uid);
+        var filteredUserItems = BbzSqliteAPI.getFilteredUsers(userItems, searchOptions.pending, searchText, userId);
 
         this.setState({
                 rowCount: filteredUserItems.length,
@@ -86,6 +86,7 @@ export default connect(
     (state) => {
         return {
             auth: state.auth,
+            userProfile: state.userProfile,
             userItems: state.userItems,
             searchText: state.searchText,
             searchOptions: state.searchOptions,

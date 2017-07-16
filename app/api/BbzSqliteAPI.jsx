@@ -3,39 +3,40 @@ var $ = require('jquery');
 
 module.exports = {
 
-    getFilteredUsers: function (userItems, showApprovalPending, searchText, uid = 0) {
+    getFilteredUsers: function (userItems, showApprovalPending, searchText, userId = 0) {
         //console.debug("searchText", searchText);
-        //console.debug("userItems", userItems);
+        console.debug("userItems 1", userItems);
         var filteredUserItems = userItems;
 
         //filter by showApprovalPending
 
         filteredUserItems = filteredUserItems.filter((userItem) => {
-            var userProfile = (userItem.userProfile) ? userItem.userProfile : {};
-            return userProfile.isApproved || showApprovalPending || userProfile.uid == uid
+            let approved = (userItem.isApproved == 1);
+            return approved || showApprovalPending || userProfile.userId == userId
         });
 
+        console.debug("filteredUserItems 2", filteredUserItems);
         //filter by searchText
 
-        if (searchText.length > 0 && userItems.length >0) {
+        if (searchText.length > 0 && userItems.length > 0) {
             filteredUserItems = filteredUserItems.filter((userItem) => {
-                var userProfile = (userItem.userProfile) ? userItem.userProfile : {};
-                //console.debug("userProfile", userProfile);
-                const userItemId = (userItem.userItemId) ? userItem.userItemId : "";
+                var userProfile = (userItem) ? userItem : {};
+                console.debug("userProfile**", userItem);
+                const firebaseId = (userProfile.firebaseId) ? userProfile.firebaseId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
                 const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
                 const providerId = (userProfile.providerId) ? userProfile.providerId.toLowerCase() : "";
-                const userId = (userProfile.userId) ? userProfile.userId.toLowerCase() : "";
+                var user = userProfile.userId;
 
                 if (displayName.indexOf(searchText.toLowerCase()) > -1) {
                     return userProfile.displayName;
                 } else if (email.indexOf(searchText.toLowerCase()) > -1) {
                     return userProfile.email;
-                } else if (userItemId.indexOf(searchText) > -1) {
-                    return userItem.userItemId;
+                } else if (firebaseId.indexOf(searchText) > -1) {
+                    return userProfile.firebaseId;
                 } else if (providerId.indexOf(searchText) > -1) {
                     return userProfile.providerId;
-                } else if (userId.indexOf(searchText) > -1) {
+                } else if (user == searchText) {
                     return userProfile.userId;
                 }
             });
@@ -44,10 +45,10 @@ module.exports = {
             //sort by with Admins first
 
             filteredUserItems.sort((a, b) => {
-                if (a.userProfile.isAdmin && !b.userProfile.isAdmin) {
+                if ((a.userItem && a.userItem.isAdmin == 1) && !(b.userItem && b.userItem.isAdmin == 1)) {
                     //take a first
                     return -1
-                } else if (!a.userProfile.isAdmin && b.userProfile.isAdmin) {
+                } else if (!(a.userItem && a.userItem.isAdmin == 1) && (b.userItem && b.userItem.isAdmin == 1)) {
                     // take b first
                     return 1;
                 } else {
@@ -76,7 +77,7 @@ module.exports = {
         //filter by searchText
         //we want to also search by company description and others
         //and company id which is stored as unix createAt date time
-        if (searchText.length > 0 ) {
+        if (searchText.length > 0) {
             filteredCompanyItems = filteredCompanyItems.filter((companyItem) => {
                 const serviceCategory = (companyItem.serviceCategory) ? companyItem.serviceCategory.toLowerCase() : "";
                 const companyTitle = (companyItem.companyTitle) ? companyItem.companyTitle.toLowerCase() : "";
@@ -135,18 +136,18 @@ module.exports = {
     },
 
     getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showMyReviews = false) {
-        var filteredreviewItems = reviewItems;
+        var filteredReviewItems = reviewItems;
 
         //filter by showApprovalPending
 
-        filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
+        filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
             let approved = (reviewItem.isApproved == 1);
             return approved || showApprovalPending || reviewItem.userId === userId
         });
 
-        if(showMyReviews){
+        if (showMyReviews) {
             //just get the reviews of the passed user
-            filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
+            filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
                 return reviewItem.userId === userId
             });
         }
@@ -155,7 +156,7 @@ module.exports = {
         //we want to also search by review description
         //and review id stored as unix createAt date time
         if (searchText.length > 0) {
-            filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
+            filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
                 var companyTitle = reviewItem.companyTitle.toLowerCase();
                 var review = reviewItem.review.toLowerCase();
                 var reviewId = reviewItem.reviewId;
@@ -176,25 +177,8 @@ module.exports = {
             });
         }
 
-        //sort reviewItems with latest additions at the top
-
-    /*    filteredreviewItems.sort((a, b) => {
-            if (parseInt(a.createAt) > parseInt(b.createAt)) {
-                //take a first
-                return -1
-            } else if (parseInt(a.createAt) < parseInt(b.createAt)) {
-                // take b first
-                return 1;
-            } else {
-                //a === b
-                //no change
-                return 0;
-            }
-        });*/
-
-
         //sort by recently updated first
-        filteredreviewItems.sort((a, b) => {
+        filteredReviewItems.sort((a, b) => {
             if (a.updateAt > b.updateAt) {
                 //take a first
                 return -1
@@ -209,10 +193,9 @@ module.exports = {
         });
 
 
-
         //sort reviewItems with Approval Pending first
 
-        filteredreviewItems.sort((a, b) => {
+        filteredReviewItems.sort((a, b) => {
             if (a.isApproved == 0 && b.isApproved == 1) {
                 //take a first
                 return -1
@@ -226,7 +209,7 @@ module.exports = {
             }
         });
 
-        return filteredreviewItems;
+        return filteredReviewItems;
     },
 
     getFilteredServices: function (serviceItems, searchText) {
@@ -242,7 +225,7 @@ module.exports = {
 
         if (searchText.length > 0) {
             filteredServiceItems = filteredServiceItems.filter((serviceItem) => {
-               // console.debug("serviceItem", serviceItem);
+                // console.debug("serviceItem", serviceItem);
                 const serviceId = (serviceItem.serviceId) ? serviceItem.serviceId.toString().toLowerCase() : "";
                 const serviceTitle = (serviceItem.serviceCategory) ? serviceItem.serviceCategory.toLowerCase() : "";
 

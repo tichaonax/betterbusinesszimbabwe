@@ -97,11 +97,11 @@ export var updateReviewItem = (reviewId, updates) => {
 };
 
 export var startUpdateReviewItem = (reviewId, review, rating, userId, companyId, isApproved) => {
-    //console.log("***update review",reviewId, review, rating, userId, companyId, isApproved);
+    console.log("***update review",reviewId, review, rating, userId, companyId, isApproved);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewItem(reviewId, review, rating, userId).then((review) => {
-                //console.debug("review updated", review.data);
+                console.debug("review updated", review.data);
                 let reviewItem = review.data;
                 dispatch(updateReviewItem(reviewId, reviewItem));
                 dispatch(loadingActions.setLoadingStatus(false));
