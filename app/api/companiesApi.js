@@ -34,7 +34,7 @@ class CompaniesApi extends BbzApiBase {
         var resource = `/api/companies/update/${companyId}`;
         var data = {serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved};
         return this.POST(resource, data).then((resp) => {
-            console.log("updateCompany",resp.data);
+            //console.log("updateCompany",resp.data);
             return resp.data;
         }, (error) => {
             throw new Error(error);
@@ -45,7 +45,7 @@ class CompaniesApi extends BbzApiBase {
         var resource = `/api/companies/update/info/${companyId}`;
         var data = {serviceId, companyTitle, companyDesc};
         return this.POST(resource, data).then((resp) => {
-            console.log("updateCompanyInfo",resp.data);
+            //console.log("updateCompanyInfo",resp.data);
             return resp.data;
         }, (error) => {
             throw new Error(error);
@@ -61,6 +61,18 @@ class CompaniesApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    updateCompanyRatingInfo = (companyId, rating, reviewCount) => {
+        var resource = `/api/companies/update/ratinginfo/${companyId}`;
+        var data = {rating, reviewCount};
+        return this.POST(resource, data).then((resp) => {
+            console.log("updateCompanyRatingInfo", resp.data);
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
 }
 
 module.exports = CompaniesApi;

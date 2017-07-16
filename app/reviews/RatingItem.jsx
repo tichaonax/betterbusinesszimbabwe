@@ -17,7 +17,7 @@ export class RatingItem extends React.Component {
         return str.split(/\s+/).slice(0, 5).join(" ") + " ...";
     }
 
-    renderRatingItem = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId, userProfile, auth) => {
+    renderRatingItem = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId, userProfile, auth, reviewCount) => {
 
         const reviewHeader = this.getWords(review);
 

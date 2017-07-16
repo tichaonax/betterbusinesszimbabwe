@@ -145,7 +145,7 @@ module.exports = {
         });
 
         if(showMyReviews){
-            //just get the reviews of the logged user
+            //just get the reviews of the passed user
             filteredreviewItems = filteredreviewItems.filter((reviewItem) => {
                 return reviewItem.userId === userId
             });

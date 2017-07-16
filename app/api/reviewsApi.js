@@ -48,6 +48,15 @@ class ReviewsApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    findCompanyReviewsById = (companyId) => {
+        var resource = `/api/reviews/company/${companyId}`;
+        return this.GET(resource).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
 }
 
 module.exports = ReviewsApi;

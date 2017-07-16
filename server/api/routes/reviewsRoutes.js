@@ -108,4 +108,17 @@ reviewsRoutes.route('/reviews/update/isapproved/:reviewId/:adminUserId')
     });
 
 
+// get review with that reviewId
+reviewsRoutes.route('/reviews/company/:companyId')
+    .get(function (req, res) {
+        var findCompanyReviewsById = require('../../dao/reviews/findCompanyReviewsById');
+        return new Promise(() => {
+            var reviews = findCompanyReviewsById(req.params.companyId);
+            return Promise.resolve(res.json({data: reviews}));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+
 module.exports = reviewsRoutes;

@@ -15,9 +15,9 @@ companiesRoutes.route('/companies')
         }
         var findAllCompaniesWithServicesCategory = require('../../dao/companies/findAllCompaniesWithServicesCategory');
         return new Promise(() => {
-            var companies= findAllCompaniesWithServicesCategory();
+            var companies = findAllCompaniesWithServicesCategory();
             return Promise.resolve(res.json({data: companies}));
-        }).catch((error)=>{
+        }).catch((error) => {
             return Promise.reject(error)
         });
     });
@@ -141,5 +141,29 @@ companiesRoutes.route('/companies/update/isapproved/:companyId')
             return Promise.reject(error)
         });
     });
+
+//update company Rating Info by companyId
+companiesRoutes.route('/companies/update/ratinginfo/:companyId')
+    .post((req, res) => {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+
+        let companyId = req.params.companyId;
+        let rating = req.body.rating;
+        let reviewCount = req.body.reviewCount;
+
+        var updateCompanyRatingInfo = require('../../dao/companies/updateCompanyRatingInfo');
+        return new Promise(() => {
+            let updateRecord = updateCompanyRatingInfo(companyId, rating, reviewCount);
+            var findCompanyById = require('../../dao/companies/findCompanyById');
+            //return the updated row
+            let company = findCompanyById(companyId);
+            return (Promise.resolve(res.json({data: company})));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
 
 module.exports = companiesRoutes;

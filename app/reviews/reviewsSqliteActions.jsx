@@ -1,12 +1,14 @@
 import moment from 'moment';
 var errorActions = require('errorActions');
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var usersActions = require('usersActions');
 var loadingActions = require('loadingActions');
 var ReviewsApi = require('../api/reviewsApi');
 var reviewsApi = new ReviewsApi();
 var UsersApi = require('../api/usersApi');
 var usersApi = new UsersApi();
+var CompaniesApi = require('../api/companiesApi');
+var companiesApi = new CompaniesApi();
 
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
@@ -210,24 +212,13 @@ export var recalculateUserReviewCount = (userId, isApproved) => {
     }
 }
 
-export var recalculateCompanyReview = (companyItemId) => {
+export var recalculateCompanyReview = (companyId) => {
     return (dispatch, getState) => {
-        var reviewItemRef = firebaseRef.child(`reviews`);
-        return reviewItemRef.once('value').then((snapshot) => {
-            var reviewItems = snapshot.val() || {};
-
-            var parsedReviewItems = [];
-
-            Object.keys(reviewItems).forEach((reviewItemId) => {
-                parsedReviewItems.push({
-                    reviewItemId: reviewItemId,
-                    ...reviewItems[reviewItemId]
-                });
-            });
-            return (parsedReviewItems);
+        return reviewsApi.findCompanyReviewsById(companyId).then((response)=>{
+            return (response.data);
         }).then(
             (reviews) => {
-
+                console.log("company reviews", reviews);
                 //we want to update the company affected based on currently approved reviews
                 //console.debug("Need to sum up all reviews of companyItemId", companyItemId);
                 //console.debug("Company reviews:", reviews);
@@ -236,7 +227,7 @@ export var recalculateCompanyReview = (companyItemId) => {
                 var newReviewCount = 0;
 
                 reviews.map((review) => {
-                    if (review.companyItemId == companyItemId && review.isApproved) {
+                    if (review.companyId == companyId && review.isApproved == 1) {
                         ratingsTotal = ratingsTotal + review.rating;
                         newReviewCount++;
                     }
@@ -257,9 +248,11 @@ export var recalculateCompanyReview = (companyItemId) => {
                     reviewCount: newReviewCount
                 };
 
-                var companyItemRef = firebaseRef.child(`companies/${companyItemId}`);
-                return companyItemRef.update(updates).then(() => {
-                    dispatch(companiesActions.updateCompanyItem(companyItemId, updates))
+                //now update company
+
+                return companiesApi.updateCompanyRatingInfo(companyId, newRating, newReviewCount).then((response) => {
+                    console.log("ratings updated", response.data);
+                    dispatch(companiesSqliteActions.updateCompanyItem(companyId, response.data))
                 })
             }
         );

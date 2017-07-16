@@ -31,7 +31,7 @@ export class ReviewItem extends React.Component {
             userProfile, reviewId, review,
             rating, isApproved, createAt, updateAt,
             auth, deleteReview, updateReview, photoURL,
-            adminUid
+            adminUid, reviewCount
         } = this.props;
 
         var reviewer = displayName;
@@ -56,6 +56,14 @@ export class ReviewItem extends React.Component {
                     <div className="row">
                         <div className="col-sm-4">
                             <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
+
+                            <div>
+                                <span className="label bbz-review-span">Reviews:</span>
+                                <span>&nbsp;</span>
+                                <Link to={`/reviews?user=${userId}`} activeClassName="active bbz-review-span"
+                                      activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
+                            </div>
+
                             <div className="review-block-name">{reviewer}</div>
                             {auth.loggedIn && userProfile && (userProfile.isAdmin == 1) && (
                                 <div className="review-block-name">

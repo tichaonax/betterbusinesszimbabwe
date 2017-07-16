@@ -27,6 +27,7 @@ export class Reviews extends React.Component {
         var company = props.location.query.company;
         var myreviews = props.location.query.myreviews;
 
+        console.log("reviews->userId", userId);
         if (company && company.length > 0) {
             console.debug("searchActions.setSearchText(company)", company);
             this.dispatch(searchActions.setSearchText(company));
@@ -54,6 +55,17 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
+        var userId = newProps.location.query.user;
+        var myreviews = newProps.location.query.myreviews;
+
+        console.log("reviews->userId", userId);
+        if (userId && userId.length > 0) {
+            if (myreviews == 'true') {
+                this.dispatch(searchActions.setMyReviews(true));
+            }
+            this.dispatch(searchActions.setSearchText(userId));
+        }
+
         var {isLoggedIn, userProfile} = newProps;
 
         if (isLoggedIn && userProfile && userProfile.isAdmin) {
