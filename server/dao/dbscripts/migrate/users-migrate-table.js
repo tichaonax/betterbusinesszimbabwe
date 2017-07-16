@@ -47,7 +47,7 @@ var migrateUsersTable = () => {
                 reviewCount: userItems[userItemId].reviewCount
             });
         });
-
+console.log("parsedUserItems",parsedUserItems);
         parsedUserItems.map((userItem) => {
             if (userItem.userProfile) {
                 let obj = userItem.userProfile;

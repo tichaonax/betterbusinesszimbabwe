@@ -145,7 +145,8 @@ export class CompanyItem extends React.Component {
 
                             <div className={loginClass}>
                                 <div className="review-block-title">
-                                    {companyTitle}
+                                    <Link to={`/companyreviews?company=${companyId}`} activeClassName="active"
+                                          activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                                 </div>
                                 <div>
                                     <span className="label bbz-review-span">ID:</span>

@@ -2,11 +2,11 @@ import React from 'react';
 var {connect} = require('react-redux');
 import {getRatingsAverage, getRatingRoundedToHalf} from 'app/common/Utils';
 
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 import CompanyRatingItem from 'app/companies/CompanyRatingItem';
 var Rate = require('rc-rate');
 import ReviewList from 'app/reviews/ReviewList';
-import {Link} from 'react-router';
+import {Link, browserHistory, hashHistory} from 'react-router';
 import Linkify from 'react-linkify';
 var searchActions = require('searchActions');
 
@@ -40,15 +40,18 @@ export class CompanyReviews extends React.Component {
         }
     }
 
+    onGoBack = (evt) => {
+        browserHistory.goBack();
+    }
 
     render() {
 
-        var {reviewItems, showApprovalPending, searchText, auth, companyItems} = this.props;
+        var {reviewItems, showApprovalPending, searchText, isLoggedIn, companyItems, userProfile} = this.props;
 
-        function getCompanyDescription(companyItemId) {
-            if (companyItemId == undefined) return {companyDesc: ''};
+        function getCompanyDescription(companyId) {
+            if (companyId == undefined) return {companyDesc: ''};
             function getText(companyItem) {
-                return companyItem.companyItemId == companyItemId;
+                return companyItem.companyId == companyId;
             }
 
             let match = companyItems.find(getText);
@@ -56,12 +59,12 @@ export class CompanyReviews extends React.Component {
             return (match) ? match : {companyDesc: ''};
         }
 
-        var uid = 0;
-        if (auth.loggedIn) {
-            uid = auth.uid;
+        var userId = 0;
+        if (isLoggedIn && userProfile) {
+            userId = userProfile.userId;
         }
 
-        var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
+        var filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, userId);
 
         let companyTitle = '';
         let companyItemId = '';
@@ -80,6 +83,15 @@ export class CompanyReviews extends React.Component {
                 <div className="columns medium-centered col-sm-9">
                     <div className="container">
                         <div className="columns container">
+                            <div className="form-group">
+                                <button ref="cancel" type="button" className="btn btn-primary" value="Back"
+                                        onClick={
+                                            () => {
+                                                this.onGoBack(event);
+                                            }}>
+                                    Back
+                                </button>
+                            </div>
                             <div className="row">
                                 <div className="rating-block col-sm-5">
                                     <h3>{companyTitle}</h3>
@@ -135,7 +147,6 @@ export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
         userProfile: state.userProfile,
-        auth: state.auth,
         reviewItems: state.reviewItems,
         showApprovalPending: state.showApprovalPending,
         searchText: state.searchText,

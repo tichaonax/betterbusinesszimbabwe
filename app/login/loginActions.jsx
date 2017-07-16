@@ -4,7 +4,7 @@ import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
 var errorActions = require('errorActions');
 var profileSqliteActions = require('profileSqliteActions');
-var servicesActions = require('servicesActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var loadingActions = require('loadingActions');
 
 var LastLoginApi = require('../api/lastLoginApi');
@@ -273,9 +273,11 @@ export var startLastLogin = () => {
 export var startGetLastLogin = () => {
     return (dispatch, getState) => {
         var firebaseId = getState().auth.firebaseId;
-        return userApi.findUserByFirebaseId(firebaseId).then((user) => {
-            if (user.data.userId) {
-                return lastLoginApi.findLastloginByUserId(user.data.userId).then((login) => {
+        return userApi.findUserByFirebaseId(firebaseId).then((response) => {
+            console.log("startGetLastLogin-response", response);
+            let user = response.data;
+            if (user && user.userId) {
+                return lastLoginApi.findLastloginByUserId(user.userId).then((login) => {
                     let lastLoginInfo = (login.data) ? login.data : {};
                     dispatch(lastLogin(lastLoginInfo));
                 });
