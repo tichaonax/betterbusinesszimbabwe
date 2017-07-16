@@ -10,7 +10,7 @@ var insertCompany = (userId, serviceId, companyTitle, companyDesc, rating, revie
     (userId, serviceId, companyTitle, companyDesc, rating, reviewCount, isApproved, updateAt)
      VALUES ('${userId}', ${serviceId}, '${companyTitle}', '${companyDesc}', ${rating}, 
      ${reviewCount}, ${isApproved}, DATETIME('NOW'))`;
-    console.log("sql",sql);
+    //console.log("sql",sql);
     return db.prepare(sql).run();
 }
 

@@ -10,7 +10,7 @@ var updateReviewIsApprovedFlag = (reviewId, isApproved, adminUserId) => {
     isApproved = ${isApproved},
     adminUserId = ${adminUserId}
     WHERE reviewId = ${reviewId};`;
-    console.log("slq", sql);
+    //console.log("slq", sql);
     return db.prepare(sql).run();
 }
 

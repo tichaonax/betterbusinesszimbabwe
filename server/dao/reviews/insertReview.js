@@ -11,7 +11,7 @@ var insertReview = (userId, adminUserId, companyId, rating, review, isApproved, 
     (userId, adminUserId, companyId, rating, review, isApproved, createAt, updateAt)
      VALUES (${userId}, ${adminUserId}, ${companyId}, ${rating}, '${review}', 
      ${isApproved}, ${createDate}, DATETIME('NOW'))`;
-    console.log("sql",sql);
+    //console.log("sql",sql);
     return db.prepare(sql).run();
 }
 

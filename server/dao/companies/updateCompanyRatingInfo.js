@@ -10,7 +10,7 @@ var updateCompanyRatingInfo = (companyId, rating, reviewCount) => {
     rating = ${rating}, 
     reviewCount = ${reviewCount}
     WHERE companyId = ${companyId};`;
-    console.log("sql",sql);
+    //console.log("sql",sql);
     return db.prepare(sql).run();
 }
 

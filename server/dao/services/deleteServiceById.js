@@ -10,7 +10,7 @@ var deleteServiceById = (serviceId, userId) => {
     isApproved = ${0},
     userId = ${userId}
     WHERE serviceId = ${serviceId};`;
-    console.log("delet sql", sql);
+    //console.log("delet sql", sql);
     return db.prepare(sql).run();
 }
 
