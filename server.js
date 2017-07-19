@@ -56,7 +56,6 @@ var router = express.Router();              // get an instance of the express Ro
 router.route('/')
     .get(function(req, res) {
         res.json({api:`Welcome to Better Business Zimbabwe Apis`});
-        //});
     });
 
 app.use('/api', [router, servicesRoutes, reviewsRoutes, usersRoutes, lastLoginRoutes, companiesRoutes]);

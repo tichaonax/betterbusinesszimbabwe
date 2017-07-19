@@ -116,7 +116,7 @@ export class ReviewItem extends React.Component {
                                                          var data = {
                                                              userId,
                                                              reviewId,
-                                                             //companyId,
+                                                             companyId,
                                                              rating,
                                                              review,
                                                              approved

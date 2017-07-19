@@ -1,4 +1,3 @@
-import moment from 'moment';
 var errorActions = require('errorActions');
 var companiesSqliteActions = require('companiesSqliteActions');
 var usersActions = require('usersActions');
@@ -96,23 +95,22 @@ export var updateReviewItem = (reviewId, updates) => {
     };
 };
 
-export var startUpdateReviewItem = (reviewId, review, rating, userId, companyId, isApproved) => {
-    console.log("***update review",reviewId, review, rating, userId, companyId, isApproved);
+export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved, companyId) => {
+    console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewItem(reviewId, review, rating, userId).then((review) => {
-                console.debug("review updated", review.data);
+                //console.debug("review", review.data);
                 let reviewItem = review.data;
-                dispatch(updateReviewItem(reviewId, reviewItem));
-                dispatch(loadingActions.setLoadingStatus(false));
-                return (reviewItem);
+                return reviewItem;
             }
         ).then(() => {
-            if (isApproved) {
-                return dispatch(recalculateUserReviewCount(userId, !isApproved))
-            } else {
-                return (null);
-            }
+            return dispatch(recalculateUserReviewCount(userId)).then(() => {
+                return reviewsApi.getReviewById(reviewId).then((response) => {
+                    let reviewItem = response.data;
+                    return dispatch(updateReviewItem(reviewId, reviewItem));
+                })
+            })
         }).then(() => {
                 return dispatch(recalculateCompanyReview(companyId));
             }
@@ -134,14 +132,21 @@ export var startApproveUpdateReviewItem = (reviewId, isApproved, companyId, user
         return reviewsApi.updateReviewIsApprovedFlag(reviewId, isApproved, adminUserId).then((review) => {
             //console.debug("review", review.data);
             let reviewItem = review.data;
-            dispatch(updateReviewItem(reviewId, reviewItem));
-            return dispatch(loadingActions.setLoadingStatus(false));
+            return reviewItem;
         }).then(
             () => {
                 return dispatch(recalculateCompanyReview(companyId));
             }
         ).then(() => {
-            return dispatch(recalculateUserReviewCount(userId, isApproved))
+            return dispatch(recalculateUserReviewCount(userId)).then(() => {
+                return reviewsApi.getReviewById(reviewId).then((response) => {
+                    let reviewItem = response.data;
+                    return dispatch(updateReviewItem(reviewId, reviewItem));
+                })
+            })
+        }).then(() => {
+            dispatch(loadingActions.setLoadingStatus(false));
+            return dispatch(loadingActions.setLoadingStatus(false));
         }).catch(
             (error) => {
                 console.debug("Unable to update review", error);
@@ -149,6 +154,7 @@ export var startApproveUpdateReviewItem = (reviewId, isApproved, companyId, user
                     errorCode: error.code,
                     errorMessage: error.message
                 };
+                dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(errorActions.bbzReportError(errorObj));
             }
         );
@@ -171,42 +177,23 @@ export var setUpdateReviewOperation = (data, operation = 'UPDATE') => {
     };
 };
 
-export var recalculateUserReviewCount = (userId, isApproved) => {
+export var recalculateUserReviewCount = (userId) => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        return usersApi.findUserById(userId).then((reponse) => {
-            let user = reponse.data;
-            console.debug("user", user);
-            return (user);
+        return reviewsApi.getUserReviewCount(userId).then((response) => {
+            let reviewCount = response.data.count;
+            console.debug("getUserReviewCount", reviewCount);
+            return (reviewCount);
         }).then(
-            (user) => {
-                if (user) {
-                    //we want to update review count based on the isApproved flag
-                    var newReviewCount = 0;
+            (newReviewCount) => {
+                return usersApi.updateUserReviewCount(userId, newReviewCount).then((response) => {
+                    let user = response.data;
+                    console.debug("user updateUserReviewCount", user);
+                    //dispatch(addReviewItems(reviews.data));
+                    dispatch(loadingActions.setLoadingStatus(false));
 
-                    if (user.reviewCount) {
-                        newReviewCount = user.reviewCount;
-                    }
-
-                    if (isApproved) {
-                        newReviewCount = newReviewCount + 1;
-                    } else {
-                        newReviewCount = newReviewCount - 1;
-                    }
-
-                    if (newReviewCount < 0) {
-                        newReviewCount = 0;
-                    }
-
-                    return usersApi.updateUserReviewCount(userId, newReviewCount).then((reponse) => {
-                        let user = reponse.data;
-                        console.debug("user updateUserReviewCount", user);
-                        //dispatch(addReviewItems(reviews.data));
-                        dispatch(loadingActions.setLoadingStatus(false));
-
-                        dispatch(usersActions.updateUserItem(userId, user))
-                    })
-                }
+                    dispatch(usersActions.updateUserItem(userId, user))
+                })
             }
         );
     }
@@ -214,7 +201,7 @@ export var recalculateUserReviewCount = (userId, isApproved) => {
 
 export var recalculateCompanyReview = (companyId) => {
     return (dispatch, getState) => {
-        return reviewsApi.findCompanyReviewsById(companyId).then((response)=>{
+        return reviewsApi.findCompanyReviewsById(companyId).then((response) => {
             return (response.data);
         }).then(
             (reviews) => {

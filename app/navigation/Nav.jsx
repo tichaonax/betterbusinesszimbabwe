@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+var searchActions = require('searchActions');
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from '../login/LoginControl';
@@ -83,6 +83,7 @@ class Nav extends React.Component {
                           onClick={() => {
                               this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
                               this.closeNav();
+                              this.dispatch(searchActions.setSearchText(""));
                           }}
                           activeStyle={{fontWeight: 'bold'}}>{REVIEWS_TITLE}</Link>
                 </li>
@@ -90,6 +91,7 @@ class Nav extends React.Component {
                 <li className="upper-links">
                     <IndexLink to="/companies" activeClassName="active" className="links"
                                onClick={() => {
+                                   this.dispatch(searchActions.setSearchText(""));
                                    this.dispatch(navActions.setNavPage(COMPANIES_TITLE));
                                    this.closeNav();
                                }}
@@ -100,6 +102,7 @@ class Nav extends React.Component {
                     <li className="upper-links">
                         <Link to="/users" activeClassName="active" className="links"
                               onClick={() => {
+                                  this.dispatch(searchActions.setSearchText(""));
                                   this.dispatch(navActions.setNavPage(USERS_TITLE));
                                   this.closeNav();
                               }}
@@ -113,6 +116,7 @@ class Nav extends React.Component {
                             <div className="profile-div">
                                 <Link to="/adminusers" activeClassName="active" className="profile-links"
                                       onClick={() => {
+                                          this.dispatch(searchActions.setSearchText(""));
                                           this.dispatch(navActions.setNavPage(ADMIN_USERS_TITLE));
                                           this.closeNav();
                                       }}

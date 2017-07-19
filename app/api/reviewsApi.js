@@ -57,6 +57,24 @@ class ReviewsApi extends BbzApiBase {
             throw new Error(error);
         })
     }
+
+    getUserReviewCount = (userId) => {
+        var resource = `/api/reviews/count/${userId}`;
+        return this.GET(resource).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
+
+    getReviewById = (reviewId) => {
+        var resource = `/api/reviews/${reviewId}`;
+        return this.GET(resource).then((resp) => {
+            return resp.data;
+        }, (error) => {
+            throw new Error(error);
+        })
+    }
 }
 
 module.exports = ReviewsApi;

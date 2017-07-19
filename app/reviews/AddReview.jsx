@@ -252,7 +252,8 @@ export class AddReview extends React.Component {
             this.state.review,
             this.state.rating,
             this.state.userId,
-            this.state.isApproved
+            this.state.isApproved,
+            this.state.companyId
         ));
 
         this.resetInputs();

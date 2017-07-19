@@ -120,5 +120,17 @@ reviewsRoutes.route('/reviews/company/:companyId')
         });
     });
 
+// get user review count
+reviewsRoutes.route('/reviews/count/:userId')
+    .get(function (req, res) {
+        var findUserReviewCountById = require('../../dao/reviews/findUserReviewCountById');
+        return new Promise(() => {
+            var reviewCount = findUserReviewCountById(req.params.userId);
+            return Promise.resolve(res.json({data: reviewCount}));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
 
 module.exports = reviewsRoutes;
