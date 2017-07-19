@@ -5,7 +5,6 @@ module.exports = {
 
     getFilteredUsers: function (userItems, showApprovalPending, searchText, userId = 0) {
         //console.debug("searchText", searchText);
-        console.debug("userItems 1", userItems);
         var filteredUserItems = userItems;
 
         //filter by showApprovalPending
@@ -15,7 +14,6 @@ module.exports = {
             return approved || showApprovalPending || userProfile.userId == userId
         });
 
-        console.debug("filteredUserItems 2", filteredUserItems);
         //filter by searchText
 
         if (searchText.length > 0 && userItems.length > 0) {
