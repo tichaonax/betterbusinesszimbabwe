@@ -6,14 +6,14 @@ import {COMPANIES_TITLE} from 'pageTitles';
 import CompanyList from 'CompanyList'
 import AddCompanyItem from 'AddCompanyItem';
 var searchActions = require('searchActions');
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var reviewsActions = require('reviewsActions');
 var servicesActions = require('servicesActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var navActions = require('navActions');
 var urlActions = require('urlActions');
 var errorActions = require('errorActions');
 var Loader = require('react-loader');
-import Categories from 'serviceCategories';
 
 export class Companies extends React.Component {
     constructor(props) {
@@ -33,12 +33,13 @@ export class Companies extends React.Component {
             this.dispatch(searchActions.setSearchText(company));
         }
 
-        this.dispatch(companiesActions.startAddCompanyItems());
+        this.dispatch(companiesSqliteActions.startAddCompanyItems());
 
-        if (props.isLoggedIn) {
+       /* if (props.isLoggedIn) {
            // this.dispatch(servicesActions.addServiceItems(Categories.getServices()));
-            this.dispatch(servicesActions.startAddServiceItems());
-        }
+            //this.dispatch(servicesActions.startAddServiceItems());
+            this.dispatch(servicesSqliteActions.startAddServiceItems());
+        }*/
         this.dispatch(urlActions.setRedirectUrl('/companies'));
     }
 
@@ -83,8 +84,10 @@ export class Companies extends React.Component {
                         <div>
                             <div>
                                 <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block"
-                                        data-toggle="collapse"
-                                        data-target="#update-panel-target">Company Panel
+                                        data-toggle="collapse" onClick={() => {
+                                    this.dispatch(servicesSqliteActions.startAddServiceItems());
+                                }}
+                                        data-target="#update-panel-target">Click To Open/Close Company Panel
                                 </button>
                             </div>
                             <div></div>

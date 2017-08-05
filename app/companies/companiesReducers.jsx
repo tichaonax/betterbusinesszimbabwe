@@ -9,7 +9,7 @@ export var companyItemsReducer = (state = [], action) => {
         case 'UPDATE_COMPANY_ITEM':
             return state.map((companyItem) => {
                 //replace with updated item
-                if (companyItem.companyItemId === action.companyItemId) {
+                if (companyItem.companyId === action.companyId) {
                     return {
                         ...companyItem,
                         ...action.updates
@@ -52,7 +52,7 @@ export var recentlyAddedCompanyReducer = (state = '', action) => {
     switch (action.type) {
         case 'SET_RECENT_ADD_COMPANY_ITEM':
             return {
-                companyItemId: action.companyItemId,
+                companyId: action.companyId,
                 companyTitle: action.companyTitle
             }
         case 'CLEAR_RECENT_ADD_COMPANY_ITEM':

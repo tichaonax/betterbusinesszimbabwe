@@ -1,6 +1,7 @@
 var React = require('react');
 var {connect} = require('react-redux');
 var servicesActions = require('servicesActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
 import {toggleUpdatePanel} from 'app/common/Utils';
@@ -12,9 +13,8 @@ export class AddServiceItem extends React.Component {
 
         this.state = {
             operation: 'ADD',
-            serviceId: 0,
-            serviceTitle: '',
-            serviceItemId: ''
+            serviceCategory: '',
+            serviceId: 0
         }
     }
 
@@ -22,7 +22,7 @@ export class AddServiceItem extends React.Component {
         const {dispatch, error} = this.props;
         if (error) {
             dispatch(errorActions.bbzClearError());
-            dispatch(servicesActions.setAddServiceOperation());
+            dispatch(servicesSqliteActions.setAddServiceOperation());
         }
     }
 
@@ -31,21 +31,21 @@ export class AddServiceItem extends React.Component {
         this.setState({operation: nextProps.serviceOperation.operation});
 
         if (nextProps.serviceOperation.data) {
+            console.log("data",nextProps.serviceOperation.data);
             this.setState({
                 serviceItemId: nextProps.serviceOperation.data.serviceItemId,
-                serviceTitle: nextProps.serviceOperation.data.serviceTitle,
+                serviceCategory: nextProps.serviceOperation.data.serviceCategory,
                 serviceId: nextProps.serviceOperation.data.serviceId
             });
         }
     }
 
-    findDupeServices(serviceTitle, serviceItems) {
+    findDupeServices(serviceCategory, serviceItems) {
         var dupes = [];
         serviceItems.map((serviceItem) => {
-            if (serviceItem.serviceTitle.toLowerCase() === serviceTitle.toLowerCase()) {
+            if (serviceItem.serviceCategory.toLowerCase() === serviceCategory.toLowerCase()) {
                 dupes.push(serviceItem);
-            }
-            ;
+            };
         });
         return dupes;
     }
@@ -89,7 +89,7 @@ export class AddServiceItem extends React.Component {
     resetInputs = () => {
         this.setState({
             serviceItemId: '',
-            serviceTitle: '',
+            serviceCategory: '',
             serviceId: 0,
         });
         this.dispatch(errorActions.bbzClearError());
@@ -97,54 +97,60 @@ export class AddServiceItem extends React.Component {
 
     handleCancel = (e) => {
         e.preventDefault();
-        this.dispatch(servicesActions.setAddServiceOperation());
+        this.dispatch(servicesSqliteActions.setAddServiceOperation());
         this.resetInputs();
     }
 
     handleUpdate = (e) => {
         e.preventDefault();
 
-        this.dispatch(servicesActions.startUpdateServiceItem(
-            this.state.serviceItemId,
-            this.state.serviceTitle,
-            this.state.serviceDesc));
+        ///TODO replace 3 with userId
+
+
+        this.dispatch(servicesSqliteActions.startUpdateServiceItem(
+            this.state.serviceId,
+            this.state.serviceCategory,
+            3));
 
         this.resetInputs();
 
-        this.dispatch(servicesActions.setAddServiceOperation());
+        this.dispatch(servicesSqliteActions.setAddServiceOperation());
     }
 
     handleSubmit = (e) => {
         e.preventDefault();
-        var {serviceItems} = this.props;
+        var {serviceItems, userProfile} = this.props;
 
         var error = {}
         var {dispatch} = this.props;
-        var serviceTitle = this.refs.serviceTitle.value;
+        var serviceCategory = this.refs.serviceCategory.value;
 
-        if (serviceTitle.length > 0) {
+        if (serviceCategory.length > 0) {
 
         } else {
             error.errorMessage = "Service title required";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceTitle.focus();
+            this.refs.serviceCategory.focus();
             return;
         }
 
-        if (this.findDupeServices(serviceTitle, serviceItems).length != 0) {
+        if (this.findDupeServices(serviceCategory, serviceItems).length != 0) {
             error.errorMessage = "This service title is in the list of services provided, please enter a different one!";
             dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceTitle.focus();
+            this.refs.serviceCategory.focus();
             return;
         }
 
+        ////TO DO change userId to data from user profile
+
+        let userId = 3;
         this.resetInputs();
         dispatch(errorActions.bbzClearError());
-        dispatch(servicesActions.startAddNewServiceItem(serviceTitle));
+        dispatch(servicesSqliteActions.startAddNewServiceItem(serviceCategory, userId));
     }
 
-    onChangeServiceTitle = (e) => {
-        this.setState({serviceTitle: e.target.value});
+    onChangeServiceCategory = (e) => {
+        this.setState({serviceCategory: e.target.value});
     }
 
     //****TODO call this method when a serviceCategory changes
@@ -162,10 +168,10 @@ export class AddServiceItem extends React.Component {
                     <div className="form-group">
                         <form onSubmit={this.handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="stitle">Service Title</label>
-                                <input className="form-control" type="text" name="serviceTitle" ref="serviceTitle"
-                                       value={this.state.serviceTitle} maxLength={50}
-                                       placeholder="Service Title" onChange={this.onChangeServiceTitle}/>
+                                <label htmlFor="stitle">Service Category</label>
+                                <input className="form-control" type="text" name="serviceCategory" ref="serviceCategory"
+                                       value={this.state.serviceCategory} maxLength={50}
+                                       placeholder="Service Title" onChange={this.onChangeServiceCategory}/>
                             </div>
                             <div className="row">
                                 <div className="col-sm-12">
@@ -185,6 +191,7 @@ export class AddServiceItem extends React.Component {
 export default connect(
     (state) => {
         return {
+            userProfile: state.userProfile,
             serviceItems: state.serviceItems,
             serviceOperation: state.serviceOperation
         }

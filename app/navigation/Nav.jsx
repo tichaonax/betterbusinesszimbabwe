@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+var searchActions = require('searchActions');
 import {Link, IndexLink} from 'react-router';
 import {connect} from 'react-redux';
 import LoginControl from '../login/LoginControl';
@@ -63,14 +63,14 @@ class Nav extends React.Component {
         });
     }
 
-    renderMenu(){
-        var {isLoggedIn, userProfile, auth} = this.props;
+    renderMenu() {
+        var {isLoggedIn, userProfile} = this.props;
 
-        return(
+        return (
             <ul>
-                {isLoggedIn && (
+                {isLoggedIn && userProfile && (
                     <li className="upper-links">
-                        <Link to={`/myreviews?user=${auth.uid}&myreviews=true`} activeClassName="active"
+                        <Link to={`/myreviews?user=${userProfile.userId}&userviews=true`} activeClassName="active"
                               className="links"
                               onClick={() => {
                                   this.dispatch(navActions.setNavPage(MY_REVIEWS_TITLE));
@@ -81,6 +81,8 @@ class Nav extends React.Component {
                 <li className="upper-links">
                     <Link to="/reviews" activeClassName="active" className="links"
                           onClick={() => {
+                              this.dispatch(searchActions.setUserReviews(false, 0));
+                              this.dispatch(searchActions.setSearchText(""));
                               this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
                               this.closeNav();
                           }}
@@ -90,6 +92,7 @@ class Nav extends React.Component {
                 <li className="upper-links">
                     <IndexLink to="/companies" activeClassName="active" className="links"
                                onClick={() => {
+                                   this.dispatch(searchActions.setSearchText(""));
                                    this.dispatch(navActions.setNavPage(COMPANIES_TITLE));
                                    this.closeNav();
                                }}
@@ -100,6 +103,7 @@ class Nav extends React.Component {
                     <li className="upper-links">
                         <Link to="/users" activeClassName="active" className="links"
                               onClick={() => {
+                                  this.dispatch(searchActions.setSearchText(""));
                                   this.dispatch(navActions.setNavPage(USERS_TITLE));
                                   this.closeNav();
                               }}
@@ -107,12 +111,13 @@ class Nav extends React.Component {
                     </li>
                 )}
 
-                {isLoggedIn && userProfile && userProfile.isSuperUser && (
+                {isLoggedIn && userProfile && (userProfile.isSuperUser == 1) && (
                     <li className="upper-links dropdown"><a className="links">SuperUser</a>
                         <div className="dropdown-menu">
                             <div className="profile-div">
                                 <Link to="/adminusers" activeClassName="active" className="profile-links"
                                       onClick={() => {
+                                          this.dispatch(searchActions.setSearchText(""));
                                           this.dispatch(navActions.setNavPage(ADMIN_USERS_TITLE));
                                           this.closeNav();
                                       }}
@@ -120,12 +125,12 @@ class Nav extends React.Component {
                             </div>
                         </div>
                     </li>)}
-                {isLoggedIn && userProfile && userProfile.isAdmin && (
-                <li className="upper-links dropdown"><a className="links">Admin</a>
-                    <div className="dropdown-menu">
-                        {this.renderAdminNavigation()}
-                    </div>
-                </li>)}
+                {isLoggedIn && userProfile && (userProfile.isAdmin == 1) && (
+                    <li className="upper-links dropdown"><a className="links">Admin</a>
+                        <div className="dropdown-menu">
+                            {this.renderAdminNavigation()}
+                        </div>
+                    </li>)}
                 <li className="upper-links dropdown"><a className="links">Extras</a>
                     <div className="dropdown-menu">
                         <div className="profile-div">
@@ -168,15 +173,13 @@ class Nav extends React.Component {
         var country = "";
 
         if (userProfile && lastLogin) {
-            lastLoginAt = moment.unix(lastLogin.loginAt).format('MMM Do, YYYY @ h:mm a');
-            //city = lastLogin.city + ", ";
-            //country = lastLogin.country;
+            lastLoginAt = lastLogin.loginAt;
         }
 
         var joinedAt = "";
 
-        if (userProfile && userProfile.createDate) {
-            joinedAt = moment.unix(userProfile.createDate).format('MMM Do, YYYY');
+        if (userProfile) {
+            joinedAt = userProfile.createAt;
         }
 
         return (
@@ -186,26 +189,31 @@ class Nav extends React.Component {
                         <div className="row row1">
                             {isLoggedIn && (
                                 <div className="pull-left">
-                                    {displayName && (<label className="nav-small-font">&nbsp;&nbsp;Welcome!&nbsp;</label>)}
-                                    <label className="nav-small-font nav-color-gray text-capitalize">{displayName}&nbsp;</label>
+                                    {displayName && (
+                                        <label className="nav-small-font">&nbsp;&nbsp;Welcome!&nbsp;</label>)}
+                                    <label
+                                        className="nav-small-font nav-color-gray text-capitalize">{displayName}&nbsp;</label>
                                     {joinedAt && (<label className="nav-small-font">Member Since:&nbsp;</label>)}
                                     <label className="nav-small-font nav-color-gray">{joinedAt}&nbsp;</label>
                                     <label>
-                                    {lastLoginAt && (<label className="nav-small-font">&nbsp;&nbsp;Last Login:&nbsp;</label>)}
-                                    <label className="nav-small-font nav-color-gray">{lastLoginAt} {city} {country}</label>
+                                        {lastLoginAt && (
+                                            <label className="nav-small-font">&nbsp;&nbsp;Last Login:&nbsp;</label>)}
+                                        <label
+                                            className="nav-small-font nav-color-gray">{lastLoginAt} {city} {country}</label>
                                     </label>
                                 </div>
-                                )}
+                            )}
                             <div className="largenav pull-right">
                                 {this.renderMenu()}
                             </div>
                         </div>
                         <div className="row row2">
                             <div className="col-sm-6">
-                                <h3 style={{margin:'0px'}}><span className="smallnav menu" onClick={()=>{
+                                <h3 style={{margin: '0px'}}><span className="smallnav menu" onClick={() => {
                                     this.openNav()
                                 }}>☰ Better Business Zimbabwe</span></h3>
-                                <h2 style={{margin:'0px'}}><span className="largenav">Better Business Zimbabwe</span></h2>
+                                <h2 style={{margin: '0px'}}><span className="largenav">Better Business Zimbabwe</span>
+                                </h2>
                             </div>
 
                             <div className="col-sm-6">
@@ -224,7 +232,9 @@ class Nav extends React.Component {
                 <div id="sidenav" className="sidenav" style={this.state.sideNav}>
                     <div className="container" style={{backgroundColor: '#2874f0', paddingTop: '10px'}}>
                         <span className="sidenav-heading"><h2>BBZ</h2></span>
-                        <a href="javascript:void(0)" className="closebtn" onClick={()=>{this.closeNav()}}>×</a>
+                        <a href="javascript:void(0)" className="closebtn" onClick={() => {
+                            this.closeNav()
+                        }}>×</a>
                     </div>
                     {this.renderMenu()}
                 </div>

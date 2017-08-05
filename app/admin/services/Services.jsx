@@ -5,6 +5,7 @@ import {getMediaContainerClass, getMedia} from 'app/common/Utils';
 import {SERVICES_TITLE} from 'pageTitles';
 import ServiceList from 'ServiceList'
 import AddServiceItem from 'AddServiceItem';
+var servicesSqliteActions = require('servicesSqliteActions');
 var servicesActions = require('servicesActions');
 var searchActions = require('searchActions');
 var loadingActions = require('loadingActions');
@@ -25,7 +26,8 @@ export class Services extends React.Component {
 
     componentDidMount() {
         this.dispatch(navActions.setNavPage(SERVICES_TITLE));
-        this.dispatch(servicesActions.startAddServiceItems());
+        //this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(servicesSqliteActions.startAddServiceItems());
     }
 
     componentWillReceiveProps(newProps) {
@@ -46,7 +48,7 @@ export class Services extends React.Component {
 
     componentWillUnmount() {
         this.dispatch(searchActions.setSearchText(""));
-        this.dispatch(servicesActions.startAddServiceItems());
+        this.dispatch(servicesSqliteActions.startAddServiceItems());
     }
 
     render() {

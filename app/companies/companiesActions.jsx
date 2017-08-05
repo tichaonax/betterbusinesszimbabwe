@@ -84,7 +84,7 @@ export var startAddCompanyItems = () => {
                     ...companyItems[companyItemId]
                 });
             });
-            //console.debug("startAddCompanyItems:",parsedCompanyItems);
+            console.debug("startAddCompanyItems:",parsedCompanyItems);
             dispatch(loadingActions.setLoadingStatus(false));
             dispatch(addCompanyItems(parsedCompanyItems));
         }, (error) => {

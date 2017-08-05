@@ -5,7 +5,7 @@ import {COMPANIES_TITLE} from 'pageTitles';
 import ReactList from 'react-list';
 import CompanyItem from 'CompanyItem';
 var navActions = require('navActions');
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 
 export class CompanyList extends React.Component {
     constructor(props) {
@@ -21,28 +21,18 @@ export class CompanyList extends React.Component {
     componentWillReceiveProps(newProps) {
         this.dispatch(navActions.setNavPage(COMPANIES_TITLE));
         var filteredCompanyItems;
-        var uid = 0;
+        var userId = 0;
 
-        if (this.props.companyItems != newProps.companyItems || this.props.searchOptions != newProps.searchOptions) {
-            var {companyItems, searchOptions, searchText, auth} = newProps;
-
-            if (auth.loggedIn) {
-                uid = auth.uid;
-            }
-            filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
-        } else {
-            var {companyItems, searchOptions, searchText, auth} = this.props;
-
-            if (auth.loggedIn) {
-                uid = auth.uid;
-            }
-            filteredCompanyItems = BbzAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, uid);
+        var {companyItems, searchOptions, searchText, userProfile} = newProps;
+        if (userProfile) {
+            userId = userProfile.userId;
         }
+        filteredCompanyItems = BbzSqliteAPI.getFilteredCompanies(companyItems, searchOptions.pending, searchText, userId);
 
         this.setState({
-            rowCount: filteredCompanyItems.length,
-            companies: filteredCompanyItems
-        },
+                rowCount: filteredCompanyItems.length,
+                companies: filteredCompanyItems
+            },
             setListCounts(this.dispatch, filteredCompanyItems)
         );
 

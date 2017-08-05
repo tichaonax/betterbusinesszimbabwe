@@ -4,7 +4,7 @@ import Select from 'react-select';
 import get from 'lodash.get';
 import {Link, browserHistory, hashHistory} from 'react-router';
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var searchActions = require('searchActions');
 var errorActions = require('errorActions');
 import Error from 'Error';
@@ -21,9 +21,9 @@ export class AddCompnayItem extends React.Component {
             operation: 'ADD',
             companyTitle: '',
             companyDesc: '',
-            companyItemId: '',
+            companyId: '',
             serviceItems: undefined,
-            selectedServiceItemId: '',
+            selectedServiceId: '',
             selectedCategory: '',
             rating: 0,
             remainingCharacters: null,
@@ -61,7 +61,7 @@ export class AddCompnayItem extends React.Component {
                     calledFromOutside: true
                 }
             } else {
-                this.dispatch(companiesActions.setAddCompanyOperation());
+                this.dispatch(companiesSqliteActions.setAddCompanyOperation());
             }
         }
     }
@@ -74,12 +74,13 @@ export class AddCompnayItem extends React.Component {
 
         if (nextProps.companyOperation.data) {
             const newProps = nextProps.companyOperation.data;
+            //console.log("newProps",newProps);
             this.setState({
-                companyItemId: newProps.companyItemId,
+                companyId: newProps.companyId,
                 companyTitle: newProps.companyTitle,
                 rating: nextProps.companyOperation.data.rating,
                 companyDesc: newProps.companyDesc,
-                selectedServiceItemId: newProps.selectedServiceItemId,
+                selectedServiceId: newProps.selectedServiceId,
                 serviceCategory: newProps.serviceCategory
             });
 
@@ -146,10 +147,10 @@ export class AddCompnayItem extends React.Component {
 
     resetInputs = () => {
         this.setState({
-            companyItemId: '',
+            companyId: '',
             companyTitle: '',
             companyDesc: '',
-            selectedServiceItemId: null,
+            selectedServiceId: null,
             serviceCategory: null
         });
         this.dispatch(searchActions.setSearchText(""));
@@ -161,8 +162,39 @@ export class AddCompnayItem extends React.Component {
         this.setState({
             cancelOperation: true,
         });
-        this.dispatch(companiesActions.setAddCompanyOperation());
+        this.dispatch(companiesSqliteActions.setAddCompanyOperation());
         this.dispatch(errorActions.bbzClearError());
+    }
+
+    validateUpdateValues(error, companyTitle, companyDesc, companyItems) {
+
+        if (companyTitle.length > 0) {
+
+        } else {
+            error.errorMessage = "Company title required";
+            this.dispatch(errorActions.bbzReportError(error));
+            this.refs.companyTitle.focus();
+            return false;
+        }
+
+        if (this.findDupeCompanies(companyTitle, companyItems).length > 1) {
+            error.errorMessage = "This company title is in the list of existing companies, please enter a unique name!";
+            this.dispatch(errorActions.bbzReportError(error));
+            this.refs.companyTitle.focus();
+            return false;
+        }
+
+        if (companyDesc.length > 0) {
+
+        } else {
+            error.errorMessage = "Company description required";
+            this.dispatch(errorActions.bbzReportError(error));
+            this.refs.companyDesc.focus();
+            return false;
+        }
+
+        return true;
+
     }
 
     handleUpdate = (e) => {
@@ -171,35 +203,36 @@ export class AddCompnayItem extends React.Component {
             return;
         }
 
-        //*********to do validate inputs
-        this.dispatch(companiesActions.startUpdateCompanyItem(
-            this.state.companyItemId,
+        var {companyItems} = this.props;
+
+        var companyTitle = this.refs.companyTitle.value;
+        var companyDesc = this.refs.companyDesc.value;
+
+        var error = {}
+
+        if (!this.validateUpdateValues(error, companyTitle, companyDesc, companyItems)) {
+            return
+        }
+
+        toggleUpdatePanel();
+
+        this.dispatch(companiesSqliteActions.startUpdateCompanyItem(
+            this.state.companyId,
             this.state.companyTitle,
             this.state.companyDesc,
             this.state.rating,
-            this.state.selectedServiceItemId,
+            this.state.selectedServiceId,
             this.state.selectedCategory
         ));
 
         this.resetInputs();
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(companiesActions.setAddCompanyOperation());
+        this.dispatch(companiesSqliteActions.setAddCompanyOperation());
+        window.scrollTo(0, 0);
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        var {auth, companyItems, redirectUrl} = this.props;
 
-        var error = {}
-
-        if (this.state.selectedServiceItemId == null) {
-            error.errorMessage = "You must select Service Category";
-            this.dispatch(errorActions.bbzReportError(error));
-            this.refs.serviceSelect.focus();
-            return;
-        }
-
-        var companyTitle = this.refs.companyTitle.value;
+    validateSubmitValues(error, companyTitle, companyDesc, companyItems) {
 
         if (companyTitle.length > 0) {
 
@@ -207,42 +240,68 @@ export class AddCompnayItem extends React.Component {
             error.errorMessage = "Company title required";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyTitle.focus();
-            return;
+            return false;
         }
 
         if (this.findDupeCompanies(companyTitle, companyItems).length != 0) {
             error.errorMessage = "This company title is in the list of companies provided, please enter a uniquie name!";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyTitle.focus();
-            return;
+            return false;
         }
 
-        var companyDesc = this.refs.companyDesc.value;
         if (companyDesc.length > 0) {
 
         } else {
             error.errorMessage = "Company description required";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companyDesc.focus();
-            return;
+            return false;
+        }
+
+        return true;
+
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        var {userProfile, companyItems, redirectUrl} = this.props;
+
+        var companyTitle = this.refs.companyTitle.value;
+        var companyDesc = this.refs.companyDesc.value;
+
+        var error = {}
+
+        if (this.state.selectedServiceId == null) {
+            error.errorMessage = "You must select Service Category";
+            this.dispatch(errorActions.bbzReportError(error));
+            this.refs.serviceSelect.focus();
+            return false;
+        }
+
+        if (!this.validateSubmitValues(error, companyTitle, companyDesc, companyItems)) {
+            return
         }
 
         this.resetInputs();
+
         this.dispatch(errorActions.bbzClearError());
-        this.dispatch(companiesActions.startAddNewCompanyItem(
-            auth.uid,
+
+        this.dispatch(companiesSqliteActions.startAddNewCompanyItem(
+            userProfile.userId,
             companyTitle,
             companyDesc,
-            this.state.selectedServiceItemId,
+            this.state.selectedServiceId,
             this.state.selectedCategory
         ));
 
         if (this.state.calledFromOutside) {
-            //console.debug("redirectUrl calledFromOutside",redirectUrl);
+            console.debug("redirectUrl calledFromOutside", redirectUrl);
             this.state = {
                 isShowingModal: true
             }
         }
+        window.scrollTo(0, 0);
     }
 
     onChangeCompanyTitle = (e) => {
@@ -256,18 +315,17 @@ export class AddCompnayItem extends React.Component {
     }
 
     onServiceItemIdChange = (val) => {
-        let serviceItemId = get(val, 'value');
-        let serviceTitle = get(val, 'label');
-        this.setState({selectedServiceItemId: serviceItemId, selectedCategory: serviceTitle});
+        let serviceId = get(val, 'value');
+        let serviceCategory = get(val, 'label');
+        this.setState({selectedServiceId: serviceId, selectedCategory: serviceCategory});
     }
 
     renderServiceSelect() {
-        var selectedServiceItemIds = [];
+        var selectedServiceIds = [];
         var serviceItems = this.props.serviceItems;
         if (serviceItems) {
-
             serviceItems.map((serviceItem) => {
-                selectedServiceItemIds.push({value: serviceItem.serviceItemId, label: serviceItem.serviceTitle});
+                selectedServiceIds.push({value: serviceItem.serviceId, label: serviceItem.serviceCategory});
             });
 
             return (
@@ -275,8 +333,8 @@ export class AddCompnayItem extends React.Component {
                     <Select
                         ref="serviceSelect"
                         name="service"
-                        value={this.state.selectedServiceItemId}
-                        options={selectedServiceItemIds}
+                        value={this.state.selectedServiceId}
+                        options={selectedServiceIds}
                         onChange={this.onServiceItemIdChange}
                         matchPos="start"
                         ignoreCase={true}
@@ -326,55 +384,57 @@ export class AddCompnayItem extends React.Component {
                         </div>
                     </div>
                     <div>
-                    <form onSubmit={this.handleSubmit}>
-                        {this.renderModalFeedback(redirectUrl)}
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <div className="form-group">
-                                    <div>
-                                        <label htmlFor="service-item-id">Service Category</label>
+                        <form onSubmit={this.handleSubmit}>
+                            {this.renderModalFeedback(redirectUrl)}
+                            <div className="row">
+                                <div className="col-sm-6">
+                                    <div className="form-group">
+                                        <div>
+                                            <label htmlFor="service-item-id">Service Category</label>
+                                        </div>
+                                        <div>
+                                            {this.renderServiceSelect()}
+                                        </div>
                                     </div>
-                                    <div>
-                                        {this.renderServiceSelect()}
+                                    <div className="form-group">
+                                        {this.state.calledFromOutside && (<Link onClick={
+                                            () => {
+                                                this.onGoBack(event);
+                                            }
+                                        }>Back &nbsp;</Link>)}
+                                        <div>
+                                            <label htmlFor="stitle">Company Name</label>
+                                        </div>
+                                        <div>
+                                            <input type="text" name="companyTitle" ref="companyTitle"
+                                                   className="form-control" maxLength={100}
+                                                   value={this.state.companyTitle}
+                                                   placeholder="Company Name" onChange={this.onChangeCompanyTitle}/>
+                                        </div>
                                     </div>
                                 </div>
-                                <div className="form-group">
-                                    {this.state.calledFromOutside && (<Link onClick={
-                                        () => {
-                                            this.onGoBack(event);
-                                        }
-                                    }>Back &nbsp;</Link>)}
-                                    <div>
-                                        <label htmlFor="stitle">Company Name</label>
-                                    </div>
-                                    <div>
-                                        <input type="text" name="companyTitle" ref="companyTitle" className="form-control" maxLength={100}
-                                                value={this.state.companyTitle}
-                                                placeholder="Company Name" onChange={this.onChangeCompanyTitle}/>
+                                <div className="col-sm-6">
+                                    <div className="form-group">
+                                        <label htmlFor="sdescription">Company Description</label>
+                                        <textarea type="text" name="companyDesc" ref="companyDesc" acceptCharset="UTF-8"
+                                                  className="form-control col-sm-4 well" rows="3"
+                                                  maxLength={this.maxCompanyCharacters}
+                                                  value={this.state.companyDesc}
+                                                  placeholder="Company Description"
+                                                  onChange={this.onChangeCompanyDesc}/>
+                                        <h6 className="pull-right">{this.state.remainingCharacters}</h6>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-sm-6">
-                                <div className="form-group">
-                                    <label htmlFor="sdescription">Company Description</label>
-                                    <textarea type="text" name="companyDesc" ref="companyDesc" acceptCharset="UTF-8"
-                                              className="form-control col-sm-4 well" rows="3"
-                                              maxLength={this.maxCompanyCharacters}
-                                              value={this.state.companyDesc}
-                                              placeholder="Company Description" onChange={this.onChangeCompanyDesc}/>
-                                    <h6 className="pull-right">{this.state.remainingCharacters}</h6>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="row">
-                            <div className="col-sm-12">
-                                <div className="form-group">
-                                    {this.renderAddAUpdateView()}
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <div className="form-group">
+                                        {this.renderAddAUpdateView()}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -386,6 +446,7 @@ export default connect(
     (state) => {
         return {
             auth: state.auth,
+            userProfile: state.userProfile,
             companyItems: state.companyItems,
             companyOperation: state.companyOperation,
             serviceItems: state.serviceItems,

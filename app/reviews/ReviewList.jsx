@@ -6,7 +6,7 @@ import ReviewItem from 'ReviewItem';
 import {getMediaContainerClass, getMedia, setListCounts} from 'app/common/Utils';
 import {REVIEWS_TITLE} from 'pageTitles';
 var navActions = require('navActions');
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 
 export class ReviewList extends React.Component {
     constructor(props) {
@@ -22,24 +22,61 @@ export class ReviewList extends React.Component {
 
     componentWillReceiveProps(newProps) {
         this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
-        var filteredReviewItems;
+        var filteredReviewItems=[];
         var bCompanyTitle;
-        var uid = 0;
+        var userId = 0;
         /*if (this.props.reviewItems != newProps.reviewItems || this.props.searchOptions != newProps.searchOptions) {
             var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
             bCompanyTitle = showCompanyTitle;
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showUserReviews);
         } else {*/
-            var {reviewItems, searchOptions, searchText, auth, showCompanyTitle} = newProps;
-            bCompanyTitle = showCompanyTitle;
-            if (auth.loggedIn) {
-                uid = auth.uid;
-            }
-            filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
-        //}
+        var {reviewItems, searchOptions, searchText, userProfile, showCompanyTitle, companyId} = newProps;
+
+        bCompanyTitle = showCompanyTitle;
+
+        if (userProfile) {
+            userId = userProfile.userId;
+        }
+
+        if (searchOptions.showUserReviews) {
+            userId = searchOptions.userId;
+        }
+
+
+        if (companyId && companyId > 0) {
+            reviewItems.map((reviewItem) => {
+                if (reviewItem.companyId == companyId) {
+                    if (searchOptions.pending) {
+                        filteredReviewItems.push(reviewItem);
+                    } else {
+                        if (reviewItem.isApproved == 1) {
+                            filteredReviewItems.push(reviewItem);
+                        }
+                    }
+                }
+            })
+
+            //sort reviewItems with Approval Pending first
+
+            filteredReviewItems.sort((a, b) => {
+                if (a.isApproved == 0 && b.isApproved == 1) {
+                    //take a first
+                    return -1
+                } else if (a.isApproved == 1 && b.isApproved == 0) {
+                    // take b first
+                    return 1;
+                } else {
+                    //a === b
+                    //no change
+                    return 0;
+                }
+            });
+        }else{
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, userId, searchOptions.showUserReviews);
+        }
 
         this.setState({
                 rowCount: filteredReviewItems.length,
@@ -72,8 +109,9 @@ export class ReviewList extends React.Component {
         //the idea is you want to construct the row data on the fly from the reviews
         //this will result is less memory used if you were to store all that rendering data with the reviews
         var reviewItem = this.state.reviews[index];
+
         if (reviewItem) {
-            var row = <ReviewItem key={reviewItem.reviewItemId} {...reviewItem}
+            var row = <ReviewItem key={reviewItem.reviewId} {...reviewItem}
                                   deleteReview={this.refs.deleteReview}
                                   updateReview={this.refs.updateReview}
                                   showCompanyTitle={this.state.showCompanyTitle}/>;

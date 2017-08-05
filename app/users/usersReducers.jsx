@@ -11,7 +11,7 @@ export var userItemsReducer = (state = [], action) => {
         case 'UPDATE_USER_ITEM':
             return state.map((userItem) => {
                 //replace with updated item
-                if (userItem.userItemId === action.userItemId) {
+                if (userItem.userId === action.userId) {
                     //console.debug("MATCH",action.updates);
                     return {
                         ...userItem,

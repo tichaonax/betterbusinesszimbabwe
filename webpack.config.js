@@ -39,7 +39,8 @@ module.exports = {
                 MESSAGING_SENDER_ID: JSON.stringify(process.env.MESSAGING_SENDER_ID),
                 STORAGE_BUCKET: JSON.stringify(process.env.STORAGE_BUCKET),
                 OPEN_WEATHER_APP_ID: JSON.stringify(process.env.OPEN_WEATHER_APP_ID),
-                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID)
+                PROJECT_ID: JSON.stringify(process.env.PROJECT_ID),
+                BBZ_API_KEY: JSON.stringify(process.env.BBZ_API_KEY)
             }
         }),
     ],
@@ -60,14 +61,15 @@ module.exports = {
             './app/login',
             './app/companies',
             './app/reviews',
-            './app/weather',
             './app/userprofile',
             './app/search',
             './app/error',
             './app/url',
             '.app/common',
             '.app/constants',
-            './app/users'
+            './app/users',
+            './app/dao',
+            './app/dao/services'
         ],
         alias: {
             app: 'app',
@@ -84,12 +86,14 @@ module.exports = {
             urlActions: 'app/url/urlActions.jsx',
             urlReducers: 'app/url/urlReducers.jsx',
             servicesActions: 'app/admin/services/servicesActions.jsx',
+            servicesSqliteActions: 'app/admin/services/servicesSqliteActions.jsx',
             servicesItemsReducer: 'app/admin/services/servicesReducers.jsx',
-            companiesActions: 'app/companies/companiesActions.jsx',
+            //companiesActions: 'app/companies/companiesActions.jsx',
             companiesItemsReducer: 'app/companies/companiesReducers.jsx',
-            reviewsActions: 'app/reviews/reviewsActions.jsx',
+            //reviewsActions: 'app/reviews/reviewsActions.jsx',
+            reviewsSqliteActions: 'app/reviews/reviewsSqliteActions.jsx',
             reviewsItemsReducer: 'app/reviews/reviewsReducers.jsx',
-            usersActions: 'app/users/UsersActions',
+            usersActions: 'app/users/UsersActions.jsx',
             usersItemsReducer: 'app/users/usersReducers.jsx',
             accountActions: 'app/account/accountActions.jsx',
             actions: 'app/actions/actions.jsx',
@@ -101,7 +105,8 @@ module.exports = {
             serviceCategories: 'app/constants/Categories.js',
             pageTitles: 'app/constants/PageTitles.js',
             navActions: 'app/navigation/navActions.jsx',
-            navReducers: 'app/navigation/navReducers.jsx'
+            navReducers: 'app/navigation/navReducers.jsx',
+            servicesApi: 'app/api/servicesApi.js'
         },
         extensions: ['', '.js', '.jsx']
     },

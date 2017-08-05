@@ -2,11 +2,11 @@ import React from 'react';
 var {connect} = require('react-redux');
 import {getRatingsAverage, getRatingRoundedToHalf} from 'app/common/Utils';
 
-var BbzAPI = require('BbzAPI');
+var BbzSqliteAPI = require('BbzSqliteAPI');
 import CompanyRatingItem from 'app/companies/CompanyRatingItem';
 var Rate = require('rc-rate');
 import ReviewList from 'app/reviews/ReviewList';
-import {Link} from 'react-router';
+import {Link, browserHistory, hashHistory} from 'react-router';
 import Linkify from 'react-linkify';
 var searchActions = require('searchActions');
 
@@ -14,12 +14,18 @@ export class CompanyReviews extends React.Component {
     constructor(props) {
         super(props);
         this.dispatch = props.dispatch;
+        this.state = {
+            companyId: 0
+        }
     }
 
     loadData(props) {
-        var company = props.location.query.company;
-        if (company && company.length > 0) {
-            this.dispatch(searchActions.setSearchText(company));
+        var companyId = props.location.query.company;
+        if (companyId && companyId.length > 0) {
+            this.dispatch(searchActions.setSearchText(companyId));
+            this.setState({
+                companyId: companyId
+            });
         }
     }
 
@@ -35,20 +41,24 @@ export class CompanyReviews extends React.Component {
 
     componentWillReceiveProps(newProps) {
         var {isLoggedIn, userProfile} = newProps;
-        if (isLoggedIn && userProfile && userProfile.isAdmin) {
+        if (isLoggedIn && userProfile && (userProfile.isAdmin == 1)) {
             this.dispatch(searchActions.setApprovalPendingItem(true));
         }
     }
 
+    onGoBack = (evt) => {
+        browserHistory.goBack();
+    }
 
     render() {
 
-        var {reviewItems, showApprovalPending, searchText, auth, companyItems} = this.props;
+        var {reviewItems, companyItems, searchOptions} = this.props;
+        //console.log("searchOptions",searchOptions);
 
-        function getCompanyDescription(companyItemId) {
-            if (companyItemId == undefined) return {companyDesc: ''};
+        function getCompanyDescription(companyId) {
+            if (companyId == undefined) return {companyDesc: ''};
             function getText(companyItem) {
-                return companyItem.companyItemId == companyItemId;
+                return companyItem.companyId == companyId;
             }
 
             let match = companyItems.find(getText);
@@ -56,21 +66,29 @@ export class CompanyReviews extends React.Component {
             return (match) ? match : {companyDesc: ''};
         }
 
-        var uid = 0;
-        if (auth.loggedIn) {
-            uid = auth.uid;
-        }
-
-        var filteredReviewItems = BbzAPI.getFilteredReviews(reviewItems, showApprovalPending, searchText, uid);
-
         let companyTitle = '';
-        let companyItemId = '';
         let companyDesc = '';
+
+        let filteredReviewItems = [];
+        reviewItems.map((reviewItem) => {
+            if (reviewItem.companyId == this.state.companyId) {
+                if (searchOptions.pending) {
+                    //console.log("pending reviewItem", reviewItem);
+                    filteredReviewItems.push(reviewItem);
+                } else {
+                    if (reviewItem.isApproved == 1) {
+                        //console.log("approved only reviewItem", reviewItem);
+                        filteredReviewItems.push(reviewItem);
+                    }
+                }
+            }
+        })
+
+        //console.log("filteredReviewItems",filteredReviewItems);
 
         if (filteredReviewItems.length > 0) {
             companyTitle = filteredReviewItems[0].companyTitle;
-            companyItemId = filteredReviewItems[0].companyItemId;
-            companyDesc = getCompanyDescription(companyItemId).companyDesc;
+            companyDesc = getCompanyDescription(this.state.companyId).companyDesc;
         }
 
         var rating = getRatingRoundedToHalf(getRatingsAverage(filteredReviewItems));
@@ -80,11 +98,20 @@ export class CompanyReviews extends React.Component {
                 <div className="columns medium-centered col-sm-9">
                     <div className="container">
                         <div className="columns container">
+                            <div className="form-group">
+                                <button ref="cancel" type="button" className="btn btn-primary" value="Back"
+                                        onClick={
+                                            () => {
+                                                this.onGoBack(event);
+                                            }}>
+                                    Back
+                                </button>
+                            </div>
                             <div className="row">
                                 <div className="rating-block col-sm-5">
                                     <h3>{companyTitle}</h3>
                                     <div>
-                                        <Link to={`/addreview?company=${companyItemId}`} activeClassName="active"
+                                        <Link to={`/addreview?company=${this.state.companyId}`} activeClassName="active"
                                               activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
                                     </div>
                                 </div>
@@ -121,7 +148,8 @@ export class CompanyReviews extends React.Component {
                                 </div>
                             </div>
                             <div>
-                                <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}/>
+                                <ReviewList reviewItems={filteredReviewItems} showCompanyTitle={false}
+                                            companyId={this.state.companyId}/>
                             </div>
                         </div>
                     </div>
@@ -134,11 +162,8 @@ export class CompanyReviews extends React.Component {
 export default connect((state) => {
     return {
         isLoggedIn: state.auth.loggedIn,
-        userProfile: state.userProfile,
-        auth: state.auth,
         reviewItems: state.reviewItems,
-        showApprovalPending: state.showApprovalPending,
-        searchText: state.searchText,
         companyItems: state.companyItems,
+        searchOptions: state.searchOptions
     }
 })(CompanyReviews);

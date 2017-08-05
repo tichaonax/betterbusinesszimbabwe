@@ -3,9 +3,15 @@ import requestip from 'clientIpAddress';
 import firebase, {firebaseRef, githubProvider} from 'app/firebase/index';
 
 var errorActions = require('errorActions');
-var profileActions = require('profileActions');
-var servicesActions = require('servicesActions');
+var profileSqliteActions = require('profileSqliteActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var loadingActions = require('loadingActions');
+
+var LastLoginApi = require('../api/lastLoginApi');
+var lastLoginApi = new LastLoginApi();
+var UsersApi = require('../api/usersApi');
+var userApi = new UsersApi();
+
 
 //<editor-fold desc="Login">
 
@@ -20,13 +26,13 @@ export var bbzLogin = (auth) => {
 
 //<editor-fold desc="Provider Login">
 
-function isUserProfileUpdateNeeded(getState, gAuth) {
-    //console.debug("isUserProfileUpdateNeeded->gAuth", gAuth);
-    if (gAuth.email != getState().userProfile.email ||
-        gAuth.providerId != getState().userProfile.providerId ||
-        gAuth.userId != getState().userProfile.userId ||
-        gAuth.displayName != getState().userProfile.displayName ||
-        gAuth.photoURL != getState().userProfile.photoURL) {
+function isUserProfileUpdateNeeded(getState, auth) {
+    //console.debug("isUserProfileUpdateNeeded->auth", auth);
+    if (auth.email != getState().userProfile.email ||
+        auth.providerId != getState().userProfile.providerId ||
+        auth.uid != getState().userProfile.uid ||
+        auth.displayName != getState().userProfile.displayName ||
+        auth.photoURL != getState().userProfile.photoURL) {
         //console.debug("isUserProfileUpdateNeeded", true);
         return (true);
     } else {
@@ -44,6 +50,27 @@ function getUserAvatar(avatar) {
     return (photoURL);
 }
 
+function setPostLoginUserProfile(dispatch, getState, auth) {
+    return dispatch(profileSqliteActions.startSetUserProfile()).then(
+        () => {
+            var timestamp = getState().userProfile.createAt;
+            console.log("timestamp", timestamp);
+            if (timestamp) {
+                console.log("Update User Profile");
+                if (isUserProfileUpdateNeeded(getState, auth)) {
+                    return dispatch(profileSqliteActions.startUpdateUserProfile(auth.firebaseId,
+                        auth.email, auth.displayName, auth.providerId, auth.uid, auth.photoURL));
+                }
+            } else {
+                console.log("Add New User Profile");
+                return dispatch(profileSqliteActions.startAddUserProfile(auth.firebaseId, auth.email,
+                    auth.displayName, auth.providerId, auth.uid, auth.photoURL));
+            }
+        }
+    )
+}
+
+
 export var startBbzLogin = (provider) => {
     var gAuth;
     return (dispatch, getState) => {
@@ -54,13 +81,13 @@ export var startBbzLogin = (provider) => {
             let user = result.user;
 
             gAuth = {
-                uid: user.uid,
+                firebaseId: user.uid,
                 displayName: user.displayName,
                 email: user.email,
                 photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: user.providerData[0].providerId,
-                userId: user.providerData[0].uid,
+                uid: user.providerData[0].uid,
             };
 
             //console.debug("Auth data!", gAuth);
@@ -77,28 +104,14 @@ export var startBbzLogin = (provider) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(profileActions.startSetUserProfile()).then(
-                    () => {
-                        var timestamp = getState().userProfile.createDate;
-                        if (timestamp) {
-                           // console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
-                            if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                                return dispatch(profileActions.startUpdateUserProfile(gAuth.uid,
-                                    gAuth.email, gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
-                            }
-                        } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
-                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
-                        }
-                    }
-                )
+                return setPostLoginUserProfile(dispatch, getState, gAuth);
             }
         ).then(
             () => {
                 dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(startLastLogin());
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             dispatch(loadingActions.setLoadingStatus(false));
             console.debug("firebase-login-error", error);
         })
@@ -116,16 +129,14 @@ export var startBbzEmailLogin = (email, password) => {
         return firebase.auth().signInWithEmailAndPassword(email, password).then((result) => {
             console.debug("Auth with Email and Password worked!", result);
             let user = result;
-            //console.debug("Email user:", user);
-            //console.debug("userId: user.providerData[0]",user.providerData[0]);
             gAuth = {
-                uid: user.uid,
+                firebaseId: user.uid,
                 displayName: email,
                 email: user.email,
                 photoURL: getUserAvatar(user.photoURL),
                 loggedIn: true,
                 providerId: (user.providerData[0].providerId) ? user.providerData[0].providerId : 'password',
-                userId: (user.providerData[0].uid) ? user.providerData[0].uid : email
+                uid: (user.providerData[0].uid) ? user.providerData[0].uid : email
             }
 
             console.debug("Auth data!", gAuth);
@@ -142,28 +153,14 @@ export var startBbzEmailLogin = (email, password) => {
             return dispatch(errorActions.bbzReportError(errorObj));
         }).then(
             () => {
-                return dispatch(profileActions.startSetUserProfile()).then(
-                    () => {
-                        var timestamp = getState().userProfile.createDate;
-                        if (timestamp) {
-                            //console.debug("User profile created on: ", moment.unix(timestamp).format('MMM Do, YYYY @ h:mm a'));
-                            if (isUserProfileUpdateNeeded(getState, gAuth)) {
-                                return dispatch(profileActions.startUpdateUserProfile(gAuth.uid, gAuth.email,
-                                    gAuth.displayName, gAuth.providerId, gAuth.userId, gAuth.photoURL));
-                            }
-                        } else {
-                            return dispatch(profileActions.startAddUserProfile(gAuth.email, gAuth.displayName,
-                                gAuth.providerId, gAuth.userId, gAuth.photoURL));
-                        }
-                    }
-                )
+                return setPostLoginUserProfile(dispatch, getState, gAuth);
             }
         ).then(
             () => {
                 dispatch(loadingActions.setLoadingStatus(false));
                 return dispatch(startLastLogin());
             }
-        ).catch((error)=>{
+        ).catch((error) => {
             dispatch(loadingActions.setLoadingStatus(false));
             console.debug("firebase-email-login-error", error);
         })
@@ -188,7 +185,7 @@ export var startBbzLogout = () => {
             return dispatch(bbzLogout());
         }).then(
             () => {
-                return dispatch(profileActions.resetUserProfile());
+                return dispatch(profileSqliteActions.resetUserProfile());
             }
         );
     };
@@ -210,7 +207,7 @@ export var startLastLogin = () => {
 
         var gClientIp;
 
-        var gUid = getState().auth.uid;
+        console.log("current user profile:", getState().auth);
 
         return requestip.getClientIpAddress().then(
             (clientIp) => {
@@ -221,7 +218,7 @@ export var startLastLogin = () => {
                 let ipInfoPromise = requestip.getClientLocationByIpAddress(gClientIp).then((response) => {
                     var newLoginInfo = {};
                     newLoginInfo.ipAddress = gClientIp;
-                    newLoginInfo.loginAt = moment().unix();
+                    newLoginInfo.loginAt = moment().format("YYYY-MM-DD H:MM:SS");
                     //console.debug("ipInfoPromise", response);
                     newLoginInfo.country = response.country;
                     newLoginInfo.city = response.city;
@@ -231,68 +228,43 @@ export var startLastLogin = () => {
                     console.log("ipInfoPromise", error);
                 });
 
-                var lastLoginRef = firebaseRef.child(`users/${gUid}/userProfile/lastLogins`);
-
-                let firebasePromise = lastLoginRef.once('value').then(
-                    (snapshot) => {
-                        var lastLogins = snapshot.val() || {};
-
-                        const lastLoginsSize = Object.keys(lastLogins).length;
-
-                        var parsedLastLogins = [];
-
-                        Object.keys(lastLogins).forEach((lastLogin) => {
-                            parsedLastLogins.push({
-                                id: lastLogin,
-                                ...lastLogins[lastLogin]
-                            });
-                        })
-
-                        var lastLoginInfo = {};
-
-                        if (lastLoginsSize > 0) {
-                            const obj = parsedLastLogins[lastLoginsSize - 1];
-                            lastLoginInfo.loginAt = obj.loginAt;
-                            lastLoginInfo.city = obj.city;
-                            lastLoginInfo.country = obj.country;
-                        }
-
-                        //we need to keep only two logins history
-
-                        if (lastLoginsSize > 1) {
-                            for (var i = 0; i < (lastLoginsSize - 1); i++) {
-                                var deletItem = parsedLastLogins[i].id;
-                                lastLoginRef.child(`${deletItem}`).remove().then(() => {
-                                });
-                            }
-                        }
-
-                        parsedLastLogins = null;
-                        //console.debug("dispatch lastLoginInfo:", lastLoginInfo);
+                let gUser;
+                var firebaseId = getState().auth.firebaseId;
+                let firebasePromise = userApi.findUserByFirebaseId(firebaseId).then((user) => {
+                    gUser = user.data;
+                    return lastLoginApi.moveLastLogin(gUser.userId,
+                        gUser.city, gUser.country, gUser.ipAddress,
+                        gUser.loginAt).then((login) => {
+                        let lastLoginInfo = (login.data) ? login.data : {};
                         Promise.resolve();
                         return (lastLoginInfo);
                     }).catch((error) => {
-                    console.log("firebasePromise", error);
+                        console.log("lastlogin move", error);
+                    })
                 });
 
                 Promise.all([ipInfoPromise, firebasePromise]).then((values) => {
                         const newLogin = values[0];
                         const oldLogin = values[1];
-                        //console.debug("Promise.all-1", newLogin);
-                        //console.debug("Promise.all-2", oldLogin);
+                        console.debug("Promise.all-1", newLogin);
+                        console.debug("Promise.all-2", oldLogin);
 
-                        return lastLoginRef.push(newLogin).then(() => {
-                            if (oldLogin.city) {
-                                //user's last login
-                                return dispatch(lastLogin(oldLogin));
-                            } else {
-                                //this is the user's first login
-                                return dispatch(lastLogin(newLogin));
-                            }
-                        });
+
+                        return userApi.updateUserLastLogin(gUser.userId, newLogin.city,
+                            newLogin.country, newLogin.ipAddress)
+                            .then((result) => {
+                            console.log("updated user", result.data);
+                                if (oldLogin.city) {
+                                    //user's last login
+                                    return dispatch(lastLogin(oldLogin));
+                                } else {
+                                    //this is the user's first login
+                                    return dispatch(lastLogin(newLogin));
+                                }
+                            });
                     }
                 );
-            }).catch((error)=>{
+            }).catch((error) => {
             console.debug("Error getClientIpAddress", error);
         });
     }
@@ -300,33 +272,18 @@ export var startLastLogin = () => {
 
 export var startGetLastLogin = () => {
     return (dispatch, getState) => {
-        var uid = getState().auth.uid;
-        var lastLoginRef = firebaseRef.child(`users/${uid}/userProfile/lastLogins`);
-        return lastLoginRef.once('value').then((snapshot) => {
-            var lastLogins = snapshot.val() || {}; //return available data or empty object
-
-            var parsedLastLogins = [];
-
-            Object.keys(lastLogins).forEach((lastLogin) => {
-                parsedLastLogins.push({
-                    id: lastLogin,
-                    ...lastLogins[lastLogin]
+        var firebaseId = getState().auth.firebaseId;
+        return userApi.findUserByFirebaseId(firebaseId).then((response) => {
+            //console.log("startGetLastLogin-response", response);
+            let user = response.data;
+            if (user && user.userId) {
+                return lastLoginApi.findLastloginByUserId(user.userId).then((login) => {
+                    let lastLoginInfo = (login.data) ? login.data : {};
+                    dispatch(lastLogin(lastLoginInfo));
                 });
-            });
-
-            var lastLoginInfo = {};
-
-            const lastLoginsSize = Object.keys(lastLogins).length;
-
-            if (lastLoginsSize > 0) {
-                const obj = parsedLastLogins[lastLoginsSize - 1];
-                lastLoginInfo.loginAt = obj.loginAt;
-                lastLoginInfo.city = obj.city;
-                lastLoginInfo.country = obj.country;
+            }else{
+                dispatch(lastLogin({}));
             }
-
-            dispatch(lastLogin(lastLoginInfo));
-
         }, (error) => {
             console.debug("Unable to fetch lastLogin", error);
             var errorObj = {

@@ -15,7 +15,7 @@ export class Error extends React.Component {
    render() {
       var {error, redirectUrl} = this.props;
       if ( error && error.errorMessage ) {
-          console.debug("error",error);
+          //console.debug("error",error);
           return (
               <div className="bbz-general-warning">
                   { error.errorMessage }

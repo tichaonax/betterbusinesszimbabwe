@@ -156,11 +156,11 @@ export class AddReview extends React.Component {
                     }}>
                         <ModalDialog onClose={() => {
                             this.setState({isShowingModal: false});
-                             if (!this.state.calledFromOutside) {
-                             this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
-                             } else {
-                             hashHistory.push(redirectUrl);
-                             }
+                            if (!this.state.calledFromOutside) {
+                                this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${auth.uid}&myreviews=true`));
+                            } else {
+                                hashHistory.push(redirectUrl);
+                            }
                         }}>
                             <h1>Thank you, Review Added!</h1>
                             <p>After review by Admin it will be made available to the public</p>
@@ -328,7 +328,7 @@ export class AddReview extends React.Component {
                 closeUpdatePanel();
 
                 if(this.state.calledFromOutside){
-                   // this.onGoBack();
+                    // this.onGoBack();
                 }
             }
         );

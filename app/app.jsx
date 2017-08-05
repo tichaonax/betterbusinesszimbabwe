@@ -5,52 +5,54 @@ import {hashHistory} from 'react-router';
 
 var loginActions = require('loginActions');
 var errorActions = require('errorActions');
-var profileActions = require('profileActions');
+var profileSqliteActions = require('profileSqliteActions');
 var searchActions = require('searchActions');
-var companiesActions = require('companiesActions');
-var reviewsActions = require('reviewsActions');
+var companiesSqliteActions = require('companiesSqliteActions');
+var reviewsSqliteActions = require('reviewsSqliteActions');
 var navActions = require('navActions');
 var store = require('configureStore').configure();
 import firebase from 'app/firebase/'
 import router from 'app/router/';
 
 store.dispatch(errorActions.bbzClearError());
-store.dispatch(profileActions.resetUserProfile());
+store.dispatch(profileSqliteActions.resetUserProfile());
 store.dispatch(searchActions.setSearchText(""));
 
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        //console.debug("subscribed user:", user);
-        //console.debug("providerId:", user.providerData[0].providerId);
-        //console.debug("email:", user.providerData[0].email);
-        //console.debug("userId:", user.providerData[0].uid);
+firebase.auth().onAuthStateChanged((firebaseUser) => {
+    if (firebaseUser) {
+        //console.log("firebaseUser",firebaseUser);
+        //console.debug("subscribed firebaseUser:", firebaseUser);
+        //console.debug("providerId:", firebaseUser.providerData[0].providerId);
+        //console.debug("email:", firebaseUser.providerData[0].email);
+        //console.debug("firebaseUserId:", firebaseUser.providerData[0].uid);
         //console.debug("getState",store.getState());
         //console.debug("getState.redirectUrl", store.getState().redirectUrl);
-        var displayName = user.email;
+        var displayName = firebaseUser.email;
 
-        if (user.displayName) {
-            displayName = user.displayName;
+        if (firebaseUser.displayName) {
+            displayName = firebaseUser.displayName;
         }
 
         var auth = {
-            uid: user.uid,
+            firebaseId: firebaseUser.uid,
             displayName: displayName,
-            email: user.email,
-            photoURL: user.photoURL,
+            email: firebaseUser.email,
+            photoURL: firebaseUser.photoURL,
             loggedIn: true
         };
 
         store.dispatch(loginActions.bbzLogin(auth));
         store.dispatch(loginActions.startGetLastLogin());
-        store.dispatch(profileActions.startSetUserProfile());
-        store.dispatch(companiesActions.startAddCompanyItems());
+        store.dispatch(profileSqliteActions.startSetUserProfile());
+        store.dispatch(companiesSqliteActions.startAddCompanyItems());
+        store.dispatch(reviewsSqliteActions.startAddReviewItems(''));
         store.dispatch(searchActions.setSearchText(""));
         hashHistory.push(store.getState().redirectUrl);
     } else {
-        //console.debug("user session invlaid:", user);
+        //console.debug("firebaseUser session invlaid:", firebaseUser);
         store.dispatch(loginActions.bbzLogout());
-        store.dispatch(profileActions.resetUserProfile());
-        store.dispatch(reviewsActions.startAddReviewItems());
+        store.dispatch(profileSqliteActions.resetUserProfile());
+        store.dispatch(reviewsSqliteActions.startAddReviewItems(''));
         hashHistory.push('/reviews');
     }
 });

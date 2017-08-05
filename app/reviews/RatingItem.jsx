@@ -3,7 +3,7 @@ var {connect} = require('react-redux');
 var Rate = require('rc-rate');
 import {Link} from 'react-router';
 import Linkify from 'react-linkify';
-var companiesActions = require('companiesActions');
+var companiesSqliteActions = require('companiesSqliteActions');
 var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 
@@ -17,7 +17,7 @@ export class RatingItem extends React.Component {
         return str.split(/\s+/).slice(0, 5).join(" ") + " ...";
     }
 
-    renderRatingItem = (rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth, reviewItemId) => {
+    renderRatingItem = (rating, review, companyId, companyTitle, showCompanyTitle, reviewId, userProfile, auth, reviewCount) => {
 
         const reviewHeader = this.getWords(review);
 
@@ -32,15 +32,15 @@ export class RatingItem extends React.Component {
                     allowHalf
                     value={rating}
                 />
-                <Link to={`/addreview?company=${companyItemId}`} activeClassName="active" onClick={()=>{
+                <Link to={`/addreview?company=${companyId}`} activeClassName="active" onClick={()=>{
                     this.dispatch(urlActions.setRedirectUrl("reviews"));
                 }}
                       activeStyle={{fontWeight: 'bold'}}>Add Review</Link>
 
                 {showCompanyTitle == true && (
                     <div className="review-block-title">
-                        <Link to={`/companyreviews?company=${companyItemId}`} activeClassName="active" onClick={()=>{
-                            this.dispatch(companiesActions.startAddCompanyItems());
+                        <Link to={`/companyreviews?company=${companyId}`} activeClassName="active" onClick={()=>{
+                            this.dispatch(companiesSqliteActions.startAddCompanyItems());
                         }}
                               activeStyle={{fontWeight: 'bold'}}>{companyTitle}</Link>
                     </div>)}
@@ -50,12 +50,12 @@ export class RatingItem extends React.Component {
                     <span>&nbsp;</span>
                     {reviewId}
                 </div>
-                {auth.loggedIn && loggedInUser &&  loggedInUser.isSuperUser && (
+               {/* {auth.loggedIn && userProfile &&  (userProfile.isSuperUser==1) && (
                     <div>
                         <span className="label bbz-review-span">Review ID:</span>
                         <span>&nbsp;</span>
-                        {reviewItemId}
-                    </div>)}
+                        {reviewId}
+                    </div>)}*/}
                 <div className="review-block-description">
                     <Linkify properties={{target: '_blank', style: {color: 'blue'}}}>
                         {review}
@@ -70,9 +70,9 @@ export class RatingItem extends React.Component {
             displayName,
             email, uid,
             companyTitle,
-            companyItemId,
-            loggedInUser,
-            reviewItemId,
+            companyId,
+            userProfile,
+            reviewId,
             review, rating,
             isApproved, createAt,
             updateAt, auth, deleteReview,
@@ -80,7 +80,7 @@ export class RatingItem extends React.Component {
 
         return (
             <div>
-                {this.renderRatingItem(rating, review, companyItemId, companyTitle, showCompanyTitle, reviewId, loggedInUser, auth, reviewItemId)}
+                {this.renderRatingItem(rating, review, companyId, companyTitle, showCompanyTitle, reviewId, userProfile, auth)}
             </div>
 
         );
@@ -90,7 +90,7 @@ export class RatingItem extends React.Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        loggedInUser: state.userProfile
+        userProfile: state.userProfile
     }
 }
 export default  connect(mapStateToProps)(RatingItem);

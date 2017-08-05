@@ -10,7 +10,7 @@ export var reviewItemsReducer = (state = [], action) => {
         case 'UPDATE_REVIEW_ITEM':
             return state.map((reviewItem) => {
                 //replace with updated item
-                if (reviewItem.reviewItemId === action.reviewItemId) {
+                if (reviewItem.reviewId === action.reviewId) {
                     return {
                         ...reviewItem,
                         ...action.updates
@@ -23,7 +23,7 @@ export var reviewItemsReducer = (state = [], action) => {
             });
         case 'DELETE_REVIEW_ITEM':
             //remove deleted item
-            let toRemoveReviewItem = state.findIndex((reviewItem) => reviewItem.reviewItemId === action.reviewItemId);
+            let toRemoveReviewItem = state.findIndex((reviewItem) => reviewItem.reviewId === action.reviewId);
             return [
                 ...state.slice(0, toRemoveReviewItem),
                 ...state.slice(toRemoveReviewItem + 1)
@@ -48,4 +48,3 @@ export var reviewOperationReducer = (state = {operation: 'ADD'}, action) => {
             return state;
     }
 }
-

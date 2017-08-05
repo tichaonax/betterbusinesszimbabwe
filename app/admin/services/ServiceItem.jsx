@@ -1,6 +1,6 @@
 import React from 'react';
 var {connect} = require('react-redux');
-var servicesActions = require('servicesActions');
+var servicesSqliteActions = require('servicesSqliteActions');
 var errorActions = require('errorActions');
 import {openUpdatePanel} from 'app/common/Utils';
 
@@ -11,8 +11,9 @@ export class ServiceItem extends React.Component {
     }
 
     render() {
-        var {userProfile, serviceItemId, serviceId, serviceTitle, createAt, updateAt, auth} = this.props;
-
+        var {userProfile, serviceItemId, serviceId, serviceCategory, createAt, updateAt, auth} = this.props;
+        //TODO get the userId from userProfile
+        var userId = 3;
         return (
             <div className="col-sm-12">
                 <form>
@@ -22,7 +23,7 @@ export class ServiceItem extends React.Component {
                                 <div className="col-sm-3">
                                     <input type="button" value="&times;" onClick={() => {
                                         if (userProfile.isSuperUser) {
-                                            this.dispatch(servicesActions.startDeleteServiceItem(serviceItemId));
+                                            this.dispatch(servicesSqliteActions.startDeleteServiceItem(serviceId, userId));
                                         } else {
                                             openUpdatePanel();
                                             var error = {};
@@ -37,18 +38,18 @@ export class ServiceItem extends React.Component {
                                 </div>)}
                             <div className="col-sm-4">
                                 <div>
-                                    <input type="button" value={serviceItemId} onClick={() => {
+                                    <input type="button" value="Update" onClick={() => {
                                         openUpdatePanel();
                                         if (userProfile.isAdmin) {
                                             var data = {
                                                 serviceItemId,
                                                 serviceId,
-                                                serviceTitle
+                                                serviceCategory
                                             }
 
-                                           // console.debug("ServiceItems Data:", data);
+                                            console.debug("ServiceItems Data:", data);
 
-                                            this.dispatch(servicesActions.setUpdateServiceOperation(data));
+                                            this.dispatch(servicesSqliteActions.setUpdateServiceOperation(data));
                                             this.dispatch(errorActions.bbzClearError());
                                         } else {
                                             var error = {};
@@ -62,7 +63,7 @@ export class ServiceItem extends React.Component {
                             </div>
                             <div className="col-sm-5">
                                 <div className="review-block-title">
-                                    {serviceTitle}
+                                    {serviceCategory}
                                 </div>
                             </div>
                         </div>

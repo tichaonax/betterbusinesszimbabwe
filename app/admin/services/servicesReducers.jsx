@@ -9,7 +9,7 @@ export var serviceItemsReducer = (state = [], action) => {
         case 'UPDATE_SERVICE_ITEM':
             return state.map((serviceItem) => {
                 //replace with updated item
-                if (serviceItem.serviceItemId === action.serviceItemId) {
+                if (serviceItem.serviceId === action.serviceId) {
                     return {
                         ...serviceItem,
                         ...action.updates
@@ -22,18 +22,13 @@ export var serviceItemsReducer = (state = [], action) => {
             });
         case 'DELETE_SERVICE_ITEM':
             //remove deleted item
-            let toRemoveServiceItem = state.findIndex((serviceItem) => serviceItem.serviceItemId === action.serviceItemId);
+            let toRemoveServiceItem = state.findIndex((serviceItem) => serviceItem.serviceId === action.serviceId);
             return [
                 ...state.slice(0, toRemoveServiceItem),
                 ...state.slice(toRemoveServiceItem + 1)
             ];
 
         case 'ADD_SERVICE_ITEMS':
-            /*return [
-                //preserve original serviceItems then add a new ones passed in
-                ...state,
-                ...action.serviceItems
-            ];*/
             return action.serviceItems;
 
         default:
@@ -52,4 +47,3 @@ export var serviceOperationReducer = (state = {operation: 'ADD'}, action) => {
             return state;
     }
 }
-

@@ -26,13 +26,14 @@ export class BbzSearch extends React.Component {
         let listCount = counts.listCount;
         let pendingCount = null;
 
-        if (searchOptions.pending){
-            pendingCount=counts.pendingCount;
+        if (searchOptions.pending) {
+            pendingCount = counts.pendingCount;
         }
         return (
             <div className="row">
                 <div className="col-xs-16">
-                    <input id="searchItemText" className="navbar-input col-xs-10" type="text"  value={searchText} placeholder="Enter text to search?"
+                    <input id="searchItemText" className="navbar-input col-xs-10" type="text" value={searchText}
+                           placeholder="Enter text to search?"
                            onChange={() => {
                                var searchText = $('#searchItemText').val();
                                if (!searchOptions.showButton) {
@@ -47,12 +48,12 @@ export class BbzSearch extends React.Component {
                             </svg>
                         </button>
                     )}
-                    {isLoggedIn && userProfile && userProfile.isAdmin && (
+                    {isLoggedIn && userProfile && (userProfile.isAdmin == 1) && (
                         <img src="images/bbz_admin.png" alt="Admin!" height="44" width="44"/>
                     )}
                 </div>
                 <div className="col-xs-9">
-                    {isLoggedIn && userProfile && userProfile.isAdmin && (
+                    {isLoggedIn && userProfile && (userProfile.isAdmin == 1) && (
                         <label>
                             <input type="checkbox" ref="showApproved" checked={searchOptions.pending}
                                    onChange={() => {
