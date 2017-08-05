@@ -104,12 +104,14 @@ export var updateCompanyItem = (companyId, updates) => {
     };
 };
 
-export var startUpdateCompanyItem = (companyId, companyTitle, companyDesc, rating, serviceId, serviceCategory) => {
+export var startUpdateCompanyItem = (companyId, companyTitle, companyDesc, rating, serviceId) => {
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return api.updateCompanyInfo(companyId, serviceId, companyTitle, companyDesc).then((company) => {
-            console.log("updateCompanyInfo",companyId, serviceId, companyTitle, companyDesc);
-            dispatch(addCompanyItems(company.data));
+            //console.log("updateCompanyInfo",companyId, serviceId, companyTitle, companyDesc);
+            let updates = company.data;
+            //console.log("updates",updates);
+            dispatch(updateCompanyItem(companyId, updates));
             dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.debug("Unable to update company", error);
@@ -124,13 +126,13 @@ export var startUpdateCompanyItem = (companyId, companyTitle, companyDesc, ratin
 
 export var startApproveUpdateCompanyItem = (companyId, isApproved) => {
     return (dispatch, getState) => {
-        console.log("companyId",companyId, isApproved);
+        //console.log("companyId",companyId, isApproved);
         dispatch(loadingActions.setLoadingStatus(true));
         return api.updateCompanyIsApprovedFlag(companyId,isApproved).then((company) => {
-            console.log("updateCompanyIsApprovedFlag",company);
+            //console.log("updateCompanyIsApprovedFlag",company);
             //dispatch(addCompanyItems(companies.data));
-            let updates =company.data;
-            console.log("updates",updates);
+            let updates = company.data;
+            //console.log("updates",updates);
             dispatch(loadingActions.setLoadingStatus(false));
             dispatch(updateCompanyItem(companyId, updates));
         }, (error) => {

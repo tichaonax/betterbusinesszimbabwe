@@ -19,7 +19,7 @@ module.exports = {
         if (searchText.length > 0 && userItems.length > 0) {
             filteredUserItems = filteredUserItems.filter((userItem) => {
                 var userProfile = (userItem) ? userItem : {};
-                console.debug("userProfile**", userItem);
+                //console.debug("userProfile**", userItem);
                 const firebaseId = (userProfile.firebaseId) ? userProfile.firebaseId : "";
                 const displayName = (userProfile.displayName) ? userProfile.displayName.toLowerCase() : "";
                 const email = (userProfile.email) ? userProfile.email.toLowerCase() : "";
@@ -62,6 +62,7 @@ module.exports = {
     getFilteredCompanies: function (companyItems, showApprovalPending, searchText, userId = 0) {
         //console.debug("getFilteredCompanies companyItems", companyItems);
         //console.debug("showApprovalPending", showApprovalPending);
+        //console.debug("getFilteredCompanies userId", userId);
         var filteredCompanyItems = companyItems;
 
         //filter by showApprovalPending
@@ -71,6 +72,8 @@ module.exports = {
             //console.log("isApproved, approved", companyItem.isApproved, approved);
             return approved || showApprovalPending || companyItem.userId === userId
         });
+
+        //console.debug("getFilteredCompanies companyItems", filteredCompanyItems);
 
         //filter by searchText
         //we want to also search by company description and others
@@ -114,13 +117,29 @@ module.exports = {
         });
 
 
-        //sort companyItems with Approval Pending first
+        if(showApprovalPending){
+            //sort companyItems with Approval Pending first
+            filteredCompanyItems.sort((a, b) => {
+                if (a.isApproved == 0 && b.isApproved == 1) {
+                    //take a first
+                    return -1
+                } else if (a.isApproved == 1 && b.isApproved == 0) {
+                    // take b first
+                    return 1;
+                } else {
+                    //a === b
+                    //no change
+                    return 0;
+                }
+            });
+        }
+
 
         filteredCompanyItems.sort((a, b) => {
-            if (a.isApproved == 0 && b.isApproved == 1) {
+            if (new Date(a.updateAt).getTime() > new Date(b.updateAt).getTime()) {
                 //take a first
                 return -1
-            } else if (a.isApproved == 1 && b.isApproved == 0) {
+            } else if (new Date(a.updateAt).getTime() < new Date(b.updateAt).getTime()) {
                 // take b first
                 return 1;
             } else {
@@ -130,20 +149,20 @@ module.exports = {
             }
         });
 
+
         return (filteredCompanyItems);
     },
 
-    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showMyReviews = false) {
+    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showUserReviews = false) {
         var filteredReviewItems = reviewItems;
 
         //filter by showApprovalPending
-
         filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
             let approved = (reviewItem.isApproved == 1);
             return approved || showApprovalPending || reviewItem.userId === userId
         });
 
-        if (showMyReviews) {
+        if (showUserReviews) {
             //just get the reviews of the passed user
             filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
                 return reviewItem.userId === userId
@@ -153,7 +172,7 @@ module.exports = {
         //filter by searchText
         //we want to also search by review description
         //and review id stored as unix createAt date time
-        if (searchText.length > 0) {
+        if (searchText.length > 0 && !showUserReviews) {
             filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
                 var companyTitle = reviewItem.companyTitle.toLowerCase();
                 var review = reviewItem.review.toLowerCase();
@@ -175,29 +194,29 @@ module.exports = {
             });
         }
 
+        //sort reviewItems with Approval Pending first
+        if (showApprovalPending) {
+            filteredReviewItems.sort((a, b) => {
+                if (a.isApproved == 0 && b.isApproved == 1) {
+                    //take a first
+                    return -1
+                } else if (a.isApproved == 1 && b.isApproved == 0) {
+                    // take b first
+                    return 1;
+                } else {
+                    //a === b
+                    //no change
+                    return 0;
+                }
+            });
+        }
+
         //sort by recently updated first
         filteredReviewItems.sort((a, b) => {
-            if (a.updateAt > b.updateAt) {
+            if (new Date(a.updateAt).getTime() > new Date(b.updateAt).getTime()) {
                 //take a first
                 return -1
-            } else if (a.updateAt < b.updateAt) {
-                // take b first
-                return 1;
-            } else {
-                //a === b
-                //no change
-                return 0;
-            }
-        });
-
-
-        //sort reviewItems with Approval Pending first
-
-        filteredReviewItems.sort((a, b) => {
-            if (a.isApproved == 0 && b.isApproved == 1) {
-                //take a first
-                return -1
-            } else if (a.isApproved == 1 && b.isApproved == 0) {
+            } else if (new Date(a.updateAt).getTime() < new Date(b.updateAt).getTime()) {
                 // take b first
                 return 1;
             } else {
@@ -255,10 +274,10 @@ module.exports = {
 
         //sort by recently updated first
         filteredServiceItems.sort((a, b) => {
-            if (a.updateAt > b.updateAt) {
+            if (new Date(a.updateAt).getTime() > new Date(b.updateAt).getTime()) {
                 //take a first
                 return -1
-            } else if (a.updateAt < b.updateAt) {
+            } else if (new Date(a.updateAt).getTime() < new Date(b.updateAt).getTime()) {
                 // take b first
                 return 1;
             } else {

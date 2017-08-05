@@ -53,7 +53,7 @@ export class CompanyReviews extends React.Component {
     render() {
 
         var {reviewItems, companyItems, searchOptions} = this.props;
-        console.log("searchOptions",searchOptions);
+        //console.log("searchOptions",searchOptions);
 
         function getCompanyDescription(companyId) {
             if (companyId == undefined) return {companyDesc: ''};
@@ -73,18 +73,18 @@ export class CompanyReviews extends React.Component {
         reviewItems.map((reviewItem) => {
             if (reviewItem.companyId == this.state.companyId) {
                 if (searchOptions.pending) {
-                    console.log("pending reviewItem", reviewItem);
+                    //console.log("pending reviewItem", reviewItem);
                     filteredReviewItems.push(reviewItem);
                 } else {
                     if (reviewItem.isApproved == 1) {
-                        console.log("approved only reviewItem", reviewItem);
+                        //console.log("approved only reviewItem", reviewItem);
                         filteredReviewItems.push(reviewItem);
                     }
                 }
             }
         })
 
-        console.log("filteredReviewItems",filteredReviewItems);
+        //console.log("filteredReviewItems",filteredReviewItems);
 
         if (filteredReviewItems.length > 0) {
             companyTitle = filteredReviewItems[0].companyTitle;

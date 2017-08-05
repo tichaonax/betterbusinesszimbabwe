@@ -87,7 +87,7 @@ export class Companies extends React.Component {
                                         data-toggle="collapse" onClick={() => {
                                     this.dispatch(servicesSqliteActions.startAddServiceItems());
                                 }}
-                                        data-target="#update-panel-target">Company Panel
+                                        data-target="#update-panel-target">Click To Open/Close Company Panel
                                 </button>
                             </div>
                             <div></div>

@@ -8,14 +8,14 @@ var ServerUtils = require('../../ServerUtils');
 const API = require('../../constants/API');
 
 // get all reviews
-reviewsRoutes.route('/reviews')
+reviewsRoutes.route('/reviews/criteria/:criteria')
     .get(function (req, res) {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
         var findAllReviews = require('../../dao/reviews/findAllReviews');
         return new Promise(() => {
-            var reviews = findAllReviews();
+            var reviews = findAllReviews(req.params.criteria);
             return Promise.resolve(res.json({data: reviews}));
         }).catch((error) => {
             return Promise.reject(error)

@@ -24,7 +24,7 @@ export var startAddUserItems = () => {
         dispatch(loadingActions.setLoadingStatus(true));
         return usersApi.findAllUsers().then((response) => {
             let users = response.data;
-            console.debug("users", users);
+            //console.debug("users", users);
             dispatch(loadingActions.setLoadingStatus(false));
             dispatch(addUserItems(users));
         }, (error) => {

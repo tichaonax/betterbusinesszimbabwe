@@ -66,7 +66,7 @@ class CompaniesApi extends BbzApiBase {
         var resource = `/api/companies/update/ratinginfo/${companyId}`;
         var data = {rating, reviewCount};
         return this.POST(resource, data).then((resp) => {
-            console.log("updateCompanyRatingInfo", resp.data);
+            //console.log("updateCompanyRatingInfo", resp.data);
             return resp.data;
         }, (error) => {
             throw new Error(error);

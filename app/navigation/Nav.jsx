@@ -70,7 +70,7 @@ class Nav extends React.Component {
             <ul>
                 {isLoggedIn && userProfile && (
                     <li className="upper-links">
-                        <Link to={`/myreviews?user=${userProfile.userId}&myreviews=true`} activeClassName="active"
+                        <Link to={`/myreviews?user=${userProfile.userId}&userviews=true`} activeClassName="active"
                               className="links"
                               onClick={() => {
                                   this.dispatch(navActions.setNavPage(MY_REVIEWS_TITLE));
@@ -81,9 +81,10 @@ class Nav extends React.Component {
                 <li className="upper-links">
                     <Link to="/reviews" activeClassName="active" className="links"
                           onClick={() => {
+                              this.dispatch(searchActions.setUserReviews(false, 0));
+                              this.dispatch(searchActions.setSearchText(""));
                               this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
                               this.closeNav();
-                              this.dispatch(searchActions.setSearchText(""));
                           }}
                           activeStyle={{fontWeight: 'bold'}}>{REVIEWS_TITLE}</Link>
                 </li>

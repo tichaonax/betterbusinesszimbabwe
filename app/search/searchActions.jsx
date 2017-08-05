@@ -28,10 +28,11 @@ export var setSearchButton = (showButton) => {
     };
 };
 
-export var setMyReviews = (showMyReviews) => {
+export var setUserReviews = (showUserReviews, userId) => {
     return {
-        type: 'SET_MY_REVIEWS',
-        showMyReviews
+        type: 'SET_USER_REVIEWS',
+        showUserReviews,
+        userId
     };
 };
 

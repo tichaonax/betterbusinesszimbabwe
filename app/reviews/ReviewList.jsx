@@ -31,24 +31,28 @@ export class ReviewList extends React.Component {
             if (auth.loggedIn) {
                 uid = auth.uid;
             }
-            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showMyReviews);
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, uid, searchOptions.showUserReviews);
         } else {*/
         var {reviewItems, searchOptions, searchText, userProfile, showCompanyTitle, companyId} = newProps;
 
         bCompanyTitle = showCompanyTitle;
+
         if (userProfile) {
             userId = userProfile.userId;
         }
+
+        if (searchOptions.showUserReviews) {
+            userId = searchOptions.userId;
+        }
+
 
         if (companyId && companyId > 0) {
             reviewItems.map((reviewItem) => {
                 if (reviewItem.companyId == companyId) {
                     if (searchOptions.pending) {
-                        console.log("pending reviewItem", reviewItem);
                         filteredReviewItems.push(reviewItem);
                     } else {
                         if (reviewItem.isApproved == 1) {
-                            console.log("approved only reviewItem", reviewItem);
                             filteredReviewItems.push(reviewItem);
                         }
                     }
@@ -71,7 +75,7 @@ export class ReviewList extends React.Component {
                 }
             });
         }else{
-            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, userId, searchOptions.showMyReviews);
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, userId, searchOptions.showUserReviews);
         }
 
         this.setState({

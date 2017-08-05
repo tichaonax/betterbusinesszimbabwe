@@ -27,7 +27,7 @@ export var bbzLogin = (auth) => {
 //<editor-fold desc="Provider Login">
 
 function isUserProfileUpdateNeeded(getState, auth) {
-    console.debug("isUserProfileUpdateNeeded->auth", auth);
+    //console.debug("isUserProfileUpdateNeeded->auth", auth);
     if (auth.email != getState().userProfile.email ||
         auth.providerId != getState().userProfile.providerId ||
         auth.uid != getState().userProfile.uid ||
@@ -274,7 +274,7 @@ export var startGetLastLogin = () => {
     return (dispatch, getState) => {
         var firebaseId = getState().auth.firebaseId;
         return userApi.findUserByFirebaseId(firebaseId).then((response) => {
-            console.log("startGetLastLogin-response", response);
+            //console.log("startGetLastLogin-response", response);
             let user = response.data;
             if (user && user.userId) {
                 return lastLoginApi.findLastloginByUserId(user.userId).then((login) => {

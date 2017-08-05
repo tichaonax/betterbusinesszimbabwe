@@ -45,14 +45,14 @@ firebase.auth().onAuthStateChanged((firebaseUser) => {
         store.dispatch(loginActions.startGetLastLogin());
         store.dispatch(profileSqliteActions.startSetUserProfile());
         store.dispatch(companiesSqliteActions.startAddCompanyItems());
-        store.dispatch(reviewsSqliteActions.startAddReviewItems());
+        store.dispatch(reviewsSqliteActions.startAddReviewItems(''));
         store.dispatch(searchActions.setSearchText(""));
         hashHistory.push(store.getState().redirectUrl);
     } else {
         //console.debug("firebaseUser session invlaid:", firebaseUser);
         store.dispatch(loginActions.bbzLogout());
         store.dispatch(profileSqliteActions.resetUserProfile());
-        store.dispatch(reviewsSqliteActions.startAddReviewItems());
+        store.dispatch(reviewsSqliteActions.startAddReviewItems(''));
         hashHistory.push('/reviews');
     }
 });

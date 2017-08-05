@@ -8,8 +8,8 @@ class ReviewsApi extends BbzApiBase {
         super(Utils.getUrlAddress(window.location.href));
     }
 
-    findAllReviews = () => {
-        var resource = '/api/reviews';
+    findAllReviews = (criteria) => {
+        var resource = `/api/reviews/criteria/${criteria}`;
         return this.GET(resource).then((resp) => {
             //console.log(JSON.stringify(resp.data));
             return resp.data;

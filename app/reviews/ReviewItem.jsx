@@ -55,12 +55,14 @@ export class ReviewItem extends React.Component {
                 <div className="review-block">
                     <div className="row">
                         <div className="col-sm-4">
-                            <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
-
+                            <Link to={`/reviews?user=${userId}&userviews=true`} activeClassName="active bbz-review-span"
+                                  activeStyle={{fontWeight: 'bold'}}>
+                                <img src={photoURL} alt="Smiley face" height="43" width="43" className="img-rounded"/>
+                            </Link>
                             <div>
                                 <span className="label bbz-review-span">Reviews:</span>
                                 <span>&nbsp;</span>
-                                <Link to={`/reviews?user=${userId}`} activeClassName="active bbz-review-span"
+                                <Link to={`/reviews?user=${userId}&userviews=true`} activeClassName="active bbz-review-span"
                                       activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                             </div>
 

@@ -46,7 +46,7 @@ export class CompanyItem extends React.Component {
                         <div className="row">
                             {auth.loggedIn && (
                                 <div className="col-sm-3">
-                                    <div>
+                                    {(userProfile && userProfile.isAdmin == 1) && (<div>
                                         <span className="bbz-review-span">Delete:</span>
                                         <span>&nbsp;</span>
                                         <img className="bbz-general-pointer" type="image" value="submit"
@@ -55,28 +55,20 @@ export class CompanyItem extends React.Component {
                                              alt="Delete Company"
                                              onClick={() => {
                                                  this.dispatch(errorActions.bbzClearError());
-                                                 if (userProfile.isAdmin == 1) {
-                                                     this.dispatch(companiesSqliteActions.startDeleteCompanyItem(companyId));
-                                                 } else {
-                                                     openUpdatePanel();
-                                                     var error = {};
-                                                     error.errorMessage = "You must be admin to delete this company information";
-                                                     this.dispatch(errorActions.bbzReportError(error));
-                                                     window.scrollTo(0, 0);
-                                                 }
+                                                 this.dispatch(companiesSqliteActions.startDeleteCompanyItem(companyId));
                                              }}/>
-                                    </div>
-                                    <div>
-                                        <span className="bbz-review-span">Update:</span>
-                                        <span>&nbsp;</span>
-                                        <img className="bbz-general-pointer" type="image" value="submit"
-                                             height="20"
-                                             width="20" src="images/update-blue-64.png"
-                                             alt="Update Company"
-                                             onClick={() => {
-                                                 openUpdatePanel();
-                                                 this.dispatch(errorActions.bbzClearError());
-                                                 if (userProfile.userId === userId || userProfile.isAdmin) {
+                                    </div>)}
+                                    {(userProfile && userProfile.isAdmin == 1 || userProfile.userId === userId ) && (
+                                        <div>
+                                            <span className="bbz-review-span">Update:</span>
+                                            <span>&nbsp;</span>
+                                            <img className="bbz-general-pointer" type="image" value="submit"
+                                                 height="20"
+                                                 width="20" src="images/update-blue-64.png"
+                                                 alt="Update Company"
+                                                 onClick={() => {
+                                                     openUpdatePanel();
+                                                     this.dispatch(errorActions.bbzClearError());
                                                      var data = {
                                                          userId,
                                                          companyId,
@@ -87,18 +79,12 @@ export class CompanyItem extends React.Component {
                                                          serviceCategory
                                                      }
 
-                                                     console.debug("CompanyItems Data:", data);
+                                                     //console.debug("CompanyItems Data:", data);
                                                      this.dispatch(servicesSqliteActions.startAddServiceItems());
                                                      this.dispatch(companiesSqliteActions.setUpdateCompanyOperation(data));
-                                                 }
-                                                 else {
-                                                     var error = {};
-                                                     error.errorMessage = "You must be the owner or admin to update this company information";
-                                                     this.dispatch(errorActions.bbzReportError(error));
-                                                 }
-                                                 window.scrollTo(0, 0);
-                                             }}/>
-                                    </div>
+                                                     window.scrollTo(0, 0);
+                                                 }}/>
+                                        </div>)}
                                     {userProfile && (userProfile.isAdmin == 1) && (
                                         <div>
                                             <span className="bbz-review-span">{approveMessage}:</span>
@@ -108,16 +94,16 @@ export class CompanyItem extends React.Component {
                                                  src={approveImageSource}
                                                  onClick={() => {
                                                      this.dispatch(errorActions.bbzClearError());
-                                                     if (userProfile.isAdmin == 1) {
-                                                         this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId,
-                                                             !approved));
-                                                     } else {
-                                                         openUpdatePanel();
-                                                         var error = {};
-                                                         error.errorMessage = "You must be admin to approve";
-                                                         this.dispatch(errorActions.bbzReportError(error));
-                                                         window.scrollTo(0, 0);
-                                                     }
+                                                     /*if (userProfile.isAdmin == 1) {*/
+                                                     this.dispatch(companiesSqliteActions.startApproveUpdateCompanyItem(companyId,
+                                                         !approved));
+                                                     /*} else {
+                                                      openUpdatePanel();
+                                                      var error = {};
+                                                      error.errorMessage = "You must be admin to approve";
+                                                      this.dispatch(errorActions.bbzReportError(error));
+                                                      window.scrollTo(0, 0);
+                                                      }*/
                                                  }}/>
                                         </div>
                                     )}
@@ -134,7 +120,8 @@ export class CompanyItem extends React.Component {
                                 <div>
                                     <span className="label bbz-review-span">Reviews:</span>
                                     <span>&nbsp;</span>
-                                    <Link to={`/reviews?company=${companyId}`} activeClassName="active bbz-review-span"
+                                    <Link to={`/reviews?company=${companyId}`}
+                                          activeClassName="active bbz-review-span"
                                           activeStyle={{fontWeight: 'bold'}}>{reviewCount}</Link>
                                 </div>
                                 <div>
@@ -179,15 +166,16 @@ export class CompanyItem extends React.Component {
                         </div>
                     </div>
                 </form>
-            </div>
-        );
+            </div>);
+
     }
 }
-
 function mapStateToProps(state, ownProps) {
     return {
         auth: state.auth,
         userProfile: state.userProfile,
     }
 }
-export default  connect(mapStateToProps)(CompanyItem);
+
+
+export default connect(mapStateToProps)(CompanyItem);

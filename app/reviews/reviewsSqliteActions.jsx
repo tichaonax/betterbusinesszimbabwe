@@ -24,6 +24,8 @@ export var startAddNewReviewItem = (userId, companyId, review, rating) => {
         return reviewsApi.addNewReview(userId, companyId, review, rating).then((review) => {
             //console.debug("review", review.data);
             dispatch(addReviewItem(review.data));
+            //clear recently addedCompany so the review select is deselected
+            dispatch(companiesSqliteActions.clearRecentlyAddedCompany());
             dispatch(loadingActions.setLoadingStatus(false));
         }, (error) => {
             console.log("Unable to add new review", error);
@@ -43,10 +45,11 @@ export var addReviewItems = (reviewItems) => {
     };
 };
 
-export var startAddReviewItems = () => {
+export var startAddReviewItems = (criteria) => {
+    console.log("criteria",criteria);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
-        return reviewsApi.findAllReviews().then((reviews) => {
+        return reviewsApi.findAllReviews(criteria).then((reviews) => {
             //console.debug("reviews",reviews.data);
             dispatch(addReviewItems(reviews.data));
             dispatch(loadingActions.setLoadingStatus(false));
@@ -96,7 +99,7 @@ export var updateReviewItem = (reviewId, updates) => {
 };
 
 export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved, companyId) => {
-    console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
+    //console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewItem(reviewId, review, rating, userId).then((review) => {
@@ -108,6 +111,7 @@ export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved
             return dispatch(recalculateUserReviewCount(userId)).then(() => {
                 return reviewsApi.getReviewById(reviewId).then((response) => {
                     let reviewItem = response.data;
+                    //console.log("recalculateUserReviewCount-reviewItem",reviewItem);
                     return dispatch(updateReviewItem(reviewId, reviewItem));
                 })
             })
@@ -126,7 +130,7 @@ export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved
 };
 
 export var startApproveUpdateReviewItem = (reviewId, isApproved, companyId, userId, adminUserId) => {
-    console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
+    //console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewIsApprovedFlag(reviewId, isApproved, adminUserId).then((review) => {
@@ -182,13 +186,13 @@ export var recalculateUserReviewCount = (userId) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.getUserReviewCount(userId).then((response) => {
             let reviewCount = response.data.count;
-            console.debug("getUserReviewCount", reviewCount);
+            //console.debug("getUserReviewCount", reviewCount);
             return (reviewCount);
         }).then(
             (newReviewCount) => {
                 return usersApi.updateUserReviewCount(userId, newReviewCount).then((response) => {
                     let user = response.data;
-                    console.debug("user updateUserReviewCount", user);
+                    //console.debug("user updateUserReviewCount", user);
                     //dispatch(addReviewItems(reviews.data));
                     dispatch(loadingActions.setLoadingStatus(false));
 
@@ -205,7 +209,7 @@ export var recalculateCompanyReview = (companyId) => {
             return (response.data);
         }).then(
             (reviews) => {
-                console.log("company reviews", reviews);
+                //console.log("company reviews", reviews);
                 //we want to update the company affected based on currently approved reviews
                 //console.debug("Need to sum up all reviews of companyItemId", companyItemId);
                 //console.debug("Company reviews:", reviews);
@@ -227,18 +231,10 @@ export var recalculateCompanyReview = (companyId) => {
                     newRating = Math.round(ratingsTotal / newReviewCount * 2) / 2;
                 }
 
-                //console.debug("Company reviews found:", newReviewCount);
-                //console.debug("Company new rating:", newRating);
-
-                var updates = {
-                    rating: newRating,
-                    reviewCount: newReviewCount
-                };
-
                 //now update company
 
                 return companiesApi.updateCompanyRatingInfo(companyId, newRating, newReviewCount).then((response) => {
-                    console.log("ratings updated", response.data);
+                    //console.log("ratings updated", response.data);
                     dispatch(companiesSqliteActions.updateCompanyItem(companyId, response.data))
                 })
             }

@@ -28,8 +28,9 @@ export var countsReducer = (state = {pendingCount: 0, listCount: 0}, action) => 
 export var searchOptionsReducer = (state = {
     pending: false,
     showButton: false,
-    showMyReviews: false,
-    loading: false
+    showUserReviews: false,
+    loading: false,
+    userId: 0
 }, action) => {
     switch (action.type) {
         case 'TOGGLE_SHOW_APPROVAL_PENDING':
@@ -47,10 +48,11 @@ export var searchOptionsReducer = (state = {
                 ...state,
                 showButton: action.showButton
             });
-        case 'SET_MY_REVIEWS':
+        case 'SET_USER_REVIEWS':
             return ({
                 ...state,
-                showMyReviews: action.showMyReviews
+                showUserReviews: action.showUserReviews,
+                userId: action.userId
             });
 
         default:

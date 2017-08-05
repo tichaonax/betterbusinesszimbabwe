@@ -12,7 +12,7 @@ var errorActions = require('errorActions');
 var urlActions = require('urlActions');
 import AlertContainer from 'react-alert'
 import Error from 'Error';
-import {toggleUpdatePanel} from 'app/common/Utils';
+import {toggleUpdatePanel, openUpdatePanel} from 'app/common/Utils';
 
 
 export class AddReview extends React.Component {
@@ -113,12 +113,12 @@ export class AddReview extends React.Component {
 
     componentDidMount() {
         this.loadData(this.props);
-        if (this.props.recentlyAddedCompany.companyId != '') {
-            //console.debug("this.props.recentlyAddedCompany", this.props.recentlyAddedCompany);
+        if (this.props.recentlyAddedCompany.companyId != undefined) {
             this.setState({
                 selectedCompanyId: this.props.recentlyAddedCompany.companyId,
                 selectedCompanyTitle: this.props.recentlyAddedCompany.companyTitle
             });
+            openUpdatePanel();
         }
     }
 
@@ -190,7 +190,6 @@ export class AddReview extends React.Component {
                                     if (this.state.operation === 'ADD') {
                                         this.handleSubmit(event);
                                     } else {
-                                        toggleUpdatePanel();
                                         this.handleUpdate(event);
                                     }
                                 }}>
@@ -213,24 +212,6 @@ export class AddReview extends React.Component {
         });
     }
 
-    getReviewerAvatar = (owner = false) => {
-        var {userProfile} = this.props;
-        let photoURL = "images/no-image.png";
-
-        if (userProfile.userId == this.state.userId || owner) {
-            if (userProfile.photoURL) {
-                photoURL = userProfile.photoURL;
-                //console.debug("Photo Owner", userProfile.photoURL);
-            }
-        } else {
-            //console.debug("Not Owner", userProfile.photoURL);
-            photoURL = null;
-        }
-
-        //console.debug("Saved Photo", photoURL);
-        return photoURL;
-    }
-
     handleCancel = (e) => {
         e.preventDefault();
         this.resetInputs();
@@ -241,11 +222,45 @@ export class AddReview extends React.Component {
         this.dispatch(reviewsSqliteActions.setAddReviewOperation());
     }
 
+    validateUpdateValues(review){
+        var error = {}
+
+        if (review.length > 0) {
+            if (review.length > this.maxReviewCharacters) {
+                error.errorMessage = `Review comment exceeds maximum ${this.maxReviewCharacters} characters`;
+                this.dispatch(errorActions.bbzReportError(error));
+                this.refs.review.focus();
+                return false;
+            }
+        } else {
+            error.errorMessage = "Review comment required";
+            this.dispatch(errorActions.bbzReportError(error));
+            this.refs.review.focus();
+            return false;
+        }
+
+        if (!this.state.rating || this.state.rating == 0) {
+            error.errorMessage = "You must select a review rating before you can save review!";
+            this.dispatch(errorActions.bbzReportError(error));
+            return false;
+        }
+
+        return true;
+    }
+
     handleUpdate = (e) => {
         e.preventDefault();
         if (this.state.cancelOperation) {
             return;
         }
+
+        var review = this.refs.review.value;
+
+        if (!this.validateUpdateValues(review)) {
+            return
+        }
+
+        toggleUpdatePanel();
 
         this.dispatch(reviewsSqliteActions.startUpdateReviewItem(
             this.state.reviewId,
@@ -262,18 +277,15 @@ export class AddReview extends React.Component {
         window.scrollTo(0, 0);
     }
 
-    handleSubmit = (e) => {
-        e.preventDefault();
-        var {userProfile, reviewItems, userProfile, redirectUrl} = this.props;
+    validateSubmitValues(review, reviewItems, userProfile) {
 
         var error = {}
-        var review = this.refs.review.value;
 
         if (this.state.selectedCompanyId == null) {
             error.errorMessage = "You must select company to review";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.companySelect.focus();
-            return;
+            return false;
         }
 
         if (review.length > 0) {
@@ -281,26 +293,37 @@ export class AddReview extends React.Component {
                 error.errorMessage = `Review comment exceeds maximum ${this.maxReviewCharacters} characters`;
                 this.dispatch(errorActions.bbzReportError(error));
                 this.refs.review.focus();
-                return;
+                return false;
             }
         } else {
             error.errorMessage = "Review comment required";
             this.dispatch(errorActions.bbzReportError(error));
             this.refs.review.focus();
-            return;
+            return false;
         }
 
         if (this.findDupeReviews(reviewItems, userProfile.userId, this.state.selectedCompanyId).length != 0) {
             error.errorMessage = "You can only add one review per company, please select another company from drop down!";
             this.dispatch(errorActions.bbzReportError(error));
-            return;
+            return false;
         }
 
-        console.debug("this.state.rating", this.state.rating);
         if (!this.state.rating || this.state.rating == 0) {
             error.errorMessage = "You must select a review rating before you can save review!";
             this.dispatch(errorActions.bbzReportError(error));
-            return;
+            return false;
+        }
+        return true
+    }
+
+    handleSubmit = (e) => {
+        e.preventDefault();
+        var {userProfile, reviewItems, userProfile, redirectUrl} = this.props;
+
+        var review = this.refs.review.value;
+
+        if (!this.validateSubmitValues(review, reviewItems, userProfile)) {
+            return
         }
 
         this.dispatch(reviewsSqliteActions.startAddNewReviewItem(
@@ -312,16 +335,16 @@ export class AddReview extends React.Component {
         ));
 
         this.resetInputs();
-
+        this.dispatch(errorActions.bbzClearError());
         this.showAlert("Thank you, Review Added!\nAfter review by Admin it will be made available to the public");
+        toggleUpdatePanel();
 
-        /*if (!this.state.calledFromOutside) {
+        if (!this.state.calledFromOutside) {
             this.dispatch(urlActions.setRedirectUrl(`myreviews?user=${userProfile.userId}&myreviews=true`));
         } else {
             hashHistory.push(redirectUrl);
-        }*/
-
-        this.dispatch(errorActions.bbzClearError());
+        }
+        window.scrollTo(0, 0);
     }
 
     onChangeReviewComment = (e) => {
@@ -340,7 +363,7 @@ export class AddReview extends React.Component {
         var {userProfile} = this.props;
         var selectedCompanyIds = [];
         var companyItems = this.state.companyItems;
-        if (companyItems) {
+        if (companyItems && userProfile) {
             companyItems.map((companyItem) => {
                 if (companyItem.isApproved == 1 || companyItem.userId == userProfile.userId) {
                     selectedCompanyIds.push({value: companyItem.companyId, label: companyItem.companyTitle});

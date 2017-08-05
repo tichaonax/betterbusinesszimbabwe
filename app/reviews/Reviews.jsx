@@ -5,8 +5,9 @@ import {getMediaContainerClass} from 'app/common/Utils';
 import {REVIEWS_TITLE} from 'pageTitles';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
-import {Link} from 'react-router';
+import {Link, browserHistory, hashHistory} from 'react-router';
 var reviewsSqliteActions = require('reviewsSqliteActions');
+var errorActions = require('errorActions');
 var searchActions = require('searchActions');
 var navActions = require('navActions');
 var urlActions = require('urlActions');
@@ -18,32 +19,44 @@ export class Reviews extends React.Component {
         this.dispatch = props.dispatch;
         this.state = {
             loaded: false,
-            container: "container"
+            container: "container",
+            userReviews: false
         }
     }
 
+    onGoBack = (evt) => {
+        this.dispatch(errorActions.bbzClearError());
+        this.setState({userReviews: false});
+        this.dispatch(searchActions.setSearchText(""));
+        this.dispatch(reviewsSqliteActions.startAddReviewItems());
+        hashHistory.push('/reviews');
+    }
+
     loadData(props) {
-        var userId = props.location.query.user;
+        var {searchText} = this.props;
+        var userId = parseInt(props.location.query.user);
         var company = props.location.query.company;
-        var myreviews = props.location.query.myreviews;
+        var userviews = props.location.query.userviews;
 
         if (company && company.length > 0) {
             console.debug("searchActions.setSearchText(company)", company);
             this.dispatch(searchActions.setSearchText(company));
-        } else if (userId && userId.length > 0) {
-            if (myreviews == 'true') {
-                this.dispatch(searchActions.setMyReviews(true));
+        } else if (userId > 0) {
+            if (userviews == 'true') {
+                this.dispatch(searchActions.setUserReviews(true, userId));
+            }else {
+                this.dispatch(searchActions.setUserReviews(false, 0));
             }
             this.dispatch(searchActions.setSearchText(userId));
         }
 
-        this.dispatch(reviewsSqliteActions.startAddReviewItems());
+        this.dispatch(reviewsSqliteActions.startAddReviewItems(searchText));
         this.dispatch(urlActions.setRedirectUrl('/reviews'));
     }
 
     componentDidMount() {
         this.dispatch(navActions.setNavPage(REVIEWS_TITLE));
-        this.dispatch(searchActions.setMyReviews(false));
+        this.dispatch(searchActions.setUserReviews(false, 0));
         this.loadData(this.props);
         this.dispatch(searchActions.setApprovalPendingItem(false));
         this.dispatch(searchActions.setSearchButton(false));
@@ -54,12 +67,20 @@ export class Reviews extends React.Component {
     }
 
     componentWillReceiveProps(newProps) {
-        var userId = newProps.location.query.user;
-        var myreviews = newProps.location.query.myreviews;
+        var userId = parseInt(newProps.location.query.user);
+        var userviews = newProps.location.query.userviews;
 
-        if (userId && userId.length > 0) {
-            if (myreviews == 'true') {
-                this.dispatch(searchActions.setMyReviews(true));
+        if (this.props.searchText != newProps.searchText) {
+            console.log("Search Text Changed");
+            this.dispatch(reviewsSqliteActions.startAddReviewItems(newProps.searchText));
+        }
+
+        if (userId > 0) {
+            this.setState({userReviews: true});
+            if (userviews == 'true') {
+                this.dispatch(searchActions.setUserReviews(true, userId));
+            } else {
+                this.dispatch(searchActions.setUserReviews(false, 0));
             }
             this.dispatch(searchActions.setSearchText(userId));
         }
@@ -94,10 +115,18 @@ export class Reviews extends React.Component {
                               activeStyle={{fontWeight: 'bold'}}>Add Review</Link>)}
                     {isLoggedIn && (
                         <div>
+                            {this.state.userReviews && (
+                                <button ref="cancel" type="button" className="btn btn-primary" value="Back"
+                                        onClick={
+                                            () => {
+                                                this.onGoBack(event);
+                                            }}>
+                                    Back
+                                </button>)}
                             <div>
                                 <button id="update-panel" type="button" className="btn btn-info btn-lg btn-block"
                                         data-toggle="collapse"
-                                        data-target="#update-panel-target">Review Panel
+                                        data-target="#update-panel-target">Click To Open/Close Review Panel
                                 </button>
                             </div>
                             <div></div>
