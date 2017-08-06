@@ -156,11 +156,14 @@ module.exports = {
     getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showUserReviews = false) {
         var filteredReviewItems = reviewItems;
 
+        //console.log("getFilteredReviews", reviewItems);
         //filter by showApprovalPending
         filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
             let approved = (reviewItem.isApproved == 1);
             return approved || showApprovalPending || reviewItem.userId === userId
         });
+
+        //console.log("getFilteredReviews showApprovalPending", filteredReviewItems);
 
         if (showUserReviews) {
             //just get the reviews of the passed user
@@ -168,6 +171,8 @@ module.exports = {
                 return reviewItem.userId === userId
             });
         }
+
+        //console.log("getFilteredReviews showUserReviews", filteredReviewItems);
 
         //filter by searchText
         //we want to also search by review description
@@ -179,6 +184,10 @@ module.exports = {
                 var reviewId = reviewItem.reviewId;
                 var companyId = reviewItem.companyId;
                 var user = reviewItem.userId;
+                var displayName = reviewItem.displayName.toLowerCase();
+                var email = reviewItem.email;
+
+                let companyIdSearch = parseInt(searchText, 10) ? parseInt(searchText, 10) : 0;
 
                 if (companyTitle.indexOf(searchText.toLowerCase()) > -1) {
                     return reviewItem.companyTitle;
@@ -186,13 +195,19 @@ module.exports = {
                     return reviewItem.review;
                 } else if (reviewId == searchText) {
                     return reviewItem.createAt;
-                } else if (companyId == searchText) {
-                    return reviewItem.companyItemId;
+                } else if (companyId == companyIdSearch) {
+                    return reviewItem.companyId;
                 } else if (user == searchText) {
                     return reviewItem.userId;
+                }else if (displayName.indexOf(searchText.toLowerCase()) > -1) {
+                    return reviewItem.displayName;
+                }else if (email.indexOf(searchText.toLowerCase()) > -1) {
+                    return reviewItem.email;
                 }
             });
         }
+
+        //console.log("searchText.length > 0 && !showUserReviews", filteredReviewItems);
 
         //sort reviewItems with Approval Pending first
         if (showApprovalPending) {

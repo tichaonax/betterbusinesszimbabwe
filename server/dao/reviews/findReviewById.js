@@ -14,6 +14,7 @@ var findReviewById = (reviewId) => {
     join companies c
     on r.companyId = c.companyId
     where r.reviewId = ${reviewId}`;
+    console.log("sql->",sql);
     return db.prepare(sql).get();
 }
 

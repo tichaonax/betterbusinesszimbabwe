@@ -10,6 +10,9 @@ class ReviewsApi extends BbzApiBase {
 
     findAllReviews = (criteria) => {
         var resource = `/api/reviews/criteria/${criteria}`;
+        if (criteria == '' || criteria == undefined) {
+            resource = `/api/reviews/`;
+        }
         return this.GET(resource).then((resp) => {
             //console.log(JSON.stringify(resp.data));
             return resp.data;

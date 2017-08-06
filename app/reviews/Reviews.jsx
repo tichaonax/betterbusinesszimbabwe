@@ -71,7 +71,7 @@ export class Reviews extends React.Component {
         var userviews = newProps.location.query.userviews;
 
         if (this.props.searchText != newProps.searchText) {
-            console.log("Search Text Changed");
+            //console.log("Search Text Changed",newProps.searchText);
             this.dispatch(reviewsSqliteActions.startAddReviewItems(newProps.searchText));
         }
 

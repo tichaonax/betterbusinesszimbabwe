@@ -7,9 +7,26 @@ var reviewsRoutes = express.Router();
 var ServerUtils = require('../../ServerUtils');
 const API = require('../../constants/API');
 
-// get all reviews
+
+// get review with that reviewId
+reviewsRoutes.route('/reviews/')
+    .get(function (req, res) {
+        if (!ServerUtils.isAuthorizeApiCall(req)) {
+            return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
+        }
+        var findAllReviews = require('../../dao/reviews/findAllReviews');
+        return new Promise(() => {
+            var reviews = findAllReviews('');
+            return Promise.resolve(res.json({data: reviews}));
+        }).catch((error) => {
+            return Promise.reject(error)
+        });
+    });
+
+// get all reviews fitting criteria
 reviewsRoutes.route('/reviews/criteria/:criteria')
     .get(function (req, res) {
+        console.log("criteria",req.params.criteria);
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
@@ -25,6 +42,7 @@ reviewsRoutes.route('/reviews/criteria/:criteria')
 // get review with that reviewId
 reviewsRoutes.route('/reviews/:reviewId')
     .get(function (req, res) {
+        console.log("/reviews/:reviewId'",req.params.reviewId);
         var findReviewById = require('../../dao/reviews/findReviewById');
         return new Promise(() => {
             var review = findReviewById(req.params.reviewId);

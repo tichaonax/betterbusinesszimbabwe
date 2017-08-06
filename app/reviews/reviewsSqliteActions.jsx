@@ -46,13 +46,12 @@ export var addReviewItems = (reviewItems) => {
 };
 
 export var startAddReviewItems = (criteria) => {
-    console.log("criteria",criteria);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.findAllReviews(criteria).then((reviews) => {
             //console.debug("reviews",reviews.data);
-            dispatch(addReviewItems(reviews.data));
             dispatch(loadingActions.setLoadingStatus(false));
+            dispatch(addReviewItems(reviews.data));
         }, (error) => {
             console.debug("Unable to fetch reviews", error);
             var errorObj = {
@@ -99,7 +98,7 @@ export var updateReviewItem = (reviewId, updates) => {
 };
 
 export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved, companyId) => {
-    //console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
+    console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewItem(reviewId, review, rating, userId).then((review) => {
@@ -111,7 +110,8 @@ export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved
             return dispatch(recalculateUserReviewCount(userId)).then(() => {
                 return reviewsApi.getReviewById(reviewId).then((response) => {
                     let reviewItem = response.data;
-                    //console.log("recalculateUserReviewCount-reviewItem",reviewItem);
+                    //console.log("recalculateUserReviewCount-reviewItem",reviewItem
+                    dispatch(loadingActions.setLoadingStatus(false));
                     return dispatch(updateReviewItem(reviewId, reviewItem));
                 })
             })
@@ -124,13 +124,14 @@ export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved
                 errorCode: error.code,
                 errorMessage: error.message
             };
+            dispatch(loadingActions.setLoadingStatus(false));
             return dispatch(errorActions.bbzReportError(errorObj));
         });
     };
 };
 
 export var startApproveUpdateReviewItem = (reviewId, isApproved, companyId, userId, adminUserId) => {
-    //console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
+    console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewIsApprovedFlag(reviewId, isApproved, adminUserId).then((review) => {

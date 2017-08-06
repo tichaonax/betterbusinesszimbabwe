@@ -14,13 +14,16 @@ var findAllReviews = (param) => {
     on u.userId = r.userId
     join companies c
     on r.companyId = c.companyId 
-       where r.review like '%${criteria}%'
+    where r.review like '%${criteria}%'
     or c.companyTitle like '%${criteria}%'
-    or u.userid = '${criteria}'
-    or r.rating ='${criteria}'
-    or displayName like '${criteria}'
+    or u.userid like '%${criteria}%'
+    or r.rating like '%${criteria}%'
+    or displayName like '%${criteria}%'
+    or r.companyId like '%${criteria}%'
+    or u.email like '%${criteria}%'
     order by r.updateAt desc
     limit 50`;
+    console.log("findAllReviews-sql",sql);
     return db.prepare(sql).all();
 }
 

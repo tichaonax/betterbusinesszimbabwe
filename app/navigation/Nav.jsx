@@ -70,7 +70,7 @@ class Nav extends React.Component {
             <ul>
                 {isLoggedIn && userProfile && (
                     <li className="upper-links">
-                        <Link to={`/myreviews?user=${userProfile.userId}&userviews=true`} activeClassName="active"
+                        <Link to={`/myreviews?user=${userProfile.userId}&userReviews=true`} activeClassName="active"
                               className="links"
                               onClick={() => {
                                   this.dispatch(navActions.setNavPage(MY_REVIEWS_TITLE));
