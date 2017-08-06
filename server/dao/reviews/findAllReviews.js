@@ -23,7 +23,7 @@ var findAllReviews = (param) => {
     or u.email like '%${criteria}%'
     order by r.updateAt desc
     limit 50`;
-    console.log("findAllReviews-sql",sql);
+    //console.log("findAllReviews-sql",sql);
     return db.prepare(sql).all();
 }
 
