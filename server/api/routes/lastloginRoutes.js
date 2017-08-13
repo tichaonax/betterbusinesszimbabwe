@@ -31,7 +31,7 @@ lastLoginRoutes.route('/lastlogin/:lastloginId')
 
         let lastloginId = req.params.lastloginId;
 
-        var findLastLoginById = require('../../dao/lastLogin/findLastLoginById');
+        var findLastLoginById = require('../../dao/lastlogin/findLastLoginById');
         return new Promise(() => {
             var lastlogin = findLastLoginById(lastloginId);
             return Promise.resolve(res.json({data: lastlogin}));
@@ -49,7 +49,7 @@ lastLoginRoutes.route('/lastlogin/user/:userId')
 
         let userId = req.params.userId;
 
-        var findLastLoginByUserId = require('../../dao/lastLogin/findLastLoginByUserId');
+        var findLastLoginByUserId = require('../../dao/lastlogin/findLastLoginByUserId');
         return new Promise(() => {
             var lastlogin = findLastLoginByUserId(userId);
             return Promise.resolve(res.json({data: lastlogin}));
@@ -72,10 +72,10 @@ lastLoginRoutes.route('/lastLogin/save/:userId')
         let ipAddress = req.body.ipAddress;
         let loginAt = req.body.loginAt;
 
-        var insertLastLogin = require('../../dao/lastLogin/insertLastLogin');
+        var insertLastLogin = require('../../dao/lastlogin/insertLastLogin');
         return new Promise(() => {
             var newRecord = insertLastLogin(userId, city, country, ipAddress, loginAt);
-            var findLastLoginById = require('../../dao/lastLogin/findLastLoginById');
+            var findLastLoginById = require('../../dao/lastlogin/findLastLoginById');
             //return the newly created row
             var lastlogin = findLastLoginById(newRecord.lastInsertROWID);
             return (Promise.resolve(res.json({data: lastlogin})));
@@ -108,7 +108,7 @@ lastLoginRoutes.route('/lastLogin/update/:userId')
     });
 
 // move to last login
-lastLoginRoutes.route('/lastLogin/move/:userId')
+lastLoginRoutes.route('/lastlogin/move/:userId')
     .post((req, res) => {
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
@@ -125,7 +125,7 @@ lastLoginRoutes.route('/lastLogin/move/:userId')
             var user = updateLastLogin(userId, city, country, ipAddress, loginAt);
             console.log("check if we updated", user);//we will need to insert instead
             if (user.changes == 0) {
-                var insertLastLogin = require('../../dao/lastLogin/insertLastLogin');
+                var insertLastLogin = require('../../dao/lastlogin/insertLastLogin');
                 user = insertLastLogin(userId, city, country, ipAddress, loginAt);
             }
             return Promise.resolve(res.json({data: user}));
