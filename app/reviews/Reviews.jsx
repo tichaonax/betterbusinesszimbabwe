@@ -39,7 +39,6 @@ export class Reviews extends React.Component {
         var userviews = props.location.query.userviews;
 
         if (company && company.length > 0) {
-            console.debug("searchActions.setSearchText(company)", company);
             this.dispatch(searchActions.setSearchText(company));
         } else if (userId > 0) {
             if (userviews == 'true') {
@@ -68,16 +67,15 @@ export class Reviews extends React.Component {
 
     componentWillReceiveProps(newProps) {
         var userId = parseInt(newProps.location.query.user);
-        var userviews = newProps.location.query.userviews;
+        var userReviews = newProps.location.query.userReviews;
 
         if (this.props.searchText != newProps.searchText) {
-            //console.log("Search Text Changed",newProps.searchText);
             this.dispatch(reviewsSqliteActions.startAddReviewItems(newProps.searchText));
         }
 
         if (userId > 0) {
             this.setState({userReviews: true});
-            if (userviews == 'true') {
+            if (userReviews == 'true') {
                 this.dispatch(searchActions.setUserReviews(true, userId));
             } else {
                 this.dispatch(searchActions.setUserReviews(false, 0));

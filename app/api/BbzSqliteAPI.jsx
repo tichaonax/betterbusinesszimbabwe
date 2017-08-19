@@ -156,7 +156,6 @@ module.exports = {
     getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showUserReviews = false) {
         var filteredReviewItems = reviewItems;
 
-        //console.log("getFilteredReviews", reviewItems);
         //filter by showApprovalPending
         filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
             let approved = (reviewItem.isApproved == 1);
