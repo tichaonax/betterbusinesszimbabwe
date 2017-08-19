@@ -80,6 +80,12 @@ export const openUpdatePanel = () => {
     }
 }
 
+export const closeUpdatePanel = () => {
+    if ($("#update-panel-target").hasClass("in")) {
+        $("#update-panel").trigger("click");
+    }
+}
+
 export class Utils {
     static parseUrl = (url) => {
         var link = document.createElement('a');

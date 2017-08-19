@@ -21,7 +21,7 @@ export class BbzLogin extends React.Component {
 
     componentDidMount() {
         const {dispatch, currentURL, isLoggedIn, error} = this.props;
-        console.debug("isLoggedIn->",isLoggedIn);
+        //console.debug("isLoggedIn->",isLoggedIn);
         if (!isLoggedIn) {
             // set the current url/path for future redirection if login fails
             //dispatch(urlActions.setRedirectUrl(currentURL));

@@ -24,6 +24,8 @@ export class CompanyItem extends React.Component {
             deleteCompany, updateCompany
         } = this.props;
 
+        //console.log("userProfile",userProfile);
+
         let approved = (isApproved === 1);
         var approveImageSource = "images/like-64.png";
         var approveMessage = "Approval Pending";
@@ -58,7 +60,7 @@ export class CompanyItem extends React.Component {
                                                  this.dispatch(companiesSqliteActions.startDeleteCompanyItem(companyId));
                                              }}/>
                                     </div>)}
-                                    {(userProfile && userProfile.isAdmin == 1 || userProfile.userId === userId ) && (
+                                    {(userProfile && (userProfile.isAdmin == 1 || userProfile.userId === userId )) && (
                                         <div>
                                             <span className="bbz-review-span">Update:</span>
                                             <span>&nbsp;</span>

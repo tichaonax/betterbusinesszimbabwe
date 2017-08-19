@@ -98,7 +98,7 @@ export var updateReviewItem = (reviewId, updates) => {
 };
 
 export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved, companyId) => {
-    console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
+    //console.log("***update review", reviewId, review, rating, userId, isApproved, companyId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewItem(reviewId, review, rating, userId).then((review) => {
@@ -131,7 +131,7 @@ export var startUpdateReviewItem = (reviewId, review, rating, userId, isApproved
 };
 
 export var startApproveUpdateReviewItem = (reviewId, isApproved, companyId, userId, adminUserId) => {
-    console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
+    //console.debug("startApproveUpdateReviewItem", reviewId, isApproved, companyId, userId, adminUserId);
     return (dispatch, getState) => {
         dispatch(loadingActions.setLoadingStatus(true));
         return reviewsApi.updateReviewIsApprovedFlag(reviewId, isApproved, adminUserId).then((review) => {

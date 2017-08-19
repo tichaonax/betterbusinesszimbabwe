@@ -214,7 +214,7 @@ export class AddCompnayItem extends React.Component {
             return
         }
 
-        toggleUpdatePanel();
+       // toggleUpdatePanel();
 
         this.dispatch(companiesSqliteActions.startUpdateCompanyItem(
             this.state.companyId,
@@ -296,7 +296,7 @@ export class AddCompnayItem extends React.Component {
         ));
 
         if (this.state.calledFromOutside) {
-            console.debug("redirectUrl calledFromOutside", redirectUrl);
+            //console.debug("redirectUrl calledFromOutside", redirectUrl);
             this.state = {
                 isShowingModal: true
             }

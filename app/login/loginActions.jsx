@@ -54,15 +54,15 @@ function setPostLoginUserProfile(dispatch, getState, auth) {
     return dispatch(profileSqliteActions.startSetUserProfile()).then(
         () => {
             var timestamp = getState().userProfile.createAt;
-            console.log("timestamp", timestamp);
+            //console.log("timestamp", timestamp);
             if (timestamp) {
-                console.log("Update User Profile");
+                //console.log("Update User Profile");
                 if (isUserProfileUpdateNeeded(getState, auth)) {
                     return dispatch(profileSqliteActions.startUpdateUserProfile(auth.firebaseId,
                         auth.email, auth.displayName, auth.providerId, auth.uid, auth.photoURL));
                 }
             } else {
-                console.log("Add New User Profile");
+                //console.log("Add New User Profile");
                 return dispatch(profileSqliteActions.startAddUserProfile(auth.firebaseId, auth.email,
                     auth.displayName, auth.providerId, auth.uid, auth.photoURL));
             }
@@ -207,7 +207,7 @@ export var startLastLogin = () => {
 
         var gClientIp;
 
-        console.log("current user profile:", getState().auth);
+        //console.log("current user profile:", getState().auth);
 
         return requestip.getClientIpAddress().then(
             (clientIp) => {
@@ -235,6 +235,7 @@ export var startLastLogin = () => {
                     return lastLoginApi.moveLastLogin(gUser.userId,
                         gUser.city, gUser.country, gUser.ipAddress,
                         gUser.loginAt).then((login) => {
+                        //console.debug("login", login);
                         let lastLoginInfo = (login.data) ? login.data : {};
                         Promise.resolve();
                         return (lastLoginInfo);
@@ -246,14 +247,14 @@ export var startLastLogin = () => {
                 Promise.all([ipInfoPromise, firebasePromise]).then((values) => {
                         const newLogin = values[0];
                         const oldLogin = values[1];
-                        console.debug("Promise.all-1", newLogin);
-                        console.debug("Promise.all-2", oldLogin);
+                        //console.debug("Promise.all-1", newLogin);
+                        //console.debug("Promise.all-2", oldLogin);
 
 
                         return userApi.updateUserLastLogin(gUser.userId, newLogin.city,
                             newLogin.country, newLogin.ipAddress)
                             .then((result) => {
-                            console.log("updated user", result.data);
+                            //console.log("updated user", result.data);
                                 if (oldLogin.city) {
                                     //user's last login
                                     return dispatch(lastLogin(oldLogin));

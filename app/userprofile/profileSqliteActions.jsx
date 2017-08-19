@@ -28,7 +28,7 @@ export var startSetUserProfile = () => {
         let firebaseId = getState().auth.firebaseId;
         return userApi.findUserByFirebaseId(firebaseId).then((user) => {
             let profile = (user.data) ? user.data : {};
-            console.log("profile", firebaseId, profile);
+            //console.log("profile", firebaseId, profile);
             dispatch(setUserProfile(profile));
         });
     };
@@ -44,7 +44,7 @@ export var addUserProfile = (profile) => {
 
 
 export var startAddUserProfile = (firebaseId, email, displayName, providerId, uid, photoURL) => {
-    console.log("Start Add User Profile!");
+    //console.log("Start Add User Profile!");
     return (dispatch, getState) => {
         let isAdmin= false;
         let isSuperUser = false;

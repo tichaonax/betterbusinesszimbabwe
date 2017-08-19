@@ -123,11 +123,14 @@ lastLoginRoutes.route('/lastlogin/move/:userId')
         var updateLastLogin = require('../../dao/lastlogin/updateLastLogin');
         return new Promise(() => {
             var user = updateLastLogin(userId, city, country, ipAddress, loginAt);
-            console.log("check if we updated", user);//we will need to insert instead
+            //console.log("check if we updated", user);//we will need to insert instead
             if (user.changes == 0) {
                 var insertLastLogin = require('../../dao/lastlogin/insertLastLogin');
                 user = insertLastLogin(userId, city, country, ipAddress, loginAt);
             }
+
+            var findLastLoginByUserId = require('../../dao/lastlogin/findLastLoginByUserId');
+            user = findLastLoginByUserId(userId);
             return Promise.resolve(res.json({data: user}));
         }).catch((error) => {
             return Promise.reject(error)

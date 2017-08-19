@@ -209,6 +209,21 @@ module.exports = {
 
         //console.log("searchText.length > 0 && !showUserReviews", filteredReviewItems);
 
+        //sort by recently updated first
+        filteredReviewItems.sort((a, b) => {
+            if (new Date(a.updateAt).getTime() > new Date(b.updateAt).getTime()) {
+                //take a first
+                return -1
+            } else if (new Date(a.updateAt).getTime() < new Date(b.updateAt).getTime()) {
+                // take b first
+                return 1;
+            } else {
+                //a === b
+                //no change
+                return 0;
+            }
+        });
+
         //sort reviewItems with Approval Pending first
         if (showApprovalPending) {
             filteredReviewItems.sort((a, b) => {
@@ -225,21 +240,6 @@ module.exports = {
                 }
             });
         }
-
-        //sort by recently updated first
-        filteredReviewItems.sort((a, b) => {
-            if (new Date(a.updateAt).getTime() > new Date(b.updateAt).getTime()) {
-                //take a first
-                return -1
-            } else if (new Date(a.updateAt).getTime() < new Date(b.updateAt).getTime()) {
-                // take b first
-                return 1;
-            } else {
-                //a === b
-                //no change
-                return 0;
-            }
-        });
 
         return filteredReviewItems;
     },

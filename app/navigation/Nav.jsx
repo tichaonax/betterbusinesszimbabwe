@@ -174,6 +174,7 @@ class Nav extends React.Component {
 
         if (userProfile && lastLogin) {
             lastLoginAt = lastLogin.loginAt;
+            //console.log("lastLogin", lastLogin.loginAt);
         }
 
         var joinedAt = "";
