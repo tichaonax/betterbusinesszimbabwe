@@ -26,7 +26,7 @@ reviewsRoutes.route('/reviews/')
 // get all reviews fitting criteria
 reviewsRoutes.route('/reviews/criteria/:criteria')
     .get(function (req, res) {
-        console.log("criteria",req.params.criteria);
+        //console.log("criteria",req.params.criteria);
         if (!ServerUtils.isAuthorizeApiCall(req)) {
             return Promise.reject(res.json({error: API.BBZ_NOT_AUTHORIZED}));
         }
@@ -42,7 +42,7 @@ reviewsRoutes.route('/reviews/criteria/:criteria')
 // get review with that reviewId
 reviewsRoutes.route('/reviews/:reviewId')
     .get(function (req, res) {
-        console.log("/reviews/:reviewId'",req.params.reviewId);
+        //console.log("/reviews/:reviewId'",req.params.reviewId);
         var findReviewById = require('../../dao/reviews/findReviewById');
         return new Promise(() => {
             var review = findReviewById(req.params.reviewId);
