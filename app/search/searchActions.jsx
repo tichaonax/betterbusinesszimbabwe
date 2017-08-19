@@ -49,4 +49,12 @@ export var setListCount = (listCount) => {
         listCount
     };
 };
+
+export var setCompanyReviews = (showCompanyReviews, companyId) => {
+    return {
+        type: 'SET_COMPANY_REVIEWS',
+        showCompanyReviews,
+        companyId
+    };
+};
 //</editor-fold>

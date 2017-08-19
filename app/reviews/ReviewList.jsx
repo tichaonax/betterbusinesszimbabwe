@@ -75,7 +75,9 @@ export class ReviewList extends React.Component {
                 }
             });
         }else{
-            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(reviewItems, searchOptions.pending, searchText, userId, searchOptions.showUserReviews);
+            filteredReviewItems = BbzSqliteAPI.getFilteredReviews(
+                reviewItems, searchOptions.pending, searchText,
+                userId, searchOptions.showUserReviews, searchOptions.showCompanyReviews, searchOptions.companyId);
         }
 
         this.setState({

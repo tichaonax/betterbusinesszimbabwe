@@ -153,7 +153,8 @@ module.exports = {
         return (filteredCompanyItems);
     },
 
-    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0, showUserReviews = false) {
+    getFilteredReviews: function (reviewItems, showApprovalPending, searchText, userId = 0,
+                                  showUserReviews = false, showCompanyReviews, companyId = 0) {
         var filteredReviewItems = reviewItems;
 
         //filter by showApprovalPending
@@ -240,12 +241,19 @@ module.exports = {
             });
         }
 
+        //return only reviews of a particular company
+        if (showCompanyReviews && companyId > 0) {
+            filteredReviewItems = filteredReviewItems.filter((reviewItem) => {
+                if (companyId == reviewItem.companyId) {
+                    return reviewItem.companyId;
+                }
+            });
+        }
+
         return filteredReviewItems;
     },
 
     getFilteredServices: function (serviceItems, searchText) {
-        //console.debug("searchText", searchText);
-        //console.debug("serviceItems", serviceItems);
         var filteredServiceItems = serviceItems;
 
         filteredServiceItems = filteredServiceItems.filter((serviceItem) => {

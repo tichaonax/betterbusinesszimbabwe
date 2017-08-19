@@ -1,4 +1,5 @@
 import React from 'react';
+
 var {connect} = require('react-redux');
 
 import {getMediaContainerClass} from 'app/common/Utils';
@@ -6,6 +7,7 @@ import {REVIEWS_TITLE} from 'pageTitles';
 import ReviewList from 'ReviewList';
 import AddReview from 'AddReview';
 import {Link, browserHistory, hashHistory} from 'react-router';
+
 var reviewsSqliteActions = require('reviewsSqliteActions');
 var errorActions = require('errorActions');
 var searchActions = require('searchActions');
@@ -35,15 +37,18 @@ export class Reviews extends React.Component {
     loadData(props) {
         var {searchText} = this.props;
         var userId = parseInt(props.location.query.user);
-        var company = props.location.query.company;
-        var userviews = props.location.query.userviews;
+        var userReviews = props.location.query.userReviews;
+        var companyId = parseInt(props.location.query.company);
 
-        if (company && company.length > 0) {
-            this.dispatch(searchActions.setSearchText(company));
-        } else if (userId > 0) {
-            if (userviews == 'true') {
+        if (companyId > 0) {
+            this.dispatch(searchActions.setCompanyReviews(true, companyId));
+            this.dispatch(searchActions.setSearchText(companyId));
+        }else if (userId > 0) {
+            this.dispatch(searchActions.setCompanyReviews(false, 0));
+
+            if (userReviews == 'true') {
                 this.dispatch(searchActions.setUserReviews(true, userId));
-            }else {
+            } else {
                 this.dispatch(searchActions.setUserReviews(false, 0));
             }
             this.dispatch(searchActions.setSearchText(userId));
@@ -68,6 +73,7 @@ export class Reviews extends React.Component {
     componentWillReceiveProps(newProps) {
         var userId = parseInt(newProps.location.query.user);
         var userReviews = newProps.location.query.userReviews;
+        var companyId = parseInt(newProps.location.query.company);
 
         if (this.props.searchText != newProps.searchText) {
             this.dispatch(reviewsSqliteActions.startAddReviewItems(newProps.searchText));
@@ -81,6 +87,13 @@ export class Reviews extends React.Component {
                 this.dispatch(searchActions.setUserReviews(false, 0));
             }
             this.dispatch(searchActions.setSearchText(userId));
+        }
+
+        if (companyId > 0) {
+            this.dispatch(searchActions.setCompanyReviews(true, companyId));
+            this.dispatch(searchActions.setSearchText(companyId));
+        } else {
+            this.dispatch(searchActions.setCompanyReviews(false, 0));
         }
 
         var {isLoggedIn, userProfile} = newProps;

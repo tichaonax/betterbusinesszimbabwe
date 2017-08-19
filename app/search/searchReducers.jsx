@@ -55,6 +55,13 @@ export var searchOptionsReducer = (state = {
                 userId: action.userId
             });
 
+        case 'SET_COMPANY_REVIEWS':
+            return ({
+                ...state,
+                showCompanyReviews: action.showCompanyReviews,
+                companyId: action.companyId
+            });
+
         default:
             return state;
     };
